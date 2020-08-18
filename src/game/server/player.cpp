@@ -10,6 +10,8 @@
 #include <game/version.h>
 #include <game/server/teams.h>
 #include "gamemodes/DDRace.h"
+#include "gamemodes/mod.h"
+#include <infcroya/croyaplayer.h>    
 #include <time.h>
 
 MACRO_ALLOC_POOL_ID_IMPL(CPlayer, MAX_CLIENTS)

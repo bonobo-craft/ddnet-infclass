@@ -6,6 +6,7 @@
 #include <game/server/gamecontext.h>
 #include <game/server/teams.h>
 #include <game/server/gamemodes/DDRace.h>
+#include <game/server/gamemodes/mod.h>
 #include "dragger.h"
 
 CDragger::CDragger(CGameWorld *pGameWorld, vec2 Pos, float Strength, bool NW,

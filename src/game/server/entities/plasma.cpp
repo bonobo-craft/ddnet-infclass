@@ -5,6 +5,7 @@
 #include <game/server/gamecontext.h>
 #include <game/server/teams.h>
 #include <game/server/gamemodes/DDRace.h>
+#include <game/server/gamemodes/mod.h>
 #include "plasma.h"
 
 const float PLASMA_ACCEL = 1.1f;

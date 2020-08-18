@@ -23,6 +23,7 @@
 #include <game/generated/protocolglue.h>
 
 #include "gamemodes/DDRace.h"
+#include "gamemodes/mod.h"
 #include "score.h"
 
 enum

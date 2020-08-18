@@ -3,6 +3,7 @@
 #include <game/server/gamecontext.h>
 #include <engine/shared/config.h>
 #include <game/server/gamemodes/DDRace.h>
+#include <game/server/gamemodes/mod.h>
 
 #include "door.h"
 

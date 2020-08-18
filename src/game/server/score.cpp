@@ -1,6 +1,7 @@
 #include "score.h"
 #include "entities/character.h"
 #include "gamemodes/DDRace.h"
+#include "gamemodes/mod.h"
 #include "save.h"
 
 #include <base/system.h>
