@@ -33,6 +33,14 @@ enum
 	FAKETUNE_NOHAMMER = 64,
 };
 
+// INFCROYA BEGIN ------------------------------------------------------------
+enum
+{
+	FREEZEREASON_FLASH = 0,
+	FREEZEREASON_UNDEAD = 1
+};
+// INFCROYA END ------------------------------------------------------------//
+
 class CCharacter : public CEntity
 {
 	MACRO_ALLOC_POOL_ID()
@@ -92,6 +100,59 @@ public:
 	bool IsPaused() const { return m_Paused; }
 	class CPlayer *GetPlayer() { return m_pPlayer; }
 
+		// INFCROYA BEGIN ------------------------------------------------------------
+	void SetNormalEmote(int Emote);
+
+	bool IsHuman() const;
+	bool IsZombie() const;
+
+	void SetInfected(bool Infected);
+
+	void SetCroyaPlayer(class CroyaPlayer* CroyaPlayer);
+	class CroyaPlayer* GetCroyaPlayer();
+
+	void ResetWeaponsHealth();
+
+	int GetActiveWeapon() const;
+	void SetReloadTimer(int ReloadTimer);
+	void SetNumObjectsHit(int NumObjectsHit);
+	void Infect(int From);
+	bool IncreaseOverallHp(int Amount);
+	int GetArmor() const;
+	int GetHealthArmorSum() const;
+	void SetHealthArmor(int Health, int Armor);
+
+	CCharacterCore& GetCharacterCore();
+	bool m_FirstShot;
+	vec2 m_FirstShotCoord;
+	int m_BarrierHintID;
+	array<int> m_BarrierHintIDs;
+	int m_RespawnPointID;
+
+	void Freeze(float Time, int Player, int Reason);
+	void Unfreeze();
+	void Poison(int Count, int From);
+
+	void DestroyChildEntities();
+
+	bool IsHookProtected() const;
+	void SetHookProtected(bool HookProtected);
+
+	CNetObj_PlayerInput& GetInput();
+
+	bool FindPortalPosition(vec2 Pos, vec2& Res);
+
+	void SaturateVelocity(vec2 Force, float MaxSpeed);
+
+	int m_HookDmgTick;
+	int m_InAirTick;
+	int GetInfWeaponID(int WID);
+
+	int GetLastNoAmmoSound() const;
+	void SetLastNoAmmoSound(int LastNoAmmoSound);
+
+	// INFCROYA END ------------------------------------------------------------//
+
 private:
 	// player controlling this character
 	class CPlayer *m_pPlayer;
@@ -103,6 +164,22 @@ private:
 	// weapon info
 	CEntity *m_apHitObjects[10];
 	int m_NumObjectsHit;
+
+	// INFCROYA BEGIN ------------------------------------------------------------
+	bool m_Infected;
+	class CroyaPlayer* m_pCroyaPlayer;
+	int m_HeartID;
+	int m_NormalEmote;
+	bool m_IsFrozen;
+	int m_FrozenTime;
+	int m_FreezeReason;
+	int m_LastFreezer;
+
+	int m_Poison;
+	int m_PoisonTick;
+	int m_PoisonFrom;
+	bool m_HookProtected;
+	// INFCROYA END ------------------------------------------------------------//
 
 	struct WeaponStat
 	{

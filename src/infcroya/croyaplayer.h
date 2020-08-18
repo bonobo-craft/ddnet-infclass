@@ -8,7 +8,7 @@ class IClass;
 class CPlayer;
 class CCharacter;
 class CGameContext;
-class CGameControllerMOD;
+//class CGameControllerMOD;
 
 class CroyaPlayer {
 private:

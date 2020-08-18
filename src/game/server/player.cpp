@@ -733,9 +733,10 @@ bool CPlayer::SetTimerType(int TimerType)
 void CPlayer::TryRespawn()
 {
 	// INFCROYA BEGIN ------------------------------------------------------------
-	if (GetCroyaPlayer()->GetGameControllerMOD()->IsExplosionStarted()) {
-		return;
-	}
+	// TBD
+	//if (GetCroyaPlayer()->GetGameControllerMOD()->IsExplosionStarted()) {
+	//	return;
+	//}
 	// INFCROYA END ------------------------------------------------------------//
 	vec2 SpawnPos;
 
