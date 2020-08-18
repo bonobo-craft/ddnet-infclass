@@ -113,6 +113,11 @@ public:
 		int m_Max;
 	} m_Latency;
 
+	// INFCROYA BEGIN
+	class CroyaPlayer* GetCroyaPlayer();
+	void SetCroyaPlayer(CroyaPlayer* pCroyaPlayer);
+	//
+
 private:
 	CCharacter *m_pCharacter;
 	int m_NumInputs;
@@ -130,6 +135,7 @@ private:
 	int m_Paused;
 	int64 m_ForcePauseTime;
 	int64 m_LastPause;
+	class CroyaPlayer* m_pCroyaPlayer; // INFCROYA RELATED
 
 public:
 	enum

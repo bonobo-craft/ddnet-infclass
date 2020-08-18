@@ -10,9 +10,24 @@
 #include <game/version.h>
 #include <game/server/teams.h>
 #include "gamemodes/DDRace.h"
+// INFCROYA BEGIN ------------------------------------------------------------
+#include <infcroya/croyaplayer.h>
 #include "gamemodes/mod.h"
-#include <infcroya/croyaplayer.h>    
+// INFCROYA END ------------------------------------------------------------//
 #include <time.h>
+
+// INFCROYA BEGIN ------------------------------------------------------------
+CroyaPlayer* CPlayer::GetCroyaPlayer()
+{
+	return m_pCroyaPlayer;
+}
+
+void CPlayer::SetCroyaPlayer(CroyaPlayer* pCroyaPlayer)
+{
+	m_pCroyaPlayer = pCroyaPlayer;
+}
+// INFCROYA END ------------------------------------------------------------//
+
 
 MACRO_ALLOC_POOL_ID_IMPL(CPlayer, MAX_CLIENTS)
 
