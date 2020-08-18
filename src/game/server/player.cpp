@@ -11,8 +11,8 @@
 #include <game/server/teams.h>
 #include "gamemodes/DDRace.h"
 // INFCROYA BEGIN ------------------------------------------------------------
-#include <infcroya/croyaplayer.h>
 #include "gamemodes/mod.h"
+#include <infcroya/croyaplayer.h>
 // INFCROYA END ------------------------------------------------------------//
 #include <time.h>
 
@@ -732,6 +732,11 @@ bool CPlayer::SetTimerType(int TimerType)
 
 void CPlayer::TryRespawn()
 {
+	// INFCROYA BEGIN ------------------------------------------------------------
+	if (GetCroyaPlayer()->GetGameControllerMOD()->IsExplosionStarted()) {
+		return;
+	}
+	// INFCROYA END ------------------------------------------------------------//
 	vec2 SpawnPos;
 
 	if(!GameServer()->m_pController->CanSpawn(m_Team, &SpawnPos))

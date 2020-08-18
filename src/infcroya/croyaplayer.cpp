@@ -3,8 +3,9 @@
 #include <game/server/player.h>
 #include <game/server/entities/character.h>
 #include <infcroya/classes/class.h>
-#include <infcroya/localization/localization.h>
+//#include <infcroya/localization/localization.h>
 #include <game/server/gamemodes/mod.h>
+#include "gamemodes/mod.h"
 #include <infcroya/entities/circle.h>
 #include <infcroya/entities/inf-circle.h>
 #include <limits>

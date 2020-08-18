@@ -243,7 +243,7 @@ void CGameContext::CreateExplosion(vec2 Pos, int Owner, int Weapon, bool NoDamag
 			if(Owner == -1 && ActivatedTeam != -1 && apEnts[i]->IsAlive() && apEnts[i]->Team() != ActivatedTeam) continue;
 
 			// Explode at most once per team
-			int PlayerTeam = ((CGameControllerMod*)m_pController)->m_Teams.m_Core.Team(apEnts[i]->GetPlayer()->GetCID());
+			int PlayerTeam = ((CGameControllerMOD*)m_pController)->m_Teams.m_Core.Team(apEnts[i]->GetPlayer()->GetCID());
 			if(GetPlayerChar(Owner) ? GetPlayerChar(Owner)->m_Hit&CCharacter::DISABLE_HIT_GRENADE : !g_Config.m_SvHit || NoDamage)
 			{
 				if(!CmaskIsSet(TeamMask, PlayerTeam)) continue;
@@ -368,7 +368,7 @@ void CGameContext::SendChatTarget(int To, const char *pText, int Flags)
 void CGameContext::SendChatTeam(int Team, const char *pText)
 {
 	for(int i = 0; i<MAX_CLIENTS; i++)
-		if(((CGameControllerMod*)m_pController)->m_Teams.m_Core.Team(i) == Team)
+		if(((CGameControllerMOD*)m_pController)->m_Teams.m_Core.Team(i) == Team)
 			SendChatTarget(i, pText);
 }
 
@@ -417,7 +417,7 @@ void CGameContext::SendChat(int ChatterClientID, int Team, const char *pText, in
 	}
 	else
 	{
-		CTeamsCore * Teams = &((CGameControllerMod*)m_pController)->m_Teams.m_Core;
+		CTeamsCore * Teams = &((CGameControllerMOD*)m_pController)->m_Teams.m_Core;
 		CNetMsg_Sv_Chat Msg;
 		Msg.m_Team = 1;
 		Msg.m_ClientID = ChatterClientID;
@@ -1426,7 +1426,7 @@ void CGameContext::OnClientDDNetVersionKnown(int ClientID)
 		pPlayer->m_TimerType = g_Config.m_SvDefaultTimerType;
 
 	// First update the teams state.
-	((CGameControllerMod *)m_pController)->m_Teams.SendTeamsState(ClientID);
+	((CGameControllerMOD *)m_pController)->m_Teams.SendTeamsState(ClientID);
 
 	// Then send records.
 	SendRecord(ClientID);
@@ -1668,7 +1668,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			if(Length == 0 || (pMsg->m_pMessage[0]!='/' && (g_Config.m_SvSpamprotection && pPlayer->m_LastChat && pPlayer->m_LastChat+Server()->TickSpeed()*((31+Length)/32) > Server()->Tick())))
 				return;
 
-			int GameTeam = ((CGameControllerMod*)m_pController)->m_Teams.m_Core.Team(pPlayer->GetCID());
+			int GameTeam = ((CGameControllerMOD*)m_pController)->m_Teams.m_Core.Team(pPlayer->GetCID());
 			if(Team)
 				Team = ((pPlayer->GetTeam() == -1) ? CHAT_SPEC : GameTeam);
 			else
@@ -3056,8 +3056,8 @@ void CGameContext::OnInit(/*class IKernel *pKernel*/)
 		}
 	}
 
-	m_pController = new CGameControllerMod(this);
-	((CGameControllerMod*)m_pController)->m_Teams.Reset();
+	m_pController = new CGameControllerMOD(this);
+	((CGameControllerMOD*)m_pController)->m_Teams.Reset();
 
 	m_TeeHistorianActive = g_Config.m_SvTeeHistorian;
 	if(m_TeeHistorianActive)
@@ -3633,7 +3633,7 @@ int CGameContext::ProcessSpamProtection(int ClientID)
 
 int CGameContext::GetDDRaceTeam(int ClientID)
 {
-	CGameControllerMod *pController = (CGameControllerMod*)m_pController;
+	CGameControllerMOD *pController = (CGameControllerMOD*)m_pController;
 	return pController->m_Teams.m_Core.Team(ClientID);
 }
 

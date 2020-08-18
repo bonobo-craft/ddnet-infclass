@@ -9,14 +9,14 @@
 #include <map>
 
 struct CScoreInitResult;
-class CGameControllerMod: public IGameController
+class CGameControllerMOD: public IGameController
 //class CGameControllerMod: public CGameControllerDDRace
 // class CGameControllerDDRace: public IGameController
 {
 public:
 
-	CGameControllerMod(class CGameContext *pGameServer);
-	~CGameControllerMod();
+	CGameControllerMOD(class CGameContext *pGameServer);
+	~CGameControllerMOD();
 
 	CGameTeams m_Teams;
 

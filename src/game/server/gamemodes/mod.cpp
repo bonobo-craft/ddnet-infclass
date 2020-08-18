@@ -9,7 +9,7 @@
 #include "mod.h"
 #include "gamemode.h"
 
-CGameControllerMod::CGameControllerMod(class CGameContext *pGameServer) :
+CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
 		IGameController(pGameServer), m_Teams(pGameServer), m_pInitResult(nullptr)
 {
 	m_pGameType = g_Config.m_SvTestingCommands ? TEST_NAME : GAME_NAME;
@@ -17,12 +17,12 @@ CGameControllerMod::CGameControllerMod(class CGameContext *pGameServer) :
 	InitTeleporter();
 }
 
-CGameControllerMod::~CGameControllerMod()
+CGameControllerMOD::~CGameControllerMOD()
 {
 	// Nothing to clean
 }
 
-void CGameControllerMod::Tick()
+void CGameControllerMOD::Tick()
 {
 	IGameController::Tick();
 	m_Teams.ProcessSaveTeam();
@@ -37,7 +37,7 @@ void CGameControllerMod::Tick()
 	}
 }
 
-void CGameControllerMod::InitTeleporter()
+void CGameControllerMOD::InitTeleporter()
 {
 	if (!GameServer()->Collision()->Layers()->TeleLayer())
 		return;
