@@ -10,6 +10,8 @@
 
 struct CScoreInitResult;
 class CGameControllerMod: public IGameController
+//class CGameControllerMod: public CGameControllerDDRace
+// class CGameControllerDDRace: public IGameController
 {
 public:
 
@@ -26,4 +28,4 @@ public:
 
 	std::shared_ptr<CScoreInitResult> m_pInitResult;
 };
-#endif // GAME_SERVER_GAMEMODES_DDRACE_H
+#endif // GAME_SERVER_GAMEMODES_MOD_H
