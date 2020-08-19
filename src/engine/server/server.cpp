@@ -2176,6 +2176,10 @@ void CServer::PumpNetwork()
 	m_Econ.Update();
 }
 
+void CServer::SendClanChange(int fromCID, int toCID, const char[256]) {
+  // TBD
+}
+
 char *CServer::GetMapName()
 {
 	// get the name of the map without his path

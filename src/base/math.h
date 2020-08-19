@@ -45,6 +45,11 @@ inline T mix(const T a, const T b, TB amount)
 }
 
 inline float frandom() { return rand()/(float)(RAND_MAX); }
+// INFCROYA BEGIN ------------------------------------------------------------
+inline int random_int() { return (((rand() & 0xffff) << 16) | (rand() & 0xffff)) & 0x7FFFFFFF; };
+inline bool random_prob(float f) { return (frandom() < f); }
+inline int random_int_range(int min, int max) { return random_int() % (max + 1 - min) + min; }
+// INFCROYA END ------------------------------------------------------------//
 
 // float to fixed
 inline int f2fx(float v) { return (int)(v*(float)(1<<10)); }

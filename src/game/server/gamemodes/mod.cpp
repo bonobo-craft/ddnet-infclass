@@ -217,7 +217,8 @@ void CGameControllerMOD::OnRoundEnd()
 		m_apFlag->Destroy();
 		m_apFlag = 0;
 	}
-	IGameController::EndMatch(); // Endmatch instead of endround
+	//IGameController::EndMatch(); // Endmatch instead of endround
+	//TBD
 }
 
 bool CGameControllerMOD::DoWincheckMatch()
@@ -377,7 +378,8 @@ bool CGameControllerMOD::IsEveryoneInfected() const
 
 void CGameControllerMOD::OnPlayerDisconnect(CPlayer* pPlayer)
 {
-	IGameController::OnPlayerDisconnect(pPlayer);
+	//IGameController::OnPlayerDisconnect(pPlayer);
+	//TBD
 	int ClientID = pPlayer->GetCID();
 
 	delete players[ClientID];
@@ -386,7 +388,8 @@ void CGameControllerMOD::OnPlayerDisconnect(CPlayer* pPlayer)
 
 void CGameControllerMOD::OnPlayerConnect(CPlayer* pPlayer)
 {
-	IGameController::OnPlayerConnect(pPlayer);
+	//IGameController::OnPlayerConnect(pPlayer);
+	//TBD
 	int ClientID = pPlayer->GetCID();
 
 #ifdef CONF_GEOLOCATION
@@ -396,7 +399,8 @@ void CGameControllerMOD::OnPlayerConnect(CPlayer* pPlayer)
 	Server()->SetClientCountry(ClientID, geolocation->get_country_iso_numeric_code(ip));
 #endif
 	players[ClientID] = new CroyaPlayer(ClientID, pPlayer, GameServer(), this, classes);
-	SetLanguageByCountry(Server()->ClientCountry(ClientID), ClientID);
+	//SetLanguageByCountry(Server()->ClientCountry(ClientID), ClientID);
+	//TBD
 	if (IsCroyaWarmup())
 	{
 		players[ClientID]->SetClass(classes[Class::DEFAULT]);
@@ -411,11 +415,12 @@ void CGameControllerMOD::OnPlayerConnect(CPlayer* pPlayer)
 			{
 				if (each->IsZombie())
 				{
-					GameServer()->SendClanChange(each->GetClientID(), ClientID, "Zombie");
+					//GameServer()->SendClanChange(each->GetClientID(), ClientID, "Zombie");
 				}
 				else
 				{
-					GameServer()->SendClanChange(each->GetClientID(), ClientID, "Human");
+					//GameServer()->SendClanChange(each->GetClientID(), ClientID, "Human");
+					// TBD
 				}
 			}
 		}

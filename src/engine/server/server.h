@@ -111,6 +111,7 @@ public:
 	class IStorage *Storage() { return m_pStorage; }
 	class IEngineAntibot *Antibot() { return m_pAntibot; }
 	class CDbConnectionPool *DbPool() { return m_pConnectionPool; }
+	void SendClanChange(int fromCID, int toCID, const char[256]);
 
 	enum
 	{

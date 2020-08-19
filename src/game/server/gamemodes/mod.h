@@ -61,6 +61,9 @@ public:
 	void ResetFinalExplosion();
 
 	bool IsExplosionStarted() const;
+	int GetRealPlayerNum() const { return 2; };
+	// TBD
+	int NUM_TEAMS=2;
 
 	std::vector<class CCircle*>& GetCircles();
 	std::vector<class CInfCircle*>& GetInfCircles();
