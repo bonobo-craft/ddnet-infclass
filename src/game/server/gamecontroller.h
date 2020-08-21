@@ -5,6 +5,10 @@
 
 #include <base/vmath.h>
 #include <engine/map.h>
+// INFCROYA BEGIN ------------------------------------------------------------
+#include <array>
+#include <engine/shared/config.h>
+// INFCROYA END ------------------------------------------------------------//
 
 class CDoor;
 #if !defined(_MSC_VER) || _MSC_VER >= 1600
@@ -58,6 +62,7 @@ protected:
 	char m_aMapWish[MAX_MAP_LENGTH];
 
 
+	int m_GameStartTick;
 	int m_RoundStartTick;
 	int m_GameOverTick;
 	int m_SuddenDeath;
@@ -80,6 +85,17 @@ public:
 	void StartRound();
 	void EndRound();
 	void ChangeMap(const char *pToMap);
+
+		// info
+	struct CGameInfo
+	{
+		int m_MatchCurrent;
+		int m_MatchNum;
+		int m_ScoreLimit;
+		int m_TimeLimit;
+	} m_GameInfo;
+
+	void UpdateGameInfo(int ClientID);
 
 	bool IsFriendlyFire(int ClientID1, int ClientID2);
 
@@ -147,6 +163,13 @@ public:
 	// DDRace
 
 	float m_CurrentRecord;
+	// INFCROYA BEGIN ------------------------------------------------------------
+	bool IsSpawnable(vec2 Pos);
+	bool IsWarmup() const;
+	bool IsGameEnd() const;
+	std::array<class CroyaPlayer*, 64> m_pCroyaPlayers{};
+	class CGameControllerMOD* m_MOD;
+	// INFCROYA END ------------------------------------------------------------//
 };
 
 #endif

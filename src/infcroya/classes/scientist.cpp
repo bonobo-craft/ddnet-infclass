@@ -3,10 +3,11 @@
 #include <game/server/player.h>
 #include <game/server/entities/projectile.h>
 #include <game/server/gamecontext.h>
-#include <generated/server_data.h>
+#include <game/generated/server_data.h>
 #include <infcroya/entities/scientist-mine.h>
 #include <infcroya/entities/scientist-laser.h>
 #include <infcroya/entities/laser-teleport.h>
+#include "engine/shared/config.h"
 
 CScientist::CScientist()
 {

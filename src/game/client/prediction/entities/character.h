@@ -32,6 +32,13 @@ class CCharacter : public CEntity
 {
 	friend class CGameWorld;
 public:
+	struct WeaponStat
+	{
+		int m_AmmoRegenStart;
+		int m_Ammo;
+		int m_Ammocost;
+		bool m_Got;
+	} m_aWeapons[NUM_WEAPONS];
 	//character's size
 	static const int ms_PhysSize = 28;
 
@@ -142,13 +149,6 @@ private:
 	int m_aHitObjects[10];
 	int m_NumObjectsHit;
 
-	struct WeaponStat
-	{
-		int m_AmmoRegenStart;
-		int m_Ammo;
-		int m_Ammocost;
-		bool m_Got;
-	} m_aWeapons[NUM_WEAPONS];
 
 	int m_LastWeapon;
 	int m_QueuedWeapon;

@@ -3,6 +3,7 @@
 #include <base/vmath.h>
 #include <unordered_map>
 #include <string>
+#include <game/server/gamemodes/mod.h>
 
 class IClass;
 class CPlayer;

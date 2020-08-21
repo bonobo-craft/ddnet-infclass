@@ -10,6 +10,19 @@
 #include "laser.h"
 #include "projectile.h"
 
+// INFCROYA BEGIN ------------------------------------------------------------
+#include <infcroya/croyaplayer.h>
+#include <infcroya/classes/class.h>
+#include <game/server/eventhandler.h>
+#include <infcroya/entities/engineer-wall.h>
+#include <infcroya/entities/biologist-mine.h>
+#include <infcroya/entities/soldier-bomb.h>
+#include <infcroya/entities/scientist-mine.h>
+#include <infcroya/entities/medic-grenade.h>
+#include <infcroya/entities/merc-bomb.h>
+#include <infcroya/entities/scatter-grenade.h>
+// INFCROYA END ------------------------------------------------------------//
+
 #include <game/server/gamemodes/DDRace.h>
 #include <game/server/gamemodes/mod.h>
 #include <game/server/score.h>
@@ -780,6 +793,25 @@ void CCharacter::Tick()
 	// handle Weapons
 	HandleWeapons();
 
+	// INFCROYA BEGIN ------------------------------------------------------------
+	if (m_Poison > 0)
+	{
+		if (m_PoisonTick == 0)
+		{
+			m_Poison--;
+			TakeDamage(vec2(0.0f, 0.0f), vec2(0, 0), 1, m_PoisonFrom, WEAPON_WORLD);
+			if (m_Poison > 0)
+			{
+				m_PoisonTick = Server()->TickSpeed() / 2;
+			}
+		}
+		else
+		{
+			m_PoisonTick--;
+		}
+	}
+	// INFCROYA END ------------------------------------------------------------//
+
 	DDRacePostCoreTick();
 
 	if(m_Core.m_TriggeredEvents&COREEVENT_HOOK_ATTACH_PLAYER)
@@ -913,6 +945,9 @@ void CCharacter::TickPaused()
 		++m_aWeapons[m_Core.m_ActiveWeapon].m_AmmoRegenStart;
 	if(m_EmoteStop > -1)
 		++m_EmoteStop;
+	// INFCROYA BEGIN ------------------------------------------------------------
+	++m_HookDmgTick;
+	// INFCROYA END ------------------------------------------------------------//
 }
 
 bool CCharacter::IncreaseHealth(int Amount)
@@ -966,8 +1001,111 @@ void CCharacter::Die(int Killer, int Weapon)
 	GameServer()->m_World.m_Core.m_apCharacters[m_pPlayer->GetCID()] = 0;
 	GameServer()->CreateDeath(m_Pos, m_pPlayer->GetCID(), Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
 	Teams()->OnCharacterDeath(GetPlayer()->GetCID(), Weapon);
+	// INFCROYA BEGIN ------------------------------------------------------------
+	DestroyChildEntities();
+	Destroy();
+	// INFCROYA END ------------------------------------------------------------//
 }
 
+bool CCharacter::TakeDamage(vec2 Force, vec2 Source, int Dmg, int From, int Weapon)
+{
+	/*m_Core.m_Vel += Force;
+
+	if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From) && !g_Config.m_SvTeamdamage)
+		return false;
+
+	// m_pPlayer only inflicts half damage on self
+	if(From == m_pPlayer->GetCID())
+		Dmg = maximum(1, Dmg/2);
+
+	m_DamageTaken++;
+
+	// create healthmod indicator
+	if(Server()->Tick() < m_DamageTakenTick+25)
+	{
+		// make sure that the damage indicators doesn't group together
+		GameServer()->CreateDamageInd(m_Pos, m_DamageTaken*0.25f, Dmg);
+	}
+	else
+	{
+		m_DamageTaken = 0;
+		GameServer()->CreateDamageInd(m_Pos, 0, Dmg);
+	}
+
+	if(Dmg)
+	{
+		if(m_Armor)
+		{
+			if(Dmg > 1)
+			{
+				m_Health--;
+				Dmg--;
+			}
+
+			if(Dmg > m_Armor)
+			{
+				Dmg -= m_Armor;
+				m_Armor = 0;
+			}
+			else
+			{
+				m_Armor -= Dmg;
+				Dmg = 0;
+			}
+		}
+
+		m_Health -= Dmg;
+	}
+
+	m_DamageTakenTick = Server()->Tick();
+
+	// do damage Hit sound
+	if(From >= 0 && From != m_pPlayer->GetCID() && GameServer()->m_apPlayers[From])
+	{
+		int64 Mask = CmaskOne(From);
+		for(int i = 0; i < MAX_CLIENTS; i++)
+		{
+			if(GameServer()->m_apPlayers[i] && GameServer()->m_apPlayers[i]->GetTeam() == TEAM_SPECTATORS && GameServer()->m_apPlayers[i]->m_SpectatorID == From)
+				Mask |= CmaskOne(i);
+		}
+		GameServer()->CreateSound(GameServer()->m_apPlayers[From]->m_ViewPos, SOUND_HIT, Mask);
+	}
+
+	// check for death
+	if(m_Health <= 0)
+	{
+		Die(From, Weapon);
+
+		// set attacker's face to happy (taunt!)
+		if (From >= 0 && From != m_pPlayer->GetCID() && GameServer()->m_apPlayers[From])
+		{
+			CCharacter *pChr = GameServer()->m_apPlayers[From]->GetCharacter();
+			if (pChr)
+			{
+				pChr->m_EmoteType = EMOTE_HAPPY;
+				pChr->m_EmoteStop = Server()->Tick() + Server()->TickSpeed();
+			}
+		}
+
+		return false;
+	}
+
+	if (Dmg > 2)
+		GameServer()->CreateSound(m_Pos, SOUND_PLAYER_PAIN_LONG);
+	else
+		GameServer()->CreateSound(m_Pos, SOUND_PLAYER_PAIN_SHORT);*/
+
+	if (Dmg)
+	{
+		m_EmoteType = EMOTE_PAIN;
+		m_EmoteStop = Server()->Tick() + 500 * Server()->TickSpeed() / 1000;
+	}
+
+	vec2 Temp = m_Core.m_Vel + Force;
+	m_Core.m_Vel = ClampVel(m_MoveRestrictions, Temp);
+
+	return true;
+}
 bool CCharacter::TakeDamage(vec2 Force, int Dmg, int From, int Weapon)
 {
 	/*m_Core.m_Vel += Force;
@@ -2446,3 +2584,361 @@ void CCharacter::Rescue()
 		m_pPlayer->Pause(CPlayer::PAUSE_NONE, true);
 	}
 }
+
+// INFCROYA BEGIN ------------------------------------------------------------
+void CCharacter::SetNormalEmote(int Emote)
+{
+	m_NormalEmote = Emote;
+}
+
+bool CCharacter::IsHuman() const {
+	return !m_Infected;
+}
+
+bool CCharacter::IsZombie() const {
+	return m_Infected;
+}
+
+void CCharacter::SetInfected(bool Infected) {
+	m_Infected = Infected;
+	m_Core.m_Infected = Infected;
+}
+
+void CCharacter::SetCroyaPlayer(CroyaPlayer* CroyaPlayer) {
+	m_pCroyaPlayer = CroyaPlayer;
+}
+
+CroyaPlayer* CCharacter::GetCroyaPlayer() {
+	return m_pCroyaPlayer;
+}
+
+void CCharacter::ResetWeaponsHealth()
+{
+	m_Health = 0;
+	m_Armor = 0;
+	for (auto& each : m_aWeapons) {
+		each.m_Got = false;
+	}
+}
+
+//int CCharacter::GetActiveWeapon() const
+//{
+//	return m_ActiveWeapon;
+//}
+
+void CCharacter::SetReloadTimer(int ReloadTimer)
+{
+	m_ReloadTimer = ReloadTimer;
+}
+
+void CCharacter::SetNumObjectsHit(int NumObjectsHit)
+{
+	m_NumObjectsHit = NumObjectsHit;
+}
+
+void CCharacter::Infect(int From)
+{
+	if (From >= 0) { // -1 and below is a special case (e.g infect when inside infection zone)
+		// Kill message (copypasted from CCharacter::TakeDamage)
+		CNetMsg_Sv_KillMsg Msg;
+		Msg.m_Killer = From;
+		Msg.m_Victim = m_pPlayer->GetCID();
+		Msg.m_Weapon = WEAPON_HAMMER;
+		Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, -1);
+
+		// BEGIN // do that before you actually turn someone into a zombie
+		GetCroyaPlayer()->SetOldClassNum(GetCroyaPlayer()->GetClassNum());
+		GameServer()->m_apPlayers[From]->GetCroyaPlayer()->OnKill(GetPlayer()->GetCID());
+		// END //   do that before you actually turn someone into a zombie
+	}
+	GetCroyaPlayer()->SetOldClassNum(GetCroyaPlayer()->GetClassNum());
+	GetCroyaPlayer()->TurnIntoRandomZombie();
+}
+
+bool CCharacter::IncreaseOverallHp(int Amount)
+{
+	bool success = false;
+	if (m_Health < 10)
+	{
+		int healthDiff = 10 - m_Health;
+		IncreaseHealth(Amount);
+		success = true;
+		Amount = Amount - healthDiff;
+	}
+	if (Amount > 0)
+	{
+		if (IncreaseArmor(Amount))
+			success = true;
+	}
+	return success;
+}
+
+int CCharacter::GetArmor() const
+{
+	return m_Armor;
+}
+
+int CCharacter::GetHealthArmorSum() const
+{
+	return m_Health + m_Armor;
+}
+
+void CCharacter::SetHealthArmor(int Health, int Armor)
+{
+	m_Health = Health;
+	m_Armor = Armor;
+}
+
+CCharacterCore& CCharacter::GetCharacterCore()
+{
+	return m_Core;
+}
+
+void CCharacter::Freeze(float Time, int Player, int Reason)
+{
+	//if (m_IsFrozen && m_FreezeReason == FREEZEREASON_UNDEAD)
+	//	return;
+
+	if(GetCroyaPlayer()->GetClassNum() == Class::SCIENTIST) {
+		return;
+	}
+
+
+
+	if (m_IsFrozen) {
+		return;
+	}
+
+  if (m_FrozenTime + 4 * Server()->TickSpeed() > Server()->Tick())
+    return;
+
+
+	m_IsFrozen = true;
+	m_FrozenTime = Server()->Tick();
+	//m_FrozenTime = Server()->TickSpeed() * Time;
+	m_FreezeReason = Reason;
+
+	m_LastFreezer = Player;
+	GiveNinja();
+}
+void CCharacter::Unfreeze()
+{
+	if (!m_IsFrozen) {
+		return;
+	}
+	m_IsFrozen = false;
+	//m_FrozenTime = -1;
+
+	if (m_FreezeReason == FREEZEREASON_UNDEAD)
+	{
+		m_Health = 10.0;
+	}
+
+	GameServer()->CreatePlayerSpawn(m_Pos);
+}
+void CCharacter::Poison(int Count, int From)
+{
+	if (m_Poison <= 0)
+	{
+		m_PoisonTick = 0;
+		m_Poison = Count;
+		m_PoisonFrom = From;
+	}
+}
+
+void CCharacter::DestroyChildEntities()
+{
+	for (CEngineerWall* pWall = (CEngineerWall*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_ENGINEER_WALL); pWall; pWall = (CEngineerWall*)pWall->TypeNext())
+	{
+		if (pWall->m_Owner != m_pPlayer->GetCID()) continue;
+		GameServer()->m_World.DestroyEntity(pWall);
+	}
+	for (CSoldierBomb* pBomb = (CSoldierBomb*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_SOLDIER_BOMB); pBomb; pBomb = (CSoldierBomb*)pBomb->TypeNext())
+	{
+		if (pBomb->m_Owner != m_pPlayer->GetCID()) continue;
+		GameServer()->m_World.DestroyEntity(pBomb);
+	}
+	for (CScientistMine* pMine = (CScientistMine*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_SCIENTIST_MINE); pMine; pMine = (CScientistMine*)pMine->TypeNext())
+	{
+		if (pMine->m_Owner != m_pPlayer->GetCID()) continue;
+		GameServer()->m_World.DestroyEntity(pMine);
+	}
+	for (CBiologistMine* pMine = (CBiologistMine*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_BIOLOGIST_MINE); pMine; pMine = (CBiologistMine*)pMine->TypeNext())
+	{
+		if (pMine->m_Owner != m_pPlayer->GetCID()) continue;
+		GameServer()->m_World.DestroyEntity(pMine);
+	}
+	for (CMedicGrenade* pGrenade = (CMedicGrenade*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_MEDIC_GRENADE); pGrenade; pGrenade = (CMedicGrenade*)pGrenade->TypeNext())
+	{
+		if (pGrenade->m_Owner != m_pPlayer->GetCID()) continue;
+		GameServer()->m_World.DestroyEntity(pGrenade);
+	}
+	for (CMercenaryBomb* pBomb = (CMercenaryBomb*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_MERCENARY_BOMB); pBomb; pBomb = (CMercenaryBomb*)pBomb->TypeNext())
+	{
+		if (pBomb->m_Owner != m_pPlayer->GetCID()) continue;
+		GameServer()->m_World.DestroyEntity(pBomb);
+	}
+	for (CScatterGrenade* pGrenade = (CScatterGrenade*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_SCATTER_GRENADE); pGrenade; pGrenade = (CScatterGrenade*)pGrenade->TypeNext())
+	{
+		if (pGrenade->m_Owner != m_pPlayer->GetCID()) continue;
+		GameServer()->m_World.DestroyEntity(pGrenade);
+	}
+
+	m_FirstShot = true;
+}
+
+bool CCharacter::IsHookProtected() const
+{
+	return m_HookProtected;
+}
+
+void CCharacter::SetHookProtected(bool HookProtected)
+{
+	m_HookProtected = HookProtected;
+	m_Core.m_HookProtected = HookProtected;
+}
+
+CNetObj_PlayerInput& CCharacter::GetInput()
+{
+	return m_Input;
+}
+
+bool CCharacter::FindPortalPosition(vec2 Pos, vec2& Res)
+{
+	vec2 PortalShift = Pos - m_Pos;
+	vec2 PortalDir = normalize(PortalShift);
+	if (length(PortalShift) > 500.0f)
+		PortalShift = PortalDir * 500.0f;
+
+	float Iterator = length(PortalShift);
+	while (Iterator > 0.0f)
+	{
+		PortalShift = PortalDir * Iterator;
+		vec2 PortalPos = m_Pos + PortalShift;
+
+		if (GameServer()->m_pController->IsSpawnable(PortalPos))
+		{
+			Res = PortalPos;
+			return true;
+		}
+
+		Iterator -= 4.0f;
+	}
+
+	return false;
+}
+
+void CCharacter::SaturateVelocity(vec2 Force, float MaxSpeed)
+{
+	if (length(Force) < 0.00001)
+		return;
+
+	float Speed = length(m_Core.m_Vel);
+	vec2 VelDir = normalize(m_Core.m_Vel);
+	if (Speed < 0.00001)
+	{
+		VelDir = normalize(Force);
+	}
+	vec2 OrthoVelDir = vec2(-VelDir.y, VelDir.x);
+	float VelDirFactor = dot(Force, VelDir);
+	float OrthoVelDirFactor = dot(Force, OrthoVelDir);
+
+	vec2 NewVel = m_Core.m_Vel;
+	if (Speed < MaxSpeed || VelDirFactor < 0.0f)
+	{
+		NewVel += VelDir * VelDirFactor;
+		float NewSpeed = length(NewVel);
+		if (NewSpeed > MaxSpeed)
+		{
+			if (VelDirFactor > 0.f)
+				NewVel = VelDir * MaxSpeed;
+			else
+				NewVel = -VelDir * MaxSpeed;
+		}
+	}
+
+	NewVel += OrthoVelDir * OrthoVelDirFactor;
+
+	m_Core.m_Vel = NewVel;
+}
+
+int CCharacter::GetInfWeaponID(int WID)
+{
+	if (WID == WEAPON_HAMMER)
+	{
+	}
+	else if (WID == WEAPON_GUN)
+	{
+		switch (GetCroyaPlayer()->GetClassNum())
+		{
+		case Class::MERCENARY:
+			return INFWEAPON_MERCENARY_GUN;
+		default:
+			return INFWEAPON_GUN;
+		}
+		return INFWEAPON_GUN;
+	}
+	else if (WID == WEAPON_SHOTGUN)
+	{
+		switch (GetCroyaPlayer()->GetClassNum())
+		{
+		case Class::MEDIC:
+			return INFWEAPON_MEDIC_SHOTGUN;
+		case Class::BIOLOGIST:
+			return INFWEAPON_BIOLOGIST_SHOTGUN;
+		default:
+			return INFWEAPON_SHOTGUN;
+		}
+	}
+	else if (WID == WEAPON_GRENADE)
+	{
+		switch (GetCroyaPlayer()->GetClassNum())
+		{
+		case Class::MERCENARY:
+			return INFWEAPON_MERCENARY_GRENADE;
+		case Class::MEDIC:
+			return INFWEAPON_MEDIC_GRENADE;
+		case Class::SOLDIER:
+			return INFWEAPON_SOLDIER_GRENADE;
+		case Class::HERO:
+			return INFWEAPON_HERO_GRENADE;
+		case Class::SCIENTIST:
+			return INFWEAPON_SCIENTIST_GRENADE;
+		default:
+			return INFWEAPON_GRENADE;
+		}
+	}
+	else if (WID == WEAPON_LASER)
+	{
+		switch (GetCroyaPlayer()->GetClassNum())
+		{
+		case Class::ENGINEER:
+			return INFWEAPON_ENGINEER_RIFLE;
+		case Class::SCIENTIST:
+			return INFWEAPON_SCIENTIST_RIFLE;
+		case Class::BIOLOGIST:
+			return INFWEAPON_BIOLOGIST_RIFLE;
+		case Class::MEDIC:
+			return INFWEAPON_MEDIC_RIFLE;
+		case Class::SNIPER:
+			return INFWEAPON_SNIPER_RIFLE;
+		default:
+			return INFWEAPON_RIFLE;
+		}
+	}
+	else if (WID == WEAPON_NINJA)
+	{
+		return INFWEAPON_NINJA;
+	}
+	return INFWEAPON_NONE;
+}
+int CCharacter::GetLastNoAmmoSound() const
+{
+	return m_LastNoAmmoSound;
+}
+void CCharacter::SetLastNoAmmoSound(int LastNoAmmoSound)
+{
+	m_LastNoAmmoSound = LastNoAmmoSound;
+}
+// INFCROYA END ------------------------------------------------------------//
+

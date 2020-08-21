@@ -167,7 +167,6 @@ MACRO_CONFIG_STR(DbgStressServer, dbg_stress_server, 32, "localhost", CFGFLAG_CL
 #endif
 
 // DDRace
-MACRO_CONFIG_STR(SvWelcome, sv_welcome, 64, "", CFGFLAG_SERVER, "Message that will be displayed to players who join the server")
 MACRO_CONFIG_INT(SvReservedSlots, sv_reserved_slots, 0, 0, 16, CFGFLAG_SERVER, "The number of slots that are reserved for special players")
 MACRO_CONFIG_STR(SvReservedSlotsPass, sv_reserved_slots_pass, 32, "", CFGFLAG_SERVER, "The password that is required to use a reserved slot")
 MACRO_CONFIG_INT(SvHit, sv_hit, 1, 0, 1, CFGFLAG_SERVER|CFGFLAG_GAME, "Whether players can hammer/grenade/laser each other or not")
@@ -375,3 +374,27 @@ MACRO_CONFIG_INT(GfxEnableTextureUnitOptimization, gfx_enable_texture_unit_optim
 MACRO_CONFIG_INT(GfxUsePreinitBuffer, gfx_use_preinitialized_buffer, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Use only one buffer for data, that is uploaded to the GPU(might help when using an iGPUs).")
 
 MACRO_CONFIG_INT(ClVideoRecorderFPS, cl_video_recorder_fps, 60, 1, 1000, CFGFLAG_SAVE|CFGFLAG_CLIENT, "At which FPS the videorecorder should record demos.")
+
+// INFCROYA BEGIN ------------------------------------------------------------
+MACRO_CONFIG_STR(SvWelcome, sv_welcome, 128, "Join our discord: https://discord.gg/Sxk5ssv", CFGFLAG_SAVE | CFGFLAG_SERVER, "Welcome chat message on player connect")
+MACRO_CONFIG_INT(SvTimelimit, sv_time_limit, 300, 10, 9999, CFGFLAG_SERVER, "Round time limit")
+MACRO_CONFIG_INT(InfBarrierLifeSpan, inf_barrier_lifespan, 30, 0, 100, CFGFLAG_SERVER, "Barrier lifespan")
+MACRO_CONFIG_INT(InfSniperPositionLockTime, inf_sniper_lock_time, 15, 0, 100, CFGFLAG_SERVER, "Sniper position lock time")
+MACRO_CONFIG_INT(InfBarrierTimeReduce, inf_barrier_timereduce, 500, 0, 10000, CFGFLAG_SERVER, "Time to remove from a barrier lifespan when an infected dies (centisec)")
+MACRO_CONFIG_INT(InfSoldierBombs, inf_soldier_bombs, 2, 1, 16, CFGFLAG_SERVER, "Number of bombs for the soldier")
+MACRO_CONFIG_INT(InfBoomerForce, inf_boomer_force, 48, 0, 1000, CFGFLAG_SERVER, "/10 Boomer pushing force on explosion")
+MACRO_CONFIG_INT(InfBoomerDamage, inf_boomer_damage, 140, 1, 10000, CFGFLAG_SERVER, "/10 Boomer damage")
+MACRO_CONFIG_INT(InfBoomerInnerRadius, inf_boomer_inner_radius, 600, 1, 10000, CFGFLAG_SERVER, "/10 Boomer pushing force on explosion")
+MACRO_CONFIG_INT(InfBoomerDamageRadius, inf_boomer_damage_radius, 805, 1, 10000, CFGFLAG_SERVER, "/10 Boomer pushing force on explosion")
+MACRO_CONFIG_INT(InfScientistMineRadius, inf_scientist_mine_radius, 46, 0, 1024, CFGFLAG_SERVER, "Radius of mines")
+MACRO_CONFIG_INT(InfScientistMineLimit, inf_scientist_mine_limit, 2, 0, 1024, CFGFLAG_SERVER, "Maximum number of mines per player")
+MACRO_CONFIG_INT(InfPoisonDamage, inf_poison_damage, 8, 0, 1024, CFGFLAG_SERVER, "Damage deals by the poison grenades")
+MACRO_CONFIG_INT(InfScientistTpSelfharm, inf_scientist_tp_selfharm, 1, 0, 10000, CFGFLAG_SERVER, "Self damage on each teleportation")
+MACRO_CONFIG_INT(InfMercBombs, inf_merc_bombs, 15, 1, 100, CFGFLAG_SERVER, "Number of poison grenades for the mercenary")
+MACRO_CONFIG_INT(InfShowScoreTime, inf_show_score_time, 3, 0, 12, CFGFLAG_SERVER, "Number of seconds the score will be shown at the end of a round")
+MACRO_CONFIG_INT(InfSmokerHookDamage, inf_smoker_hook_damage, 2, 1, 10000, CFGFLAG_SERVER, "Damage taken by smoker (hook)")
+MACRO_CONFIG_INT(InfMedicReviveMinZombies, inf_medic_revive_min_zombies, 3, 1, 10000, CFGFLAG_SERVER, "Min zombies since when revive is possible")
+MACRO_CONFIG_INT(InfMedicReviveDamage, inf_medic_revive_damage, 17, 1, 10000, CFGFLAG_SERVER, "Medic damage on revive")
+MACRO_CONFIG_INT(InfPoisonCircleRadius, inf_poison_circle_radius, 100, 0, 1024, CFGFLAG_SERVER, "Radius of poison circle")
+MACRO_CONFIG_INT(InfPoisonCircleDamageSeconds, inf_poison_circle_damage_seconds, 4, 0, 1024, CFGFLAG_SERVER, "Radius of poison circle")
+// INFCROYA END ------------------------------------------------------------//

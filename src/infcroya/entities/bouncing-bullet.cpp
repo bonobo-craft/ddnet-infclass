@@ -68,7 +68,7 @@ void CBouncingBullet::Tick()
 			if(OwnerChar->IsHuman() && TargetChr->IsHuman())
 				TargetChr->TakeDamage(m_Direction * 0.001f, vec2(0, 0), (random_prob(0.33f) ? 2 : 1), m_Owner, WEAPON_SHOTGUN);
 			else
-				TargetChr->TakeDamage(m_Direction * max(0.001f, 2.0f), vec2(0, 0), (random_prob(0.33f) ? 2 : 1), m_Owner, WEAPON_SHOTGUN);
+				TargetChr->TakeDamage(m_Direction * maximum(0.001f, 2.0f), vec2(0, 0), (random_prob(0.33f) ? 2 : 1), m_Owner, WEAPON_SHOTGUN);
 		}
 
 		GameServer()->m_World.DestroyEntity(this);
@@ -137,7 +137,7 @@ void CBouncingBullet::Snap(int SnappingClient)
 	if(NetworkClipped(SnappingClient, GetPos(Ct)))
 		return;
 
-	CNetObj_Projectile *pProj = static_cast<CNetObj_Projectile *>(Server()->SnapNewItem(NETOBJTYPE_PROJECTILE, GetID(), sizeof(CNetObj_Projectile)));
-	if(pProj)
-		FillInfo(pProj);
+	//CNetObj_Projectile *pProj = static_cast<CNetObj_Projectile *>(Server()->SnapNewItem(NETOBJTYPE_PROJECTILE, GetID(), sizeof(CNetObj_Projectile)));
+	//if(pProj)
+	//	FillInfo(pProj);
 }

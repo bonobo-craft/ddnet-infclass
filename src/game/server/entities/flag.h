@@ -13,6 +13,7 @@ public:
 	CCharacter *m_pCarryingCharacter;
 	vec2 m_Vel;
 	vec2 m_StandPos;
+	void SetPos(vec2 newPos);
 
 	int m_Team;
 	int m_AtStand;

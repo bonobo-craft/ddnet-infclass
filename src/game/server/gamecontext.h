@@ -183,6 +183,7 @@ public:
 	// helper functions
 	void CreateDamageInd(vec2 Pos, float AngleMod, int Amount, int64 Mask=-1);
 	void CreateExplosion(vec2 Pos, int Owner, int Weapon, bool NoDamage, int ActivatedTeam, int64 Mask);
+	void CreateExplosion(vec2 Pos, int Owner, int Weapon, int MaxDamage, bool MercBomb = false); // INFCROYA RELATED, (bool MercBomb)
 	void CreateHammerHit(vec2 Pos, int64 Mask=-1);
 	void CreatePlayerSpawn(vec2 Pos, int64 Mask=-1);
 	void CreateDeath(vec2 Pos, int Who, int64 Mask=-1);
@@ -211,6 +212,22 @@ public:
 	void SendEmoticon(int ClientID, int Emoticon);
 	void SendWeaponPickup(int ClientID, int Weapon);
 	void SendBroadcast(const char *pText, int ClientID, bool IsImportant = true);
+	void SendBroadcastBig(const char *pText, int ClientID, bool IsImportant = true);
+	// INFCROYA BEGIN
+	void SendMotd(int ClientID);
+	void SendSkinChange(int ClientID, int TargetID);
+	void SendClanChange(int ClientID, int TargetID, const char *pClan);
+	void SendAllClientsSkinChange(int ChangingCID);
+	std::string Join(const std::vector<std::string>& vec, const char* delim);
+	struct LaserDotState
+	{
+		vec2 m_Pos0;
+		vec2 m_Pos1;
+		int m_LifeSpan;
+		int m_SnapID;
+	};
+	array<LaserDotState> m_LaserDots;
+	// INFCROYA END
 
 	void List(int ClientID, const char* filter);
 
@@ -443,6 +460,26 @@ public:
 
 	int m_ChatResponseTargetID;
 	int m_ChatPrintCBIndex;
+
+	// INFCROYA BEGIN ------------------------------------------------------------
+	// CGameContext::SendCommand() copied from github.com/AssassinTee/catch64
+	void SendCommand(int ChatterClientID, const std::string& command);
+	void CreateLaserDotEvent(vec2 Pos0, vec2 Pos1, int LifeSpan);
+	//void SendChatTarget(int To, const char* pText);
+	int GetHumanCount() const;
+	int GetZombieCount() const;
+	void MkAdmin(int ClientID);
+	void TryChangeClassByShortname(const std::string shortname, int ClientID);
+	void SendClassInfoByCommand(const std::string command, int ClientID);
+	void SendClassInfoByClassId(int ClassId, int ClientID, bool ShowInfo = false);
+	void SendClassSelectorByClassId(int ClassId, int ClientID, bool ShowInfo);
+	void SendHumanClassSelectorByClassId(int ClassId, int ClientID);
+	void SendZombieClassSelectorByClassId(int ClassId, int ClientID);
+	bool IsDevServer();
+
+	int ShortnameToClassId(const std::string shortname);
+	int CommandToClassId(const std::string shortname);
+	// INFCROYA END ------------------------------------------------------------//
 };
 
 inline int64 CmaskAll() { return -1LL; }

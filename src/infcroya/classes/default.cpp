@@ -3,7 +3,8 @@
 #include <game/server/player.h>
 #include <game/server/entities/projectile.h>
 #include <game/server/gamecontext.h>
-#include <generated/server_data.h>
+#include <game/generated/server_data.h>
+
 
 CDefault::CDefault()
 {

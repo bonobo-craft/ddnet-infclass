@@ -1,6 +1,6 @@
 /* (c) Magnus Auvinen. See licence.txt in the root of the distribution for more information. */
 /* If you are missing that file, acquire a complete release at teeworlds.com.                */
-#include <generated/server_data.h>
+#include "engine/shared/config.h"
 #include <game/server/gamecontext.h>
 
 #include "game/server/entities/character.h"
@@ -8,6 +8,7 @@
 #include "medic-laser.h"
 #include <infcroya/croyaplayer.h>
 #include <infcroya/classes/class.h>
+#include "engine/shared/config.h"
 
 CMedicLaser::CMedicLaser(CGameWorld *pGameWorld, vec2 Pos, vec2 Direction, float StartEnergy, int Owner)
 : CEntity(pGameWorld, CGameWorld::ENTTYPE_LASER, Pos)

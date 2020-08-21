@@ -22,7 +22,9 @@ void CMercenary::InitialWeaponsHealth(CCharacter* pChr)
 {
 	pChr->IncreaseHealth(10);
 	pChr->GiveWeapon(WEAPON_HAMMER, -1);
-	pChr->GiveWeapon(WEAPON_GUN, pChr->Server()->GetMaxAmmo(INFWEAPON_MERCENARY_GUN));
+	//pChr->GiveWeapon(WEAPON_GUN, pChr->Server()->GetMaxAmmo(INFWEAPON_MERCENARY_GUN));
+	//TBD
+	pChr->GiveWeapon(WEAPON_GUN, 10);
 	pChr->GiveWeapon(WEAPON_GRENADE, 10);
 	pChr->SetWeapon(WEAPON_GUN);
 	pChr->SetNormalEmote(EMOTE_NORMAL);

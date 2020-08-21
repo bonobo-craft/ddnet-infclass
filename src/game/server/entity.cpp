@@ -30,6 +30,7 @@ CEntity::~CEntity()
 	Server()->SnapFreeID(m_ID);
 }
 
+
 int CEntity::NetworkClipped(int SnappingClient)
 {
 	return NetworkClipped(SnappingClient, m_Pos);

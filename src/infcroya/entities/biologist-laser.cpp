@@ -3,6 +3,7 @@
 #include "biologist-laser.h"
 #include <game/server/gamecontext.h>
 #include <game/server/entities/character.h>
+#include "engine/shared/config.h"
 
 CBiologistLaser::CBiologistLaser(CGameWorld *pGameWorld, vec2 Pos, vec2 Direction, int Owner, int Dmg)
 : CEntity(pGameWorld, CGameWorld::ENTTYPE_LASER, Pos)
@@ -62,7 +63,7 @@ void CBiologistLaser::DoBounce()
 		m_Dir = normalize(TempDir);
 
 		m_Energy += 100.0f;
-		m_Energy -= max(0.0f, distance(m_From, m_Pos));
+		m_Energy -= maximum(0.0f, distance(m_From, m_Pos));
 		m_Bounces++;
 
 		if(m_Bounces > 4)
@@ -101,13 +102,14 @@ void CBiologistLaser::Snap(int SnappingClient)
 	if(NetworkClipped(SnappingClient))
 		return;
 
-	CNetObj_Laser *pObj = static_cast<CNetObj_Laser *>(Server()->SnapNewItem(NETOBJTYPE_LASER, GetID(), sizeof(CNetObj_Laser)));
-	if(!pObj)
-		return;
+	//CNetObj_Laser *pObj = static_cast<CNetObj_Laser *>(Server()->SnapNewItem(NETOBJTYPE_LASER, GetID(), sizeof(CNetObj_Laser)));
+	//if(!pObj)
+	//	return;
 
-	pObj->m_X = (int)m_Pos.x;
-	pObj->m_Y = (int)m_Pos.y;
-	pObj->m_FromX = (int)m_From.x;
-	pObj->m_FromY = (int)m_From.y;
-	pObj->m_StartTick = m_EvalTick;
+	//pObj->m_X = (int)m_Pos.x;
+	//pObj->m_Y = (int)m_Pos.y;
+	//pObj->m_FromX = (int)m_From.x;
+	//pObj->m_FromY = (int)m_From.y;
+	//pObj->m_StartTick = m_EvalTick;
+	//TBD
 }

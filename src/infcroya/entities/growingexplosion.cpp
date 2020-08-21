@@ -6,6 +6,7 @@
 #include <game/server/gamecontext.h>
 #include <game/server/entities/character.h>
 #include <game/server/player.h>
+#include "engine/shared/config.h"
 
 CGrowingExplosion::CGrowingExplosion(CGameWorld *pGameWorld, vec2 Pos, vec2 Dir, int Owner, int Radius, int ExplosionEffect)
 		: CEntity(pGameWorld, CGameWorld::ENTTYPE_GROWINGEXPLOSION, Pos),
@@ -171,7 +172,8 @@ void CGrowingExplosion::Tick()
 						case GROWINGEXPLOSIONEFFECT_BOOM_INFECTED:
 							if (random_prob(0.2f))
 							{
-								GameServer()->CreateExplosion(TileCenter, m_Owner, WEAPON_HAMMER, MAX_DAMAGE, true);
+								//GameServer()->CreateExplosion(TileCenter, m_Owner, WEAPON_HAMMER, MAX_DAMAGE, true);
+								//TBD
 							}
 							break;
 						case GROWINGEXPLOSIONEFFECT_ELECTRIC_INFECTED:
@@ -206,8 +208,9 @@ void CGrowingExplosion::Tick()
 								if(NumPossibleStartPoint > 0)
 								{
 									int randNb = random_int_range(0, NumPossibleStartPoint-1);
-									vec2 StartPoint = PossibleStartPoint[randNb];
-									GameServer()->CreateLaserDotEvent(StartPoint, EndPoint, Server()->TickSpeed()/6);
+									//vec2 StartPoint = PossibleStartPoint[randNb];
+									//GameServer()->CreateLaserDotEvent(StartPoint, EndPoint, Server()->TickSpeed()/6);
+									//TBD
 								}
 								
 								if(random_prob(0.1f))
@@ -286,7 +289,7 @@ void CGrowingExplosion::Tick()
 						break;
 					case GROWINGEXPLOSIONEFFECT_ELECTRIC_INFECTED:
 					{
-						int Damage = 5+20*((float)(m_MaxGrowing - min(tick - m_StartTick, (int)m_MaxGrowing)))/(m_MaxGrowing);
+						int Damage = 5+20*((float)(m_MaxGrowing - minimum(tick - m_StartTick, (int)m_MaxGrowing)))/(m_MaxGrowing);
 						p->TakeDamage(normalize(p->GetPos() - m_SeedPos)*10.0f, m_Pos, Damage, m_Owner, WEAPON_HAMMER);
 						m_Hit[p->GetPlayer()->GetCID()] = true;
 						break;

@@ -31,6 +31,11 @@ void CFlag::TickPaused()
 		++m_GrabTick;
 }
 
+void CFlag::SetPos(vec2 newPos)
+{
+	m_Pos = newPos;
+}
+
 void CFlag::Snap(int SnappingClient)
 {
 	if(NetworkClipped(SnappingClient))

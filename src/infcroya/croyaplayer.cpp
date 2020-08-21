@@ -3,9 +3,7 @@
 #include <game/server/player.h>
 #include <game/server/entities/character.h>
 #include <infcroya/classes/class.h>
-//#include <infcroya/localization/localization.h>
-#include <game/server/gamemodes/mod.h>
-#include "gamemodes/mod.h"
+#include <infcroya/localization/localization.h>
 #include <infcroya/entities/circle.h>
 #include <infcroya/entities/inf-circle.h>
 #include <limits>
@@ -145,41 +143,41 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 						const CSkin skin = VictimChar->GetCroyaPlayer()->GetClass()->GetSkin();
 						CPlayer *pPlayer = GetPlayer();
 
-				        str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_BODY], skin.GetBodyName(), 24);
-				        pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_BODY] = true;
-				        pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_BODY] = skin.GetBodyColor();
+				        //str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_BODY], skin.GetBodyName(), 24);
+				        //pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_BODY] = true;
+				        //pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_BODY] = skin.GetBodyColor();
 
-				        str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_MARKING], skin.GetMarkingName(), 24);
-				        pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_MARKING] = true;
-				        pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_MARKING] = skin.GetMarkingColor();
+				        //str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_MARKING], skin.GetMarkingName(), 24);
+				        //pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_MARKING] = true;
+				        //pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_MARKING] = skin.GetMarkingColor();
 
-				        str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_DECORATION], skin.GetDecorationName(), 24);
-				        pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_DECORATION] = true;
-				        pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_DECORATION] = skin.GetDecorationColor();
+				        //str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_DECORATION], skin.GetDecorationName(), 24);
+				        //pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_DECORATION] = true;
+				        //pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_DECORATION] = skin.GetDecorationColor();
 
-				        str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_HANDS], skin.GetHandsName(), 24);
-				        pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_HANDS] = true;
-				        pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_HANDS] = skin.GetHandsColor();
+				        //str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_HANDS], skin.GetHandsName(), 24);
+				        //pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_HANDS] = true;
+				        //pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_HANDS] = skin.GetHandsColor();
 
-				        str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_FEET], skin.GetFeetName(), 24);
-				        pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_FEET] = true;
-				        pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_FEET] = skin.GetFeetColor();
+				        //str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_FEET], skin.GetFeetName(), 24);
+				        //pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_FEET] = true;
+				        //pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_FEET] = skin.GetFeetColor();
 
-						if (VictimChar->GetCroyaPlayer() && (
-						    VictimChar->GetCroyaPlayer()->GetClassNum() == Class::SNIPER ||
-						    VictimChar->GetCroyaPlayer()->GetClassNum() == Class::MEDIC ||
-						    VictimChar->GetCroyaPlayer()->GetClassNum() == Class::SOLDIER )
-						) {
-				        	str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_EYES], "negative", 24);
-				            pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_EYES] = 130944;
-						} else {
-				        	str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_EYES], "negative", 24);
-				            pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_EYES] = 128104;
-						}
-				        pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_EYES] = true;
-				        //pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_EYES] = skin.GetEyesColor();
+						//if (VictimChar->GetCroyaPlayer() && (
+						//    VictimChar->GetCroyaPlayer()->GetClassNum() == Class::SNIPER ||
+						//    VictimChar->GetCroyaPlayer()->GetClassNum() == Class::MEDIC ||
+						//    VictimChar->GetCroyaPlayer()->GetClassNum() == Class::SOLDIER )
+						//) {
+				  //      	str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_EYES], "negative", 24);
+				  //          pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_EYES] = 130944;
+						//} else {
+				  //      	str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_EYES], "negative", 24);
+				  //          pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_EYES] = 128104;
+						//}
+				  //      pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_EYES] = true;
+				  //      //pPlayer->m_TeeInfos.m_aSkinPartColors[SKINPART_EYES] = skin.GetEyesColor();
 
-						m_pGameServer->SendAllClientsSkinChange(GetClientID());
+						//m_pGameServer->SendAllClientsSkinChange(GetClientID());
 					}
 				}
 
@@ -272,7 +270,8 @@ int CroyaPlayer::GetClassNum()
 void CroyaPlayer::SetClassNum(int Class, bool DrawPurpleThing, bool ShowInfo, bool destroyChildEntities)
 {
 	SetClass(m_Classes[Class], DrawPurpleThing, destroyChildEntities);
-	m_pGameServer->SendClassSelectorByClassId(Class, GetClientID(), ShowInfo);
+	//m_pGameServer->SendClassSelectorByClassId(Class, GetClientID(), ShowInfo);
+	//TBD
 }
 
 bool CroyaPlayer::SetZombieClassNumPlease(int Class, bool DrawPurpleThing, bool Force)
@@ -534,7 +533,8 @@ void CroyaPlayer::TurnIntoNextZombieClass()
 {
 	int NextClass = GetClassNum() + 1;
 	int FirstClass = Class::ZOMBIE_CLASS_START + 1;
-	int LastSelectableInGeneral = m_pGameServer->IsDevServer() ? PARASITE : MOTHER;
+	//int LastSelectableInGeneral = m_pGameServer->IsDevServer() ? PARASITE : MOTHER;
+	int LastSelectableInGeneral = MOTHER;
 	int SelectableZombieEnd = m_InitialZombie ? LastSelectableInGeneral + 1: MOTHER;
 	bool NotInRange = !(NextClass > ZOMBIE_CLASS_START && NextClass < SelectableZombieEnd);
 
@@ -547,7 +547,9 @@ void CroyaPlayer::TurnIntoNextZombieClass()
 void CroyaPlayer::TurnIntoPrevZombieClass()
 {
 	int PrevClass = GetClassNum() - 1;
-	int LastSelectableInGeneral = m_pGameServer->IsDevServer() ? PARASITE : MOTHER;
+	//int LastSelectableInGeneral = m_pGameServer->IsDevServer() ? PARASITE : MOTHER;
+	//TBD
+	int LastSelectableInGeneral = MOTHER;
 	int SelectableZombieEnd = m_InitialZombie ? LastSelectableInGeneral + 1: MOTHER;
 	bool NotInRange = !(PrevClass > ZOMBIE_CLASS_START && PrevClass < SelectableZombieEnd);
 
@@ -618,16 +620,16 @@ bool CroyaPlayer::IsHookProtected() const
 
 void CroyaPlayer::SetHookProtected(bool HookProtected)
 {
-	m_HookProtected = HookProtected;
-	if (m_pPlayer) {
-		m_pPlayer->SetHookProtected(HookProtected);
-		if (IsHookProtected()) {
-			m_pGameServer->SendChatTarget(m_ClientID, "Hook protection enabled");
-		} else {
-			m_pGameServer->SendChatTarget(m_ClientID, "Hook protection disabled");
+	//m_HookProtected = HookProtected;
+	//if (m_pPlayer) {
+	//	m_pPlayer->SetHookProtected(HookProtected);
+	//	if (IsHookProtected()) {
+	//		m_pGameServer->SendChatTarget(m_ClientID, "Hook protection enabled");
+	//	} else {
+	//		m_pGameServer->SendChatTarget(m_ClientID, "Hook protection disabled");
 
-		}
-	}
+	//	}
+	//}
 }
 
 int CroyaPlayer::GetOldClassNum() const
@@ -669,9 +671,11 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 		vec2 PrevPos = m_pCharacter->GetPos();
 		m_pGameServer->CreatePlayerSpawn(PrevPos); // draw purple thing
 	}
-	for (int& each : m_pPlayer->m_TeeInfos.m_aUseCustomColors) {
-		each = 1;
-	}
+	//for (int& each : m_pPlayer->m_TeeInfos.m_aUseCustomColors) {
+	//	each = 1;
+	//}
+	//TBD
+
 	m_pClass = pClass;
 	const CSkin& skin = m_pClass->GetSkin();
 	m_pPlayer->m_TeeInfos.m_aSkinPartColors[0] = skin.GetBodyColor();
@@ -680,12 +684,12 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 	m_pPlayer->m_TeeInfos.m_aSkinPartColors[3] = skin.GetHandsColor();
 	m_pPlayer->m_TeeInfos.m_aSkinPartColors[4] = skin.GetFeetColor();
 	m_pPlayer->m_TeeInfos.m_aSkinPartColors[5] = skin.GetEyesColor();
-	str_format(m_pPlayer->m_TeeInfos.m_aaSkinPartNames[0], sizeof(m_pPlayer->m_TeeInfos.m_aaSkinPartNames[0]), "%s", skin.GetBodyName());
-	str_format(m_pPlayer->m_TeeInfos.m_aaSkinPartNames[1], sizeof(m_pPlayer->m_TeeInfos.m_aaSkinPartNames[1]), "%s", skin.GetMarkingName());
-	str_format(m_pPlayer->m_TeeInfos.m_aaSkinPartNames[2], sizeof(m_pPlayer->m_TeeInfos.m_aaSkinPartNames[2]), "%s", skin.GetDecorationName());
-	str_format(m_pPlayer->m_TeeInfos.m_aaSkinPartNames[3], sizeof(m_pPlayer->m_TeeInfos.m_aaSkinPartNames[3]), "%s", skin.GetHandsName());
-	str_format(m_pPlayer->m_TeeInfos.m_aaSkinPartNames[4], sizeof(m_pPlayer->m_TeeInfos.m_aaSkinPartNames[4]), "%s", skin.GetFeetName());
-	str_format(m_pPlayer->m_TeeInfos.m_aaSkinPartNames[5], sizeof(m_pPlayer->m_TeeInfos.m_aaSkinPartNames[5]), "%s", skin.GetEyesName());
+	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[0], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[0]), "%s", skin.GetBodyName());
+	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[1], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[1]), "%s", skin.GetMarkingName());
+	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[2], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[2]), "%s", skin.GetDecorationName());
+	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[3], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[3]), "%s", skin.GetHandsName());
+	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[4], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[4]), "%s", skin.GetFeetName());
+	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[5], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[5]), "%s", skin.GetEyesName());
 
 	if (m_pClass->IsInfectedClass()) {
 		m_Infected = true;
@@ -698,14 +702,14 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 	for (const CPlayer* each : m_pGameServer->m_apPlayers) {
 		if (each) {
 			m_pGameServer->SendSkinChange(m_pPlayer->GetCID(), each->GetCID());
-			if (m_pClass->IsInfectedClass()) {
-				if (m_InitialZombie)
-				  m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), "iZombie");
-				else
-				  m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), "Zombie");
-			} else {
-				m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), "Human");
-			}
+			//if (m_pClass->IsInfectedClass()) {
+			//	if (m_InitialZombie)
+			//	  m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), "iZombie");
+			//	else
+			//	  m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), "Zombie");
+			//} else {
+			//	m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), "Human");
+			//}
 		}
 	}
 	if (!destroyChildEntities)
@@ -720,5 +724,6 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 
 	char aBuf[256];
 	str_format(aBuf, sizeof(aBuf), "%s", m_pClass->GetName().c_str());
-	m_pGameServer->SendBroadcast(localize(aBuf, GetLanguage()).c_str(), m_pPlayer->GetCID());
+	//m_pGameServer->SendBroadcast(localize(aBuf, GetLanguage()).c_str(), m_pPlayer->GetCID());
+	m_pGameServer->SendBroadcast(aBuf, m_pPlayer->GetCID());
 }

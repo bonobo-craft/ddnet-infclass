@@ -3,7 +3,7 @@
 #include <game/server/player.h>
 #include <game/server/entities/projectile.h>
 #include <game/server/gamecontext.h>
-#include <generated/server_data.h>
+#include <game/generated/server_data.h>
 #include <game/server/entities/laser.h>
 #include <infcroya/croyaplayer.h>
 
@@ -77,8 +77,9 @@ void CSniper::LockOrUnlockPosition(CCharacter* pChr) {
 
 void CSniper::Tick(CCharacter* pChr)
 {
-	if (pChr->GetCharacterCore().m_PressedJump)
-	  UnlockPosition(pChr);
+	//if (pChr->GetCharacterCore().m_PressedJump)
+	//  UnlockPosition(pChr);
+	// TBD
 
 	ItDoubleJumps(pChr);
 	ItLocksInSpace(pChr);

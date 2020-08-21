@@ -7,6 +7,7 @@
 // #include "white-hole.h"
 #include "growingexplosion.h"
 #include <game/server/entities/character.h>
+#include "engine/shared/config.h"
 
 CScientistLaser::CScientistLaser(CGameWorld *pGameWorld, vec2 Pos, vec2 Direction, float StartEnergy, int Owner, int Dmg)
 : CEntity(pGameWorld, CGameWorld::ENTTYPE_LASER, Pos)
@@ -69,7 +70,8 @@ void CScientistLaser::DoBounce()
 		}
 	}
 	
-	GameServer()->CreateExplosion(m_Pos, m_Owner, WEAPON_LASER, m_Dmg);
+	//GameServer()->CreateExplosion(m_Pos, m_Owner, WEAPON_LASER, m_Dmg);
+	//TBD
 	
 	//Create a white hole entity
 	//if(m_OwnerChar && m_OwnerChar->m_HasWhiteHole)
@@ -107,13 +109,13 @@ void CScientistLaser::Snap(int SnappingClient)
 	if(NetworkClipped(SnappingClient))
 		return;
 
-	CNetObj_Laser *pObj = static_cast<CNetObj_Laser *>(Server()->SnapNewItem(NETOBJTYPE_LASER, GetID(), sizeof(CNetObj_Laser)));
-	if(!pObj)
-		return;
+	//CNetObj_Laser *pObj = static_cast<CNetObj_Laser *>(Server()->SnapNewItem(NETOBJTYPE_LASER, GetID(), sizeof(CNetObj_Laser)));
+	//if(!pObj)
+	//	return;
 
-	pObj->m_X = (int)m_Pos.x;
-	pObj->m_Y = (int)m_Pos.y;
-	pObj->m_FromX = (int)m_From.x;
-	pObj->m_FromY = (int)m_From.y;
-	pObj->m_StartTick = m_EvalTick;
+	//pObj->m_X = (int)m_Pos.x;
+	//pObj->m_Y = (int)m_Pos.y;
+	//pObj->m_FromX = (int)m_From.x;
+	//pObj->m_FromY = (int)m_From.y;
+	//pObj->m_StartTick = m_EvalTick;
 }

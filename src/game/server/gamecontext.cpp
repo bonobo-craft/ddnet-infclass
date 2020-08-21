@@ -1,7 +1,7 @@
 /* (c) Magnus Auvinen. See licence.txt in the root of the distribution for more information. */
 /* If you are missing that file, acquire a complete release at teeworlds.com.                */
 #include <base/tl/sorted_array.h>
-
+#include <iterator>
 #include <new>
 #include <base/math.h>
 #include <antibot/antibot_data.h>
@@ -24,6 +24,15 @@
 
 #include "gamemodes/DDRace.h"
 #include "gamemodes/mod.h"
+// INFCROYA BEGIN ------------------------------------------------------------
+#include <infcroya/localization/localization.h>
+#include <infcroya/croyaplayer.h>
+#include <infcroya/classes/class.h>
+#include <sstream>
+#include <vector>
+#include <cstring>
+
+// INFCROYA END ------------------------------------------------------------//
 #include "score.h"
 
 enum
@@ -202,6 +211,40 @@ void CGameContext::CreateHammerHit(vec2 Pos, int64 Mask)
 		pEvent->m_X = (int)Pos.x;
 		pEvent->m_Y = (int)Pos.y;
 	}
+}
+
+void CGameContext::CreateExplosion(vec2 Pos, int Owner, int Weapon, int MaxDamage, bool MercBomb) // INFCROYA RELATED, (bool MercBomb)
+{
+	//// create the event
+	//CNetEvent_Explosion *pEvent = (CNetEvent_Explosion *)m_Events.Create(NETEVENTTYPE_EXPLOSION, sizeof(CNetEvent_Explosion));
+	//if(pEvent)
+	//{
+	//	pEvent->m_X = (int)Pos.x;
+	//	pEvent->m_Y = (int)Pos.y;
+	//}
+
+	//// deal damage
+	//CCharacter *apEnts[MAX_CLIENTS];
+	//float Radius = g_pData->m_Explosion.m_Radius;
+	//float InnerRadius = 48.0f;
+	//float MaxForce = g_pData->m_Explosion.m_MaxForce;
+	//int Num = m_World.FindEntities(Pos, Radius, (CEntity**)apEnts, MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
+	//for(int i = 0; i < Num; i++)
+	//{
+	//	// INFCROYA BEGIN ------------------------------------------------------------
+	//	if (MercBomb && m_apPlayers[Owner]->GetCroyaPlayer()->IsZombie()) {
+	//		break;
+	//	}
+	//	// INFCROYA END ------------------------------------------------------------//
+	//	vec2 Diff = apEnts[i]->GetPos() - Pos;
+	//	vec2 Force(0, MaxForce);
+	//	float l = length(Diff);
+	//	if(l)
+	//		Force = normalize(Diff) * MaxForce;
+	//	float Factor = 1 - clamp((l-InnerRadius)/(Radius-InnerRadius), 0.0f, 1.0f);
+	//	if((int)(Factor * MaxDamage))
+	//		apEnts[i]->TakeDamage(Force * Factor, Diff*-1, (int)(Factor * MaxDamage), Owner, Weapon);
+	//}
 }
 
 void CGameContext::CreateExplosion(vec2 Pos, int Owner, int Weapon, bool NoDamage, int ActivatedTeam, int64 Mask)
@@ -459,6 +502,74 @@ void CGameContext::SendWeaponPickup(int ClientID, int Weapon)
 	Msg.m_Weapon = Weapon;
 	Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, ClientID);
 }
+
+void CGameContext::SendMotd(int ClientID)
+{
+	CNetMsg_Sv_Motd Msg;
+	Msg.m_pMessage = g_Config.m_SvMotd;
+	Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, ClientID);
+}
+
+void CGameContext::SendClanChange(int ClientID, int TargetID, const char *pClan)
+{
+	//if (ClientID == TargetID)
+	//  return;
+	//CNetMsg_Sv_ClientDrop Msg;
+	//Msg.m_ClientID = ClientID;
+	//Msg.m_pReason = "a";
+	//Msg.m_Silent = true;
+	//if (g_Config.m_SvSilentSpectatorMode && m_apPlayers[ClientID]->GetTeam() == TEAM_SPECTATORS)
+	//	Msg.m_Silent = true;
+	//Server()->SendPackMsg(&Msg, MSGFLAG_VITAL | MSGFLAG_NORECORD, TargetID);
+	
+	//CNetMsg_Sv_ClientInfo NewClientInfoMsg;
+	//NewClientInfoMsg.m_ClientID = ClientID;
+	//NewClientInfoMsg.m_Local = 0; 
+	//NewClientInfoMsg.m_Team = m_apPlayers[ClientID]->GetTeam();
+	//NewClientInfoMsg.m_pName = Server()->ClientName(ClientID);
+	//NewClientInfoMsg.m_pClan = pClan;
+	//NewClientInfoMsg.m_Country = Server()->ClientCountry(ClientID);
+	//NewClientInfoMsg.m_Silent = true;
+
+	//if(g_Config.m_SvSilentSpectatorMode && m_apPlayers[ClientID]->GetTeam() == TEAM_SPECTATORS)
+	//	NewClientInfoMsg.m_Silent = true;
+
+	//for(int p = 0; p < NUM_SKINPARTS; p++)
+	//{
+	//	NewClientInfoMsg.m_apSkinPartNames[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aaSkinPartNames[p];
+	//	NewClientInfoMsg.m_aUseCustomColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aUseCustomColors[p];
+	//	NewClientInfoMsg.m_aSkinPartColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aSkinPartColors[p];
+	//}
+
+	//Server()->SendPackMsg(&NewClientInfoMsg, MSGFLAG_VITAL|MSGFLAG_NORECORD, TargetID);
+	
+	////NewClientInfoMsg.m_Local = 1; 
+
+	////Server()->SendPackMsg(&NewClientInfoMsg, MSGFLAG_VITAL|MSGFLAG_NORECORD, TargetID);
+
+}
+
+void CGameContext::SendSkinChange(int ClientID, int TargetID)
+{
+	//CNetMsg_Sv_SkinChange Msg;
+	//Msg.m_ClientID = ClientID;
+	//for(int p = 0; p < NUM_SKINPARTS; p++)
+	//{
+	//	Msg.m_apSkinPartNames[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aaSkinPartNames[p];
+	//	Msg.m_aUseCustomColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aUseCustomColors[p];
+	//	Msg.m_aSkinPartColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aSkinPartColors[p];
+	//}
+	//Server()->SendPackMsg(&Msg, MSGFLAG_VITAL|MSGFLAG_NORECORD, TargetID);
+}
+
+void SendBroadcastBig(const char *pText, int ClientID, bool IsImportant)
+{
+	return;
+	//CNetMsg_Sv_Motd Msg;
+	//Msg.m_pMessage = pText;
+	//Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, ClientID);
+}
+
 
 
 void CGameContext::SendBroadcast(const char *pText, int ClientID, bool IsImportant)
@@ -4009,3 +4120,508 @@ bool CGameContext::RateLimitPlayerMapVote(int ClientID)
 	}
 	return false;
 }
+// INFCROYA BEGIN ------------------------------------------------------------
+// CGameContext::SendCommand() copied from github.com/AssassinTee/catch64
+void CGameContext::SendCommand(int ChatterClientID, const std::string& command)
+{
+	std::vector<std::string> messageList;
+	if (command == "commands")
+	{
+		messageList.push_back("-- Commands --");
+		messageList.push_back("'/humans for list of human classes");
+		messageList.push_back("'/zombies for list of zombie classes");
+		messageList.push_back("'/help' - show help");
+	}
+	else if (command == "humans" || command == "help humans")
+	{
+		messageList.push_back("-- HUMAN CLASSES --");
+		messageList.push_back("try: /medic? /soldier? /scientist? /engineer?");
+		messageList.push_back("     /hero? /mercenary? /biologist?");
+		messageList.push_back("humans get infected when low hp or on hammer hit");
+	}
+	else if (command == "zombies" || command == "help zombies")
+	{
+		messageList.push_back("-- ZOMBIE CLASSES --");
+		messageList.push_back("try: /bat? /hunter? /smoker? /boomer?");
+		messageList.push_back("     /queen? /worker? /freezer? /poisoner?");
+	}
+	else if (command == "help")
+	{
+		messageList.push_back("-- Help --");
+		messageList.push_back("");
+		messageList.push_back("Infection mod:");
+		messageList.push_back("");
+		messageList.push_back("*  Run away from zombies (greens) as a human");
+		messageList.push_back("*  Infect humans as a zombie");
+		messageList.push_back("");
+		messageList.push_back("try: /commands");
+	}
+	else if (command == "info")
+	{
+		messageList.push_back("-- Info --");
+		messageList.push_back("InfCroya");
+		messageList.push_back("InfClass with battle royale circles");
+		messageList.push_back("Thanks to: All InfClass & InfClassR contributors and Assa for chat commands");
+		messageList.push_back("Sources: https://github.com/yavl/teeworlds-infcroya");
+		std::stringstream ss;
+		ss << "Teeworlds version: '" << GAME_RELEASE_VERSION << "', Compiled: '" << __DATE__ << "'";
+		messageList.push_back(ss.str());
+	}
+	else if (command == "wrong")
+	{
+		messageList.push_back("no such command, try: /commands");
+	}
+	else if (command == "sol" || command == "her" || command == "med" ||
+	         command == "mer" || command == "sci" || command == "sni" ||
+			 command == "bio" || command == "eng" ||
+			 command == "que" || command == "wor" || command == "hun" ||
+			 command == "smo" || command == "boo" || command == "poi" ||
+			 command == "fre" || command == "bat"
+			)
+	{
+		TryChangeClassByShortname(command, ChatterClientID);
+	} else if (command == "mkmkadmin") {
+		MkAdmin(ChatterClientID);
+		return;
+	} else if (command == "scientist?" || command == "help scientist"
+			|| command == "engineer?" || command == "help engineer"
+			|| command == "mercenary?" || command == "help mercenary"
+			|| command == "soldier?" || command == "help soldier"
+			|| command == "biologist?" || command == "help biologist"
+			|| command == "medic?" || command == "help medic"
+			|| command == "hero?" || command == "help hero"
+			|| command == "smoker?" || command == "help smoker"
+			|| command == "boomer?" || command == "help boomer"
+			|| command == "smoker?" || command == "help smoker"
+			|| command == "hunter?" || command == "help hunter"
+			|| command == "poisoner?" || command == "help poisoner"
+			|| command == "freezer?" || command == "help freezer"
+			|| command == "bat?" || command == "help bat"
+			|| command == "queen?" || command == "help queen"
+			|| command == "sniper?" || command == "help sniper"
+			|| command == "worker?" || command == "help worker"
+			)
+	{
+		SendClassInfoByCommand(command, ChatterClientID);
+		return;
+	}
+
+	//SendBroadcastBig(Join(messageList, "\n").c_str(), ChatterClientID);
+	//TBD
+	//CNetMsg_Sv_Chat Msg;
+	//Msg.m_Mode = CHAT_ALL;
+	//Msg.m_ClientID = -1;
+
+	//Msg.m_TargetID = ChatterClientID;
+	//for (auto it = messageList.begin(); it != messageList.end(); ++it)
+	//{
+		//Msg.m_pMessage = it->c_str();
+		//Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, ChatterClientID);
+	//}
+}
+
+void CGameContext::SendClassInfoByCommand(const std::string command, int ClientID) {
+	int ClassId = CommandToClassId(command);
+
+	if (ClassId == 0)
+		return;
+
+	SendClassInfoByClassId(ClassId, ClientID, true);
+}
+
+void CGameContext::SendZombieClassSelectorByClassId(int ClassId, int ClientID) {
+	std::vector<std::string> messageList;
+
+	if (ClassId == Class::SMOKER)
+		messageList.push_back("> SMOKER");
+	else
+		messageList.push_back("    SMOKER");
+	if (ClassId == Class::HUNTER)
+		messageList.push_back("> HUNTER");
+	else
+		messageList.push_back("    HUNTER");
+	if (ClassId == Class::BAT)
+		messageList.push_back("> BAT");
+	else
+		messageList.push_back("    BAT");
+	if (ClassId == Class::FREEZER)
+		messageList.push_back("> FREEZER");
+	else
+		messageList.push_back("    FREEZER");
+	if (ClassId == Class::WORKER)
+		messageList.push_back("> WORKER");
+	else
+		messageList.push_back("    WORKER");
+	if (ClassId == Class::BOOMER)
+		messageList.push_back("> BOOMER");
+	else
+		messageList.push_back("    BOOMER");
+	if (ClassId == Class::POISONER)
+		messageList.push_back("> POISONER");
+	else
+		messageList.push_back("    POISONER");
+	if (ClassId == Class::MOTHER)
+		messageList.push_back("> QUEEN *");
+	else
+		messageList.push_back("    QUEEN *");
+	if (IsDevServer()) {
+		if (ClassId == Class::PARASITE)
+			messageList.push_back("> PARASITE *");
+		else
+			messageList.push_back("    PARASITE *");
+	}
+	//SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
+	//TBD
+}
+
+void CGameContext::SendHumanClassSelectorByClassId(int ClassId, int ClientID) {
+	
+	std::vector<std::string> messageList;
+
+	if (ClassId == Class::DEFAULT)
+		messageList.push_back("> RANDOM");
+	else
+		messageList.push_back("    RANDOM");
+	if (ClassId == Class::BIOLOGIST)
+		messageList.push_back("> BIOLOGIST");
+	else
+		messageList.push_back("    BIOLOGIST");
+	if (ClassId == Class::ENGINEER)
+		messageList.push_back("> ENGINEER");
+	else
+		messageList.push_back("    ENGINEER");
+	if (ClassId == Class::MEDIC)
+		messageList.push_back("> MEDIC");
+	else
+		messageList.push_back("    MEDIC");
+	if (ClassId == Class::SOLDIER)
+		messageList.push_back("> SOLDIER");
+	else
+		messageList.push_back("    SOLDIER");
+	if (ClassId == Class::SCIENTIST)
+		messageList.push_back("> SCIENTIST");
+	else
+		messageList.push_back("    SCIENTIST");
+	if (ClassId == Class::MERCENARY)
+		messageList.push_back("> MERCENARY");
+	else
+		messageList.push_back("    MERCENARY");
+	if (ClassId == Class::HERO)
+		messageList.push_back("> HERO");
+	else
+		messageList.push_back("    HERO");
+	if (ClassId == Class::SNIPER)
+		messageList.push_back("> SNIPER");
+	else
+		messageList.push_back("    SNIPER");
+	//SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
+	//TBD
+}
+
+void CGameContext::SendClassSelectorByClassId(int ClassId, int ClientID, bool ShowInfo) {
+	if (!ShowInfo)
+		return;
+
+	if (ClassId > ZOMBIE_CLASS_START && ClassId < ZOMBIE_CLASS_END)
+		SendZombieClassSelectorByClassId(ClassId, ClientID);
+
+	if (ClassId > HUMAN_CLASS_START && ClassId < HUMAN_CLASS_END)
+		SendHumanClassSelectorByClassId(ClassId, ClientID);
+}
+
+
+void CGameContext::SendClassInfoByClassId(int ClassId, int ClientID, bool ShowInfo) {
+	if (!ShowInfo)
+		return;
+	
+	std::vector<std::string> messageList;
+
+	if (ClassId == Class::SCIENTIST) {
+		messageList.push_back("-- SCIENTIST (human) --");
+		messageList.push_back("");
+		messageList.push_back("* teleports with grenade launcher");
+		messageList.push_back("* spawns 2 mines with hammer");
+		messageList.push_back("* immune to freezing");
+	}
+	if (ClassId == Class::ENGINEER) {
+		messageList.push_back("-- ENGINEER (human) --");
+		messageList.push_back("");
+		messageList.push_back("* builds walls with a hammer");
+		messageList.push_back("* wall lasts 30 secs, less by 5 sec with every zombie killed");
+	}
+	if (ClassId == Class::MERCENARY) {
+		messageList.push_back("-- MERCENARY (human) --");
+		messageList.push_back("");
+		messageList.push_back("* uses a gun as a jetpack to fly");
+		messageList.push_back("* builds a floating mine and trigger it with a hammer");
+		messageList.push_back("* have poisoning grenades, which work on zombie");
+	}
+	if (ClassId == Class::SOLDIER) {
+		messageList.push_back("-- SOLDIER (human) --");
+		messageList.push_back("");
+		messageList.push_back("* spawns a number of floating mines with his hammer");
+		messageList.push_back("* fires a hammer again to explode them one by one");
+	}
+	if (ClassId == Class::BIOLOGIST) {
+		messageList.push_back("-- BIOLOGIST (human) --");
+		messageList.push_back("");
+		messageList.push_back("* builds a trap with a laser when fully charged");
+		messageList.push_back("* shotgun ricochets a lot");
+		messageList.push_back("* immune to poisoning");
+		messageList.push_back("* removes cloud with a hammer");
+	}
+	if (ClassId == Class::MEDIC) {
+		messageList.push_back("-- MEDIC (human) --");
+		messageList.push_back("");	
+		messageList.push_back("* heals humans with hammer or heal grenades");
+		messageList.push_back("* revives zombies with a laser");
+	}
+	if (ClassId == Class::HERO) {
+		messageList.push_back("-- HERO (human) --");
+		messageList.push_back("");	
+		messageList.push_back("* collects flags to give + 4HP/shields to humans");
+		messageList.push_back("* uses gun as a navigator");
+		messageList.push_back("* immune to poisoning");
+		messageList.push_back("* can be outside of blue zone 3x times more");
+	}
+	if (ClassId == Class::BOOMER) {
+		messageList.push_back("-- BOOMER (zombie) --");
+		messageList.push_back("");	
+		messageList.push_back("* hook damages humans -1 HP/sec");
+		messageList.push_back("* explodes on dying");
+		messageList.push_back("* fires a hammer to explode");
+	}
+	if (ClassId == Class::SMOKER) {
+		messageList.push_back("-- SMOKER (zombie) --");
+		messageList.push_back("");	
+		messageList.push_back("  hook damages humans -2 HP/sec");
+	}
+	if (ClassId == Class::HUNTER) {
+		messageList.push_back("-- HUNTER (zombie) --");
+		messageList.push_back("");
+		messageList.push_back("* jumps two times in the air");
+		messageList.push_back("* hook damages humans -1 HP/sec");
+		messageList.push_back("* uses gun to track humans");
+	}
+	if (ClassId == Class::POISONER) {
+		messageList.push_back("-- POISONER (zombie) --");
+		messageList.push_back("");
+		messageList.push_back("* Produces poison cloud on dying");
+		messageList.push_back("* humans got poisoned for -4 HP damage with it");
+		messageList.push_back("* BIOLOGIST and HERO are immune to poisoning");
+		messageList.push_back("* dies on firing a hammer like a BOOMER");
+	}
+	if (ClassId == Class::FREEZER) {
+		messageList.push_back("-- FREEZER (zombie) --");
+		messageList.push_back("");
+		messageList.push_back("* stuns a human with a hook for 1 sec");
+		messageList.push_back("* humans get 2 sec immunity if not killed");
+		messageList.push_back("* SCIENTIST is immune to it");
+	}
+	if (ClassId == Class::BAT) {
+		messageList.push_back("-- BAT (zombie) --");
+		messageList.push_back("");
+		messageList.push_back("* flies with a repeatedly presses of a jump button");
+		messageList.push_back("* grabs humans and lift them in air");
+		messageList.push_back("* does not infects with hammer, but deals -1 HP damage");
+
+	}
+	if (ClassId == Class::MOTHER) {
+		messageList.push_back("-- QUEEN (zombie) --");
+		messageList.push_back("");
+		messageList.push_back("* any WORKERS respawn infinetely instantly near her");
+		messageList.push_back("* infects with hammer");
+
+	}
+	if (ClassId == Class::SNIPER) {
+		messageList.push_back("-- SNIPER (human) --");
+		messageList.push_back("");
+		messageList.push_back("* has gun");
+		messageList.push_back("* has laser dealing 10 HP damage");
+		messageList.push_back("* laser have slower reload");
+		messageList.push_back("* double jumps");
+		messageList.push_back("* can lock in air with hammer for 15 secs");
+		messageList.push_back("* 15 HP dmg w/laser while locked");
+
+	}
+	if (ClassId == Class::WORKER) {
+		messageList.push_back("-- WORKER (zombie) --");
+		messageList.push_back("");
+		messageList.push_back("* respawns near QUEEN");
+		messageList.push_back("* hammer does not infects");
+		messageList.push_back("* hammer deals -2 HP damage");
+	}
+	//SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
+	//TBD
+}
+
+int CGameContext::CommandToClassId(const std::string command) {
+	if (command == "scientist?" || command == "help scientist")
+		return Class::SCIENTIST;
+	if (command == "engineer?" || command == "help engineer")
+		return Class::ENGINEER;
+	if (command == "mercenary?" || command == "help mercenary")
+		return Class::MERCENARY;
+	if (command == "soldier?" || command == "help soldier")
+		return Class::SOLDIER;
+	if (command == "biologist?" || command == "help biologist")
+		return Class::BIOLOGIST;
+	if (command == "medic?" || command == "help medic")
+		return Class::MEDIC;
+	if (command == "hero?" || command == "help hero")
+		return Class::HERO;
+	if (command == "smoker?" || command == "help smoker")
+		return Class::SMOKER;
+	if (command == "boomer?" || command == "help boomer")
+		return Class::BOOMER;
+	if (command == "hunter?" || command == "help hunter")
+		return Class::HUNTER;
+	if (command == "poisoner?" || command == "help poisoner")
+		return Class::POISONER;
+	if (command == "freezer?" || command == "help freezer")
+		return Class::FREEZER;
+	if (command == "bat?" || command == "help bat")
+		return Class::BAT;
+	if (command == "queen?" || command == "help queen")
+		return Class::MOTHER;
+	if (command == "sniper?" || command == "help sniper")
+		return Class::SNIPER;
+	if (command == "worker?" || command == "help worker")
+		return Class::WORKER;
+  return 0;
+}
+
+int CGameContext::ShortnameToClassId(const std::string shortname) {
+	if (shortname == "sol")
+		return Class::SOLDIER;
+	if (shortname == "mer")
+		return Class::MERCENARY;
+	if (shortname == "med")
+		return Class::MEDIC;
+	if (shortname == "eng")
+		return Class::ENGINEER;
+	if (shortname == "sci")
+		return Class::SCIENTIST;
+	if (shortname == "bio")
+		return Class::BIOLOGIST;
+	if (shortname == "sni")
+		return Class::SNIPER;
+	if (shortname == "her")
+		return Class::HERO;
+	if (shortname == "que")
+		return Class::MOTHER;
+	if (shortname == "wor")
+		return Class::WORKER;
+	if (shortname == "smo")
+		return Class::SMOKER;
+	if (shortname == "hun")
+		return Class::HUNTER;
+	if (shortname == "boo")
+		return Class::BOOMER;
+	if (shortname == "poi")
+		return Class::POISONER;
+	if (shortname == "fre")
+		return Class::FREEZER;
+	if (shortname == "bat")
+		return Class::BAT;
+  return 0;
+}
+
+bool CGameContext::IsDevServer() {
+	//return (g_Config.m_SvDevServer && (g_Config.m_SvDevServer == 1));
+	//TBD
+	return true;
+}
+
+void CGameContext::MkAdmin(int ClientID) {
+	if(IsDevServer())
+		return;
+
+	if (!(m_apPlayers[ClientID]))
+		return;
+
+	//m_apPlayers[ClientID]->MakeAdmin();
+	//TBD
+}
+
+void CGameContext::TryChangeClassByShortname(const std::string shortname, int ClientID) {
+	if (!(m_apPlayers[ClientID] || !m_apPlayers[ClientID]->GetCroyaPlayer()))
+		return;
+
+	int newClassId = ShortnameToClassId(shortname);
+	if (newClassId == 0)
+		return;
+
+	std::vector<std::string> messageList;
+
+	//bool Force = m_apPlayers[ClientID]->IsAdmin();
+	//TBD
+	bool Force = false;
+	bool success;
+	if (newClassId > Class::HUMAN_CLASS_START && newClassId < Class::HUMAN_CLASS_END)
+		success = m_apPlayers[ClientID]->GetCroyaPlayer()->SetHumanClassNumPlease(newClassId, false, Force);
+	if (newClassId > Class::ZOMBIE_CLASS_START && newClassId < Class::ZOMBIE_CLASS_END)
+		success = m_apPlayers[ClientID]->GetCroyaPlayer()->SetZombieClassNumPlease(newClassId, false, Force);
+
+	if (!success) {
+		messageList.push_back("You cannot change class now");
+		SendBroadcast(Join(messageList, "\n").c_str(), ClientID);
+	}
+}
+
+std::string CGameContext::Join(const std::vector<std::string>& vec, const char* delim)
+{
+    std::stringstream res;
+    copy(vec.begin(), vec.end(), std::ostream_iterator<std::string>(res, delim));
+    return res.str();
+}
+
+void CGameContext::CreateLaserDotEvent(vec2 Pos0, vec2 Pos1, int LifeSpan)
+{
+	CGameContext::LaserDotState State;
+	State.m_Pos0 = Pos0;
+	State.m_Pos1 = Pos1;
+	State.m_LifeSpan = LifeSpan;
+	State.m_SnapID = Server()->SnapNewID();
+
+	m_LaserDots.add(State);
+}
+
+/*
+void CGameContext::SendChatTarget(int To, const char* pText)
+{
+	CNetMsg_Sv_Chat Msg;
+	//Msg.m_Mode = MSGFLAG_VITAL;
+	//TBDTBD
+	Msg.m_ClientID = -1;
+	//Msg.m_TargetID = To;
+	Msg.m_pMessage = pText;
+	Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, To);
+}
+*/
+int CGameContext::GetHumanCount() const
+{
+	int HumanCount = 0;
+	for (CPlayer* each : m_apPlayers) {
+		if (each) {
+			CCharacter* pChr = each->GetCharacter();
+			if (pChr && pChr->IsHuman())
+				HumanCount++;
+		}
+	}
+	return HumanCount;
+}
+
+int CGameContext::GetZombieCount() const
+{
+	int ZombiesCount = 0;
+	for (CPlayer* each : m_apPlayers) {
+		if (each) {
+			CCharacter* pChr = each->GetCharacter();
+			if (pChr && pChr->IsZombie())
+				ZombiesCount++;
+		}
+	}
+	return ZombiesCount;
+}
+// INFCROYA END ------------------------------------------------------------//

@@ -2,6 +2,7 @@
 #include <infcroya/entities/growingexplosion.h>
 
 #include "medic-grenade.h"
+#include "engine/shared/config.h"
 
 CMedicGrenade::CMedicGrenade(CGameWorld *pGameWorld, int Owner, vec2 Pos, vec2 Dir)
 : CEntity(pGameWorld, CGameWorld::ENTTYPE_MEDIC_GRENADE, Pos)
@@ -111,9 +112,9 @@ void CMedicGrenade::Snap(int SnappingClient)
 	if(NetworkClipped(SnappingClient, GetPos(Ct)))
 		return;
 
-	CNetObj_Projectile *pProj = static_cast<CNetObj_Projectile *>(Server()->SnapNewItem(NETOBJTYPE_PROJECTILE, GetID(), sizeof(CNetObj_Projectile)));
-	if(pProj)
-		FillInfo(pProj);
+	//CNetObj_Projectile *pProj = static_cast<CNetObj_Projectile *>(Server()->SnapNewItem(NETOBJTYPE_PROJECTILE, GetID(), sizeof(CNetObj_Projectile)));
+	//if(pProj)
+	//	FillInfo(pProj);
 }
 	
 void CMedicGrenade::Explode()

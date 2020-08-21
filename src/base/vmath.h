@@ -74,6 +74,11 @@ typedef vector2_base<float> vec2;
 typedef vector2_base<bool> bvec2;
 typedef vector2_base<int> ivec2;
 
+inline float angle(const vector2_base<float> &a)
+{
+	return atan2f(a.y, a.x);
+}
+
 template<typename T>
 inline vector2_base<T> closest_point_on_line(vector2_base<T> line_point0, vector2_base<T> line_point1, vector2_base<T> target_point)
 {
@@ -82,7 +87,12 @@ inline vector2_base<T> closest_point_on_line(vector2_base<T> line_point0, vector
 	v = normalize(v);
 	T d = length(line_point0-line_point1);
 	T t = dot(v, c)/d;
-	return mix(line_point0, line_point1, clamp(t, (T)0, (T)1));
+	//TBD
+	//return mix(line_point0, line_point1, clamp(t, (T)0, (T)1));
+	
+	if (t < 0) t = 0;
+	if (t > 1.0f) t = 1.0f;
+	return mix(line_point0, line_point1, t);
 	/*
 	if (t < 0) t = 0;
 	if (t > 1.0f) return 1.0f;
@@ -138,11 +148,6 @@ inline T distance(const vector3_base<T> &a, const vector3_base<T> &b)
 	return length(a-b);
 }
 
-template<typename T>
-inline T dot(const vector3_base<T> &a, const vector3_base<T> &b)
-{
-	return a.x*b.x + a.y*b.y + a.z*b.z;
-}
 
 template<typename T>
 inline vector3_base<T> normalize(const vector3_base<T> &v)

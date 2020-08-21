@@ -3,6 +3,7 @@
 #include <game/server/gamecontext.h>
 #include "soldier-bomb.h"
 #include <game/server/entities/character.h>
+#include "engine/shared/config.h"
 
 CSoldierBomb::CSoldierBomb(CGameWorld *pGameWorld, vec2 Pos, int Owner)
 : CEntity(pGameWorld, CGameWorld::ENTTYPE_SOLDIER_BOMB, Pos)

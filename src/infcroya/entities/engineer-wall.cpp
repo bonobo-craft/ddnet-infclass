@@ -5,6 +5,7 @@
 #include <game/server/entities/character.h>
 #include <game/server/player.h>
 #include <infcroya/croyaplayer.h>
+#include "engine/shared/config.h"
 
 const float g_BarrierMaxLength = 300.0;
 const float g_BarrierRadius = 0.0;
@@ -146,15 +147,16 @@ void CEngineerWall::Snap(int SnappingClient)
 		LifeDiff = -Server()->TickSpeed()*2;
 	
 	{
-		CNetObj_Laser *pObj = static_cast<CNetObj_Laser *>(Server()->SnapNewItem(NETOBJTYPE_LASER, GetID(), sizeof(CNetObj_Laser)));
-		if(!pObj)
-			return;
+		//CNetObj_Laser *pObj = static_cast<CNetObj_Laser *>(Server()->SnapNewItem(NETOBJTYPE_LASER, GetID(), sizeof(CNetObj_Laser)));
+		//if(!pObj)
+		//	return;
 
-		pObj->m_X = (int)m_Pos.x;
-		pObj->m_Y = (int)m_Pos.y;
-		pObj->m_FromX = (int)m_Pos2.x;
-		pObj->m_FromY = (int)m_Pos2.y;
-		pObj->m_StartTick = Server()->Tick()-LifeDiff;
+		//pObj->m_X = (int)m_Pos.x;
+		//pObj->m_Y = (int)m_Pos.y;
+		//pObj->m_FromX = (int)m_Pos2.x;
+		//pObj->m_FromY = (int)m_Pos2.y;
+		//pObj->m_StartTick = Server()->Tick()-LifeDiff;
+		//TBD
 	}
 	// if(!Server()->GetClientAntiPing(SnappingClient))
 	CNetObj_Laser *pObj = static_cast<CNetObj_Laser *>(Server()->SnapNewItem(NETOBJTYPE_LASER, m_EndPointID, sizeof(CNetObj_Laser)));

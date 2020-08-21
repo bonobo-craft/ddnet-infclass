@@ -48,6 +48,14 @@ class CCharacter : public CEntity
 	friend class CSaveTee; // need to use core
 
 public:
+	struct WeaponStat
+	{
+		int m_AmmoRegenStart;
+		int m_Ammo;
+		int m_Ammocost;
+		bool m_Got;
+
+	} m_aWeapons[NUM_WEAPONS];
 	//character's size
 	static const int ms_PhysSize = 28;
 
@@ -80,6 +88,7 @@ public:
 
 	void Die(int Killer, int Weapon);
 	bool TakeDamage(vec2 Force, int Dmg, int From, int Weapon);
+	bool TakeDamage(vec2 Force, vec2 Source, int Dmg, int From, int Weapon);
 
 	bool Spawn(class CPlayer *pPlayer, vec2 Pos);
 	bool Remove();
@@ -100,7 +109,7 @@ public:
 	bool IsPaused() const { return m_Paused; }
 	class CPlayer *GetPlayer() { return m_pPlayer; }
 
-		// INFCROYA BEGIN ------------------------------------------------------------
+	// INFCROYA BEGIN ------------------------------------------------------------
 	void SetNormalEmote(int Emote);
 
 	bool IsHuman() const;
@@ -181,14 +190,6 @@ private:
 	bool m_HookProtected;
 	// INFCROYA END ------------------------------------------------------------//
 
-	struct WeaponStat
-	{
-		int m_AmmoRegenStart;
-		int m_Ammo;
-		int m_Ammocost;
-		bool m_Got;
-
-	} m_aWeapons[NUM_WEAPONS];
 
 	int m_LastWeapon;
 	int m_QueuedWeapon;

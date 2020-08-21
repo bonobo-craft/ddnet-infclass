@@ -12,8 +12,6 @@
 
 struct CScoreInitResult;
 class CGameControllerMOD: public IGameController
-//class CGameControllerMod: public CGameControllerDDRace
-// class CGameControllerDDRace: public IGameController
 {
 public:
 
@@ -69,12 +67,15 @@ public:
 	std::vector<class CInfCircle*>& GetInfCircles();
 
 	std::shared_ptr<CScoreInitResult> m_pInitResult;
+
+	
 private: 
 	std::array<CroyaPlayer*, 64> players{};
 	std::unordered_map<int, class IClass*> classes;
 	class Geolocation* geolocation;
 	std::vector<int> humans;
-	class LuaLoader* lua;
+	//class LuaLoader* lua;
+	//TBD
 	std::vector<class CCircle*> circles;
 	std::vector<class CInfCircle*> inf_circles;
 

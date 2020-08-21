@@ -1829,6 +1829,87 @@ set_src(ANTIBOT_SRC GLOB src/antibot
   antibot_null.cpp
 )
 
+set_src(INFCROYA_SRC GLOB_RECURSE src/infcroya
+  localization/localization.h
+  localization/json.hpp
+  localization/localization.cpp
+  localization/json_fwd.hpp
+  classes/smoker.cpp
+  classes/freezer.h
+  classes/worker.cpp
+  classes/boomer.h
+  classes/hunter.cpp
+  classes/sniper.cpp
+  classes/engineer.h
+  classes/poisoner.cpp
+  classes/mother.cpp
+  classes/parasite.h
+  classes/hero.h
+  classes/sniper.h
+  classes/engineer.cpp
+  classes/poisoner.h
+  classes/default.h
+  classes/mercenary.h
+  classes/worker.h
+  classes/class.h
+  classes/default.cpp
+  classes/biologist.h
+  classes/class.cpp
+  classes/parasite.cpp
+  classes/hero.cpp
+  classes/soldier.cpp
+  classes/biologist.cpp
+  classes/scientist.cpp
+  classes/bat.h
+  classes/scientist.h
+  classes/soldier.h
+  classes/mother.h
+  classes/freezer.cpp
+  classes/medic.h
+  classes/bat.cpp
+  classes/smoker.h
+  classes/hunter.h
+  classes/medic.cpp
+  classes/boomer.cpp
+  classes/mercenary.cpp
+  skin.cpp
+  entities/bouncing-bullet.h
+  entities/inf-circle.h
+  entities/medic-laser.h
+  entities/biologist-mine.cpp
+  entities/engineer-wall.h
+  entities/medic-grenade.cpp
+  entities/soldier-bomb.h
+  entities/biologist-mine.h
+  entities/scatter-grenade.h
+  entities/biologist-laser.h
+  entities/merc-bomb.cpp
+  entities/scientist-laser.h
+  entities/scientist-mine.cpp
+  entities/medic-laser.cpp
+  entities/engineer-wall.cpp
+  entities/growingexplosion.cpp
+  entities/scatter-grenade.cpp
+  entities/circle.cpp
+  entities/laser-teleport.cpp
+  entities/laser-teleport.h
+  entities/bouncing-bullet.cpp
+  entities/growingexplosion.h
+  entities/inf-circle.cpp
+  entities/biologist-laser.cpp
+  entities/soldier-bomb.cpp
+  entities/medic-grenade.h
+  entities/poison-circle.h
+  entities/poison-circle.cpp
+  entities/scientist-mine.h
+  entities/merc-bomb.h
+  entities/scientist-laser.cpp
+  entities/circle.h
+  croyaplayer.h
+  croyaplayer.cpp
+  skin.h
+)
+
 set_src(ENGINE_SERVER GLOB_RECURSE src/engine/server
   antibot.cpp
   antibot.h
@@ -1909,7 +1990,7 @@ set(GAME_GENERATED_SERVER
   "src/game/generated/server_data.cpp"
   "src/game/generated/server_data.h"
 )
-set(SERVER_SRC ${ENGINE_SERVER} ${GAME_SERVER} ${GAME_GENERATED_SERVER})
+set(SERVER_SRC ${ENGINE_SERVER} ${GAME_SERVER} ${GAME_GENERATED_SERVER} ${INFCROYA_SRC})
 if(TARGET_OS STREQUAL "windows")
   set(SERVER_ICON "other/icons/DDNet-Server.rc")
 else()

@@ -3,6 +3,7 @@
 #include <game/server/player.h>
 #include <game/server/gamecontext.h>
 #include <infcroya/croyaplayer.h>
+#include <game/generated/protocol7.h>
 
 CBat::CBat() : IClass()
 {
@@ -31,7 +32,7 @@ void CBat::Tick(CCharacter* pChr)
 	//Double jumps
 	CroyaPlayer* cp = pChr->GetCroyaPlayer();
 	if (pChr->IsGrounded()) cp->SetAirJumpCounter(0);
-	if (pChr->GetCharacterCore().m_TriggeredEvents & COREEVENTFLAG_AIR_JUMP && cp->GetAirJumpCounter() < 1)
+	if (pChr->GetCharacterCore().m_TriggeredEvents & protocol7::COREEVENTFLAG_AIR_JUMP && cp->GetAirJumpCounter() < 1)
 	{
 		pChr->GetCharacterCore().m_Jumped &= ~2;
 		cp->SetAirJumpCounter(0);

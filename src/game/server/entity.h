@@ -78,6 +78,9 @@ public:
 	CEntity(CGameWorld *pGameWorld, int Objtype, vec2 Pos = vec2(0, 0), int ProximityRadius = 0);
 	virtual ~CEntity();
 
+
+	int GetID() const                                       { return m_ID; }
+
 	class CGameWorld *GameWorld() { return m_pGameWorld; }
 	class CGameContext *GameServer() { return GameWorld()->GameServer(); }
 	class IServer *Server() { return GameWorld()->Server(); }
@@ -173,6 +176,7 @@ public:
 
 	int m_Number;
 	int m_Layer;
+
 };
 
 #endif

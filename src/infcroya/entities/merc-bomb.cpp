@@ -4,6 +4,8 @@
 #include "growingexplosion.h"
 #include "merc-bomb.h"
 #include <game/server/entities/character.h>
+#include "engine/shared/config.h"
+#include "game/generated/protocol7.h"
 
 CMercenaryBomb::CMercenaryBomb(CGameWorld *pGameWorld, vec2 Pos, int Owner)
 : CEntity(pGameWorld, CGameWorld::ENTTYPE_MERCENARY_BOMB, Pos)
@@ -107,7 +109,7 @@ void CMercenaryBomb::Snap(int SnappingClient)
 
 		pP->m_X = (int)PosStart.x;
 		pP->m_Y = (int)PosStart.y;
-		pP->m_Type = PICKUP_HEALTH;
+		pP->m_Type = protocol7::PICKUP_HEALTH;
 	}
 	
 	if(SnappingClient == m_Owner && m_LoadingTick > 0)
