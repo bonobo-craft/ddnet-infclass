@@ -1252,7 +1252,7 @@ bool CScore::RandomUnfinishedMapThread(IDbConnection *pSqlServer, const ISqlData
 
 void CScore::SaveTeam(int ClientID, const char* Code, const char* Server)
 {
-	if(RateLimitPlayer(ClientID))
+/* 	if(RateLimitPlayer(ClientID))
 		return;
 	auto pController = ((CGameControllerDDRace*)(GameServer()->m_pController));
 	int Team = pController->m_Teams.m_Core.Team(ClientID);
@@ -1275,12 +1275,12 @@ void CScore::SaveTeam(int ClientID, const char* Code, const char* Server)
 	GeneratePassphrase(Tmp->m_aGeneratedCode, sizeof(Tmp->m_aGeneratedCode));
 
 	pController->m_Teams.KillSavedTeam(ClientID, Team);
-	m_pPool->ExecuteWrite(SaveTeamThread, std::move(Tmp), "save team");
+	m_pPool->ExecuteWrite(SaveTeamThread, std::move(Tmp), "save team"); */
 }
 
 bool CScore::SaveTeamThread(IDbConnection *pSqlServer, const ISqlData *pGameData, bool Failure)
 {
-	const CSqlTeamSave *pData = dynamic_cast<const CSqlTeamSave *>(pGameData);
+/* 	const CSqlTeamSave *pData = dynamic_cast<const CSqlTeamSave *>(pGameData);
 
 	char aSaveID[UUID_MAXSTRSIZE];
 	FormatUuid(pData->m_pResult->m_SaveID, aSaveID, UUID_MAXSTRSIZE);
@@ -1375,13 +1375,13 @@ bool CScore::SaveTeamThread(IDbConnection *pSqlServer, const ISqlData *pGameData
 		strcpy(pData->m_pResult->m_aMessage, "This save-code already exists");
 	}
 
-	pSqlServer->Unlock();
+	pSqlServer->Unlock(); */
 	return true;
 }
 
 void CScore::LoadTeam(const char* Code, int ClientID)
 {
-	if(RateLimitPlayer(ClientID))
+/* 	if(RateLimitPlayer(ClientID))
 		return;
 	auto pController = ((CGameControllerDDRace*)(GameServer()->m_pController));
 	int Team = pController->m_Teams.m_Core.Team(ClientID);
@@ -1416,12 +1416,12 @@ void CScore::LoadTeam(const char* Code, int ClientID)
 			Tmp->m_NumPlayer++;
 		}
 	}
-	m_pPool->ExecuteWrite(LoadTeamThread, std::move(Tmp), "load team");
+	m_pPool->ExecuteWrite(LoadTeamThread, std::move(Tmp), "load team"); */
 }
 
 bool CScore::LoadTeamThread(IDbConnection *pSqlServer, const ISqlData *pGameData, bool Failure)
 {
-	const CSqlTeamLoad *pData = dynamic_cast<const CSqlTeamLoad *>(pGameData);
+/* 	const CSqlTeamLoad *pData = dynamic_cast<const CSqlTeamLoad *>(pGameData);
 	pData->m_pResult->m_Status = CScoreSaveResult::LOAD_FAILED;
 
 	char aTable[512];
@@ -1519,7 +1519,7 @@ bool CScore::LoadTeamThread(IDbConnection *pSqlServer, const ISqlData *pGameData
 		strcpy(pData->m_pResult->m_aMessage, "Loading successfully done");
 	}
 end:
-	pSqlServer->Unlock();
+	pSqlServer->Unlock(); */
 	return true;
 }
 

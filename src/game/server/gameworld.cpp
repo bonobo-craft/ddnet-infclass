@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <utility>
 #include <engine/shared/config.h>
+#include "game/server/gamemodes/mod.h"
 
 //////////////////////////////////////////////////
 // game world

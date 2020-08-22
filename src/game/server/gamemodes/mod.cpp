@@ -98,7 +98,7 @@ void CGameControllerMOD::Snap(int SnappingClient)
 
 void CGameControllerMOD::OnRoundStart()
 {
-	char aBuf[256];
+	//char aBuf[256];
 	//if (!lua) { // not sure yet if OnRoundStart is run only once
 	//	std::string path_to_lua("maps/");
 	//	path_to_lua += g_Config.m_SvMap;

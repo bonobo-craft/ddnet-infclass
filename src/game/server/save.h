@@ -110,6 +110,8 @@ private:
 class CSaveTeam
 {
 public:
+	//CSaveTeam(CGameControllerMOD* Controller);
+	//TBD
 	CSaveTeam(IGameController* Controller);
 	~CSaveTeam();
 	char* GetString();

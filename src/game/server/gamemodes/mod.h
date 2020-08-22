@@ -59,7 +59,7 @@ public:
 	void ResetFinalExplosion();
 
 	bool IsExplosionStarted() const;
-	int GetRealPlayerNum() const { return 2; };
+	int GetRealPlayerNum() const { return 0; };
 	// TBD
 	int NUM_TEAMS=2;
 

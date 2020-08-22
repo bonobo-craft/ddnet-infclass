@@ -2,6 +2,7 @@
 #include "teams.h"
 #include "teehistorian.h"
 #include "score.h"
+#include "game/server/gamemodes/mod.h"
 #include <engine/shared/config.h>
 
 CGameTeams::CGameTeams(CGameContext *pGameContext) :
@@ -679,7 +680,7 @@ void CGameTeams::OnFinish(CPlayer* Player, float Time, const char *pTimestamp)
 
 void CGameTeams::ProcessSaveTeam()
 {
-	for(int Team = 0; Team < MAX_CLIENTS; Team++)
+/* 	for(int Team = 0; Team < MAX_CLIENTS; Team++)
 	{
 		if(m_pSaveTeamResult[Team] == nullptr || m_pSaveTeamResult[Team].use_count() != 1)
 			continue;
@@ -740,7 +741,7 @@ void CGameTeams::ProcessSaveTeam()
 			break;
 		}
 		m_pSaveTeamResult[Team] = nullptr;
-	}
+	} */
 }
 
 void CGameTeams::OnCharacterSpawn(int ClientID)
