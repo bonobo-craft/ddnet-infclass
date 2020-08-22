@@ -164,6 +164,7 @@ public:
 	// DDRace
 
 	float m_CurrentRecord;
+
 	// INFCROYA BEGIN ------------------------------------------------------------
 	bool IsSpawnable(vec2 Pos);
 	bool IsWarmup() const;

@@ -383,7 +383,7 @@ void CroyaPlayer::SetSpawnPointAt(vec2 NewPos)
 void CroyaPlayer::OnMouseWheelDown(CCharacter* pChr)
 {
 	m_pCharacter = pChr;
-	if (m_pGameController->IsCroyaWarmup()) {
+	if (m_pGameController->IsCroyaWarmup() || !m_pGameController->m_InfectedStarted) {
 		TurnIntoNextHumanClass();
 		m_pClass->OnMouseWheelDown();
 		return;
@@ -407,7 +407,7 @@ void CroyaPlayer::OnMouseWheelDown(CCharacter* pChr)
 void CroyaPlayer::OnMouseWheelUp(CCharacter* pChr)
 {
 	m_pCharacter = pChr;
-	if (m_pGameController->IsCroyaWarmup()) {
+	if (m_pGameController->IsCroyaWarmup() || !m_pGameController->m_InfectedStarted) {
 		TurnIntoPrevHumanClass();
 		m_pClass->OnMouseWheelUp();
 		return;

@@ -59,14 +59,15 @@ public:
 	void ResetFinalExplosion();
 
 	bool IsExplosionStarted() const;
-	int GetRealPlayerNum() const { return 0; };
-	// TBD
+	int GetRealPlayerNum() const;
 	int NUM_TEAMS=2;
+	
 
 	std::vector<class CCircle*>& GetCircles();
 	std::vector<class CInfCircle*>& GetInfCircles();
 
 	std::shared_ptr<CScoreInitResult> m_pInitResult;
+	bool m_InfectedStarted;
 
 	
 private: 
@@ -83,7 +84,6 @@ private:
 	void FlagTick();
 
 	bool m_ExplosionStarted;
-	bool m_InfectedStarted;
 	int m_MapWidth;
 	int m_MapHeight;
 	int* m_GrowingMap;

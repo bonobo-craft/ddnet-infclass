@@ -98,6 +98,7 @@ void CGameControllerMOD::Snap(int SnappingClient)
 
 void CGameControllerMOD::OnRoundStart()
 {
+	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "OnRoundStart");
 	const int TILE_SIZE = 32;
 	char aBuf[256];
 	//if (!lua) { // not sure yet if OnRoundStart is run only once
@@ -209,11 +210,35 @@ void CGameControllerMOD::UnlockPositions()
 //		m_pInitResult = nullptr;
 //	}
 //}
+int CGameControllerMOD::GetRealPlayerNum() const {
+	int PlayersNum = 0;
+	for (CPlayer* each : GameServer()->m_apPlayers) {
+		if (!each)
+			continue;
+		if (!each->GetCroyaPlayer())
+			continue;
+		if(!each->GetTeam() == 0)
+			continue;
+		PlayersNum++;
+	}
+/* 	for (auto each : players)
+	{
+		if (!each)
+			continue;
+		if(!each->GetPlayer())
+			continue;
+
+		PlayersNum++;
+	} */
+	return (int) PlayersNum;
+}
+
 void CGameControllerMOD::Tick()
 {
 	IGameController::Tick();
 
 	if (RoundJustStarted()) { // not sure if it is executed only once
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "RoundJustStarted");
 		OnRoundStart();
 	}
 
@@ -229,18 +254,29 @@ void CGameControllerMOD::Tick()
 			str_format(aBuf, sizeof(aBuf), localize("Infected won the round in %d seconds", each->GetCroyaPlayer()->GetLanguage()).c_str(), Seconds);
 			GameServer()->SendChatTarget(each->GetCID(), aBuf);
 		}
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Everyone Infected");
 		OnRoundEnd();
 	}
 
 	bool IsGameStarted = !IsCroyaWarmup() && !IsGameEnd();
 
 	// end round on 1 player
-/* 	if (IsGameStarted && GetRealPlayerNum() < 2) {
+	if (IsGameStarted && GetRealPlayerNum() < 2 && m_InfectedStarted) {
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "<2 players");
 		OnRoundEnd();
-	} */
-	//TBD
+	}
 
-	if (IsGameStarted) {
+	if (!IsGameEnd() && !IsWarmup() && !m_InfectedStarted) {
+		if (GetRealPlayerNum() > 1) {
+			m_InfectedStarted = true;
+			ResetHumansToDefault();
+			DoWarmup(10);
+		}
+	}
+
+	IsGameStarted = !IsCroyaWarmup() && !IsGameEnd();
+
+	if (IsGameStarted && m_InfectedStarted) {
 		for (auto each : players)
 		{
 			if (!each)
@@ -259,14 +295,9 @@ void CGameControllerMOD::Tick()
 		// no zombies, start infection
 		if (GetRealPlayerNum() >= 2 && GetZombieCount() < 1)
 		{
+			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Initial infection");
 			StartInitialInfection();
-			m_InfectedStarted = true;
 		}
-		//else if (GetRealPlayerNum() > 3 && GetZombieCount() < 2)
-		//{
-		//	StartInitialInfection();
-		//	m_InfectedStarted = true;
-		//}
 	}
 
 	// FINAL EXPLOSION BEGIN, todo: write a function for this?
@@ -486,7 +517,9 @@ bool CGameControllerMOD::IsCroyaWarmup()
 
 bool CGameControllerMOD::RoundJustStarted()
 {
-	//if (!IsWarmup() && m_GameInfo.m_TimeLimit > 0 && (Server()->Tick() - m_GameStartTick) == Server()->TickSpeed() * 10)
+	//if (!IsWarmup() && m_RoundStartTick + 1 == Server()->Tick()) // it will reset so we should wait 1 tick
+	if (!m_InfectedStarted)
+		return false;
 	if (!IsWarmup() && m_RoundStartTick + 1 == Server()->Tick()) // it will reset so we should wait 1 tick
 		return true;
 	else
@@ -495,8 +528,6 @@ bool CGameControllerMOD::RoundJustStarted()
 
 void CGameControllerMOD::StartInitialInfection()
 {
-	return;
-	//TBD
 	for (CroyaPlayer* each : players) {
 		if (!each)
 			continue;
@@ -530,6 +561,9 @@ void CGameControllerMOD::StartInitialInfection()
 
 void CGameControllerMOD::OnRoundEnd()
 {
+	if (!m_InfectedStarted)
+	  return;
+	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "OnRoundEnd");
 	m_InfectedStarted = false;
 	ResetFinalExplosion();
 	ResetHumansToDefault();

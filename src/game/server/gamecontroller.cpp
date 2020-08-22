@@ -25,7 +25,6 @@ IGameController::IGameController(class CGameContext *pGameServer)
 	m_pGameType = "unknown";
 
 	//
-	DoWarmup(g_Config.m_SvWarmup);
 	m_GameOverTick = -1;
 	m_SuddenDeath = 0;
 	m_GameStartTick = Server()->Tick();
@@ -344,6 +343,8 @@ void IGameController::EndMatch()
 {
 	if(m_Warmup) // game can't end when we are running warmup
 		return;
+	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Match End");
+	GameServer()->SendBroadcast("Match End", -1);
 
 	GameServer()->m_World.m_Paused = false;
 	//m_GameOverTick = Server()->Tick();
@@ -355,6 +356,8 @@ void IGameController::EndRound()
 {
 	if(m_Warmup) // game can't end when we are running warmup
 		return;
+	GameServer()->SendBroadcast("Round End", -1);
+	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Round End");
 
 	GameServer()->m_World.m_Paused = true;
 	m_GameOverTick = Server()->Tick();
@@ -420,6 +423,7 @@ void IGameController::OnCharacterSpawn(class CCharacter *pChr)
 void IGameController::DoWarmup(int Seconds)
 {
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Warmup started");
+	GameServer()->SendBroadcast("Warmup started", -1);
 	if(Seconds < 0)
 		m_Warmup = 0;
 	else
