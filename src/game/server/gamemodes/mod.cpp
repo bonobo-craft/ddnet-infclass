@@ -98,7 +98,8 @@ void CGameControllerMOD::Snap(int SnappingClient)
 
 void CGameControllerMOD::OnRoundStart()
 {
-	//char aBuf[256];
+	const int TILE_SIZE = 32;
+	char aBuf[256];
 	//if (!lua) { // not sure yet if OnRoundStart is run only once
 	//	std::string path_to_lua("maps/");
 	//	path_to_lua += g_Config.m_SvMap;
@@ -135,6 +136,7 @@ void CGameControllerMOD::OnRoundStart()
 	//	//}
 	//	//////inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(30, 30), -1, 100));
 	//}
+	inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(44, 30), -1, 100));
 	m_InfectedStarted = true;
 	TurnDefaultIntoRandomHuman();
 	UnlockPositions();
@@ -144,21 +146,22 @@ void CGameControllerMOD::OnRoundStart()
 	//		circle->SetRadius(circle->GetRadius() - circle->GetShrinkSpeed());
 	//}
 
-	//if ( flag_positions.size() > 0) {
-	//	m_apFlagSpotId = rand() % flag_positions.size();
-	//	str_format(aBuf, sizeof(aBuf), "First flag spot id %ld of %ld", m_apFlagSpotId, flag_positions.size() - 1);
-	//	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "Server", aBuf);
-	//	GameServer()->SendChatTarget(-1, aBuf);
+	flag_positions.push_back(vec2(44 * TILE_SIZE, 30 * TILE_SIZE));
+	if ( flag_positions.size() > 0) {
+		m_apFlagSpotId = rand() % flag_positions.size();
+		str_format(aBuf, sizeof(aBuf), "First flag spot id %ld of %ld", m_apFlagSpotId, flag_positions.size() - 1);
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "Server", aBuf);
+		GameServer()->SendChatTarget(-1, aBuf);
 
-	//	vec2 newPos = flag_positions[m_apFlagSpotId];
-	//	str_format(aBuf, sizeof(aBuf), "Flag is spawned on %f, %f", newPos.x, newPos.y);
-	//	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "Server", aBuf);
-	//	m_apFlag = new CFlag(&GameServer()->m_World, 0, newPos);
+		vec2 newPos = flag_positions[m_apFlagSpotId];
+		str_format(aBuf, sizeof(aBuf), "Flag is spawned on %f, %f", newPos.x, newPos.y);
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "Server", aBuf);
+		m_apFlag = new CFlag(&GameServer()->m_World, 0, newPos);
 
-	//	str_format(aBuf, sizeof(aBuf), "Flag is spawned");
-	//	GameServer()->SendChatTarget(-1, aBuf);
+		str_format(aBuf, sizeof(aBuf), "Flag is spawned");
+		GameServer()->SendChatTarget(-1, aBuf);
 
-	//}
+	}
 
 
 }
@@ -470,6 +473,8 @@ void CGameControllerMOD::FlagTick() {
 
 bool CGameControllerMOD::IsCroyaWarmup()
 {
+	return true;
+	//TBD
 	if (IsWarmup())
 		return true;
 	if (m_GameInfo.m_TimeLimit > 0 && (Server()->Tick() - m_GameStartTick) <= Server()->TickSpeed() * 10)
@@ -488,6 +493,8 @@ bool CGameControllerMOD::RoundJustStarted()
 
 void CGameControllerMOD::StartInitialInfection()
 {
+	return;
+	//TBD
 	for (CroyaPlayer* each : players) {
 		if (!each)
 			continue;
@@ -731,12 +738,11 @@ void CGameControllerMOD::OnPlayerConnect(CPlayer* pPlayer)
 			{
 				if (each->IsZombie())
 				{
-					//GameServer()->SendClanChange(each->GetClientID(), ClientID, "Zombie");
+					GameServer()->SendClanChange(each->GetClientID(), ClientID, "Zombie");
 				}
 				else
 				{
-					//GameServer()->SendClanChange(each->GetClientID(), ClientID, "Human");
-					// TBD
+					GameServer()->SendClanChange(each->GetClientID(), ClientID, "Human");
 				}
 			}
 		}

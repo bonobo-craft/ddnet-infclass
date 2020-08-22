@@ -8,6 +8,7 @@
 #include <game/server/save.h>
 #include <game/generated/server_data.h>
 #include <game/generated/protocol.h>
+#include <infcroya/croyaplayer.h>
 
 #include <game/gamecore.h>
 
@@ -176,7 +177,7 @@ private:
 
 	// INFCROYA BEGIN ------------------------------------------------------------
 	bool m_Infected;
-	class CroyaPlayer* m_pCroyaPlayer;
+	CroyaPlayer* m_pCroyaPlayer;
 	int m_HeartID;
 	int m_NormalEmote;
 	bool m_IsFrozen;

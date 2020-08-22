@@ -213,8 +213,8 @@ public:
 	void SendEmoticon(int ClientID, int Emoticon);
 	void SendWeaponPickup(int ClientID, int Weapon);
 	void SendBroadcast(const char *pText, int ClientID, bool IsImportant = true);
-	void SendBroadcastBig(const char *pText, int ClientID, bool IsImportant = true);
 	// INFCROYA BEGIN
+	void SendBroadcastBig(const char *pText, int ClientID, bool IsImportant = true);
 	void SendMotd(int ClientID);
 	void SendSkinChange(int ClientID, int TargetID);
 	void SendClanChange(int ClientID, int TargetID, const char *pClan);

@@ -222,8 +222,9 @@ void CCharacter::HandleWeaponSwitch()
 		while(Next) // Next Weapon selection
 		{
 			WantedWeapon = (WantedWeapon+1)%NUM_WEAPONS;
-			if(m_aWeapons[WantedWeapon].m_Got)
+			if(m_aWeapons[WantedWeapon].m_Got) {
 				Next--;
+			}
 		}
 	}
 
@@ -232,8 +233,10 @@ void CCharacter::HandleWeaponSwitch()
 		while(Prev) // Prev Weapon selection
 		{
 			WantedWeapon = (WantedWeapon-1)<0?NUM_WEAPONS-1:WantedWeapon-1;
-			if(m_aWeapons[WantedWeapon].m_Got)
+			if(m_aWeapons[WantedWeapon].m_Got) {
 				Prev--;
+
+			}
 		}
 	}
 
@@ -246,6 +249,14 @@ void CCharacter::HandleWeaponSwitch()
 		m_QueuedWeapon = WantedWeapon;
 
 	DoWeaponSwitch();
+}
+
+CroyaPlayer* CCharacter::GetCroyaPlayer() {
+	return m_pCroyaPlayer;
+}
+
+void CCharacter::SetCroyaPlayer(CroyaPlayer* CroyaPlayer) {
+	m_pCroyaPlayer = CroyaPlayer;
 }
 
 void CCharacter::FireWeapon()

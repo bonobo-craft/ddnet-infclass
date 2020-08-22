@@ -6,6 +6,7 @@
 #include <infcroya/localization/localization.h>
 #include <infcroya/entities/circle.h>
 #include <infcroya/entities/inf-circle.h>
+#include <game/server/gamemodes/mod.h>
 #include <limits>
 
 CroyaPlayer::CroyaPlayer(int ClientID, CPlayer* pPlayer, CGameContext* pGameServer, CGameControllerMOD* pGameController, std::unordered_map<int, IClass*> Classes)
@@ -34,6 +35,8 @@ CroyaPlayer::CroyaPlayer(int ClientID, CPlayer* pPlayer, CGameContext* pGameServ
 	m_InsideSafeZone = true;
 	m_BeenOnRoundStart = false;
 	m_InitialZombie = false;
+	SetClass(Classes[DEFAULT], false, false);
+	//TBD
 }
 
 CroyaPlayer::~CroyaPlayer()
@@ -54,13 +57,14 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 
 	if (IsHuman() && m_pCharacter && m_pCharacter->GameWorld()) {
 		// Infect when inside infection zone circle
-		auto circle = GetClosestInfCircle();
+		//TBD
+/* 		auto circle = GetClosestInfCircle();
 		if (circle) {
 			float dist = distance(m_pCharacter->GetPos(), circle->GetPos());
 			if (dist < circle->GetRadius()) {
 				m_pCharacter->Infect(-1);
 			}
-		}
+		} */
 
 		// Take damage when outside of safezone circle
 		if (!m_InsideSafeZone) {
@@ -514,6 +518,8 @@ void CroyaPlayer::TurnIntoPrevHumanClass()
 
 void CroyaPlayer::TurnIntoRandomZombie()
 {
+	//TBD
+	return;
 	if (m_pGameController->GetRealPlayerNum() >= 2 && m_pGameController->GetIZombieCount() < 1)
 		m_InitialZombie = true;
 
@@ -702,14 +708,14 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 	for (const CPlayer* each : m_pGameServer->m_apPlayers) {
 		if (each) {
 			m_pGameServer->SendSkinChange(m_pPlayer->GetCID(), each->GetCID());
-			//if (m_pClass->IsInfectedClass()) {
-			//	if (m_InitialZombie)
-			//	  m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), "iZombie");
-			//	else
-			//	  m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), "Zombie");
-			//} else {
-			//	m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), "Human");
-			//}
+			if (m_pClass->IsInfectedClass()) {
+				if (m_InitialZombie)
+				  m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), "iZombie");
+				else
+				  m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), "Zombie");
+			} else {
+				m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), "Human");
+			}
 		}
 	}
 	if (!destroyChildEntities)

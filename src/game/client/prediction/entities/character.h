@@ -144,6 +144,23 @@ public:
 	CCharacter() { m_Alive = false; }
 	void SetTuneZone(int Zone);
 
+		// INFCROYA BEGIN ------------------------------------------------------------
+	bool m_Infected;
+	class CroyaPlayer* m_pCroyaPlayer;
+	CroyaPlayer* GetCroyaPlayer();
+	void SetCroyaPlayer(CroyaPlayer* CroyaPlayer);
+	int m_HeartID;
+	int m_NormalEmote;
+	bool m_IsFrozen;
+	int m_FrozenTime;
+	int m_FreezeReason;
+	int m_LastFreezer;
+
+	int m_Poison;
+	int m_PoisonTick;
+	int m_PoisonFrom;
+	bool m_HookProtected;
+	// INFCROYA END ------------------------------------------------------------//
 private:
 	// weapon info
 	int m_aHitObjects[10];

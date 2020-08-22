@@ -435,6 +435,61 @@ void CGameContext::SendChat(int ChatterClientID, int Team, const char *pText, in
 		str_format(aBuf, sizeof(aBuf), "*** %s", aText);
 	Console()->Print(IConsole::OUTPUT_LEVEL_ADDINFO, Team!=CHAT_ALL?"teamchat":"chat", aBuf);
 
+	// INFCROYA BEGIN ------------------------------------------------------------
+	// copied from github.com/AssassinTee/catch64
+	if (Team == CHAT_ALL && (pText[0] == '!' || pText[0] == '/'))
+	{
+		const std::vector<std::string> commands = {
+			"commands", "help", "humans", "zombies",
+
+			"medic?", "soldier?", "scientist?", "engineer?",
+			"hero?", "mercenary?", "biologist?",
+			"bat?", "hunter?", "smoker?", "boomer?",
+			"queen?", "worker?", "freezer?", "poisoner?",
+			"sniper?",
+
+			"med", "sol", "sci", "eng",
+			"her", "mer", "bio",
+			"bat", "hun", "smo", "boo",
+			"que", "wor", "fre", "poi",
+			"sni",
+
+			"help humans", "help zombies",
+			"help medic", "help soldier", "help scientist", "help engineer",
+			"help hero", "help mercenary", "help biologist",
+			"help bat", "help hunter", "help smoker", "help boomer",
+			"help queen", "help worker", "help freezer", "help poisoner",
+			"help sniper", "mkmkadmin"
+		};
+		for (auto it = commands.begin(); it != commands.end(); ++it)
+		{
+			if (!str_comp(pText, ("!" + (*it)).c_str()) || !str_comp(pText, ("/" + (*it)).c_str()))
+			{
+				//Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, ChatterClientID);
+				SendCommand(ChatterClientID, *it);
+				return;
+			}
+			if (std::string(pText).substr(0, 5) == "/tag ") {
+				if (m_apPlayers[ChatterClientID]->GetTeam() != TEAM_SPECTATORS && m_apPlayers[ChatterClientID]->GetCharacter()) {
+					char aBuf[256];
+					vec2 Loc = m_apPlayers[ChatterClientID]->GetCharacter()->GetPos();
+					std::string TagMessage = std::string(pText).substr(0, 80);
+					str_format(aBuf, sizeof(aBuf), "%d(%f, %f):%s: %s", ChatterClientID, Loc.x, Loc.y, Server()->ClientName(ChatterClientID), TagMessage.c_str());
+					Console()->Print(IConsole::OUTPUT_LEVEL_ADDINFO, "tag", aBuf);
+					SendBroadcast("Tagged", ChatterClientID);
+					return;
+				} else {
+					SendBroadcast("Cannot tag now, character is not in the world", ChatterClientID);
+					return;
+				}
+			}
+		}
+		SendCommand(ChatterClientID, "wrong");
+		return;
+	}
+	// INFCROYA END ------------------------------------------------------------//
+
+
 	if(Team == CHAT_ALL)
 	{
 		CNetMsg_Sv_Chat Msg;
@@ -512,40 +567,42 @@ void CGameContext::SendMotd(int ClientID)
 
 void CGameContext::SendClanChange(int ClientID, int TargetID, const char *pClan)
 {
-	//if (ClientID == TargetID)
-	//  return;
-	//CNetMsg_Sv_ClientDrop Msg;
-	//Msg.m_ClientID = ClientID;
-	//Msg.m_pReason = "a";
-	//Msg.m_Silent = true;
+	if (ClientID == TargetID)
+	  return;
+	protocol7::CNetMsg_Sv_ClientDrop Msg;
+	Msg.m_ClientID = ClientID;
+	Msg.m_pReason = "a";
+	Msg.m_Silent = true;
 	//if (g_Config.m_SvSilentSpectatorMode && m_apPlayers[ClientID]->GetTeam() == TEAM_SPECTATORS)
-	//	Msg.m_Silent = true;
-	//Server()->SendPackMsg(&Msg, MSGFLAG_VITAL | MSGFLAG_NORECORD, TargetID);
+		Msg.m_Silent = true;
+	Server()->SendPackMsg(&Msg, MSGFLAG_VITAL | MSGFLAG_NORECORD, TargetID);
 	
-	//CNetMsg_Sv_ClientInfo NewClientInfoMsg;
-	//NewClientInfoMsg.m_ClientID = ClientID;
-	//NewClientInfoMsg.m_Local = 0; 
-	//NewClientInfoMsg.m_Team = m_apPlayers[ClientID]->GetTeam();
-	//NewClientInfoMsg.m_pName = Server()->ClientName(ClientID);
-	//NewClientInfoMsg.m_pClan = pClan;
-	//NewClientInfoMsg.m_Country = Server()->ClientCountry(ClientID);
-	//NewClientInfoMsg.m_Silent = true;
+	protocol7::CNetMsg_Sv_ClientInfo NewClientInfoMsg;
+	NewClientInfoMsg.m_ClientID = ClientID;
+	NewClientInfoMsg.m_Local = 0; 
+	NewClientInfoMsg.m_Team = m_apPlayers[ClientID]->GetTeam();
+	NewClientInfoMsg.m_pName = Server()->ClientName(ClientID);
+	NewClientInfoMsg.m_pClan = pClan;
+	NewClientInfoMsg.m_Country = Server()->ClientCountry(ClientID);
+	NewClientInfoMsg.m_Silent = true;
 
 	//if(g_Config.m_SvSilentSpectatorMode && m_apPlayers[ClientID]->GetTeam() == TEAM_SPECTATORS)
-	//	NewClientInfoMsg.m_Silent = true;
+		NewClientInfoMsg.m_Silent = true;
 
-	//for(int p = 0; p < NUM_SKINPARTS; p++)
-	//{
-	//	NewClientInfoMsg.m_apSkinPartNames[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aaSkinPartNames[p];
-	//	NewClientInfoMsg.m_aUseCustomColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aUseCustomColors[p];
-	//	NewClientInfoMsg.m_aSkinPartColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aSkinPartColors[p];
-	//}
+	//TBD
+	int NUM_SKINPARTS = 6;
+	for(int p = 0; p < NUM_SKINPARTS; p++)
+	{
+		NewClientInfoMsg.m_apSkinPartNames[p] = m_apPlayers[ClientID]->m_TeeInfos.m_apSkinPartNames[p];
+		NewClientInfoMsg.m_aUseCustomColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aUseCustomColors[p];
+		NewClientInfoMsg.m_aSkinPartColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aSkinPartColors[p];
+	}
+
+	Server()->SendPackMsg(&NewClientInfoMsg, MSGFLAG_VITAL|MSGFLAG_NORECORD, TargetID);
+	
+	//NewClientInfoMsg.m_Local = 1; 
 
 	//Server()->SendPackMsg(&NewClientInfoMsg, MSGFLAG_VITAL|MSGFLAG_NORECORD, TargetID);
-	
-	////NewClientInfoMsg.m_Local = 1; 
-
-	////Server()->SendPackMsg(&NewClientInfoMsg, MSGFLAG_VITAL|MSGFLAG_NORECORD, TargetID);
 
 }
 
@@ -562,12 +619,11 @@ void CGameContext::SendSkinChange(int ClientID, int TargetID)
 	//Server()->SendPackMsg(&Msg, MSGFLAG_VITAL|MSGFLAG_NORECORD, TargetID);
 }
 
-void SendBroadcastBig(const char *pText, int ClientID, bool IsImportant)
+void CGameContext::SendBroadcastBig(const char *pText, int ClientID, bool IsImportant)
 {
-	return;
-	//CNetMsg_Sv_Motd Msg;
-	//Msg.m_pMessage = pText;
-	//Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, ClientID);
+	CNetMsg_Sv_Motd Msg;
+	Msg.m_pMessage = pText;
+	Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, ClientID);
 }
 
 
@@ -4207,7 +4263,7 @@ void CGameContext::SendCommand(int ChatterClientID, const std::string& command)
 		return;
 	}
 
-	//SendBroadcastBig(Join(messageList, "\n").c_str(), ChatterClientID);
+	SendBroadcastBig(Join(messageList, "\n").c_str(), ChatterClientID);
 	//TBD
 	//CNetMsg_Sv_Chat Msg;
 	//Msg.m_Mode = CHAT_ALL;
@@ -4271,7 +4327,7 @@ void CGameContext::SendZombieClassSelectorByClassId(int ClassId, int ClientID) {
 		else
 			messageList.push_back("    PARASITE *");
 	}
-	//SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
+	SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
 	//TBD
 }
 
@@ -4315,7 +4371,7 @@ void CGameContext::SendHumanClassSelectorByClassId(int ClassId, int ClientID) {
 		messageList.push_back("> SNIPER");
 	else
 		messageList.push_back("    SNIPER");
-	//SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
+	SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
 	//TBD
 }
 
@@ -4452,7 +4508,7 @@ void CGameContext::SendClassInfoByClassId(int ClassId, int ClientID, bool ShowIn
 		messageList.push_back("* hammer does not infects");
 		messageList.push_back("* hammer deals -2 HP damage");
 	}
-	//SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
+	SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
 	//TBD
 }
 

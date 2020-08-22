@@ -3,13 +3,12 @@
 #include <base/vmath.h>
 #include <unordered_map>
 #include <string>
-#include <game/server/gamemodes/mod.h>
 
 class IClass;
 class CPlayer;
 class CCharacter;
 class CGameContext;
-//class CGameControllerMOD;
+class CGameControllerMOD;
 
 class CroyaPlayer {
 private:
