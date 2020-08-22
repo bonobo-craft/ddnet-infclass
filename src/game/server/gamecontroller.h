@@ -84,6 +84,7 @@ public:
 
 	void StartRound();
 	void EndRound();
+	void EndMatch();
 	void ChangeMap(const char *pToMap);
 
 		// info

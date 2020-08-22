@@ -340,6 +340,17 @@ bool IGameController::OnEntity(int Index, vec2 Pos, int Layer, int Flags, int Nu
 	return false;
 }
 
+void IGameController::EndMatch()
+{
+	if(m_Warmup) // game can't end when we are running warmup
+		return;
+
+	GameServer()->m_World.m_Paused = false;
+	//m_GameOverTick = Server()->Tick();
+	//m_GameOverTick = Server()->Tick();
+	m_SuddenDeath = 0;
+}
+
 void IGameController::EndRound()
 {
 	if(m_Warmup) // game can't end when we are running warmup
@@ -408,6 +419,7 @@ void IGameController::OnCharacterSpawn(class CCharacter *pChr)
 
 void IGameController::DoWarmup(int Seconds)
 {
+	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Warmup started");
 	if(Seconds < 0)
 		m_Warmup = 0;
 	else

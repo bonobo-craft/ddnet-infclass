@@ -517,8 +517,6 @@ void CroyaPlayer::TurnIntoPrevHumanClass()
 
 void CroyaPlayer::TurnIntoRandomZombie()
 {
-	//TBD
-	return;
 	if (m_pGameController->GetRealPlayerNum() >= 2 && m_pGameController->GetIZombieCount() < 1)
 		m_InitialZombie = true;
 

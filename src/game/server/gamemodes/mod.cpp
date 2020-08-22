@@ -136,7 +136,7 @@ void CGameControllerMOD::OnRoundStart()
 	//	//}
 	//	//////inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(30, 30), -1, 100));
 	//}
-	inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(44, 30), -1, 100));
+	inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(44 * TILE_SIZE, 30 * TILE_SIZE), -1, 100));
 	m_InfectedStarted = true;
 	TurnDefaultIntoRandomHuman();
 	UnlockPositions();
@@ -147,6 +147,7 @@ void CGameControllerMOD::OnRoundStart()
 	//}
 
 	flag_positions.push_back(vec2(44 * TILE_SIZE, 30 * TILE_SIZE));
+	flag_positions.push_back(vec2(84 * TILE_SIZE, 30 * TILE_SIZE));
 	if ( flag_positions.size() > 0) {
 		m_apFlagSpotId = rand() % flag_positions.size();
 		str_format(aBuf, sizeof(aBuf), "First flag spot id %ld of %ld", m_apFlagSpotId, flag_positions.size() - 1);
@@ -234,9 +235,10 @@ void CGameControllerMOD::Tick()
 	bool IsGameStarted = !IsCroyaWarmup() && !IsGameEnd();
 
 	// end round on 1 player
-	if (IsGameStarted && GetRealPlayerNum() < 2) {
+/* 	if (IsGameStarted && GetRealPlayerNum() < 2) {
 		OnRoundEnd();
-	}
+	} */
+	//TBD
 
 	if (IsGameStarted) {
 		for (auto each : players)
@@ -473,10 +475,9 @@ void CGameControllerMOD::FlagTick() {
 
 bool CGameControllerMOD::IsCroyaWarmup()
 {
-	return true;
-	//TBD
 	if (IsWarmup())
 		return true;
+
 	if (m_GameInfo.m_TimeLimit > 0 && (Server()->Tick() - m_GameStartTick) <= Server()->TickSpeed() * 10)
 		return true;
 	else
@@ -485,7 +486,8 @@ bool CGameControllerMOD::IsCroyaWarmup()
 
 bool CGameControllerMOD::RoundJustStarted()
 {
-	if (!IsWarmup() && m_GameInfo.m_TimeLimit > 0 && (Server()->Tick() - m_GameStartTick) == Server()->TickSpeed() * 10)
+	//if (!IsWarmup() && m_GameInfo.m_TimeLimit > 0 && (Server()->Tick() - m_GameStartTick) == Server()->TickSpeed() * 10)
+	if (!IsWarmup() && m_RoundStartTick + 1 == Server()->Tick()) // it will reset so we should wait 1 tick
 		return true;
 	else
 		return false;
@@ -540,8 +542,8 @@ void CGameControllerMOD::OnRoundEnd()
 		m_apFlag->Destroy();
 		m_apFlag = 0;
 	}
-	//IGameController::EndMatch(); // Endmatch instead of endround
-	//TBD
+	IGameController::EndMatch(); // Endmatch instead of endround
+	//IGameController::EndRound();
 }
 
 bool CGameControllerMOD::DoWincheckMatch()
