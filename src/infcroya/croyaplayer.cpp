@@ -274,8 +274,7 @@ int CroyaPlayer::GetClassNum()
 void CroyaPlayer::SetClassNum(int Class, bool DrawPurpleThing, bool ShowInfo, bool destroyChildEntities)
 {
 	SetClass(m_Classes[Class], DrawPurpleThing, destroyChildEntities);
-	//m_pGameServer->SendClassSelectorByClassId(Class, GetClientID(), ShowInfo);
-	//TBD
+	m_pGameServer->SendClassSelectorByClassId(Class, GetClientID(), ShowInfo);
 }
 
 bool CroyaPlayer::SetZombieClassNumPlease(int Class, bool DrawPurpleThing, bool Force)

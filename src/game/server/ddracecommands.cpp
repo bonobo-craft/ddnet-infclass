@@ -239,13 +239,13 @@ void CGameContext::ModifyWeapons(IConsole::IResult *pResult, void *pUserData,
 
 	if (Weapon == -1)
 	{
-		pChr->GiveWeapon(WEAPON_SHOTGUN, Remove);
-		pChr->GiveWeapon(WEAPON_GRENADE, Remove);
-		pChr->GiveWeapon(WEAPON_LASER, Remove);
+		pChr->GiveWeapon(WEAPON_SHOTGUN, 10, Remove);
+		pChr->GiveWeapon(WEAPON_GRENADE, 10, Remove);
+		pChr->GiveWeapon(WEAPON_LASER, 10, Remove);
 	}
 	else
 	{
-		pChr->GiveWeapon(Weapon, Remove);
+		pChr->GiveWeapon(Weapon, 10, Remove);
 	}
 
 	pChr->m_DDRaceState = DDRACE_CHEAT;

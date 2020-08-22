@@ -306,12 +306,13 @@ void CCharacter::HandleWeaponSwitch()
 	if(m_QueuedWeapon != -1)
 		WantedWeapon = m_QueuedWeapon;
 
-	bool Anything = false;
+	//TBD
+/* 	bool Anything = true;
 	 for(int i = 0; i < NUM_WEAPONS - 1; ++i)
 		 if(m_aWeapons[i].m_Got)
 			 Anything = true;
 	 if(!Anything)
-		 return;
+		 return; */
 	// select Weapon
 	int Next = CountInput(m_LatestPrevInput.m_NextWeapon, m_LatestInput.m_NextWeapon).m_Presses;
 	int Prev = CountInput(m_LatestPrevInput.m_PrevWeapon, m_LatestInput.m_PrevWeapon).m_Presses;
@@ -334,8 +335,8 @@ void CCharacter::HandleWeaponSwitch()
 		{
 			WantedWeapon = (WantedWeapon-1)<0?NUM_WEAPONS-1:WantedWeapon-1;
 			if(m_aWeapons[WantedWeapon].m_Got) {
-				Prev--;
 				GetCroyaPlayer()->OnMouseWheelUp(this);
+				Prev--;
 			}
 		}
 	}
@@ -2461,7 +2462,7 @@ bool CCharacter::UnFreeze()
 	return false;
 }
 
-void CCharacter::GiveWeapon(int Weapon, bool Remove)
+void CCharacter::GiveWeapon(int Weapon, int Ammo, bool Remove)
 {
 	if (Weapon == WEAPON_NINJA)
 	{
@@ -2479,7 +2480,7 @@ void CCharacter::GiveWeapon(int Weapon, bool Remove)
 	}
 	else
 	{
-		m_aWeapons[Weapon].m_Ammo = -1;
+		m_aWeapons[Weapon].m_Ammo = Ammo;
 	}
 
 	m_aWeapons[Weapon].m_Got = !Remove;
@@ -2489,7 +2490,7 @@ void CCharacter::GiveAllWeapons()
 {
 	for(int i=WEAPON_GUN;i<NUM_WEAPONS-1;i++)
 	{
-		GiveWeapon(i);
+		GiveWeapon(i, 10);
 	}
 }
 

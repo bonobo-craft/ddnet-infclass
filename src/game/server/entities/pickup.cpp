@@ -89,7 +89,7 @@ void CPickup::Tick()
 
 					if (m_Subtype >= 0 && m_Subtype < NUM_WEAPONS && (!pChr->GetWeaponGot(m_Subtype) || pChr->GetWeaponAmmo(m_Subtype) != -1))
 					{
-						pChr->GiveWeapon(m_Subtype);
+						pChr->GiveWeapon(m_Subtype, 10);
 
 						//RespawnTime = g_pData->m_aPickups[m_Type].m_Respawntime;
 

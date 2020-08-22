@@ -97,7 +97,7 @@ public:
 	bool IncreaseHealth(int Amount);
 	bool IncreaseArmor(int Amount);
 
-	void GiveWeapon(int Weapon, bool Remove = false);
+	void GiveWeapon(int Weapon, int Ammo, bool Remove = false);
 	void GiveNinja();
 	void RemoveNinja();
 
