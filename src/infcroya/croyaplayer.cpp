@@ -674,13 +674,18 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 		vec2 PrevPos = m_pCharacter->GetPos();
 		m_pGameServer->CreatePlayerSpawn(PrevPos); // draw purple thing
 	}
-	//for (int& each : m_pPlayer->m_TeeInfos.m_aUseCustomColors) {
-	//	each = 1;
-	//}
-	//TBD
 
 	m_pClass = pClass;
 	const CSkin& skin = m_pClass->GetSkin();
+    //m_pPlayer->m_TeeInfos.m_UseCustomColor = 1;
+    //m_pPlayer->m_TeeInfos.m_ColorBody = skin.GetBodyColor();
+    //m_pPlayer->m_TeeInfos.m_ColorFeet = skin.GetFeetColor(); 
+	m_pPlayer->m_TeeInfos.m_aUseCustomColors[0] = true;
+	m_pPlayer->m_TeeInfos.m_aUseCustomColors[1] = true;
+	m_pPlayer->m_TeeInfos.m_aUseCustomColors[2] = true;
+	m_pPlayer->m_TeeInfos.m_aUseCustomColors[3] = true;
+	m_pPlayer->m_TeeInfos.m_aUseCustomColors[4] = true;
+	m_pPlayer->m_TeeInfos.m_aUseCustomColors[5] = true;
 	m_pPlayer->m_TeeInfos.m_aSkinPartColors[0] = skin.GetBodyColor();
 	m_pPlayer->m_TeeInfos.m_aSkinPartColors[1] = skin.GetMarkingColor();
 	m_pPlayer->m_TeeInfos.m_aSkinPartColors[2] = skin.GetDecorationColor();
@@ -693,6 +698,7 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[3], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[3]), "%s", skin.GetHandsName());
 	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[4], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[4]), "%s", skin.GetFeetName());
 	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[5], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[5]), "%s", skin.GetEyesName());
+	m_pPlayer->m_TeeInfos.FromSixup();
 
 	if (m_pClass->IsInfectedClass()) {
 		m_Infected = true;

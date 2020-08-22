@@ -923,7 +923,8 @@ int CPlayer::ForcePause(int Time)
 
 int CPlayer::IsPaused()
 {
-	return m_ForcePauseTime ? m_ForcePauseTime : -1 * m_Paused;
+	//return m_ForcePauseTime ? m_ForcePauseTime : -1 * m_Paused;
+	return false;
 }
 
 bool CPlayer::IsPlaying()

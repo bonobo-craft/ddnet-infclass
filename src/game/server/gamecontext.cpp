@@ -567,38 +567,43 @@ void CGameContext::SendMotd(int ClientID)
 
 void CGameContext::SendClanChange(int ClientID, int TargetID, const char *pClan)
 {
+	if (!m_apPlayers[ClientID])
+	  return;
 	if (ClientID == TargetID)
 	  return;
-	protocol7::CNetMsg_Sv_ClientDrop Msg;
-	Msg.m_ClientID = ClientID;
-	Msg.m_pReason = "a";
-	Msg.m_Silent = true;
-	//if (g_Config.m_SvSilentSpectatorMode && m_apPlayers[ClientID]->GetTeam() == TEAM_SPECTATORS)
+	if((Server()->IsSixup(TargetID))){
+		protocol7::CNetMsg_Sv_ClientDrop Msg;
+		Msg.m_ClientID = ClientID;
+		Msg.m_pReason = "a";
 		Msg.m_Silent = true;
-	Server()->SendPackMsg(&Msg, MSGFLAG_VITAL | MSGFLAG_NORECORD, TargetID);
-	
-	protocol7::CNetMsg_Sv_ClientInfo NewClientInfoMsg;
-	NewClientInfoMsg.m_ClientID = ClientID;
-	NewClientInfoMsg.m_Local = 0; 
-	NewClientInfoMsg.m_Team = m_apPlayers[ClientID]->GetTeam();
-	NewClientInfoMsg.m_pName = Server()->ClientName(ClientID);
-	NewClientInfoMsg.m_pClan = pClan;
-	NewClientInfoMsg.m_Country = Server()->ClientCountry(ClientID);
-	NewClientInfoMsg.m_Silent = true;
-
-	//if(g_Config.m_SvSilentSpectatorMode && m_apPlayers[ClientID]->GetTeam() == TEAM_SPECTATORS)
+		//if (g_Config.m_SvSilentSpectatorMode && m_apPlayers[ClientID]->GetTeam() == TEAM_SPECTATORS)
+			Msg.m_Silent = true;
+		Server()->SendPackMsg(&Msg, MSGFLAG_VITAL | MSGFLAG_NORECORD, TargetID);
+		
+		protocol7::CNetMsg_Sv_ClientInfo NewClientInfoMsg;
+		NewClientInfoMsg.m_ClientID = ClientID;
+		NewClientInfoMsg.m_Local = 0; 
+		NewClientInfoMsg.m_Team = m_apPlayers[ClientID]->GetTeam();
+		NewClientInfoMsg.m_pName = Server()->ClientName(ClientID);
+		NewClientInfoMsg.m_pClan = pClan;
+		NewClientInfoMsg.m_Country = Server()->ClientCountry(ClientID);
 		NewClientInfoMsg.m_Silent = true;
 
-	//TBD
-	int NUM_SKINPARTS = 6;
-	for(int p = 0; p < NUM_SKINPARTS; p++)
-	{
-		NewClientInfoMsg.m_apSkinPartNames[p] = m_apPlayers[ClientID]->m_TeeInfos.m_apSkinPartNames[p];
-		NewClientInfoMsg.m_aUseCustomColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aUseCustomColors[p];
-		NewClientInfoMsg.m_aSkinPartColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aSkinPartColors[p];
-	}
+		//if(g_Config.m_SvSilentSpectatorMode && m_apPlayers[ClientID]->GetTeam() == TEAM_SPECTATORS)
+			NewClientInfoMsg.m_Silent = true;
 
-	Server()->SendPackMsg(&NewClientInfoMsg, MSGFLAG_VITAL|MSGFLAG_NORECORD, TargetID);
+		//TBD
+		int NUM_SKINPARTS = 6;
+		for(int p = 0; p < NUM_SKINPARTS; p++)
+		{
+			NewClientInfoMsg.m_apSkinPartNames[p] = m_apPlayers[ClientID]->m_TeeInfos.m_apSkinPartNames[p];
+			NewClientInfoMsg.m_aUseCustomColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aUseCustomColors[p];
+			NewClientInfoMsg.m_aSkinPartColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aSkinPartColors[p];
+		}
+
+		Server()->SendPackMsg(&NewClientInfoMsg, MSGFLAG_VITAL|MSGFLAG_NORECORD, TargetID);
+
+	}
 	
 	//NewClientInfoMsg.m_Local = 1; 
 
@@ -608,6 +613,8 @@ void CGameContext::SendClanChange(int ClientID, int TargetID, const char *pClan)
 
 void CGameContext::SendSkinChange(int ClientID, int TargetID)
 {
+	if(!(Server()->IsSixup(TargetID)))
+	  return;
 	protocol7::CNetMsg_Sv_SkinChange Msg;
 	Msg.m_ClientID = ClientID;
 	const int NUM_SKINPARTS = 6; // TBD
@@ -1373,8 +1380,8 @@ void CGameContext::OnClientEnter(int ClientID)
 		str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s", Server()->ClientName(ClientID), m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()));
 		SendChat(-1, CGameContext::CHAT_ALL, aBuf, -1, CHAT_SIX);
 
-		SendChatTarget(ClientID, "DDraceNetwork Mod. Version: " GAME_VERSION);
-		SendChatTarget(ClientID, "please visit DDNet.tw or say /info for more info");
+		//SendChatTarget(ClientID, "DDraceNetwork Mod. Version: " GAME_VERSION);
+		//SendChatTarget(ClientID, "please visit DDNet.tw or say /info for more info");
 
 		if(g_Config.m_SvWelcome[0]!=0)
 			SendChatTarget(ClientID,g_Config.m_SvWelcome);
@@ -3641,7 +3648,8 @@ void CGameContext::OnPostSnap()
 
 bool CGameContext::IsClientReady(int ClientID)
 {
-	return m_apPlayers[ClientID] && m_apPlayers[ClientID]->m_IsReady ? true : false;
+	return true; // TBD client is always ready
+	//return m_apPlayers[ClientID] && m_apPlayers[ClientID]->m_IsReady ? true : false;
 }
 
 bool CGameContext::IsClientPlayer(int ClientID)
