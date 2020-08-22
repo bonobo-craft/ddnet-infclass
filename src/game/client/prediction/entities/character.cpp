@@ -251,14 +251,6 @@ void CCharacter::HandleWeaponSwitch()
 	DoWeaponSwitch();
 }
 
-CroyaPlayer* CCharacter::GetCroyaPlayer() {
-	return m_pCroyaPlayer;
-}
-
-void CCharacter::SetCroyaPlayer(CroyaPlayer* CroyaPlayer) {
-	m_pCroyaPlayer = CroyaPlayer;
-}
-
 void CCharacter::FireWeapon()
 {
 	if(m_NumInputs < 2)
