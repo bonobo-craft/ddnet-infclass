@@ -608,15 +608,16 @@ void CGameContext::SendClanChange(int ClientID, int TargetID, const char *pClan)
 
 void CGameContext::SendSkinChange(int ClientID, int TargetID)
 {
-	//CNetMsg_Sv_SkinChange Msg;
-	//Msg.m_ClientID = ClientID;
-	//for(int p = 0; p < NUM_SKINPARTS; p++)
-	//{
-	//	Msg.m_apSkinPartNames[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aaSkinPartNames[p];
-	//	Msg.m_aUseCustomColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aUseCustomColors[p];
-	//	Msg.m_aSkinPartColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aSkinPartColors[p];
-	//}
-	//Server()->SendPackMsg(&Msg, MSGFLAG_VITAL|MSGFLAG_NORECORD, TargetID);
+	protocol7::CNetMsg_Sv_SkinChange Msg;
+	Msg.m_ClientID = ClientID;
+	const int NUM_SKINPARTS = 6; // TBD
+	for(int p = 0; p < NUM_SKINPARTS; p++)
+	{
+		Msg.m_apSkinPartNames[p] = m_apPlayers[ClientID]->m_TeeInfos.m_apSkinPartNames[p];
+		Msg.m_aUseCustomColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aUseCustomColors[p];
+		Msg.m_aSkinPartColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aSkinPartColors[p];
+	}
+	Server()->SendPackMsg(&Msg, MSGFLAG_VITAL|MSGFLAG_NORECORD, TargetID);
 }
 
 void CGameContext::SendBroadcastBig(const char *pText, int ClientID, bool IsImportant)
