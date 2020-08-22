@@ -59,7 +59,6 @@ void CBoomer::BoomerExplosion(CCharacter* pChr)
 		float damageRadius = g_Config.m_InfBoomerDamageRadius / 10.0f;
 		float damage = g_Config.m_InfBoomerDamage / 10.0f;
 		
-		//pGameServer->CreateExplosionDisk(pChr->GetPos(), innerRadius, damageRadius, damage, force, ClientID, WEAPON_HAMMER);
-		//TBD
+		pGameServer->CreateExplosionDisk(pChr->GetPos(), innerRadius, damageRadius, damage, force, ClientID, WEAPON_HAMMER);
 	//}
 }
