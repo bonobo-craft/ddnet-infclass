@@ -233,6 +233,15 @@ int CGameControllerMOD::GetRealPlayerNum() const {
 	return (int) PlayersNum;
 }
 
+void CGameControllerMOD::ShouldStartTheGame() {}
+}
+
+void CGameControllerMOD::ShouldDoWarmup() {}
+}
+
+void CGameControllerMOD::ShouldDoWarmup() {}
+}
+
 void CGameControllerMOD::Tick()
 {
 	IGameController::Tick();
@@ -564,12 +573,9 @@ void CGameControllerMOD::OnRoundEnd()
 	if (!m_InfectedStarted)
 	  return;
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "OnRoundEnd");
-	m_InfectedStarted = false;
+	//m_InfectedStarted = false; TBD
 	ResetFinalExplosion();
 	ResetHumansToDefault();
-	//delete lua;
-	//lua = nullptr;
-	//TBD
 	circles.clear();
 	inf_circles.clear();
     if (m_apFlag != 0) {
@@ -577,7 +583,6 @@ void CGameControllerMOD::OnRoundEnd()
 		m_apFlag = 0;
 	}
 	IGameController::EndMatch(); // Endmatch instead of endround
-	//IGameController::EndRound();
 }
 
 bool CGameControllerMOD::DoWincheckMatch()
@@ -760,7 +765,7 @@ void CGameControllerMOD::OnPlayerConnect(CPlayer* pPlayer)
 	players[ClientID] = new CroyaPlayer(ClientID, pPlayer, GameServer(), this, classes);
 	//SetLanguageByCountry(Server()->ClientCountry(ClientID), ClientID);
 	//TBD
-	if (IsCroyaWarmup())
+	if (IsCroyaWarmup() || !m_InfectedStarted)
 	{
 		players[ClientID]->SetClass(classes[Class::DEFAULT]);
 	}

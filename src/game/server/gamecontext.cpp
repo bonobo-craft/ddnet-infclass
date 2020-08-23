@@ -615,6 +615,8 @@ void CGameContext::SendSkinChange(int ClientID, int TargetID)
 {
 	if(!(Server()->IsSixup(TargetID)))
 	  return;
+    if(!m_apPlayers[ClientID])
+	  return;
 	protocol7::CNetMsg_Sv_SkinChange Msg;
 	Msg.m_ClientID = ClientID;
 	const int NUM_SKINPARTS = 6; // TBD

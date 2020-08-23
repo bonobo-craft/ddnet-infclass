@@ -348,7 +348,7 @@ void IGameController::EndMatch()
 
 	GameServer()->m_World.m_Paused = false;
 	//m_GameOverTick = Server()->Tick();
-	//m_GameOverTick = Server()->Tick();
+	m_GameOverTick = Server()->Tick();
 	m_SuddenDeath = 0;
 }
 
