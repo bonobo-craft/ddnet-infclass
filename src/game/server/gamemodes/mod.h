@@ -31,6 +31,13 @@ public:
 	bool IsCroyaWarmup(); // First 10 secs after game start
 	bool RoundJustStarted();
 
+	bool ShouldDoWarmup();
+	bool ShouldEndGame();
+	void DoInfectedWon();
+    bool ShouldDoFinalExplosion();
+    void DoFinalExplosion();
+	bool IsGamePhase();
+
 	void OnRoundStart();
 	void StartInitialInfection();
 	void TurnDefaultIntoRandomHuman();

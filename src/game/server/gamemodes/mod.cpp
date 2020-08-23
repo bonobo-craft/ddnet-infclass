@@ -221,71 +221,203 @@ int CGameControllerMOD::GetRealPlayerNum() const {
 			continue;
 		PlayersNum++;
 	}
-/* 	for (auto each : players)
-	{
-		if (!each)
-			continue;
-		if(!each->GetPlayer())
-			continue;
-
-		PlayersNum++;
-	} */
 	return (int) PlayersNum;
 }
 
-void CGameControllerMOD::ShouldStartTheGame() {}
+bool CGameControllerMOD::IsGamePhase() {
+	if (IsCroyaWarmup()) // we're in warmup
+	  return false;
+	if (!m_InfectedStarted) // no game has started
+	  return false;
+    if (IsGameEnd()) // game is ended, scroreboard is on screen
+	  return false;
+	return true;
 }
 
-void CGameControllerMOD::ShouldDoWarmup() {}
+bool CGameControllerMOD::ShouldDoWarmup() {
+	if (IsCroyaWarmup()) // we're in warmup already
+	  return false;
+	if (m_InfectedStarted) // warmup is ended, we have a game
+	  return false;
+    if (IsGameEnd()) // game is ended, scroreboard is on screen
+	  return false;
+	if (GetRealPlayerNum() < 2)
+	  return false;
+    return true;
 }
 
-void CGameControllerMOD::ShouldDoWarmup() {}
+bool CGameControllerMOD::ShouldEndGame() {
+	if (!m_InfectedStarted) // no game or warmup
+	  return false;
+    if (IsGameEnd()) // game is alrady ended, scroreboard is on screen
+	  return false;
+	if (IsEveryoneInfected()) // normal game end, humans lose
+	  return true;
+	if (GetRealPlayerNum() < 2) // someone leaved or gone spectating
+	  return true;
+    return false;
+}
+
+void CGameControllerMOD::DoInfectedWon() {
+	char aBuf[256];
+	int Seconds = (Server()->Tick() - m_GameStartTick) / ((float)Server()->TickSpeed());
+	for (CPlayer* each : GameServer()->m_apPlayers) {
+		if (!each)
+			continue;
+		if (!each->GetCroyaPlayer())
+			continue;
+		char aBuf[256];
+		str_format(aBuf, sizeof(aBuf), localize("Infected won the round in %d seconds", each->GetCroyaPlayer()->GetLanguage()).c_str(), Seconds);
+		GameServer()->SendChatTarget(each->GetCID(), aBuf);
+	}
+	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Everyone Infected");
+}
+
+/* void CGameControllerMOD::ShouldAbortWarmup() {
+}
+ */
+/* void CGameControllerMOD::ShouldAbortGame() {
+} */
+
+bool CGameControllerMOD::ShouldDoFinalExplosion() {
+	if (m_InfectedStarted && !m_ExplosionStarted && g_Config.m_SvTimelimit > 0 && (Server()->Tick() - m_GameStartTick) >= g_Config.m_SvTimelimit * Server()->TickSpeed() * 60)
+	{
+		for (CCharacter* p = (CCharacter*)GameServer()->m_World.FindFirst(CGameWorld::ENTTYPE_CHARACTER); p; p = (CCharacter*)p->TypeNext())
+		{
+			if (p->IsZombie())
+			{
+				GameServer()->SendEmoticon(p->GetPlayer()->GetCID(), EMOTICON_GHOST);
+			}
+			else
+			{
+				GameServer()->SendEmoticon(p->GetPlayer()->GetCID(), EMOTICON_EYES);
+			}
+		}
+		return true;
+	}
+	return false;
+}
+
+void CGameControllerMOD::DoFinalExplosion() {
+	bool NewExplosion = false;
+
+	for (int j = 0; j < m_MapHeight; j++)
+	{
+		for (int i = 0; i < m_MapWidth; i++)
+		{
+			if ((m_GrowingMap[j * m_MapWidth + i] & 1) && (
+				(i > 0 && m_GrowingMap[j * m_MapWidth + i - 1] & 2) ||
+				(i < m_MapWidth - 1 && m_GrowingMap[j * m_MapWidth + i + 1] & 2) ||
+				(j > 0 && m_GrowingMap[(j - 1) * m_MapWidth + i] & 2) ||
+				(j < m_MapHeight - 1 && m_GrowingMap[(j + 1) * m_MapWidth + i] & 2)
+				))
+			{
+				NewExplosion = true;
+				m_GrowingMap[j * m_MapWidth + i] |= 8;
+				m_GrowingMap[j * m_MapWidth + i] &= ~1;
+				if (random_prob(0.1f))
+				{
+					vec2 TilePos = vec2(16.0f, 16.0f) + vec2(i * 32.0f, j * 32.0f);
+					GameServer()->CreateExplosion(TilePos, -1, WEAPON_GAME, 0);
+					GameServer()->CreateSound(TilePos, SOUND_GRENADE_EXPLODE);
+				}
+			}
+		}
+	}
+
+	for (int j = 0; j < m_MapHeight; j++)
+	{
+		for (int i = 0; i < m_MapWidth; i++)
+		{
+			if (m_GrowingMap[j * m_MapWidth + i] & 8)
+			{
+				m_GrowingMap[j * m_MapWidth + i] &= ~8;
+				m_GrowingMap[j * m_MapWidth + i] |= 2;
+			}
+		}
+	}
+
+	for (CCharacter* p = (CCharacter*)GameServer()->m_World.FindFirst(CGameWorld::ENTTYPE_CHARACTER); p; p = (CCharacter*)p->TypeNext())
+	{
+		if (p->IsHuman())
+			continue;
+
+		int tileX = static_cast<int>(round(p->GetPos().x)) / 32;
+		int tileY = static_cast<int>(round(p->GetPos().y)) / 32;
+
+		if (tileX < 0) tileX = 0;
+		if (tileX >= m_MapWidth) tileX = m_MapWidth - 1;
+		if (tileY < 0) tileY = 0;
+		if (tileY >= m_MapHeight) tileY = m_MapHeight - 1;
+
+		if (m_GrowingMap[tileY * m_MapWidth + tileX] & 2 && p->GetPlayer())
+		{
+			p->Die(p->GetPlayer()->GetCID(), WEAPON_GAME);
+		}
+	}
+
+	//If no more explosions, game over, decide who win
+	if (!NewExplosion)
+	{
+		if (GameServer()->GetHumanCount())
+		{
+			int NumHumans = GameServer()->GetHumanCount();
+
+			for (CPlayer* each : GameServer()->m_apPlayers) {
+				if (!each)
+					continue;
+				if (!each->GetCroyaPlayer())
+					continue;
+
+				char aBuf[256];
+				str_format(aBuf, sizeof(aBuf), localize("%d humans won the round", each->GetCroyaPlayer()->GetLanguage()).c_str(), NumHumans);
+				GameServer()->SendChatTarget(each->GetCID(), aBuf);
+				if (each->GetCroyaPlayer()->IsHuman())
+				{
+					GameServer()->SendChatTarget(each->GetCID(), localize("You have survived, +5 points", each->GetCroyaPlayer()->GetLanguage()).c_str());
+					each->m_Score += 5;
+				}
+			}
+		}
+		else
+		{
+			int Seconds = g_Config.m_SvTimelimit * 60;
+			for (CPlayer* each : GameServer()->m_apPlayers) {
+				if (!each)
+					continue;
+				if (!each->GetCroyaPlayer())
+					continue;
+				char aBuf[256];
+				str_format(aBuf, sizeof(aBuf), localize("Infected won the round in %d seconds", each->GetCroyaPlayer()->GetLanguage()).c_str(), Seconds);
+				GameServer()->SendChatTarget(each->GetCID(), aBuf);
+			}
+		}
+		OnRoundEnd();
+	}
 }
 
 void CGameControllerMOD::Tick()
 {
-	IGameController::Tick();
+	IGameController::Tick(); // process warmup and endgame timers to start round
 
-	if (RoundJustStarted()) { // not sure if it is executed only once
+	if (RoundJustStarted()) { // executed twice: 1. after map start 2. after warmup end
 		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "RoundJustStarted");
-		OnRoundStart();
-	}
-
-	// everyone infected -> end round
-	if (!IsCroyaWarmup() && IsEveryoneInfected() && !IsGameEnd() && m_InfectedStarted) {
-		int Seconds = (Server()->Tick() - m_GameStartTick) / ((float)Server()->TickSpeed());
-		for (CPlayer* each : GameServer()->m_apPlayers) {
-			if (!each)
-				continue;
-			if (!each->GetCroyaPlayer())
-				continue;
-			char aBuf[256];
-			str_format(aBuf, sizeof(aBuf), localize("Infected won the round in %d seconds", each->GetCroyaPlayer()->GetLanguage()).c_str(), Seconds);
-			GameServer()->SendChatTarget(each->GetCID(), aBuf);
-		}
-		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Everyone Infected");
-		OnRoundEnd();
-	}
-
-	bool IsGameStarted = !IsCroyaWarmup() && !IsGameEnd();
-
-	// end round on 1 player
-	if (IsGameStarted && GetRealPlayerNum() < 2 && m_InfectedStarted) {
-		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "<2 players");
-		OnRoundEnd();
-	}
-
-	if (!IsGameEnd() && !IsWarmup() && !m_InfectedStarted) {
-		if (GetRealPlayerNum() > 1) {
-			m_InfectedStarted = true;
+		if (ShouldDoWarmup()) {
 			ResetHumansToDefault();
 			DoWarmup(10);
+			m_InfectedStarted = true;
+		} else {
+			OnRoundStart(); // draw circles and such only after a warmup
 		}
 	}
 
-	IsGameStarted = !IsCroyaWarmup() && !IsGameEnd();
+	if (ShouldEndGame()) { // 1. no humans survived 2. less than 2 players in game
+		DoInfectedWon();
+		OnRoundEnd();
+		m_InfectedStarted = false;
+	}
 
-	if (IsGameStarted && m_InfectedStarted) {
+	if (IsGamePhase()) {
 		for (auto each : players)
 		{
 			if (!each)
@@ -309,125 +441,14 @@ void CGameControllerMOD::Tick()
 		}
 	}
 
-	// FINAL EXPLOSION BEGIN, todo: write a function for this?
-	//infclass 0.6 copypaste
 	//Start the final explosion if the time is over
-	if (m_InfectedStarted && !m_ExplosionStarted && g_Config.m_SvTimelimit > 0 && (Server()->Tick() - m_GameStartTick) >= g_Config.m_SvTimelimit * Server()->TickSpeed() * 60)
-	{
-		for (CCharacter* p = (CCharacter*)GameServer()->m_World.FindFirst(CGameWorld::ENTTYPE_CHARACTER); p; p = (CCharacter*)p->TypeNext())
-		{
-			if (p->IsZombie())
-			{
-				GameServer()->SendEmoticon(p->GetPlayer()->GetCID(), EMOTICON_GHOST);
-			}
-			else
-			{
-				GameServer()->SendEmoticon(p->GetPlayer()->GetCID(), EMOTICON_EYES);
-			}
-		}
+	if (ShouldDoFinalExplosion())
 		m_ExplosionStarted = true;
-	}
 
 	//Do the final explosion
 	if (m_ExplosionStarted)
-	{
-		bool NewExplosion = false;
+		DoFinalExplosion();
 
-		for (int j = 0; j < m_MapHeight; j++)
-		{
-			for (int i = 0; i < m_MapWidth; i++)
-			{
-				if ((m_GrowingMap[j * m_MapWidth + i] & 1) && (
-					(i > 0 && m_GrowingMap[j * m_MapWidth + i - 1] & 2) ||
-					(i < m_MapWidth - 1 && m_GrowingMap[j * m_MapWidth + i + 1] & 2) ||
-					(j > 0 && m_GrowingMap[(j - 1) * m_MapWidth + i] & 2) ||
-					(j < m_MapHeight - 1 && m_GrowingMap[(j + 1) * m_MapWidth + i] & 2)
-					))
-				{
-					NewExplosion = true;
-					m_GrowingMap[j * m_MapWidth + i] |= 8;
-					m_GrowingMap[j * m_MapWidth + i] &= ~1;
-					if (random_prob(0.1f))
-					{
-						vec2 TilePos = vec2(16.0f, 16.0f) + vec2(i * 32.0f, j * 32.0f);
-						GameServer()->CreateExplosion(TilePos, -1, WEAPON_GAME, 0);
-						GameServer()->CreateSound(TilePos, SOUND_GRENADE_EXPLODE);
-					}
-				}
-			}
-		}
-
-		for (int j = 0; j < m_MapHeight; j++)
-		{
-			for (int i = 0; i < m_MapWidth; i++)
-			{
-				if (m_GrowingMap[j * m_MapWidth + i] & 8)
-				{
-					m_GrowingMap[j * m_MapWidth + i] &= ~8;
-					m_GrowingMap[j * m_MapWidth + i] |= 2;
-				}
-			}
-		}
-
-		for (CCharacter* p = (CCharacter*)GameServer()->m_World.FindFirst(CGameWorld::ENTTYPE_CHARACTER); p; p = (CCharacter*)p->TypeNext())
-		{
-			if (p->IsHuman())
-				continue;
-
-			int tileX = static_cast<int>(round(p->GetPos().x)) / 32;
-			int tileY = static_cast<int>(round(p->GetPos().y)) / 32;
-
-			if (tileX < 0) tileX = 0;
-			if (tileX >= m_MapWidth) tileX = m_MapWidth - 1;
-			if (tileY < 0) tileY = 0;
-			if (tileY >= m_MapHeight) tileY = m_MapHeight - 1;
-
-			if (m_GrowingMap[tileY * m_MapWidth + tileX] & 2 && p->GetPlayer())
-			{
-				p->Die(p->GetPlayer()->GetCID(), WEAPON_GAME);
-			}
-		}
-
-		//If no more explosions, game over, decide who win
-		if (!NewExplosion)
-		{
-			if (GameServer()->GetHumanCount())
-			{
-				int NumHumans = GameServer()->GetHumanCount();
-
-				for (CPlayer* each : GameServer()->m_apPlayers) {
-					if (!each)
-						continue;
-					if (!each->GetCroyaPlayer())
-						continue;
-
-					char aBuf[256];
-					str_format(aBuf, sizeof(aBuf), localize("%d humans won the round", each->GetCroyaPlayer()->GetLanguage()).c_str(), NumHumans);
-					GameServer()->SendChatTarget(each->GetCID(), aBuf);
-					if (each->GetCroyaPlayer()->IsHuman())
-					{
-						GameServer()->SendChatTarget(each->GetCID(), localize("You have survived, +5 points", each->GetCroyaPlayer()->GetLanguage()).c_str());
-						each->m_Score += 5;
-					}
-				}
-			}
-			else
-			{
-				int Seconds = g_Config.m_SvTimelimit * 60;
-				for (CPlayer* each : GameServer()->m_apPlayers) {
-					if (!each)
-						continue;
-					if (!each->GetCroyaPlayer())
-						continue;
-					char aBuf[256];
-					str_format(aBuf, sizeof(aBuf), localize("Infected won the round in %d seconds", each->GetCroyaPlayer()->GetLanguage()).c_str(), Seconds);
-					GameServer()->SendChatTarget(each->GetCID(), aBuf);
-				}
-			}
-			OnRoundEnd();
-		}
-	}
-	// FINAL EXPLOSION END
 }
 
 void CGameControllerMOD::FlagTick() {
@@ -526,10 +547,7 @@ bool CGameControllerMOD::IsCroyaWarmup()
 
 bool CGameControllerMOD::RoundJustStarted()
 {
-	//if (!IsWarmup() && m_RoundStartTick + 1 == Server()->Tick()) // it will reset so we should wait 1 tick
-	if (!m_InfectedStarted)
-		return false;
-	if (!IsWarmup() && m_RoundStartTick + 1 == Server()->Tick()) // it will reset so we should wait 1 tick
+	if (m_RoundStartTick == Server()->Tick())
 		return true;
 	else
 		return false;
@@ -570,10 +588,7 @@ void CGameControllerMOD::StartInitialInfection()
 
 void CGameControllerMOD::OnRoundEnd()
 {
-	if (!m_InfectedStarted)
-	  return;
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "OnRoundEnd");
-	//m_InfectedStarted = false; TBD
 	ResetFinalExplosion();
 	ResetHumansToDefault();
 	circles.clear();

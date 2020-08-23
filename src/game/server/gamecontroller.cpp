@@ -341,13 +341,10 @@ bool IGameController::OnEntity(int Index, vec2 Pos, int Layer, int Flags, int Nu
 
 void IGameController::EndMatch()
 {
-	if(m_Warmup) // game can't end when we are running warmup
-		return;
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Match End");
 	GameServer()->SendBroadcast("Match End", -1);
 
 	GameServer()->m_World.m_Paused = false;
-	//m_GameOverTick = Server()->Tick();
 	m_GameOverTick = Server()->Tick();
 	m_SuddenDeath = 0;
 }
