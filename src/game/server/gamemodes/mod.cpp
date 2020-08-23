@@ -138,7 +138,6 @@ void CGameControllerMOD::OnRoundStart()
 	//	//////inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(30, 30), -1, 100));
 	//}
 	inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(44 * TILE_SIZE, 30 * TILE_SIZE), -1, 100));
-	m_InfectedStarted = true;
 	TurnDefaultIntoRandomHuman();
 	UnlockPositions();
 
@@ -234,6 +233,16 @@ bool CGameControllerMOD::IsGamePhase() {
 	return true;
 }
 
+bool CGameControllerMOD::WarmupJustended() {
+	if (IsCroyaWarmup()) // we're in warmup
+	  return false;
+    if (IsGameEnd()) // game is ended, scroreboard is on screen
+	  return false;
+	if (!m_InfectedStarted) // warmup didn't started
+	  return false;
+    return true;
+}
+
 bool CGameControllerMOD::ShouldDoWarmup() {
 	if (IsCroyaWarmup()) // we're in warmup already
 	  return false;
@@ -272,12 +281,6 @@ void CGameControllerMOD::DoInfectedWon() {
 	}
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Everyone Infected");
 }
-
-/* void CGameControllerMOD::ShouldAbortWarmup() {
-}
- */
-/* void CGameControllerMOD::ShouldAbortGame() {
-} */
 
 bool CGameControllerMOD::ShouldDoFinalExplosion() {
 	if (m_InfectedStarted && !m_ExplosionStarted && g_Config.m_SvTimelimit > 0 && (Server()->Tick() - m_GameStartTick) >= g_Config.m_SvTimelimit * Server()->TickSpeed() * 60)
@@ -402,13 +405,15 @@ void CGameControllerMOD::Tick()
 
 	if (RoundJustStarted()) { // executed twice: 1. after map start 2. after warmup end
 		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "RoundJustStarted");
-		if (ShouldDoWarmup()) {
-			ResetHumansToDefault();
-			DoWarmup(10);
-			m_InfectedStarted = true;
-		} else {
+		if (WarmupJustended()) {
 			OnRoundStart(); // draw circles and such only after a warmup
 		}
+	}
+
+	if (ShouldDoWarmup()) {
+		ResetHumansToDefault();
+		DoWarmup(10);
+		m_InfectedStarted = true;
 	}
 
 	if (ShouldEndGame()) { // 1. no humans survived 2. less than 2 players in game

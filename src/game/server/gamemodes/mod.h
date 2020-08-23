@@ -58,6 +58,7 @@ public:
 	int GetZombieCount() const;
 	int GetHumanCount() const;
 	bool IsEveryoneInfected() const;
+	bool WarmupJustended();
 
 	void OnPlayerDisconnect(class CPlayer* pPlayer);
 	void OnPlayerConnect(class CPlayer* pPlayer);
