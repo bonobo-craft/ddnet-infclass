@@ -552,7 +552,7 @@ bool CGameControllerMOD::IsCroyaWarmup()
 
 bool CGameControllerMOD::RoundJustStarted()
 {
-	if (m_RoundStartTick == Server()->Tick())
+	if (m_RoundStartTick + 1 == Server()->Tick()) // to avoid reset
 		return true;
 	else
 		return false;
