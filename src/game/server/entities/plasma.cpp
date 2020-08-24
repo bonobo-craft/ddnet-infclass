@@ -36,8 +36,9 @@ bool CPlasma::HitCharacter()
 		return false;
 	m_Freeze ? Hit->Freeze() : Hit->UnFreeze();
 	if (m_Explosive)
-		GameServer()->CreateExplosion(m_Pos, -1, WEAPON_GRENADE, true,
-				m_ResponsibleTeam, Hit->Teams()->TeamMask(m_ResponsibleTeam));
+/* 		GameServer()->CreateExplosion(m_Pos, -1, WEAPON_GRENADE, true,
+				m_ResponsibleTeam, Hit->Teams()->TeamMask(m_ResponsibleTeam)); */
+				 //TBD: we don't need plasma
 	GameServer()->m_World.DestroyEntity(this);
 	return true;
 }
@@ -70,14 +71,15 @@ void CPlasma::Tick()
 	if (Res)
 	{
 		if (m_Explosive)
-			GameServer()->CreateExplosion(
+/* 			GameServer()->CreateExplosion(
 					m_Pos,
 					-1,
 					WEAPON_GRENADE,
 					true,
 					m_ResponsibleTeam,
 					((CGameControllerDDRace*) GameServer()->m_pController)->m_Teams.TeamMask(
-							m_ResponsibleTeam));
+							m_ResponsibleTeam)); */
+							// TBD: we don't need plasma
 		Reset();
 	}
 

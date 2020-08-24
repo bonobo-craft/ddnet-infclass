@@ -8,7 +8,7 @@
 
 #include "character.h"
 #include "laser.h"
-#include "projectile.h"
+#include <game/server/entities/projectile.h>
 
 // INFCROYA BEGIN ------------------------------------------------------------
 #include <infcroya/classes/class.h>
@@ -417,82 +417,75 @@ void CCharacter::FireWeapon()
 	{
 		case WEAPON_HAMMER:
 		{
-			//INFCROYA BEGIN ------------------------------------------------------------
-			if (0 == 0) {
-			//if (str_comp_nocase(g_Config.m_SvGametype, "mod") == 0) {
-				m_pCroyaPlayer->OnWeaponFire(Direction, ProjStartPos, WEAPON_HAMMER, this);
-			}
-			else {
-				// reset objects Hit
-				m_NumObjectsHit = 0;
-				GameServer()->CreateSound(m_Pos, SOUND_HAMMER_FIRE);
-				m_NumObjectsHit = 0;
-				GameServer()->CreateSound(m_Pos, SOUND_HAMMER_FIRE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
+			m_pCroyaPlayer->OnWeaponFire(Direction, ProjStartPos, WEAPON_HAMMER, this);
+/* 			// reset objects Hit
+			m_NumObjectsHit = 0;
+			GameServer()->CreateSound(m_Pos, SOUND_HAMMER_FIRE);
+			m_NumObjectsHit = 0;
+			GameServer()->CreateSound(m_Pos, SOUND_HAMMER_FIRE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
 
-				Antibot()->OnHammerFire(m_pPlayer->GetCID());
+			Antibot()->OnHammerFire(m_pPlayer->GetCID());
 
-				if (m_Hit&DISABLE_HIT_HAMMER) break;
+			if (m_Hit&DISABLE_HIT_HAMMER) break;
 
-				CCharacter *apEnts[MAX_CLIENTS];
-				int Hits = 0;
-				int Num = GameServer()->m_World.FindEntities(ProjStartPos, m_ProximityRadius*0.5f, (CEntity**)apEnts,
-															MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
+			CCharacter *apEnts[MAX_CLIENTS];
+			int Hits = 0;
+			int Num = GameServer()->m_World.FindEntities(ProjStartPos, m_ProximityRadius*0.5f, (CEntity**)apEnts,
+														MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
 
-				for (int i = 0; i < Num; ++i)
-				{
-					CCharacter *pTarget = apEnts[i];
+			for (int i = 0; i < Num; ++i)
+			{
+				CCharacter *pTarget = apEnts[i];
 
-					//if ((pTarget == this) || GameServer()->Collision()->IntersectLine(ProjStartPos, pTarget->m_Pos, NULL, NULL))
-					if((pTarget == this || (pTarget->IsAlive() && !CanCollide(pTarget->GetPlayer()->GetCID()))))
-						continue;
+				//if ((pTarget == this) || GameServer()->Collision()->IntersectLine(ProjStartPos, pTarget->m_Pos, NULL, NULL))
+				if((pTarget == this || (pTarget->IsAlive() && !CanCollide(pTarget->GetPlayer()->GetCID()))))
+					continue;
 
-					// set his velocity to fast upward (for now)
-					if(length(pTarget->m_Pos-ProjStartPos) > 0.0f)
-						GameServer()->CreateHammerHit(pTarget->m_Pos-normalize(pTarget->m_Pos-ProjStartPos)*m_ProximityRadius*0.5f, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
-					else
-						GameServer()->CreateHammerHit(ProjStartPos, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
+				// set his velocity to fast upward (for now)
+				if(length(pTarget->m_Pos-ProjStartPos) > 0.0f)
+					GameServer()->CreateHammerHit(pTarget->m_Pos-normalize(pTarget->m_Pos-ProjStartPos)*m_ProximityRadius*0.5f, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
+				else
+					GameServer()->CreateHammerHit(ProjStartPos, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
 
-					vec2 Dir;
-					if (length(pTarget->m_Pos - m_Pos) > 0.0f)
-						Dir = normalize(pTarget->m_Pos - m_Pos);
-					else
-						Dir = vec2(0.f, -1.f);
-					/*pTarget->TakeDamage(vec2(0.f, -1.f) + normalize(Dir + vec2(0.f, -1.1f)) * 10.0f, g_pData->m_Weapons.m_Hammer.m_pBase->m_Damage,
-						m_pPlayer->GetCID(), m_Core.m_ActiveWeapon);*/
+				vec2 Dir;
+				if (length(pTarget->m_Pos - m_Pos) > 0.0f)
+					Dir = normalize(pTarget->m_Pos - m_Pos);
+				else
+					Dir = vec2(0.f, -1.f);
+				//pTarget->TakeDamage(vec2(0.f, -1.f) + normalize(Dir + vec2(0.f, -1.1f)) * 10.0f, g_pData->m_Weapons.m_Hammer.m_pBase->m_Damage,
+					m_pPlayer->GetCID(), m_Core.m_ActiveWeapon);
 
-					float Strength;
-					if (!m_TuneZone)
-						Strength = GameServer()->Tuning()->m_HammerStrength;
-					else
-						Strength = GameServer()->TuningList()[m_TuneZone].m_HammerStrength;
+				float Strength;
+				if (!m_TuneZone)
+					Strength = GameServer()->Tuning()->m_HammerStrength;
+				else
+					Strength = GameServer()->TuningList()[m_TuneZone].m_HammerStrength;
 
-					vec2 Temp = pTarget->m_Core.m_Vel + normalize(Dir + vec2(0.f, -
-	1.1f)) * 10.0f;
-					Temp = ClampVel(pTarget->m_MoveRestrictions, Temp);
-					Temp -= pTarget->m_Core.m_Vel;
-					pTarget->TakeDamage((vec2(0.f, -1.0f) + Temp) * Strength, g_pData->m_Weapons.m_Hammer.m_pBase->m_Damage,
-						m_pPlayer->GetCID(), m_Core.m_ActiveWeapon);
-					pTarget->UnFreeze();
+				vec2 Temp = pTarget->m_Core.m_Vel + normalize(Dir + vec2(0.f, -
+1.1f)) * 10.0f;
+				Temp = ClampVel(pTarget->m_MoveRestrictions, Temp);
+				Temp -= pTarget->m_Core.m_Vel;
+				pTarget->TakeDamage((vec2(0.f, -1.0f) + Temp) * Strength, g_pData->m_Weapons.m_Hammer.m_pBase->m_Damage,
+					m_pPlayer->GetCID(), m_Core.m_ActiveWeapon);
+				pTarget->UnFreeze();
 
-					if(m_FreezeHammer)
-						pTarget->Freeze();
+				if(m_FreezeHammer)
+					pTarget->Freeze();
 
-					Antibot()->OnHammerHit(m_pPlayer->GetCID());
+				Antibot()->OnHammerHit(m_pPlayer->GetCID());
 
-					Hits++;
+				Hits++;
 				}
 
 				// if we Hit anything, we have to wait for the reload
 				if(Hits)
-					m_ReloadTimer = Server()->TickSpeed()/3;
-			}
-
+					m_ReloadTimer = Server()->TickSpeed()/3; */
 		} break;
 
 		case WEAPON_GUN:
 		{
 			m_pCroyaPlayer->OnWeaponFire(Direction, ProjStartPos, WEAPON_GUN, this);
-			break; //TBD
+/* 			break;
 			if (!m_Jetpack || !m_pPlayer->m_NinjaJetpack)
 			{
 				int Lifetime;
@@ -509,7 +502,7 @@ void CCharacter::FireWeapon()
 						ProjStartPos,//Pos
 						Direction,//Dir
 						Lifetime,//Span
-						0,//Freeze
+						1,//Damage
 						0,//Explosive
 						0,//Force
 						-1//SoundImpact
@@ -526,13 +519,12 @@ void CCharacter::FireWeapon()
 
 				Server()->SendMsg(&Msg, MSGFLAG_VITAL, m_pPlayer->GetCID());
 				GameServer()->CreateSound(m_Pos, SOUND_GUN_FIRE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
-			}
+			} */
 		} break;
 
 		case WEAPON_SHOTGUN:
 		{
 			m_pCroyaPlayer->OnWeaponFire(Direction, ProjStartPos, WEAPON_SHOTGUN, this);
-			break; //TBD
 			/*int ShotSpread = 2;
 
 			CMsgPacker Msg(NETMSGTYPE_SV_EXTRAPROJECTILE);
@@ -563,21 +555,20 @@ void CCharacter::FireWeapon()
 			Server()->SendMsg(&Msg, MSGFLAG_VITAL, m_pPlayer->GetCID());
 
 			GameServer()->CreateSound(m_Pos, SOUND_SHOTGUN_FIRE);*/
-			float LaserReach;
+/* 			float LaserReach;
 			if (!m_TuneZone)
 				LaserReach = GameServer()->Tuning()->m_LaserReach;
 			else
 				LaserReach = GameServer()->TuningList()[m_TuneZone].m_LaserReach;
 
 			new CLaser(&GameServer()->m_World, m_Pos, Direction, LaserReach, m_pPlayer->GetCID(), WEAPON_SHOTGUN);
-			GameServer()->CreateSound(m_Pos, SOUND_SHOTGUN_FIRE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
+			GameServer()->CreateSound(m_Pos, SOUND_SHOTGUN_FIRE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID())); */
 		} break;
 
 		case WEAPON_GRENADE:
 		{
 			m_pCroyaPlayer->OnWeaponFire(Direction, ProjStartPos, WEAPON_GRENADE, this);
-			break; //TBD
-			int Lifetime;
+/* 			int Lifetime;
 			if (!m_TuneZone)
 				Lifetime = (int)(Server()->TickSpeed()*GameServer()->Tuning()->m_GrenadeLifetime);
 			else
@@ -607,33 +598,32 @@ void CCharacter::FireWeapon()
 				Msg.AddInt(((int *)&p)[i]);
 			Server()->SendMsg(&Msg, MSGFLAG_VITAL, m_pPlayer->GetCID());
 
-			GameServer()->CreateSound(m_Pos, SOUND_GRENADE_FIRE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
+			GameServer()->CreateSound(m_Pos, SOUND_GRENADE_FIRE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID())); */
 		} break;
 
 		case WEAPON_LASER:
 		{
 			m_pCroyaPlayer->OnWeaponFire(Direction, ProjStartPos, WEAPON_LASER, this);
-			break; //TBD
-			float LaserReach;
+/* 			float LaserReach;
 			if (!m_TuneZone)
 				LaserReach = GameServer()->Tuning()->m_LaserReach;
 			else
 				LaserReach = GameServer()->TuningList()[m_TuneZone].m_LaserReach;
 
 			new CLaser(GameWorld(), m_Pos, Direction, LaserReach, m_pPlayer->GetCID(), WEAPON_LASER);
-			GameServer()->CreateSound(m_Pos, SOUND_LASER_FIRE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
+			GameServer()->CreateSound(m_Pos, SOUND_LASER_FIRE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID())); */
 		} break;
 
 		case WEAPON_NINJA:
 		{
-			// reset Hit objects
+/* 			// reset Hit objects
 			m_NumObjectsHit = 0;
 
 			m_Ninja.m_ActivationDir = Direction;
 			m_Ninja.m_CurrentMoveTime = g_pData->m_Weapons.m_Ninja.m_Movetime * Server()->TickSpeed() / 1000;
 			m_Ninja.m_OldVelAmount = length(m_Core.m_Vel);
 
-			GameServer()->CreateSound(m_Pos, SOUND_NINJA_FIRE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
+			GameServer()->CreateSound(m_Pos, SOUND_NINJA_FIRE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID())); */
 		} break;
 
 	}

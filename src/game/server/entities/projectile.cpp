@@ -17,14 +17,15 @@ CProjectile::CProjectile
 		vec2 Pos,
 		vec2 Dir,
 		int Span,
-		bool Freeze,
+		int Damage,
 		bool Explosive,
 		float Force,
 		int SoundImpact,
+		int Weapon,
 		int Layer,
-		int Number
-	)
-: CEntity(pGameWorld, CGameWorld::ENTTYPE_PROJECTILE)
+		int Number,
+		bool Freeze
+	) : CEntity(pGameWorld, CGameWorld::ENTTYPE_PROJECTILE)
 {
 	m_Type = Type;
 	m_Pos = Pos;
@@ -32,7 +33,8 @@ CProjectile::CProjectile
 	m_LifeSpan = Span;
 	m_Owner = Owner;
 	m_Force = Force;
-	//m_Damage = Damage;
+	m_Damage = Damage;
+	m_Weapon = Weapon;
 	m_SoundImpact = SoundImpact;
 	m_StartTick = Server()->Tick();
 	m_Explosive = Explosive;
@@ -110,6 +112,34 @@ void CProjectile::Tick()
 	float Ct = (Server()->Tick()-m_StartTick)/(float)Server()->TickSpeed();
 	vec2 PrevPos = GetPos(Pt);
 	vec2 CurPos = GetPos(Ct);
+	int Collide = GameServer()->Collision()->IntersectLine(PrevPos, CurPos, &CurPos, 0);
+	CCharacter *OwnerChar = GameServer()->GetPlayerChar(m_Owner);
+	CCharacter *TargetChr = GameWorld()->IntersectCharacter(PrevPos, CurPos, 6.0f, CurPos, OwnerChar);
+
+	m_LifeSpan--;
+
+	if(TargetChr || Collide || m_LifeSpan < 0 || GameLayerClipped(CurPos))
+	{
+		if(m_LifeSpan >= 0 || m_Weapon == WEAPON_GRENADE)
+			GameServer()->CreateSound(CurPos, m_SoundImpact);
+
+		if(m_Explosive)
+			GameServer()->CreateExplosion(CurPos, m_Owner, m_Weapon, m_Damage);
+
+		else if(TargetChr)
+			TargetChr->TakeDamage(m_Direction * maximum(0.001f, m_Force), m_Direction*-1, m_Damage, m_Owner, m_Weapon);
+
+		GameWorld()->DestroyEntity(this);
+	}
+}
+
+
+void CProjectile::TickDDNet()
+{
+	float Pt = (Server()->Tick()-m_StartTick-1)/(float)Server()->TickSpeed();
+	float Ct = (Server()->Tick()-m_StartTick)/(float)Server()->TickSpeed();
+	vec2 PrevPos = GetPos(Pt);
+	vec2 CurPos = GetPos(Ct);
 	vec2 ColPos;
 	vec2 NewPos;
 	int Collide = GameServer()->Collision()->IntersectLine(PrevPos, CurPos, &ColPos, &NewPos);
@@ -160,7 +190,7 @@ void CProjectile::Tick()
 			}
 			for(int i = 0; i < Number; i++)
 			{
-				GameServer()->CreateExplosion(ColPos, m_Owner, m_Type, m_Owner == -1, (!pTargetChr ? -1 : pTargetChr->Team()),
+				GameServer()->CreateExplosionDDNet(ColPos, m_Owner, m_Type, m_Owner == -1, (!pTargetChr ? -1 : pTargetChr->Team()),
 				(m_Owner != -1)? TeamMask : -1LL);
 				GameServer()->CreateSound(ColPos, m_SoundImpact,
 				(m_Owner != -1)? TeamMask : -1LL);
@@ -261,7 +291,7 @@ void CProjectile::Tick()
 					TeamMask = pOwnerChar->Teams()->TeamMask(pOwnerChar->Team(), -1, m_Owner);
 			}
 
-			GameServer()->CreateExplosion(ColPos, m_Owner, m_Type, m_Owner == -1, (!pOwnerChar ? -1 : pOwnerChar->Team()),
+			GameServer()->CreateExplosionDDNet(ColPos, m_Owner, m_Type, m_Owner == -1, (!pOwnerChar ? -1 : pOwnerChar->Team()),
 			(m_Owner != -1)? TeamMask : -1LL);
 			GameServer()->CreateSound(ColPos, m_SoundImpact,
 			(m_Owner != -1)? TeamMask : -1LL);

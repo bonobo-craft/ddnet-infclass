@@ -215,39 +215,41 @@ void CGameContext::CreateHammerHit(vec2 Pos, int64 Mask)
 
 void CGameContext::CreateExplosion(vec2 Pos, int Owner, int Weapon, int MaxDamage, bool MercBomb) // INFCROYA RELATED, (bool MercBomb)
 {
-	//// create the event
-	//CNetEvent_Explosion *pEvent = (CNetEvent_Explosion *)m_Events.Create(NETEVENTTYPE_EXPLOSION, sizeof(CNetEvent_Explosion));
-	//if(pEvent)
-	//{
-	//	pEvent->m_X = (int)Pos.x;
-	//	pEvent->m_Y = (int)Pos.y;
-	//}
+	// create the event
+	CNetEvent_Explosion *pEvent = (CNetEvent_Explosion *)m_Events.Create(NETEVENTTYPE_EXPLOSION, sizeof(CNetEvent_Explosion));
+	if(pEvent)
+	{
+		pEvent->m_X = (int)Pos.x;
+		pEvent->m_Y = (int)Pos.y;
+	}
 
-	//// deal damage
-	//CCharacter *apEnts[MAX_CLIENTS];
-	//float Radius = g_pData->m_Explosion.m_Radius;
-	//float InnerRadius = 48.0f;
-	//float MaxForce = g_pData->m_Explosion.m_MaxForce;
-	//int Num = m_World.FindEntities(Pos, Radius, (CEntity**)apEnts, MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
-	//for(int i = 0; i < Num; i++)
-	//{
-	//	// INFCROYA BEGIN ------------------------------------------------------------
-	//	if (MercBomb && m_apPlayers[Owner]->GetCroyaPlayer()->IsZombie()) {
-	//		break;
-	//	}
-	//	// INFCROYA END ------------------------------------------------------------//
-	//	vec2 Diff = apEnts[i]->GetPos() - Pos;
-	//	vec2 Force(0, MaxForce);
-	//	float l = length(Diff);
-	//	if(l)
-	//		Force = normalize(Diff) * MaxForce;
-	//	float Factor = 1 - clamp((l-InnerRadius)/(Radius-InnerRadius), 0.0f, 1.0f);
-	//	if((int)(Factor * MaxDamage))
-	//		apEnts[i]->TakeDamage(Force * Factor, Diff*-1, (int)(Factor * MaxDamage), Owner, Weapon);
-	//}
+	// deal damage
+	CCharacter *apEnts[MAX_CLIENTS];
+	//float Radius = g_pData->m_Explosion.m_Radius; // TBD
+	float Radius = 500;
+	float InnerRadius = 48.0f;
+	//float MaxForce = g_pData->m_Explosion.m_MaxForce; // TBD
+	float MaxForce = 5.0f;
+	int Num = m_World.FindEntities(Pos, Radius, (CEntity**)apEnts, MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
+	for(int i = 0; i < Num; i++)
+	{
+		// INFCROYA BEGIN ------------------------------------------------------------
+		if (MercBomb && m_apPlayers[Owner]->GetCroyaPlayer()->IsZombie()) {
+			break;
+		}
+		// INFCROYA END ------------------------------------------------------------//
+		vec2 Diff = apEnts[i]->GetPos() - Pos;
+		vec2 Force(0, MaxForce);
+		float l = length(Diff);
+		if(l)
+			Force = normalize(Diff) * MaxForce;
+		float Factor = 1 - clamp((l-InnerRadius)/(Radius-InnerRadius), 0.0f, 1.0f);
+		if((int)(Factor * MaxDamage))
+			apEnts[i]->TakeDamage(Force * Factor, Diff*-1, (int)(Factor * MaxDamage), Owner, Weapon);
+	}
 }
 
-void CGameContext::CreateExplosion(vec2 Pos, int Owner, int Weapon, bool NoDamage, int ActivatedTeam, int64 Mask)
+void CGameContext::CreateExplosionDDNet(vec2 Pos, int Owner, int Weapon, bool NoDamage, int ActivatedTeam, int64 Mask)
 {
 	// create the event
 	CNetEvent_Explosion *pEvent = (CNetEvent_Explosion *)m_Events.Create(NETEVENTTYPE_EXPLOSION, sizeof(CNetEvent_Explosion), Mask);
@@ -3820,11 +3822,11 @@ void CGameContext::ResetTuning()
 {
 	CTuningParams TuningParams;
 	m_Tuning = TuningParams;
-	Tuning()->Set("gun_speed", 1400);
+/* 	Tuning()->Set("gun_speed", 1400);
 	Tuning()->Set("gun_curvature", 0);
 	Tuning()->Set("shotgun_speed", 500);
 	Tuning()->Set("shotgun_speeddiff", 0);
-	Tuning()->Set("shotgun_curvature", 0);
+	Tuning()->Set("shotgun_curvature", 0); */
 	SendTuningParams(-1);
 }
 

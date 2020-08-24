@@ -376,10 +376,11 @@ void CCharacter::FireWeapon()
 						ProjStartPos,//Pos
 						Direction,//Dir
 						Lifetime,//Span
-						0,//Freeze
+						1,//Damage
 						0,//Explosive
 						0,//Force
 						-1//SoundImpact
+						0//Freeze
 						);
 			}
 		} break;
