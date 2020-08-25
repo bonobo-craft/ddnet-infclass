@@ -344,7 +344,7 @@ void IGameController::EndMatch()
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Match End");
 	GameServer()->SendBroadcast("Match End", -1);
 
-	GameServer()->m_World.m_Paused = false;
+	GameServer()->m_World.m_Paused = true;
 	m_GameOverTick = Server()->Tick();
 	m_SuddenDeath = 0;
 }
@@ -682,14 +682,10 @@ bool IGameController::IsSpawnable(vec2 Pos)
 bool IGameController::IsGameEnd() const
 {
 	return (m_GameOverTick != -1);
-	//return (m_GameState == IGS_END_MATCH) || (m_GameState == IGS_END_ROUND);
-	//TBD
 }
 
 bool IGameController::IsWarmup() const
 {
 	return m_Warmup;
-	//return (m_GameState == IGS_WARMUP_USER) || (m_GameState == IGS_WARMUP_GAME);
-	//TBD
 }
 // INFCROYA END ------------------------------------------------------------//
