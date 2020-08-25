@@ -3,6 +3,6 @@
 #ifndef GAME_SERVER_GAMEMODES_GAMEMODE_H
 #define GAME_SERVER_GAMEMODES_GAMEMODE_H
 
-#define GAME_NAME "infCroya"
-#define TEST_NAME "TestInfCroya"
+#define GAME_NAME "infClassFng"
+#define TEST_NAME "TestInfClassCroya"
 #endif // GAME_SERVER_GAMEMODES_GAMEMODE_H
