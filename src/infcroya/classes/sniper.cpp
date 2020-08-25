@@ -24,7 +24,7 @@ CSniper::CSniper()
 
 void CSniper::InitialWeaponsHealth(CCharacter* pChr)
 {
-	pChr->IncreaseHealth(10);
+	pChr->IncreaseHealth(9);
 	pChr->GiveWeapon(WEAPON_HAMMER, -1);
 	pChr->GiveWeapon(WEAPON_LASER, 10);
 	pChr->GiveWeapon(WEAPON_GUN, 10);

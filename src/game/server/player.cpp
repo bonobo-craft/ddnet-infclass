@@ -733,10 +733,9 @@ bool CPlayer::SetTimerType(int TimerType)
 void CPlayer::TryRespawn()
 {
 	// INFCROYA BEGIN ------------------------------------------------------------
-	// TBD
-	//if (GetCroyaPlayer()->GetGameControllerMOD()->IsExplosionStarted()) {
-	//	return;
-	//}
+	if (GetCroyaPlayer()->GetGameControllerMOD()->IsExplosionStarted()) {
+		return;
+	}
 	// INFCROYA END ------------------------------------------------------------//
 	vec2 SpawnPos;
 
@@ -746,11 +745,20 @@ void CPlayer::TryRespawn()
 	m_WeakHookSpawn = false;
 	m_Spawning = false;
 	m_pCharacter = new(m_ClientID) CCharacter(&GameServer()->m_World);
-	m_pCharacter->Spawn(this, SpawnPos);
+	if (GetCroyaPlayer()->IsHuman()) {
+		m_pCharacter->Spawn(this, SpawnPos);
+		//m_pCharacter->SetHookProtected(m_HookProtected);
+		GameServer()->CreatePlayerSpawn(SpawnPos);
+	}
+	else if (GetCroyaPlayer()->IsZombie()) {
+		m_pCharacter->Spawn(this, SpawnPos);
+		//m_pCharacter->SetHookProtected(m_HookProtected);
+	}
+/* 	m_pCharacter->Spawn(this, SpawnPos);
 	GameServer()->CreatePlayerSpawn(SpawnPos, m_pCharacter->Teams()->TeamMask(m_pCharacter->Team(), -1, m_ClientID));
 
 	if(g_Config.m_SvTeam == 3)
-		m_pCharacter->SetSolo(true);
+		m_pCharacter->SetSolo(true); */
 }
 
 bool CPlayer::AfkTimer(int NewTargetX, int NewTargetY)

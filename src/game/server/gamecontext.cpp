@@ -295,7 +295,7 @@ void CGameContext::CreateExplosionDDNet(vec2 Pos, int Owner, int Weapon, bool No
 				TeamMask = CmaskUnset(TeamMask, PlayerTeam);
 			}
 
-			apEnts[i]->TakeDamage(ForceDir*Dmg*2, (int)Dmg, Owner, Weapon);
+			apEnts[i]->TakeDamageDDNet(ForceDir*Dmg*2, (int)Dmg, Owner, Weapon);
 		}
 	}
 }

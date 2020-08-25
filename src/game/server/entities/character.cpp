@@ -34,7 +34,7 @@ CCharacter::CCharacter(CGameWorld *pWorld)
 : CEntity(pWorld, CGameWorld::ENTTYPE_CHARACTER)
 {
 	m_ProximityRadius = ms_PhysSize;
-	m_Health = 0;
+	m_Health = 1;
 	m_Armor = 0;
 	m_StrongWeakID = 0;
 }
@@ -186,7 +186,7 @@ void CCharacter::HandleJetpack()
 					Strength = GameServer()->Tuning()->m_JetpackStrength;
 				else
 					Strength = GameServer()->TuningList()[m_TuneZone].m_JetpackStrength;
-				TakeDamage(Direction * -1.0f * (Strength / 100.0f / 6.11f), 0, m_pPlayer->GetCID(), m_Core.m_ActiveWeapon);
+				TakeDamageDDNet(Direction * -1.0f * (Strength / 100.0f / 6.11f), 0, m_pPlayer->GetCID(), m_Core.m_ActiveWeapon);
 			}
 		}
 	}
@@ -279,7 +279,7 @@ void CCharacter::HandleNinja()
 				if(m_NumObjectsHit < 10)
 					m_apHitObjects[m_NumObjectsHit++] = aEnts[i];
 
-				aEnts[i]->TakeDamage(vec2(0, -10.0f), g_pData->m_Weapons.m_Ninja.m_pBase->m_Damage, m_pPlayer->GetCID(), WEAPON_NINJA);
+				aEnts[i]->TakeDamageDDNet(vec2(0, -10.0f), g_pData->m_Weapons.m_Ninja.m_pBase->m_Damage, m_pPlayer->GetCID(), WEAPON_NINJA);
 			}
 		}
 
@@ -306,36 +306,40 @@ void CCharacter::HandleWeaponSwitch()
 	if(m_QueuedWeapon != -1)
 		WantedWeapon = m_QueuedWeapon;
 
-	//TBD
-/* 	bool Anything = true;
-	 for(int i = 0; i < NUM_WEAPONS - 1; ++i)
+	bool Anything = false;
+	for(int i = 0; i < NUM_WEAPONS - 1; ++i)
 		 if(m_aWeapons[i].m_Got)
 			 Anything = true;
-	 if(!Anything)
-		 return; */
 	// select Weapon
 	int Next = CountInput(m_LatestPrevInput.m_NextWeapon, m_LatestInput.m_NextWeapon).m_Presses;
 	int Prev = CountInput(m_LatestPrevInput.m_PrevWeapon, m_LatestInput.m_PrevWeapon).m_Presses;
 
-	if(Next < 128) // make sure we only try sane stuff
+	if(Next < 128 && Next > 0) // make sure we only try sane stuff
 	{
-		while(Next) // Next Weapon selection
-		{
-			WantedWeapon = (WantedWeapon+1)%NUM_WEAPONS;
-			if(m_aWeapons[WantedWeapon].m_Got) {
-				GetCroyaPlayer()->OnMouseWheelDown(this);
+		if (GetCroyaPlayer())
+			GetCroyaPlayer()->OnMouseWheelDown(this);
+		if (Anything) {
+			while(Next) // Next Weapon selection
+			{
+				if(m_aWeapons[WantedWeapon].m_Got) {
+					WantedWeapon = (WantedWeapon+1)%NUM_WEAPONS;
+				}
 				Next--;
 			}
+
 		}
 	}
 
-	if(Prev < 128) // make sure we only try sane stuff
+	if(Prev < 128 && Prev > 0) // make sure we only try sane stuff
 	{
-		while(Prev) // Prev Weapon selection
-		{
-			WantedWeapon = (WantedWeapon-1)<0?NUM_WEAPONS-1:WantedWeapon-1;
-			if(m_aWeapons[WantedWeapon].m_Got) {
-				GetCroyaPlayer()->OnMouseWheelUp(this);
+		if (GetCroyaPlayer())
+			GetCroyaPlayer()->OnMouseWheelUp(this);
+		if (Anything) {
+			while(Prev) // Prev Weapon selection
+			{
+				if(m_aWeapons[WantedWeapon].m_Got) {
+					WantedWeapon = (WantedWeapon-1)<0?NUM_WEAPONS-1:WantedWeapon-1;
+				}
 				Prev--;
 			}
 		}
@@ -1020,10 +1024,11 @@ void CCharacter::Die(int Killer, int Weapon)
 
 bool CCharacter::TakeDamage(vec2 Force, vec2 Source, int Dmg, int From, int Weapon)
 {
-	/*m_Core.m_Vel += Force;
+	return TakeDamageDDNet(Force, Dmg, From, Weapon);
+	m_Core.m_Vel += Force;
 
-	if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From) && !g_Config.m_SvTeamdamage)
-		return false;
+/* 	if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From) && !g_Config.m_SvTeamdamage)
+		return false; */
 
 	// m_pPlayer only inflicts half damage on self
 	if(From == m_pPlayer->GetCID())
@@ -1104,7 +1109,7 @@ bool CCharacter::TakeDamage(vec2 Force, vec2 Source, int Dmg, int From, int Weap
 	if (Dmg > 2)
 		GameServer()->CreateSound(m_Pos, SOUND_PLAYER_PAIN_LONG);
 	else
-		GameServer()->CreateSound(m_Pos, SOUND_PLAYER_PAIN_SHORT);*/
+		GameServer()->CreateSound(m_Pos, SOUND_PLAYER_PAIN_SHORT);
 
 	if (Dmg)
 	{
@@ -1117,12 +1122,12 @@ bool CCharacter::TakeDamage(vec2 Force, vec2 Source, int Dmg, int From, int Weap
 
 	return true;
 }
-bool CCharacter::TakeDamage(vec2 Force, int Dmg, int From, int Weapon)
+bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 {
-	/*m_Core.m_Vel += Force;
+	m_Core.m_Vel += Force;
 
-	if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From) && !g_Config.m_SvTeamdamage)
-		return false;
+	//if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From) && !g_Config.m_SvTeamdamage)
+	//	return false;
 
 	// m_pPlayer only inflicts half damage on self
 	if(From == m_pPlayer->GetCID())
@@ -1203,7 +1208,7 @@ bool CCharacter::TakeDamage(vec2 Force, int Dmg, int From, int Weapon)
 	if (Dmg > 2)
 		GameServer()->CreateSound(m_Pos, SOUND_PLAYER_PAIN_LONG);
 	else
-		GameServer()->CreateSound(m_Pos, SOUND_PLAYER_PAIN_SHORT);*/
+		GameServer()->CreateSound(m_Pos, SOUND_PLAYER_PAIN_SHORT);
 
 	if (Dmg)
 	{
@@ -2625,7 +2630,7 @@ CroyaPlayer* CCharacter::GetCroyaPlayer() {
 
 void CCharacter::ResetWeaponsHealth()
 {
-	m_Health = 0;
+	m_Health = 1;
 	m_Armor = 0;
 	for (auto& each : m_aWeapons) {
 		each.m_Got = false;

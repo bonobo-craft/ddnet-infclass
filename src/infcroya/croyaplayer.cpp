@@ -702,10 +702,14 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 
 	if (m_pClass->IsInfectedClass()) {
 		m_Infected = true;
+		if (GetCharacter())
+		GetCharacter()->SetInfected(true);
 	}
 	else {
 		m_InitialZombie = false;
 		m_Infected = false;
+		if (GetCharacter())
+			GetCharacter()->SetInfected(false);
 	}
 
 	for (const CPlayer* each : m_pGameServer->m_apPlayers) {

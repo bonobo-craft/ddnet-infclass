@@ -621,9 +621,9 @@ void CGameControllerMOD::OnCharacterSpawn(CCharacter* pChr)
 	players[ClientID]->SetCharacter(pChr);
 	players[ClientID]->OnCharacterSpawn(pChr);
 
-	if (pChr->IsZombie() && GetZombieCount() == 1) {
+/* 	if (pChr->IsZombie() && GetZombieCount() == 1) {
 		pChr->IncreaseArmor(10); // +10 armor for lonely zombie
-	}
+	} */
 
 	const vec2 *MotherPos = GetMotherPos();
 
@@ -635,18 +635,20 @@ void CGameControllerMOD::OnCharacterSpawn(CCharacter* pChr)
 		}
 	}
 
-	if (pChr->GetCroyaPlayer()->GetClassNum() == Class::WORKER && GetMotherPos() != 0) {
-		pChr->GetCharacterCore().m_Pos = *MotherPos;
-		pChr->GameServer()->CreatePlayerSpawn(*MotherPos);
-	}
-	else if (players[ClientID]->IsRespawnPointPlaced() && players[ClientID]->GetRespawnPointsNum() >= 1) {
-		vec2 NewPos = players[ClientID]->GetRespawnPointPos();
-		pChr->GetCharacterCore().m_Pos = NewPos;
-		pChr->GameServer()->CreatePlayerSpawn(NewPos);
-		players[ClientID]->SetRespawnPointsNum(players[ClientID]->GetRespawnPointsNum() - 1);
-	}
-	else if (inf_circles.size() > 0) {
-		SpawnOnInfZone(pChr);
+	if (pChr->IsZombie()) {
+		if (pChr->GetCroyaPlayer()->GetClassNum() == Class::WORKER && GetMotherPos() != 0) {
+			pChr->GetCharacterCore().m_Pos = *MotherPos;
+			pChr->GameServer()->CreatePlayerSpawn(*MotherPos);
+		}
+		else if (players[ClientID]->IsRespawnPointPlaced() && players[ClientID]->GetRespawnPointsNum() >= 1) {
+			vec2 NewPos = players[ClientID]->GetRespawnPointPos();
+			pChr->GetCharacterCore().m_Pos = NewPos;
+			pChr->GameServer()->CreatePlayerSpawn(NewPos);
+			players[ClientID]->SetRespawnPointsNum(players[ClientID]->GetRespawnPointsNum() - 1);
+		}
+		else if (inf_circles.size() > 0) {
+			SpawnOnInfZone(pChr);
+		}
 	}
 
 	// maybe we don't need this

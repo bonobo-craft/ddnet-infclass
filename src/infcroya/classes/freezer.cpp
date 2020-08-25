@@ -20,7 +20,7 @@ CFreezer::CFreezer() : IClass()
 
 void CFreezer::InitialWeaponsHealth(CCharacter* pChr)
 {
-	pChr->IncreaseHealth(10);
+	pChr->IncreaseHealth(8);
 	pChr->GiveWeapon(WEAPON_HAMMER, -1);
 	pChr->SetWeapon(WEAPON_HAMMER);
 	pChr->SetNormalEmote(EMOTE_ANGRY);
