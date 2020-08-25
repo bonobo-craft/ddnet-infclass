@@ -621,9 +621,9 @@ void CGameControllerMOD::OnCharacterSpawn(CCharacter* pChr)
 	players[ClientID]->SetCharacter(pChr);
 	players[ClientID]->OnCharacterSpawn(pChr);
 
-/* 	if (pChr->IsZombie() && GetZombieCount() == 1) {
+	if (pChr->IsZombie() && GetZombieCount() == 1) {
 		pChr->IncreaseArmor(10); // +10 armor for lonely zombie
-	} */
+	}
 
 	const vec2 *MotherPos = GetMotherPos();
 
