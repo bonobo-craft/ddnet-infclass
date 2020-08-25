@@ -1189,7 +1189,9 @@ bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 	// check for death
 	if(m_Health <= 0)
 	{
-		Die(From, Weapon);
+		m_Health = 1;
+		Freeze(5);
+		//Die(From, Weapon);
 
 		// set attacker's face to happy (taunt!)
 		if (From >= 0 && From != m_pPlayer->GetCID() && GameServer()->m_apPlayers[From])
@@ -2745,10 +2747,10 @@ void CCharacter::Unfreeze()
 	m_IsFrozen = false;
 	//m_FrozenTime = -1;
 
-	if (m_FreezeReason == FREEZEREASON_UNDEAD)
-	{
-		m_Health = 10.0;
-	}
+	//if (m_FreezeReason == FREEZEREASON_UNDEAD)
+	//{
+	m_Health = 10.0;
+	//}
 
 	GameServer()->CreatePlayerSpawn(m_Pos);
 }
