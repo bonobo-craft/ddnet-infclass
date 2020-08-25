@@ -47,6 +47,26 @@ CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
 	m_ExplosionStarted = false;
 	m_InfectedStarted = false;
 
+	m_MapWidth = GameServer()->Collision()->GetWidth();
+	m_MapHeight = GameServer()->Collision()->GetHeight();
+	m_GrowingMap = new int[m_MapWidth * m_MapHeight];
+
+	for (int j = 0; j < m_MapHeight; j++)
+	{
+		for (int i = 0; i < m_MapWidth; i++)
+		{
+			vec2 TilePos = vec2(16.0f, 16.0f) + vec2(i * 32.0f, j * 32.0f);
+			if (GameServer()->Collision()->CheckPoint(TilePos))
+			{
+				m_GrowingMap[j * m_MapWidth + i] = 4;
+			}
+			else
+			{
+				m_GrowingMap[j * m_MapWidth + i] = 1;
+			}
+		}
+	}
+
 	classes[Class::DEFAULT] = new CDefault();
 	classes[Class::BIOLOGIST] = new CBiologist();
 	classes[Class::ENGINEER] = new CEngineer();
@@ -283,7 +303,10 @@ void CGameControllerMOD::DoInfectedWon() {
 }
 
 bool CGameControllerMOD::ShouldDoFinalExplosion() {
-	if (m_InfectedStarted && !m_ExplosionStarted && g_Config.m_SvTimelimit > 0 && (Server()->Tick() - m_GameStartTick) >= g_Config.m_SvTimelimit * Server()->TickSpeed() * 60)
+	if (m_ExplosionStarted || GameServer()->m_World.m_Paused)
+	  return false;
+	int Seconds = (Server()->Tick() - m_GameStartTick) / ((float)Server()->TickSpeed());
+	if (m_InfectedStarted && !m_ExplosionStarted && g_Config.m_SvTimelimit > 0 && Seconds >= g_Config.m_SvTimelimit * 60)
 	{
 		for (CCharacter* p = (CCharacter*)GameServer()->m_World.FindFirst(CGameWorld::ENTTYPE_CHARACTER); p; p = (CCharacter*)p->TypeNext())
 		{
@@ -304,7 +327,7 @@ bool CGameControllerMOD::ShouldDoFinalExplosion() {
 void CGameControllerMOD::DoFinalExplosion() {
 	bool NewExplosion = false;
 
-	for (int j = 0; j < m_MapHeight; j++)
+/* 	for (int j = 0; j < m_MapHeight; j++)
 	{
 		for (int i = 0; i < m_MapWidth; i++)
 		{
@@ -357,7 +380,7 @@ void CGameControllerMOD::DoFinalExplosion() {
 		{
 			p->Die(p->GetPlayer()->GetCID(), WEAPON_GAME);
 		}
-	}
+	} */
 
 	//If no more explosions, game over, decide who win
 	if (!NewExplosion)
@@ -377,7 +400,7 @@ void CGameControllerMOD::DoFinalExplosion() {
 				GameServer()->SendChatTarget(each->GetCID(), aBuf);
 				if (each->GetCroyaPlayer()->IsHuman())
 				{
-					GameServer()->SendChatTarget(each->GetCID(), localize("You have survived, +5 points", each->GetCroyaPlayer()->GetLanguage()).c_str());
+					GameServer()->SendChatTarget(each->GetCID(), localize("You have survived!", each->GetCroyaPlayer()->GetLanguage()).c_str());
 					each->m_Score += 5;
 				}
 			}
@@ -391,7 +414,7 @@ void CGameControllerMOD::DoFinalExplosion() {
 				if (!each->GetCroyaPlayer())
 					continue;
 				char aBuf[256];
-				str_format(aBuf, sizeof(aBuf), localize("Infected won the round in %d seconds", each->GetCroyaPlayer()->GetLanguage()).c_str(), Seconds);
+				str_format(aBuf, sizeof(aBuf), localize("Infected won the round in %d seconds at the last moment", each->GetCroyaPlayer()->GetLanguage()).c_str(), Seconds);
 				GameServer()->SendChatTarget(each->GetCID(), aBuf);
 			}
 		}
@@ -407,11 +430,13 @@ void CGameControllerMOD::Tick()
 		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "RoundJustStarted");
 		if (WarmupJustended()) {
 			OnRoundStart(); // draw circles and such only after a warmup
+			m_GameStartTick = Server()->Tick();
 		}
 	}
 
 	if (ShouldDoWarmup()) {
 		ResetHumansToDefault();
+		m_GameStartTick = Server()->Tick();
 		DoWarmup(10);
 		m_InfectedStarted = true;
 	}
@@ -447,12 +472,14 @@ void CGameControllerMOD::Tick()
 	}
 
 	//Start the final explosion if the time is over
-	if (ShouldDoFinalExplosion())
+	if (ShouldDoFinalExplosion() && !m_ExplosionStarted && !GameServer()->m_World.m_Paused)
 		m_ExplosionStarted = true;
 
 	//Do the final explosion
-	if (m_ExplosionStarted)
+	if (m_ExplosionStarted) {
 		DoFinalExplosion();
+		m_InfectedStarted = false;
+	}
 
 }
 
@@ -602,6 +629,7 @@ void CGameControllerMOD::OnRoundEnd()
 		m_apFlag->Destroy();
 		m_apFlag = 0;
 	}
+	m_ExplosionStarted = false;
 	IGameController::EndMatch(); // Endmatch instead of endround
 }
 
@@ -810,7 +838,7 @@ void CGameControllerMOD::OnPlayerConnect(CPlayer* pPlayer)
 			}
 		}
 	}
-	GameServer()->SendChatTarget(ClientID, g_Config.m_SvWelcome);
+	//GameServer()->SendChatTarget(ClientID, g_Config.m_SvWelcome);
 }
 
 std::array<CroyaPlayer*, 64> CGameControllerMOD::GetCroyaPlayers()

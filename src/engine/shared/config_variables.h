@@ -378,7 +378,7 @@ MACRO_CONFIG_INT(ClVideoRecorderFPS, cl_video_recorder_fps, 60, 1, 1000, CFGFLAG
 
 // INFCROYA BEGIN ------------------------------------------------------------
 MACRO_CONFIG_STR(SvWelcome, sv_welcome, 128, "Join our discord: https://discord.gg/Sxk5ssv", CFGFLAG_SAVE | CFGFLAG_SERVER, "Welcome chat message on player connect")
-MACRO_CONFIG_INT(SvTimelimit, sv_time_limit, 300, 10, 9999, CFGFLAG_SERVER, "Round time limit")
+MACRO_CONFIG_INT(SvTimelimit, sv_time_limit, 3, 10, 9999, CFGFLAG_SERVER, "Round time limit")
 MACRO_CONFIG_INT(InfBarrierLifeSpan, inf_barrier_lifespan, 30, 0, 100, CFGFLAG_SERVER, "Barrier lifespan")
 MACRO_CONFIG_INT(InfSniperPositionLockTime, inf_sniper_lock_time, 15, 0, 100, CFGFLAG_SERVER, "Sniper position lock time")
 MACRO_CONFIG_INT(InfBarrierTimeReduce, inf_barrier_timereduce, 500, 0, 10000, CFGFLAG_SERVER, "Time to remove from a barrier lifespan when an infected dies (centisec)")
