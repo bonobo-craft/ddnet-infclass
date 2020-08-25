@@ -20,7 +20,7 @@ CWorker::CWorker() : IClass()
 
 void CWorker::InitialWeaponsHealth(CCharacter* pChr)
 {
-	pChr->IncreaseHealth(8);
+	pChr->IncreaseHealth(10);
 	pChr->GiveWeapon(WEAPON_HAMMER, -1);
 	pChr->SetWeapon(WEAPON_HAMMER);
 	pChr->SetNormalEmote(EMOTE_ANGRY);

@@ -34,7 +34,7 @@ CCharacter::CCharacter(CGameWorld *pWorld)
 : CEntity(pWorld, CGameWorld::ENTTYPE_CHARACTER)
 {
 	m_ProximityRadius = ms_PhysSize;
-	m_Health = 1;
+	m_Health = 10;
 	m_Armor = 0;
 	m_StrongWeakID = 0;
 }
@@ -2333,7 +2333,7 @@ void CCharacter::SetRescue()
 void CCharacter::DDRaceTick()
 {
 	mem_copy(&m_Input, &m_SavedInput, sizeof(m_Input));
-	m_Armor=(m_FreezeTime >= 0)?10-(m_FreezeTime/15):0;
+	//m_Armor=(m_FreezeTime >= 0)?10-(m_FreezeTime/15):0;
 	if(m_Input.m_Direction != 0 || m_Input.m_Jump != 0)
 		m_LastMove = Server()->Tick();
 
