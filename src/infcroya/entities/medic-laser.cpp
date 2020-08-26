@@ -57,7 +57,7 @@ bool CMedicLaser::HitCharacter(vec2 From, vec2 To)
 			zombie->GetCroyaPlayer()->ResetRespawnPoint();
 			if (zombie->GetPlayer()->GetCharacter()) {
 				zombie->GetPlayer()->GetCharacter()->SetHealthArmor(1, 0);
-				zombie->Unfreeze();
+				zombie->UnFreeze();
 				medic->TakeDamage(vec2(0.f, 0.f), medic->GetPos(), g_Config.m_InfMedicReviveDamage * 2, m_Owner, WEAPON_LASER);
 
 				const char* MedicName = Server()->ClientName(medic->GetPlayer()->GetCID());

@@ -140,7 +140,8 @@ public:
 	int m_RespawnPointID;
 
 	void Freeze(float Time, int Player, int Reason);
-	void Unfreeze();
+	bool Unfreeze();
+	bool Frozen();
 	void Poison(int Count, int From);
 
 	void DestroyChildEntities();

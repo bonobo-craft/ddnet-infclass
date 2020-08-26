@@ -194,6 +194,7 @@ void CCharacter::HandleJetpack()
 
 void CCharacter::HandleNinja()
 {
+	return; // no ninja yet
 	if(m_Core.m_ActiveWeapon != WEAPON_NINJA)
 		return;
 
@@ -1124,6 +1125,9 @@ bool CCharacter::TakeDamage(vec2 Force, vec2 Source, int Dmg, int From, int Weap
 }
 bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 {
+	if (m_IsFrozen)
+	  return false;
+
 	m_Core.m_Vel += Force;
 
 	//if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From) && !g_Config.m_SvTeamdamage)
@@ -2461,21 +2465,6 @@ bool CCharacter::Freeze()
 	return Freeze(g_Config.m_SvFreezeDelay);
 }
 
-bool CCharacter::UnFreeze()
-{
-	if (m_FreezeTime > 0)
-	{
-		m_Armor=10;
-		if(!m_aWeapons[m_Core.m_ActiveWeapon].m_Got)
-			m_Core.m_ActiveWeapon = WEAPON_GUN;
-		m_FreezeTime = 0;
-		m_FreezeTick = 0;
-		m_FrozenLastTick = true;
-		return true;
-	}
-	return false;
-}
-
 void CCharacter::GiveWeapon(int Weapon, int Ammo, bool Remove)
 {
 	if (Weapon == WEAPON_NINJA)
@@ -2712,7 +2701,7 @@ CCharacterCore& CCharacter::GetCharacterCore()
 	return m_Core;
 }
 
-void CCharacter::Freeze(float Time, int Player, int Reason)
+/* void CCharacter::Freeze(float Time, int Player, int Reason)
 {
 	//if (m_IsFrozen && m_FreezeReason == FREEZEREASON_UNDEAD)
 	//	return;
@@ -2738,8 +2727,9 @@ void CCharacter::Freeze(float Time, int Player, int Reason)
 
 	m_LastFreezer = Player;
 	GiveNinja();
-}
-void CCharacter::Unfreeze()
+} */
+
+/* void CCharacter::Unfreeze()
 {
 	if (!m_IsFrozen) {
 		return;
@@ -2753,7 +2743,31 @@ void CCharacter::Unfreeze()
 	//}
 
 	GameServer()->CreatePlayerSpawn(m_Pos);
+} */
+
+bool CCharacter::Frozen() {
+	if (m_FreezeTime <= 1)
+	  return false;
+	return true;
 }
+
+bool CCharacter::UnFreeze()
+{
+	if (Frozen())
+	  return false;
+
+	m_Health = 10;
+	m_Armor=0;
+	if(!m_aWeapons[m_Core.m_ActiveWeapon].m_Got)
+		m_Core.m_ActiveWeapon = WEAPON_HAMMER;
+	if(!m_aWeapons[m_Core.m_ActiveWeapon].m_Got)
+		m_Core.m_ActiveWeapon = WEAPON_GUN;
+	m_FreezeTime = 0;
+	m_FreezeTick = 0;
+	m_FrozenLastTick = true;
+	return true;
+}
+
 void CCharacter::Poison(int Count, int From)
 {
 	if (m_Poison <= 0)

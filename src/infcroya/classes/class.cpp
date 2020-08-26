@@ -89,13 +89,11 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		bool ShouldFreeze = false;
 
 		if (pChr->IsHuman() && pTarget->IsZombie()) {
-			//ShouldHit = true;
 			ShouldFreeze = true;
 		}
 
 		if (pChr->IsZombie() && pTarget->IsHuman()) {
 			ShouldFreeze = true;
-			//ShouldInfect = true;
 		}
 
 		if (pChr->IsHuman() && pTarget->IsHuman()) {
@@ -107,14 +105,16 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 			ShouldUnfreeze = true;
 		}
 
-		if (pChr->GetCroyaPlayer()->GetClassNum() == Class::BAT && ShouldInfect) {
+		if (pChr->GetCroyaPlayer()->GetClassNum() == Class::BAT && ShouldFreeze) {
 			ShouldInfect = false;
+			ShouldFreeze = false;
 			ShouldHit = true;
 			DAMAGE = 1;
 		}
 
-		if (pChr->GetCroyaPlayer()->GetClassNum() == Class::WORKER && ShouldInfect) {
+		if (pChr->GetCroyaPlayer()->GetClassNum() == Class::WORKER && ShouldFreeze) {
 			ShouldInfect = false;
+			ShouldFreeze = false;
 			ShouldHit = true;
 			DAMAGE = 2;
 		}
@@ -126,7 +126,7 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		}
 
 		if (ShouldUnfreeze) {
-			pTarget->Unfreeze();
+			pTarget->UnFreeze();
 		}
 
 		if (ShouldInfect) {
@@ -134,7 +134,6 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		}
 
 		if (ShouldFreeze) {
-			//FNG
 			pTarget->Freeze(5);
 		}
 

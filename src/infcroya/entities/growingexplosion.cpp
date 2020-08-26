@@ -172,8 +172,7 @@ void CGrowingExplosion::Tick()
 						case GROWINGEXPLOSIONEFFECT_BOOM_INFECTED:
 							if (random_prob(0.2f))
 							{
-								//GameServer()->CreateExplosion(TileCenter, m_Owner, WEAPON_HAMMER, MAX_DAMAGE, true);
-								//TBD
+								GameServer()->CreateExplosion(TileCenter, m_Owner, WEAPON_HAMMER, MAX_DAMAGE, true);
 							}
 							break;
 						case GROWINGEXPLOSIONEFFECT_ELECTRIC_INFECTED:
@@ -278,12 +277,12 @@ void CGrowingExplosion::Tick()
 				switch(m_ExplosionEffect)
 				{
 					case GROWINGEXPLOSIONEFFECT_FREEZE_INFECTED:
-						p->Freeze(3.0f, m_Owner, FREEZEREASON_FLASH);
+						//p->Freeze(3.0f, m_Owner, FREEZEREASON_FLASH);
 						GameServer()->SendEmoticon(p->GetPlayer()->GetCID(), EMOTICON_QUESTION);
 						m_Hit[p->GetPlayer()->GetCID()] = true;
 						break;
 					case GROWINGEXPLOSIONEFFECT_POISON_INFECTED:
-						p->Poison(g_Config.m_InfPoisonDamage, m_Owner);
+						//p->Poison(g_Config.m_InfPoisonDamage, m_Owner);
 						GameServer()->SendEmoticon(p->GetPlayer()->GetCID(), EMOTICON_DROP);
 						m_Hit[p->GetPlayer()->GetCID()] = true;
 						break;

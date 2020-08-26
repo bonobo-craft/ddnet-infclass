@@ -135,7 +135,8 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 					Rate = 1.0f;
 					Damage = 0;
 					if (VictimChar->IsHuman()) {
-						VictimChar->Freeze(1.0f, m_ClientID, FREEZEREASON_FLASH);
+						//VictimChar->Freeze(1.0f, m_ClientID, FREEZEREASON_FLASH);
+						VictimChar->Freeze(1);
 						//VictimChar->Die(m_ClientID, WEAPON_HAMMER);
 					}
 				}			
