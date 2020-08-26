@@ -225,11 +225,13 @@ void CGameContext::CreateExplosion(vec2 Pos, int Owner, int Weapon, int MaxDamag
 
 	// deal damage
 	CCharacter *apEnts[MAX_CLIENTS];
+	//TBDROCKETEXPLOSION
 	//float Radius = g_pData->m_Explosion.m_Radius; // TBD
-	float Radius = 50;
-	float InnerRadius = 48.0f;
+	//float Radius = 50;
+	float Radius = 135.0f; // Breton's
+	float InnerRadius = 48.0f; // Breton's
 	//float MaxForce = g_pData->m_Explosion.m_MaxForce; // TBD
-	float MaxForce = 5.0f;
+	float MaxForce = 8.0f; // guessed
 	int Num = m_World.FindEntities(Pos, Radius, (CEntity**)apEnts, MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
 	for(int i = 0; i < Num; i++)
 	{
@@ -4341,7 +4343,6 @@ void CGameContext::SendZombieClassSelectorByClassId(int ClassId, int ClientID) {
 			messageList.push_back("    PARASITE *");
 	}
 	SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
-	//TBD
 }
 
 void CGameContext::SendHumanClassSelectorByClassId(int ClassId, int ClientID) {
@@ -4385,7 +4386,6 @@ void CGameContext::SendHumanClassSelectorByClassId(int ClassId, int ClientID) {
 	else
 		messageList.push_back("    SNIPER");
 	SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
-	//TBD
 }
 
 void CGameContext::SendClassSelectorByClassId(int ClassId, int ClientID, bool ShowInfo) {
@@ -4522,7 +4522,6 @@ void CGameContext::SendClassInfoByClassId(int ClassId, int ClientID, bool ShowIn
 		messageList.push_back("* hammer deals -2 HP damage");
 	}
 	SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
-	//TBD
 }
 
 int CGameContext::CommandToClassId(const std::string command) {

@@ -110,8 +110,7 @@ void CGameControllerMOD::Snap(int SnappingClient)
 
 			pP->m_X = (int)each->GetRespawnPointPos().x;
 			pP->m_Y = (int)each->GetRespawnPointPos().y;
-			//pP->m_Type = PICKUP_ARMOR;
-			//TBD
+			pP->m_Type = POWERUP_ARMOR;
 		}
 	}
 }
@@ -792,6 +791,7 @@ bool CGameControllerMOD::IsEveryoneInfected() const
 
 void CGameControllerMOD::OnPlayerDisconnect(CPlayer* pPlayer)
 {
+	//TBDTBD
 	//IGameController::OnPlayerDisconnect(pPlayer);
 	//TBD
 	int ClientID = pPlayer->GetCID();
@@ -802,6 +802,7 @@ void CGameControllerMOD::OnPlayerDisconnect(CPlayer* pPlayer)
 
 void CGameControllerMOD::OnPlayerConnect(CPlayer* pPlayer)
 {
+	//TBDTBD
 	//IGameController::OnPlayerConnect(pPlayer);
 	//TBD
 	int ClientID = pPlayer->GetCID();

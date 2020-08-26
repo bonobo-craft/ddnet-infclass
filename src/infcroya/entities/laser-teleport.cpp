@@ -31,14 +31,13 @@ void CLaserTeleport::Snap(int SnappingClient)
 	//if (Server()->GetClientAntiPing(SnappingClient))
 	//	return;
 
-	//TBD
-	//CNetObj_Laser *pObj = static_cast<CNetObj_Laser *>(Server()->SnapNewItem(NETOBJTYPE_LASER, GetID(), sizeof(CNetObj_Laser)));
-	//if(!pObj)
-	//	return;
+	CNetObj_Laser *pObj = static_cast<CNetObj_Laser *>(Server()->SnapNewItem(NETOBJTYPE_LASER, GetID(), sizeof(CNetObj_Laser)));
+	if(!pObj)
+		return;
 
-	//pObj->m_X = (int)m_EndPos.x;
-	//pObj->m_Y = (int)m_EndPos.y;
-	//pObj->m_FromX = (int)m_StartPos.x;
-	//pObj->m_FromY = (int)m_StartPos.y;
-	//pObj->m_StartTick = Server()->Tick();
+	pObj->m_X = (int)m_EndPos.x;
+	pObj->m_Y = (int)m_EndPos.y;
+	pObj->m_FromX = (int)m_StartPos.x;
+	pObj->m_FromY = (int)m_StartPos.y;
+	pObj->m_StartTick = Server()->Tick();
 }

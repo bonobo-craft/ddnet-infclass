@@ -207,9 +207,8 @@ void CGrowingExplosion::Tick()
 								if(NumPossibleStartPoint > 0)
 								{
 									int randNb = random_int_range(0, NumPossibleStartPoint-1);
-									//vec2 StartPoint = PossibleStartPoint[randNb];
-									//GameServer()->CreateLaserDotEvent(StartPoint, EndPoint, Server()->TickSpeed()/6);
-									//TBD
+									vec2 StartPoint = PossibleStartPoint[randNb];
+									GameServer()->CreateLaserDotEvent(StartPoint, EndPoint, Server()->TickSpeed()/6);
 								}
 								
 								if(random_prob(0.1f))

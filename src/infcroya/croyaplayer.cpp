@@ -36,7 +36,6 @@ CroyaPlayer::CroyaPlayer(int ClientID, CPlayer* pPlayer, CGameContext* pGameServ
 	m_BeenOnRoundStart = false;
 	m_InitialZombie = false;
 	SetClass(Classes[DEFAULT], false, false);
-	//TBD
 }
 
 CroyaPlayer::~CroyaPlayer()
@@ -57,14 +56,13 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 
 	if (IsHuman() && m_pCharacter && m_pCharacter->GameWorld()) {
 		// Infect when inside infection zone circle
-		//TBD
-/* 		auto circle = GetClosestInfCircle();
+		auto circle = GetClosestInfCircle();
 		if (circle) {
 			float dist = distance(m_pCharacter->GetPos(), circle->GetPos());
 			if (dist < circle->GetRadius()) {
 				m_pCharacter->Infect(-1);
 			}
-		} */
+		}
 
 		// Take damage when outside of safezone circle
 		if (!m_InsideSafeZone) {
