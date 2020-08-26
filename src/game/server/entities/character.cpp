@@ -1129,9 +1129,9 @@ bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 	//if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From) && !g_Config.m_SvTeamdamage)
 	//	return false;
 
-	// m_pPlayer only inflicts half damage on self
 	if(From == m_pPlayer->GetCID())
-		Dmg = maximum(1, Dmg/2);
+		return false; // no self damage
+		//Dmg = maximum(1, Dmg/2);
 
 	m_DamageTaken++;
 

@@ -81,21 +81,30 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		else
 			Dir = vec2(0.f, -1.f);
 
-		int DAMAGE = 20; // should kill
+		int DAMAGE = 0; // fng
 		bool ShouldHit = false;
 		bool ShouldHeal = false;
+		bool ShouldUnfreeze = false;
 		bool ShouldInfect = false;
+		bool ShouldFreeze = false;
 
 		if (pChr->IsZombie() && pTarget->IsHuman()) {
-			ShouldInfect = true;
+			ShouldFreeze = false;
+			//ShouldInfect = true;
 		}
 
-		if (pChr->IsZombie() && pTarget->IsZombie() && pTarget->GetHealthArmorSum() < 20) {
+		if (pChr->IsHuman() && pTarget->IsHuman()) {
+			ShouldUnfreeze = true;
+		}
+
+		if (pChr->IsZombie() && pTarget->IsZombie()) {
 			ShouldHeal = true;
+			ShouldUnfreeze = true;
 		}
 
 		if (pChr->IsHuman() && pTarget->IsZombie()) {
-			ShouldHit = true;
+			//ShouldHit = true;
+			ShouldFreeze = false;
 		}
 
 		if (pChr->GetCroyaPlayer()->GetClassNum() == Class::BAT && ShouldInfect) {
@@ -116,8 +125,19 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 								ClientID, pChr->GetActiveWeapon());
 		}
 
+		if (ShouldUnfreeze) {
+			//pTarget->Infect(ClientID); 
+			//FNG
+			pTarget->Unfreeze();
+		}
+
 		if (ShouldInfect) {
-			pTarget->Infect(ClientID);
+			pTarget->Infect(ClientID); 
+		}
+
+		if (ShouldFreeze) {
+			//FNG
+			pTarget->Freeze(5);
 		}
 
 		if (ShouldHeal) {
