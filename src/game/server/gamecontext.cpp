@@ -226,7 +226,7 @@ void CGameContext::CreateExplosion(vec2 Pos, int Owner, int Weapon, int MaxDamag
 	// deal damage
 	CCharacter *apEnts[MAX_CLIENTS];
 	//float Radius = g_pData->m_Explosion.m_Radius; // TBD
-	float Radius = 500;
+	float Radius = 50;
 	float InnerRadius = 48.0f;
 	//float MaxForce = g_pData->m_Explosion.m_MaxForce; // TBD
 	float MaxForce = 5.0f;
