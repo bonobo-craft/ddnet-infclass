@@ -714,7 +714,11 @@ void CCharacter::HandleWeapons()
 	// fire Weapon, if wanted
 	FireWeapon();
 	// ammo regen
-	int AmmoRegenTime = g_pData->m_Weapons.m_aId[m_Core.m_ActiveWeapon].m_Ammoregentime;
+	//int AmmoRegenTime = g_pData->m_Weapons.m_aId[m_Core.m_ActiveWeapon].m_Ammoregentime;
+	int InfWID = GetInfWeaponID(m_Core.m_ActiveWeapon);
+	int MaxAmmo = Server()->GetMaxAmmo(InfWID);
+	int AmmoRegenTime = Server()->GetAmmoRegenTime(InfWID);
+
 	if(AmmoRegenTime)
 	{
 		// If equipped and not active, regen ammo?
@@ -726,7 +730,7 @@ void CCharacter::HandleWeapons()
 			if ((Server()->Tick() - m_aWeapons[m_Core.m_ActiveWeapon].m_AmmoRegenStart) >= AmmoRegenTime * Server()->TickSpeed() / 1000)
 			{
 				// Add some ammo
-				m_aWeapons[m_Core.m_ActiveWeapon].m_Ammo = minimum(m_aWeapons[m_Core.m_ActiveWeapon].m_Ammo + 1, 10);
+				m_aWeapons[m_Core.m_ActiveWeapon].m_Ammo = minimum(m_aWeapons[m_Core.m_ActiveWeapon].m_Ammo + 1, MaxAmmo);
 				m_aWeapons[m_Core.m_ActiveWeapon].m_AmmoRegenStart = -1;
 			}
 		}
