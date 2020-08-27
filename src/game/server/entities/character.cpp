@@ -1184,8 +1184,24 @@ bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 	//	return false;
 
 	if(From == m_pPlayer->GetCID())
-		return false; // no self damage
-		//Dmg = maximum(1, Dmg/2);
+		//return false; // no self damage
+		Dmg = maximum(1, Dmg/2);
+
+	// INFCROYA BEGIN ------------------------------------------------------------
+	// search tags: no self harm no selfharm selfhurt self hurt
+	if (From == m_pPlayer->GetCID() && Weapon != WEAPON_WORLD) {
+		int ClassNum = GetCroyaPlayer()->GetClassNum();
+		if ((ClassNum == Class::SOLDIER && m_Core.m_ActiveWeapon == WEAPON_GRENADE) || (ClassNum == Class::SCIENTIST && m_Core.m_ActiveWeapon == WEAPON_LASER)) {
+			return false;
+		}
+		if (ClassNum == Class::HERO && m_Core.m_ActiveWeapon == WEAPON_GRENADE) {
+			return false;
+		}
+		if (ClassNum == Class::BOOMER) {
+			return false;
+		}
+	}
+	// INFCROYA END ------------------------------------------------------------//
 
 	m_DamageTaken++;
 
