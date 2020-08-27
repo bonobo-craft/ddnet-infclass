@@ -363,10 +363,10 @@ void CCharacter::HandleWeaponSwitch()
 		if (Anything) {
 			while(Next) // Next Weapon selection
 			{
+				WantedWeapon = (WantedWeapon+1)%NUM_WEAPONS;
 				if(m_aWeapons[WantedWeapon].m_Got) {
-					WantedWeapon = (WantedWeapon+1)%NUM_WEAPONS;
+					Next--;
 				}
-				Next--;
 			}
 
 		}
@@ -379,10 +379,10 @@ void CCharacter::HandleWeaponSwitch()
 		if (Anything) {
 			while(Prev) // Prev Weapon selection
 			{
+				WantedWeapon = (WantedWeapon-1)<0?NUM_WEAPONS-1:WantedWeapon-1;
 				if(m_aWeapons[WantedWeapon].m_Got) {
-					WantedWeapon = (WantedWeapon-1)<0?NUM_WEAPONS-1:WantedWeapon-1;
+					Prev--;
 				}
-				Prev--;
 			}
 		}
 	}
@@ -799,6 +799,7 @@ void CCharacter::OnDirectInput(CNetObj_PlayerInput *pNewInput)
 
 	Antibot()->OnDirectInput(m_pPlayer->GetCID());
 
+	// why is 2 magical?
 	if(m_NumInputs > 2 && m_pPlayer->GetTeam() != TEAM_SPECTATORS)
 	{
 		HandleWeaponSwitch();
