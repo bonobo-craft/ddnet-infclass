@@ -1180,8 +1180,8 @@ bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 
 	m_Core.m_Vel += Force;
 
-	//if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From) && !g_Config.m_SvTeamdamage)
-	//	return false;
+	if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From))
+		return false;
 
 	if(From == m_pPlayer->GetCID())
 		//return false; // no self damage
