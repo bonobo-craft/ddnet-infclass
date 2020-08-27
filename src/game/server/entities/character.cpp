@@ -37,6 +37,25 @@ CCharacter::CCharacter(CGameWorld *pWorld)
 	m_Health = 10;
 	m_Armor = 0;
 	m_StrongWeakID = 0;
+
+	// INFCROYA BEGIN ------------------------------------------------------------
+	m_Infected = false;
+	m_HeartID = Server()->SnapNewID();
+	m_FirstShot = true;
+	m_BarrierHintID = Server()->SnapNewID();
+	m_BarrierHintIDs.set_size(2);
+	for (int i = 0; i < 2; i++)
+	{
+		m_BarrierHintIDs[i] = Server()->SnapNewID();
+	}
+	m_RespawnPointID = Server()->SnapNewID();
+	
+	//m_IsFrozen = false;
+	//m_FrozenTime = -1;
+	//m_PoisonTick = 0;
+	//m_InAirTick = 0;
+	//m_HookProtected = true; // will be updated from CPlayer
+	// INFCROYA END ------------------------------------------------------------//
 }
 
 void CCharacter::Reset()
@@ -102,6 +121,28 @@ void CCharacter::Destroy()
 	GameServer()->m_World.m_Core.m_apCharacters[m_pPlayer->GetCID()] = 0;
 	m_Alive = false;
 	m_Solo = false;
+	// INFCROYA BEGIN ------------------------------------------------------------
+	if (m_HeartID >= 0) {
+		Server()->SnapFreeID(m_HeartID);
+		m_HeartID = -1;
+	}
+	if (m_BarrierHintID >= 0) {
+		Server()->SnapFreeID(m_BarrierHintID);
+		m_BarrierHintID = -1;
+	}
+	if (m_RespawnPointID >= 0) {
+		Server()->SnapFreeID(m_RespawnPointID);
+		m_RespawnPointID = -1;
+	}
+
+	if (m_BarrierHintIDs[0] >= 0) {
+		for (int i = 0; i < 2; i++) {
+			Server()->SnapFreeID(m_BarrierHintIDs[i]);
+			m_BarrierHintIDs[i] = -1;
+		}
+	}
+	DestroyChildEntities();
+	// INFCROYA END ------------------------------------------------------------//
 }
 
 void CCharacter::SetWeapon(int W)
@@ -418,6 +459,9 @@ void CCharacter::FireWeapon()
 
 	vec2 ProjStartPos = m_Pos+Direction*m_ProximityRadius*0.75f;
 
+	if (!m_pCroyaPlayer || !m_pCroyaPlayer->WillItFire(Direction, ProjStartPos, m_Core.m_ActiveWeapon, this))
+		  return;
+
 	switch(m_Core.m_ActiveWeapon)
 	{
 		case WEAPON_HAMMER:
@@ -637,6 +681,8 @@ void CCharacter::FireWeapon()
 
 	if(m_aWeapons[m_Core.m_ActiveWeapon].m_Ammo > 0) // -1 == unlimited
 		m_aWeapons[m_Core.m_ActiveWeapon].m_Ammo--;
+
+	m_ReloadTimer = Server()->GetFireDelay(GetInfWeaponID(m_Core.m_ActiveWeapon)) * Server()->TickSpeed() / 1000;
 
 	if(!m_ReloadTimer)
 	{

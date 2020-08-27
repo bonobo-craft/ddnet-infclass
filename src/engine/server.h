@@ -15,6 +15,48 @@
 #include <game/generated/protocolglue.h>
 #include <engine/shared/protocol.h>
 
+enum // infclass 0.6 copypaste
+{
+	INFWEAPON_NONE,
+	INFWEAPON_HAMMER,
+	INFWEAPON_GUN,
+	INFWEAPON_SHOTGUN,
+	INFWEAPON_GRENADE,
+	INFWEAPON_RIFLE,
+	INFWEAPON_NINJA,
+
+	INFWEAPON_ENGINEER_RIFLE,
+
+	INFWEAPON_SNIPER_RIFLE,
+
+	INFWEAPON_SOLDIER_GRENADE,
+
+	INFWEAPON_SCIENTIST_GRENADE,
+	INFWEAPON_SCIENTIST_RIFLE,
+
+	INFWEAPON_MEDIC_GRENADE,
+	INFWEAPON_MEDIC_RIFLE,
+	INFWEAPON_MEDIC_SHOTGUN,
+
+	INFWEAPON_HERO_GRENADE,
+	INFWEAPON_HERO_RIFLE,
+	INFWEAPON_HERO_SHOTGUN,
+
+	INFWEAPON_BIOLOGIST_SHOTGUN,
+	INFWEAPON_BIOLOGIST_RIFLE,
+
+	INFWEAPON_LOOPER_RIFLE,
+	INFWEAPON_LOOPER_GRENADE,
+
+	INFWEAPON_NINJA_HAMMER,
+	INFWEAPON_NINJA_GRENADE,
+
+	INFWEAPON_MERCENARY_GUN,
+	INFWEAPON_MERCENARY_GRENADE,
+
+	NB_INFWEAPON
+};
+
 struct CAntibotRoundData;
 
 class IServer : public IInterface
@@ -37,6 +79,34 @@ public:
 		const char *m_pDDNetVersionStr;
 		const CUuid *m_pConnectionID;
 	};
+
+	// INFCROYA BEGIN ------------------------------------------------------------
+	int m_InfAmmoRegenTime[NB_INFWEAPON];
+	int m_InfFireDelay[NB_INFWEAPON];
+	int m_InfMaxAmmo[NB_INFWEAPON];
+
+	int GetFireDelay(int WID) {
+		return m_InfFireDelay[WID];
+	}
+
+	void SetFireDelay(int WID, int Time) {
+		m_InfFireDelay[WID] = Time;
+	}
+
+	virtual int GetAmmoRegenTime(int WID) {
+		return m_InfAmmoRegenTime[WID];
+	}
+	virtual void SetAmmoRegenTime(int WID, int Time) {
+		m_InfAmmoRegenTime[WID] = Time;
+	}
+
+	virtual int GetMaxAmmo(int WID) {
+		return m_InfMaxAmmo[WID];
+	}
+	virtual void SetMaxAmmo(int WID, int n) {
+		m_InfMaxAmmo[WID] = n;
+	}
+	// INFCROYA END ------------------------------------------------------------//
 
 	int Tick() const { return m_CurrentGameTick; }
 	int TickSpeed() const { return m_TickSpeed; }
