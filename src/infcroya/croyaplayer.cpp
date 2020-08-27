@@ -702,7 +702,7 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 	if (m_pClass->IsInfectedClass()) {
 		m_Infected = true;
 		if (GetCharacter())
-		GetCharacter()->SetInfected(true);
+			GetCharacter()->SetInfected(true);
 	}
 	else {
 		m_InitialZombie = false;
@@ -729,7 +729,7 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 
 	if (m_pCharacter) {
 		m_pCharacter->DestroyChildEntities();
-		m_pCharacter->SetInfected(m_pClass->IsInfectedClass());
+		m_pCharacter->SetInfected(m_pClass->IsInfectedClass()); // double call?
 		m_pCharacter->ResetWeaponsHealth();
 		m_pClass->InitialWeaponsHealth(m_pCharacter);
 	}

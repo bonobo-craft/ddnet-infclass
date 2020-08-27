@@ -39,6 +39,8 @@ bool CMedicLaser::HitCharacter(vec2 From, vec2 To)
 		auto medic = pOwnerChar;
 		auto zombie = pHit;
 		CGameContext* pGameServer = medic->GameServer();
+        //int MinZombies = g_Config.m_InfMedicReviveMinZombies;
+		int MinZombies = 3; //TBD wtf? why it reads 0?
 
 		if (medic && medic->GetHealthArmorSum() <= g_Config.m_InfMedicReviveDamage) {
 			int HealthArmor = g_Config.m_InfMedicReviveDamage + 1;
@@ -46,8 +48,7 @@ bool CMedicLaser::HitCharacter(vec2 From, vec2 To)
 			str_format(aBuf, sizeof(aBuf), "You need at least %d hp", HealthArmor);
 			pGameServer->SendBroadcast(aBuf, medic->GetPlayer()->GetCID());
 		}
-		else if (GameServer()->GetZombieCount() < g_Config.m_InfMedicReviveMinZombies) {
-			int MinZombies = g_Config.m_InfMedicReviveMinZombies;
+		else if (GameServer()->GetZombieCount() < MinZombies) {
 			char aBuf[256];
 			str_format(aBuf, sizeof(aBuf), "Too few zombies (less than %d)", MinZombies);
 			GameServer()->SendBroadcast(aBuf, m_Owner);
