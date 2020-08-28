@@ -46,6 +46,9 @@ CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
 
 	m_ExplosionStarted = false;
 	m_InfectedStarted = false;
+	m_apFlag = 0;
+	circles.clear();
+	inf_circles.clear();
 
 	m_MapWidth = GameServer()->Collision()->GetWidth();
 	m_MapHeight = GameServer()->Collision()->GetHeight();

@@ -1260,8 +1260,10 @@ bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 	if(m_Health <= 0)
 	{
 		m_Health = 1;
-		Freeze(5);
-		//Die(From, Weapon);
+		if (g_Config.m_SvFng)
+			Freeze(5);
+		else
+			Die(From, Weapon);
 
 		// set attacker's face to happy (taunt!)
 		if (From >= 0 && From != m_pPlayer->GetCID() && GameServer()->m_apPlayers[From])
