@@ -39,7 +39,6 @@ IGameController::IGameController(class CGameContext *pGameServer)
 	m_aNumSpawnPoints[0] = 0;
 	m_aNumSpawnPoints[1] = 0;
 	m_aNumSpawnPoints[2] = 0;
-	m_Warmup = 0;
 
 	m_CurrentRecord = 0;
 }
@@ -342,6 +341,8 @@ bool IGameController::OnEntity(int Index, vec2 Pos, int Layer, int Flags, int Nu
 
 void IGameController::EndMatch()
 {
+	if(m_Warmup) // game can't end when we are running warmup
+		return;
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Match End");
 	GameServer()->SendBroadcast("Match End", -1);
 

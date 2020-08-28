@@ -67,7 +67,6 @@ protected:
 	int m_GameOverTick;
 	int m_SuddenDeath;
 
-	int m_Warmup;
 	int m_RoundCount;
 
 	int m_GameFlags;
@@ -75,6 +74,7 @@ protected:
 	bool m_ForceBalanced;
 
 public:
+	int m_Warmup;
 	const char *m_pGameType;
 
 	IGameController(class CGameContext *pGameServer);

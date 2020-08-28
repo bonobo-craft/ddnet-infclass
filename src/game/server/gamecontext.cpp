@@ -3410,6 +3410,7 @@ void CGameContext::OnInit(/*class IKernel *pKernel*/)
 		}
 	}
 
+	m_pController->m_Warmup	 = false;
 	//game.world.insert_entity(game.Controller);
 
 #ifdef CONF_DEBUG

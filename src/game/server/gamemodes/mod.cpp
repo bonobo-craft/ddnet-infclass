@@ -447,6 +447,8 @@ void CGameControllerMOD::Tick()
 		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "RoundJustStarted");
 		if (WarmupJustended()) {
 			OnRoundStart(); // draw circles and such only after a warmup
+			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Initial infection first");
+			StartInitialInfection();
 			m_GameStartTick = Server()->Tick();
 		}
 	}
@@ -483,7 +485,7 @@ void CGameControllerMOD::Tick()
 		// no zombies, start infection
 		if (GetRealPlayerNum() >= 2 && GetZombieCount() < 1)
 		{
-			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Initial infection");
+			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Initial infection midgame");
 			StartInitialInfection();
 		}
 	}
