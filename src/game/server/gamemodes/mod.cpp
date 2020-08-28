@@ -31,6 +31,7 @@
 #include <infcroya/entities/inf-circle.h>
 #include <infcroya/entities/circle.h>
 #include <infcroya/localization/localization.h>
+#include <yaml-cpp/yaml.h>
 
 
 CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
@@ -123,18 +124,31 @@ void CGameControllerMOD::OnRoundStart()
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "OnRoundStart");
 	const int TILE_SIZE = 32;
 	char aBuf[256];
-	//if (!lua) { // not sure yet if OnRoundStart is run only once
-	//	std::string path_to_lua("maps/");
-	//	path_to_lua += g_Config.m_SvMap;
-	//	path_to_lua += ".lua";
-	//	//lua = new LuaLoader(GameServer());
-	//	//lua->Load(path_to_lua.c_str());
-	//	//lua->Init(GetRealPlayerNum());
 
-	//	//// positions.size() should be equal to radiuses.size()
-	//	//// safezone circles
+ 	std::string path_to_yaml("maps/");
+	path_to_yaml += g_Config.m_SvMap;
+	path_to_yaml += ".yml";
+
+	str_format(aBuf, sizeof(aBuf), "Loading YAML file: %s", path_to_yaml.c_str());
+	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
+	try {
+		YAML::Node mapconfig = YAML::LoadFile(path_to_yaml);
+		if (mapconfig["inf_circle_x"]) {
+			inf_circles.clear();
+			int x = mapconfig["inf_circle_x"].as<int>();
+			int y = mapconfig["inf_circle_y"].as<int>();
+			str_format(aBuf, sizeof(aBuf), "Success parsing YAML file: %s", path_to_yaml.c_str());
+			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
+			inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(x * TILE_SIZE, y * TILE_SIZE), -1, 100));
+		} else {
+			inf_circles.clear();
+		}
+	} catch (const YAML::BadFile&) {
+		str_format(aBuf, sizeof(aBuf), "Error parsing YAML file: %s", path_to_yaml.c_str());
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
+		std::exit(1);
+	}
 	//	//flag_positions = lua->GetFlagsPositions();
-
 	//	//auto positions = lua->GetCirclePositions();
 	//	//auto radiuses = lua->GetCircleRadiuses();
 	//	//auto min_radiuses = lua->GetCircleMinRadiuses();
@@ -159,7 +173,6 @@ void CGameControllerMOD::OnRoundStart()
 	//	//}
 	//	//////inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(30, 30), -1, 100));
 	//}
-	inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(44 * TILE_SIZE, 30 * TILE_SIZE), -1, 100));
 	TurnDefaultIntoRandomHuman();
 	UnlockPositions();
 
@@ -290,7 +303,6 @@ bool CGameControllerMOD::ShouldEndGame() {
 }
 
 void CGameControllerMOD::DoInfectedWon() {
-	char aBuf[256];
 	int Seconds = (Server()->Tick() - m_GameStartTick) / ((float)Server()->TickSpeed());
 	for (CPlayer* each : GameServer()->m_apPlayers) {
 		if (!each)

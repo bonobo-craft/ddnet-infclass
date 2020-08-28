@@ -335,6 +335,7 @@ else()
   set(MYSQL_LIBRARIES)
 endif()
 find_package(Ogg)
+find_package(YamlCpp)
 find_package(Opus)
 find_package(Opusfile)
 find_package(Pnglite)
@@ -415,6 +416,7 @@ if(MYSQL)
   show_dependency_status("MySQL" MYSQL)
 endif()
 show_dependency_status("Ogg" OGG)
+show_dependency_status("YamlCpp" YAMLCPP)
 show_dependency_status("OpenSSL Crypto" CRYPTO)
 show_dependency_status("Opus" OPUS)
 show_dependency_status("Opusfile" OPUSFILE)
@@ -455,6 +457,9 @@ if(CLIENT AND NOT(FREETYPE_FOUND))
 endif()
 if(CLIENT AND NOT(OGG_FOUND))
   message(SEND_ERROR "You must install Ogg to compile the DDNet client")
+endif()
+if(SERVER AND NOT(YAMLCPP_FOUND))
+  message(SEND_ERROR "You must install YamlCpp to compile the DDNet client")
 endif()
 if(CLIENT AND NOT(OPUS_FOUND))
   message(SEND_ERROR "You must install Opus to compile the DDNet client")
@@ -2014,6 +2019,7 @@ set(LIBS_SERVER
   # Add pthreads (on non-Windows) at the end, so that other libraries can depend
   # on it.
   ${CMAKE_THREAD_LIBS_INIT}
+  ${YAMLCPP_LIBRARIES}
 )
 
 # Target
@@ -2026,6 +2032,7 @@ add_executable(${TARGET_SERVER}
   $<TARGET_OBJECTS:game-shared>
 )
 target_link_libraries(${TARGET_SERVER} ${LIBS_SERVER})
+target_link_libraries(${TARGET_SERVER} -lyaml-cpp)
 list(APPEND TARGETS_OWN ${TARGET_SERVER})
 list(APPEND TARGETS_LINK ${TARGET_SERVER})
 
@@ -2585,6 +2592,7 @@ foreach(target ${TARGETS_OWN})
   target_include_directories(${target} PRIVATE src)
   target_compile_definitions(${target} PRIVATE $<$<CONFIG:Debug>:CONF_DEBUG>)
   target_include_directories(${target} PRIVATE ${SQLite3_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS})
+  target_include_directories(${target} PRIVATE ${YAMLCPP_INCLUDE_DIRS})
   target_compile_definitions(${target} PRIVATE GLEW_STATIC)
   if(CRYPTO_FOUND)
     target_compile_definitions(${target} PRIVATE CONF_OPENSSL)
