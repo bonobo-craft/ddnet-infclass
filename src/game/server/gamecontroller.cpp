@@ -8,6 +8,8 @@
 #include "entities/pickup.h"
 #include "gamecontroller.h"
 #include "gamecontext.h"
+#include "game/server/gamemodes/mod.h"
+#include "infcroya/classes/class.h"
 
 #include "entities/light.h"
 #include "entities/dragger.h"
@@ -25,6 +27,10 @@ IGameController::IGameController(class CGameContext *pGameServer)
 	m_pGameType = "unknown";
 
 	//
+	m_GameState = IGS_GAME_RUNNING;
+	m_GameStateTimer = TIMER_INFINITE;
+	SetGameState(IGS_WARMUP_GAME, TIMER_INFINITE);
+
 	m_GameOverTick = -1;
 	m_SuddenDeath = 0;
 	m_GameStartTick = Server()->Tick();
@@ -63,6 +69,251 @@ float IGameController::EvaluateSpawnPos(CSpawnEval *pEval, vec2 Pos)
 	}
 
 	return Score;
+}
+
+void IGameController::SetGameState(EGameState GameState, int Timer)
+{
+	// change game state
+	switch(GameState)
+	{
+	case IGS_WARMUP_GAME:
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "SetGameState: IGS_WARMUP_GAME req");
+		// game based warmup is only possible when game or any warmup is running
+		if(m_GameState == IGS_GAME_RUNNING || m_GameState == IGS_WARMUP_GAME || m_GameState == IGS_WARMUP_USER)
+		{
+			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "SetGameState: IGS_WARMUP_GAME ok");
+			if(Timer == TIMER_INFINITE)
+			{
+				GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "SetGameState: IGS_WARMUP_GAME infinite");
+				// run warmup till there're enough players
+				m_GameState = GameState;
+ 				m_GameStateTimer = TIMER_INFINITE;
+		
+				// enable respawning in survival when activating warmup
+				//TBD
+/* 				if(m_GameFlags&GAMEFLAG_SURVIVAL)
+				{
+					for(int i = 0; i < MAX_CLIENTS; ++i)
+						if(GameServer()->m_apPlayers[i])
+							GameServer()->m_apPlayers[i]->m_RespawnDisabled = false;
+				} */
+			}
+			else if(Timer == 0)
+			{
+				// start new match
+				GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "SetGameState: IGS_WARMUP_GAME Timer == 0");
+				StartMatch();
+			}
+		}
+		break;
+	case IGS_WARMUP_USER:
+		// user based warmup is only possible when the game or a user based warmup is running
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "SetGameState: IGS_WARMUP_USER req");
+		if(m_GameState == IGS_GAME_RUNNING || m_GameState == IGS_WARMUP_USER)
+		{
+			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "SetGameState: IGS_WARMUP_USER ok");
+			if(Timer != 0)
+			{
+				// start warmup
+				if(Timer < 0)
+				{
+					m_GameState = GameState;
+					m_GameStateTimer = TIMER_INFINITE;
+					//TBD
+/* 					if(g_Config.m_SvPlayerReadyMode)
+					{
+						// run warmup till all players are ready
+						SetPlayersReadyState(false);
+					} */
+				}
+				else if(Timer > 0)
+				{
+					// run warmup for a specific time intervall
+					m_GameState = GameState;
+					m_GameStateTimer = Timer*Server()->TickSpeed();
+				}
+		
+				// enable respawning in survival when activating warmup
+				//TBD
+/* 				if(m_GameFlags&GAMEFLAG_SURVIVAL)
+				{
+					for(int i = 0; i < MAX_CLIENTS; ++i)
+						if(GameServer()->m_apPlayers[i])
+							GameServer()->m_apPlayers[i]->m_RespawnDisabled = false;
+				} */
+			}
+			else
+			{
+				// start new match
+				StartMatch();
+			}
+		}
+		break;
+	case IGS_START_COUNTDOWN:
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "SetGameState: IGS_START_COUNTDOWN req");
+		// only possible when game, pause or start countdown is running
+		if(m_GameState == IGS_GAME_RUNNING || m_GameState == IGS_GAME_PAUSED || m_GameState == IGS_START_COUNTDOWN)
+		{
+			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "SetGameState: IGS_START_COUNTDOWN ok");
+			m_GameStateTimer = 0*Server()->TickSpeed(); // INFCROYA RELATED
+/* 			if(g_Config.m_SvCountdown == 0 && m_GameFlags&GAMEFLAG_SURVIVAL)
+			{
+				m_GameState = GameState;
+				m_GameStateTimer = 3*Server()->TickSpeed();
+				GameServer()->m_World.m_Paused = true;
+
+			}
+			else if(g_Config.m_SvCountdown > 0)
+			{ */
+				m_GameState = GameState;
+				m_GameStateTimer = 5 * Server()->TickSpeed(); //TBD MAGIC VALUE
+				//m_GameStateTimer = g_Config.m_SvCountdown*Server()->TickSpeed();
+				GameServer()->m_World.m_Paused = true;
+/* 			}
+			else
+			{
+				// no countdown, start new match right away
+				SetGameState(IGS_GAME_RUNNING);
+			}		*/
+		}
+		break;
+	case IGS_GAME_RUNNING:
+		// always possible
+		{
+			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "SetGameState: IGS_GAME_RUNNING req");
+			m_GameState = GameState;
+			m_GameStateTimer = TIMER_INFINITE;
+			//TBD
+			//SetPlayersReadyState(true);
+			GameServer()->m_World.m_Paused = false;
+		}
+		break;
+	case IGS_GAME_PAUSED:
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "SetGameState: IGS_GAME_PAUSED req");
+		// only possible when game is running or paused
+		if(m_GameState == IGS_GAME_RUNNING || m_GameState == IGS_GAME_PAUSED)
+		{
+			if(Timer != 0)
+			{
+				// start pause
+				if(Timer < 0)
+				{
+					// pauses infinitely till all players are ready or disabled via rcon command
+					m_GameStateTimer = TIMER_INFINITE;
+/* 					SetPlayersReadyState(false); */ // TBD
+				}
+				else
+				{
+					// pauses for a specific time intervall
+					m_GameStateTimer = Timer*Server()->TickSpeed();
+				}
+
+				m_GameState = GameState;
+				GameServer()->m_World.m_Paused = true;
+			}
+			else
+			{
+				// start a countdown to end pause
+				SetGameState(IGS_START_COUNTDOWN);
+			}
+		}
+		break;
+	case IGS_END_ROUND:
+	case IGS_END_MATCH:
+		if(GameState == IGS_END_ROUND && DoWincheckMatch()) {
+			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "SetGameState: IGS_END_ROUND req");
+			break;
+		}
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "SetGameState: IGS_END_MATCH req");
+		// only possible when game is running or over
+		if(m_GameState == IGS_GAME_RUNNING || m_GameState == IGS_END_MATCH || m_GameState == IGS_END_ROUND || m_GameState == IGS_GAME_PAUSED)
+		{
+			m_GameState = GameState;
+			m_GameStateTimer = Timer*Server()->TickSpeed();
+			m_SuddenDeath = 0;
+			GameServer()->m_World.m_Paused = true;
+		}
+	}
+}
+void IGameController::StartMatch()
+{
+	ResetGame();
+
+	m_RoundCount = 0;
+	//m_aTeamscore[TEAM_RED] = 0;
+	//m_aTeamscore[TEAM_BLUE] = 0; //TBD
+
+	// start countdown if there're enough players, otherwise do warmup till there're
+	if(HasEnoughPlayers())
+		SetGameState(IGS_START_COUNTDOWN);
+	else
+		SetGameState(IGS_WARMUP_GAME, TIMER_INFINITE);
+
+	Server()->DemoRecorder_HandleAutoStart();
+	char aBuf[256];
+	str_format(aBuf, sizeof(aBuf), "start match type='%s' teamplay='%d'", m_pGameType, m_GameFlags&GAMEFLAG_TEAMS);
+	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_DEBUG, "game", aBuf);
+	// INFCROYA BEGIN ------------------------------------------------------------
+	for (CroyaPlayer* cp : m_MOD->GetCroyaPlayers()) {
+		if (!cp || !cp->GetCharacter() || !cp->GetCharacter()->GameWorld())
+			continue;
+		cp->SetClassNum(Class::DEFAULT);
+	}
+	// INFCROYA END ------------------------------------------------------------//
+}
+
+
+// game
+bool IGameController::DoWincheckMatch()
+{
+/* 	if(IsTeamplay())
+	{
+		// check score win condition
+		if((m_GameInfo.m_ScoreLimit > 0 && (m_aTeamscore[TEAM_RED] >= m_GameInfo.m_ScoreLimit || m_aTeamscore[TEAM_BLUE] >= m_GameInfo.m_ScoreLimit)) ||
+			(m_GameInfo.m_TimeLimit > 0 && (Server()->Tick()-m_GameStartTick) >= m_GameInfo.m_TimeLimit*Server()->TickSpeed()*60))
+		{
+			if(m_aTeamscore[TEAM_RED] != m_aTeamscore[TEAM_BLUE] || m_GameFlags&GAMEFLAG_SURVIVAL)
+			{
+				EndMatch();
+				return true;
+			}
+			else
+				m_SuddenDeath = 1;
+		}
+	}
+	else
+	{
+		// gather some stats
+		int Topscore = 0;
+		int TopscoreCount = 0;
+		for(int i = 0; i < MAX_CLIENTS; i++)
+		{
+			if(GameServer()->m_apPlayers[i])
+			{
+				if(GameServer()->m_apPlayers[i]->m_Score > Topscore)
+				{
+					Topscore = GameServer()->m_apPlayers[i]->m_Score;
+					TopscoreCount = 1;
+				}
+				else if(GameServer()->m_apPlayers[i]->m_Score == Topscore)
+					TopscoreCount++;
+			}
+		}
+
+		// check score win condition
+		if((m_GameInfo.m_ScoreLimit > 0 && Topscore >= m_GameInfo.m_ScoreLimit) ||
+			(m_GameInfo.m_TimeLimit > 0 && (Server()->Tick()-m_GameStartTick) >= m_GameInfo.m_TimeLimit*Server()->TickSpeed()*60))
+		{
+			if(TopscoreCount == 1)
+			{
+				EndMatch();
+				return true;
+			}
+			else
+				m_SuddenDeath = 1;
+		}
+	} */
+	return false;
 }
 
 void IGameController::EvaluateSpawnType(CSpawnEval *pEval, int Type)
@@ -341,26 +592,28 @@ bool IGameController::OnEntity(int Index, vec2 Pos, int Layer, int Flags, int Nu
 
 void IGameController::EndMatch()
 {
-	if(m_Warmup) // game can't end when we are running warmup
-		return;
+	SetGameState(IGS_END_MATCH, 5);
+	//if(m_Warmup) // game can't end when we are running warmup
+	//	return;
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Match End");
 	GameServer()->SendBroadcast("Match End", -1);
 
-	GameServer()->m_World.m_Paused = true;
-	m_GameOverTick = Server()->Tick();
-	m_SuddenDeath = 0;
+	//GameServer()->m_World.m_Paused = true;
+	//m_GameOverTick = Server()->Tick();
+	//m_SuddenDeath = 0;
 }
 
 void IGameController::EndRound()
 {
-	if(m_Warmup) // game can't end when we are running warmup
-		return;
+	SetGameState(IGS_END_ROUND, 5); // INFCROYA RELATED
+	//if(m_Warmup) // game can't end when we are running warmup
+	//	return;
 	GameServer()->SendBroadcast("Round End", -1);
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Round End");
 
-	GameServer()->m_World.m_Paused = true;
+/* 	GameServer()->m_World.m_Paused = true;
 	m_GameOverTick = Server()->Tick();
-	m_SuddenDeath = 0;
+	m_SuddenDeath = 0; */
 }
 
 void IGameController::ResetGame()
@@ -421,12 +674,20 @@ void IGameController::OnCharacterSpawn(class CCharacter *pChr)
 
 void IGameController::DoWarmup(int Seconds)
 {
-	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Warmup started");
-	GameServer()->SendBroadcast("Warmup started", -1);
-	if(Seconds < 0)
+	if(m_GameState==IGS_WARMUP_GAME) {
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Warmup started GAME");
+		GameServer()->SendBroadcast("Warmup started GAME", -1);
+		SetGameState(IGS_WARMUP_GAME, 0);
+	} else {
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Warmup started USER");
+		GameServer()->SendBroadcast("Warmup started USER", -1);
+		SetGameState(IGS_WARMUP_USER, Seconds);
+	}
+
+/* 	if(Seconds < 0)
 		m_Warmup = 0;
 	else
-		m_Warmup = Seconds*Server()->TickSpeed();
+		m_Warmup = Seconds*Server()->TickSpeed(); */
 }
 
 bool IGameController::IsForceBalanced()

@@ -41,7 +41,7 @@ CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
 
 	InitTeleporter();
 
-	//IGameController::m_MOD = this; // temporarily, todo: avoid this
+	IGameController::m_MOD = this; // temporarily, todo: avoid this
 	//lua = nullptr;
 	//TBD
 

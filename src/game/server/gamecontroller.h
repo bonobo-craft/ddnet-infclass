@@ -82,10 +82,38 @@ public:
 
 	void DoWarmup(int Seconds);
 
+	// game
+	enum EGameState
+	{
+		// internal game states
+		IGS_WARMUP_GAME,		// warmup started by game because there're not enough players (infinite)
+		IGS_WARMUP_USER,		// warmup started by user action via rcon or new match (infinite or timer)
+
+		IGS_START_COUNTDOWN,	// start countown to unpause the game or start match/round (tick timer)
+
+		IGS_GAME_PAUSED,		// game paused (infinite or tick timer)
+		IGS_GAME_RUNNING,		// game running (infinite)
+		
+		IGS_END_MATCH,			// match is over (tick timer)
+		IGS_END_ROUND,			// round is over (tick timer)
+ 	};
+	EGameState m_GameState;
+	int m_GameStateTimer;
+	void SetGameState(EGameState GameState, int Timer=0);
+	enum
+	{
+		TIMER_INFINITE = -1,
+		TIMER_END = 10,
+	};
+
+	virtual bool DoWincheckMatch();		// returns true when the match is over
+	virtual void DoWincheckRound() {};
+	void StartMatch();
 	void StartRound();
 	void EndRound();
 	void EndMatch();
 	void ChangeMap(const char *pToMap);
+	bool HasEnoughPlayers() const { return true; };  //TBD
 
 		// info
 	struct CGameInfo

@@ -144,7 +144,7 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 					Damage = 0;
 					if (VictimChar->IsHuman()) {
 						const CSkin skin = VictimChar->GetCroyaPlayer()->GetClass()->GetSkin();
-						CPlayer *pPlayer = GetPlayer();
+						//CPlayer *pPlayer = GetPlayer();
 
 				        //str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_BODY], skin.GetBodyName(), 24);
 				        //pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_BODY] = true;
