@@ -555,8 +555,8 @@ void IGameController::Snap(int SnappingClient)
 	if(!pGameInfoEx)
 		return;
 
-	pGameInfoEx->m_Flags = 0
-		| GAMEINFOFLAG_TIMESCORE
+	pGameInfoEx->m_Flags = 0;
+/* 		| GAMEINFOFLAG_TIMESCORE
 		| GAMEINFOFLAG_GAMETYPE_RACE
 		| GAMEINFOFLAG_GAMETYPE_DDRACE
 		| GAMEINFOFLAG_GAMETYPE_DDNET
@@ -572,7 +572,7 @@ void IGameController::Snap(int SnappingClient)
 		| GAMEINFOFLAG_ENTITIES_DDNET
 		| GAMEINFOFLAG_ENTITIES_DDRACE
 		| GAMEINFOFLAG_ENTITIES_RACE
-		| GAMEINFOFLAG_RACE;
+		| GAMEINFOFLAG_RACE; */
 	pGameInfoEx->m_Version = GAMEINFO_CURVERSION;
 
 	if(Server()->IsSixup(SnappingClient))
