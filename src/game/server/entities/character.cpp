@@ -196,7 +196,8 @@ void CCharacter::HandleJetpack()
 	bool FullAuto = false;
 	if(m_Core.m_ActiveWeapon == WEAPON_GRENADE || m_Core.m_ActiveWeapon == WEAPON_SHOTGUN || m_Core.m_ActiveWeapon == WEAPON_LASER)
 		FullAuto = true;
-	if (m_Jetpack && m_Core.m_ActiveWeapon == WEAPON_GUN)
+	//if (m_Jetpack && m_Core.m_ActiveWeapon == WEAPON_GUN)
+	if (m_Core.m_ActiveWeapon == WEAPON_GUN)
 		FullAuto = true;
 
 	// check if we gonna fire
@@ -415,7 +416,8 @@ void CCharacter::FireWeapon()
 	bool FullAuto = false;
 	if(m_Core.m_ActiveWeapon == WEAPON_GRENADE || m_Core.m_ActiveWeapon == WEAPON_SHOTGUN || m_Core.m_ActiveWeapon == WEAPON_LASER)
 		FullAuto = true;
-	if(m_Jetpack && m_Core.m_ActiveWeapon == WEAPON_GUN)
+	//if(m_Jetpack && m_Core.m_ActiveWeapon == WEAPON_GUN)
+	if(m_Core.m_ActiveWeapon == WEAPON_GUN)
 		FullAuto = true;
 	// allow firing directly after coming out of freeze or being unfrozen
 	// by something
