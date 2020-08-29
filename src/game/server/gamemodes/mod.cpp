@@ -590,9 +590,9 @@ bool CGameControllerMOD::IsCroyaWarmup()
 	if (IsWarmup())
 		return true;
 
-	if (m_GameInfo.m_TimeLimit > 0 && (Server()->Tick() - m_GameStartTick) <= Server()->TickSpeed() * 10)
+/* 	if (m_GameInfo.m_TimeLimit > 0 && (Server()->Tick() - m_GameStartTick) <= Server()->TickSpeed() * 10)
 		return true;
-	else
+	else */
 		return false;
 }
 
