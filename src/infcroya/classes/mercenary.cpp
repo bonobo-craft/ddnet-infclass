@@ -38,7 +38,8 @@ void CMercenary::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCh
 
 	switch (Weapon) {
 	case WEAPON_HAMMER: {
-		CMercenaryBomb* pCurrentBomb = NULL;
+		//CMercenaryBomb* pCurrentBomb = NULL;
+		CMercenaryBomb* pCurrentBomb = nullptr;
 		for (CMercenaryBomb* pBomb = (CMercenaryBomb*)pGameWorld->FindFirst(CGameWorld::ENTTYPE_MERCENARY_BOMB); pBomb; pBomb = (CMercenaryBomb*)pBomb->TypeNext())
 		{
 			if (pBomb->m_Owner == ClientID)
