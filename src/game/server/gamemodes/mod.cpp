@@ -108,13 +108,23 @@ void CGameControllerMOD::Snap(int SnappingClient)
 
 		if (each->IsZombie() && each->IsRespawnPointPlaced() && each->GetRespawnPointsNum() >= 1 && each->GetCharacter()) {
 			// Respawn point
-			CNetObj_Pickup* pP = static_cast<CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, each->GetCharacter()->m_RespawnPointID, sizeof(CNetObj_Pickup)));
-			if (!pP)
-				return;
 
-			pP->m_X = (int)each->GetRespawnPointPos().x;
-			pP->m_Y = (int)each->GetRespawnPointPos().y;
-			pP->m_Type = POWERUP_ARMOR;
+			if (Server()->IsSixup(SnappingClient)) {
+				protocol7::CNetObj_Pickup* pP = static_cast<protocol7::CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, each->GetCharacter()->m_RespawnPointID, sizeof(protocol7::CNetObj_Pickup)));
+				if (!pP)
+					return;
+				pP->m_X = (int)each->GetRespawnPointPos().x;
+				pP->m_Y = (int)each->GetRespawnPointPos().y;
+				pP->m_Type = POWERUP_ARMOR;
+
+			} else {
+				CNetObj_Pickup* pP = static_cast<CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, each->GetCharacter()->m_RespawnPointID, sizeof(CNetObj_Pickup)));
+				if (!pP)
+					return;
+				pP->m_X = (int)each->GetRespawnPointPos().x;
+				pP->m_Y = (int)each->GetRespawnPointPos().y;
+				pP->m_Type = POWERUP_ARMOR;
+			}
 		}
 	}
 }
