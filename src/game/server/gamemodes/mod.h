@@ -71,7 +71,7 @@ public:
 	int NUM_TEAMS=2;
 	
 
-	std::vector<class CCircle*>& GetCircles();
+	std::vector<class CCircle*>& GetSafezones();
 	std::vector<class CInfCircle*>& GetInfCircles();
 
 	std::shared_ptr<CScoreInitResult> m_pInitResult;
@@ -85,7 +85,7 @@ private:
 	std::vector<int> humans;
 	//class LuaLoader* lua;
 	//TBD
-	std::vector<class CCircle*> circles;
+	std::vector<class CCircle*> safezones;
 	std::vector<class CInfCircle*> inf_circles;
 
 	void ResetHumansToDefault() const;

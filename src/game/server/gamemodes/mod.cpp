@@ -48,7 +48,7 @@ CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
 	m_ExplosionStarted = false;
 	m_InfectedStarted = false;
 	m_apFlag = 0;
-	circles.clear();
+	safezones.clear();
 	inf_circles.clear();
 
 	m_MapWidth = GameServer()->Collision()->GetWidth();
@@ -146,56 +146,50 @@ void CGameControllerMOD::OnRoundStart()
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
 	try {
 		YAML::Node mapconfig = YAML::LoadFile(path_to_yaml);
-		if (mapconfig["inf_circle_x"]) {
-			inf_circles.clear();
-			int x = mapconfig["inf_circle_x"].as<int>();
-			int y = mapconfig["inf_circle_y"].as<int>();
-			str_format(aBuf, sizeof(aBuf), "Success parsing YAML file: %s", path_to_yaml.c_str());
+		const YAML::Node& inf_circle_nodes = mapconfig["inf_circles"];
+		for (YAML::const_iterator it = inf_circle_nodes.begin(); it != inf_circle_nodes.end(); ++it) {
+			const YAML::Node& inf_circle_node = *it;
+			int x = inf_circle_node["x"].as<int>();
+			int y = inf_circle_node["y"].as<int>();
+			int radius = inf_circle_node["radius"].as<int>();
+			str_format(aBuf, sizeof(aBuf), "Success parsing inf_circle node");
 			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
-			inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(x * TILE_SIZE, y * TILE_SIZE), -1, 100));
-		} else {
-			inf_circles.clear();
+			inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(x * TILE_SIZE, y * TILE_SIZE), -1, radius));
+		}
+		const YAML::Node& flag_nodes = mapconfig["flags"];
+		for (YAML::const_iterator it = flag_nodes.begin(); it != flag_nodes.end(); ++it) {
+			const YAML::Node& flag_node = *it;
+			int x = flag_node["x"].as<int>();
+			int y = flag_node["y"].as<int>();
+			str_format(aBuf, sizeof(aBuf), "Success parsing flag node");
+			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
+			flag_positions.push_back(vec2(x, y));
+		}
+		const YAML::Node& safezone_nodes = mapconfig["safezones"];
+		for (YAML::const_iterator it = safezone_nodes.begin(); it != safezone_nodes.end(); ++it) {
+			const YAML::Node& safezone_node = *it;
+			int x = safezone_node["x"].as<int>() * TILE_SIZE;
+			int y = safezone_node["y"].as<int>() * TILE_SIZE;
+			float radius = safezone_node["radius"].as<float>();
+			float min_radius = safezone_node["min_radius"].as<float>();
+			float shrink_speed = safezone_node["shrink_speed"].as<float>() * 10.0f;
+			str_format(aBuf, sizeof(aBuf), "Success parsing safezone node");
+			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
+			safezones.push_back(new CCircle(&GameServer()->m_World, vec2(x, y), -1, radius, min_radius, shrink_speed));
 		}
 	} catch (const YAML::BadFile&) {
 		str_format(aBuf, sizeof(aBuf), "Error parsing YAML file: %s", path_to_yaml.c_str());
 		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
 		std::exit(1);
 	}
-	//	//flag_positions = lua->GetFlagsPositions();
-	//	//auto positions = lua->GetCirclePositions();
-	//	//auto radiuses = lua->GetCircleRadiuses();
-	//	//auto min_radiuses = lua->GetCircleMinRadiuses();
-	//	//auto shrink_speeds = lua->GetCircleShrinkSpeeds();
-	//	const int TILE_SIZE = 32;
-
-	//	//for (size_t i = 0; i < positions.size(); i++) {
-	//	//	int x = positions[i].x * TILE_SIZE;
-	//	//	int y = positions[i].y * TILE_SIZE;
-	//	//	circles.push_back(new CCircle(&GameServer()->m_World, vec2(x, y), -1, radiuses[i], min_radiuses[i], shrink_speeds[i]));
-	//	//}
-
-	//	// infection zone circles
-	//	//auto inf_positions = lua->GetInfCirclePositions();
-	//	//auto inf_radiuses = lua->GetInfCircleRadiuses();
-	//	//m_GrowingMap[(int)inf_positions[0].y * m_MapWidth + (int)inf_positions[0].x] = 6; // final explosion start pos (?)
-	//	//for (size_t i = 0; i < inf_positions.size(); i++) {
-	//	//	const int TILE_SIZE = 32;
-	//	//	int x = inf_positions[i].x * TILE_SIZE;
-	//	//	int y = inf_positions[i].y * TILE_SIZE;
-	//	//	inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(x, y), -1, inf_radiuses[i]));
-	//	//}
-	//	//////inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(30, 30), -1, 100));
-	//}
 	TurnDefaultIntoRandomHuman();
 	UnlockPositions();
 
-	//for (CCircle* circle : circles) {
-	//	if (circle->GetRadius() > circle->GetMinRadius())
-	//		circle->SetRadius(circle->GetRadius() - circle->GetShrinkSpeed());
-	//}
+	for (CCircle* safezone : safezones) {
+		if (safezone->GetRadius() > safezone->GetMinRadius())
+			safezone->SetRadius(safezone->GetRadius() - safezone->GetShrinkSpeed());
+	}
 
-	flag_positions.push_back(vec2(44 * TILE_SIZE, 30 * TILE_SIZE));
-	flag_positions.push_back(vec2(84 * TILE_SIZE, 30 * TILE_SIZE));
 	if ( flag_positions.size() > 0) {
 		m_apFlagSpotId = rand() % flag_positions.size();
 		str_format(aBuf, sizeof(aBuf), "First flag spot id %ld of %ld", m_apFlagSpotId, flag_positions.size() - 1);
@@ -487,9 +481,9 @@ void CGameControllerMOD::Tick()
 
 		FlagTick();
 
-		for (CCircle* circle : circles) {
-			if (circle->GetRadius() > circle->GetMinRadius())
-				circle->SetRadius(circle->GetRadius() - circle->GetShrinkSpeed());
+		for (CCircle* safezone : safezones) {
+			if (safezone->GetRadius() > safezone->GetMinRadius())
+				safezone->SetRadius(safezone->GetRadius() - safezone->GetShrinkSpeed());
 		}
 
 		// no zombies, start infection
@@ -652,7 +646,7 @@ void CGameControllerMOD::OnRoundEnd()
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "OnRoundEnd");
 	ResetFinalExplosion();
 	ResetHumansToDefault();
-	circles.clear();
+	safezones.clear();
 	inf_circles.clear();
     if (m_apFlag != 0) {
 		m_apFlag->Destroy();
@@ -898,9 +892,9 @@ bool CGameControllerMOD::IsExplosionStarted() const
 	return m_ExplosionStarted;
 }
 
-std::vector<class CCircle*>& CGameControllerMOD::GetCircles()
+std::vector<class CCircle*>& CGameControllerMOD::GetSafezones()
 {
-	return circles;
+	return safezones;
 }
 
 std::vector<class CInfCircle*>& CGameControllerMOD::GetInfCircles()

@@ -41,11 +41,21 @@ void CFlag::Snap(int SnappingClient)
 	if(NetworkClipped(SnappingClient))
 		return;
 
-	CNetObj_Flag *pFlag = (CNetObj_Flag *)Server()->SnapNewItem(NETOBJTYPE_FLAG, m_Team, sizeof(CNetObj_Flag));
-	if(!pFlag)
-		return;
+	if (Server()->IsSixup(SnappingClient)) {
+		CNetObj_Flag *pFlag = (CNetObj_Flag *)Server()->SnapNewItem(NETOBJTYPE_FLAG, m_Team, sizeof(CNetObj_Flag));
+		if(!pFlag)
+			return;
 
-	pFlag->m_X = (int)m_Pos.x;
-	pFlag->m_Y = (int)m_Pos.y;
-	pFlag->m_Team = m_Team;
+		pFlag->m_X = (int)m_Pos.x;
+		pFlag->m_Y = (int)m_Pos.y;
+		pFlag->m_Team = m_Team;
+	} else {
+		protocol7::CNetObj_Flag *pFlag = (protocol7::CNetObj_Flag *)Server()->SnapNewItem(NETOBJTYPE_FLAG, m_Team, sizeof(protocol7::CNetObj_Flag));
+		if(!pFlag)
+			return;
+
+		pFlag->m_X = (int)m_Pos.x;
+		pFlag->m_Y = (int)m_Pos.y;
+		pFlag->m_Team = m_Team;
+	}
 }

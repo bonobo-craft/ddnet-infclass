@@ -218,7 +218,7 @@ CCircle* CroyaPlayer::GetClosestCircle()
 {
 	float min_distance = std::numeric_limits<float>::max();
 	CCircle* closest = nullptr;
-	for (CCircle* circle : m_pGameController->GetCircles()) {
+	for (CCircle* circle : m_pGameController->GetSafezones()) {
 		if (!m_pCharacter)
 			break;
 		if (!circle)
