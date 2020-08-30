@@ -230,6 +230,7 @@ public:
 
 	bool m_NewHook;
 
+	bool m_PressedJump = false;
 	int m_Jumped;
 	int m_JumpedTotal;
 	int m_Jumps;

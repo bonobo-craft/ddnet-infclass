@@ -77,9 +77,8 @@ void CSniper::LockOrUnlockPosition(CCharacter* pChr) {
 
 void CSniper::Tick(CCharacter* pChr)
 {
-	//if (pChr->GetCharacterCore().m_PressedJump)
-	//  UnlockPosition(pChr);
-	// TBD
+ 	if (pChr->GetCharacterCore().m_PressedJump)
+	  UnlockPosition(pChr);
 
 	ItDoubleJumps(pChr);
 	ItLocksInSpace(pChr);

@@ -867,6 +867,7 @@ void CCharacter::ResetInput()
 
 void CCharacter::Tick()
 {
+
 	/*if(m_pPlayer->m_ForceBalanced)
 	{
 		char Buf[128];

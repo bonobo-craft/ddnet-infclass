@@ -162,6 +162,7 @@ void CCharacterCore::Tick(bool UseInput)
 		// handle jump
 		if(m_Input.m_Jump)
 		{
+			m_PressedJump = true;
 			if(!(m_Jumped&1))
 			{
 				if(Grounded)
@@ -180,8 +181,10 @@ void CCharacterCore::Tick(bool UseInput)
 				}
 			}
 		}
-		else
+		else {
+			m_PressedJump = false;
 			m_Jumped &= ~1;
+		}
 
 		// handle hook
 		if(m_Input.m_Hook)
