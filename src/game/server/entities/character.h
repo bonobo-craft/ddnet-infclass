@@ -139,9 +139,9 @@ public:
 	array<int> m_BarrierHintIDs;
 	int m_RespawnPointID;
 
-	void Freeze(float Time, int Player, int Reason);
-	bool Unfreeze();
-	bool Frozen();
+	void Stun(float Time);
+	void Unstun();
+	bool Stunned();
 	void Poison(int Count, int From);
 
 	void DestroyChildEntities();
@@ -182,7 +182,8 @@ private:
 	int m_HeartID;
 	int m_NormalEmote;
 	bool m_IsFrozen;
-	int m_FrozenTime;
+	bool m_IsStunned;
+	int m_StunTime;
 	int m_FreezeReason;
 	int m_LastFreezer;
 
@@ -270,6 +271,8 @@ public:
 	bool Freeze(int Time);
 	bool Freeze();
 	bool UnFreeze();
+	bool Frozen();
+
 	void GiveAllWeapons();
 	int m_DDRaceState;
 	int Team();

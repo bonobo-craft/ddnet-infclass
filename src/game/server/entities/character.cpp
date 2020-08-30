@@ -50,6 +50,8 @@ CCharacter::CCharacter(CGameWorld *pWorld)
 	}
 	m_RespawnPointID = Server()->SnapNewID();
 	
+	m_IsStunned = false;
+	m_StunTime = -1;
 	//m_IsFrozen = false;
 	//m_FrozenTime = -1;
 	//m_PoisonTick = 0;
@@ -236,7 +238,6 @@ void CCharacter::HandleJetpack()
 
 void CCharacter::HandleNinja()
 {
-	return; // no ninja yet
 	if(m_Core.m_ActiveWeapon != WEAPON_NINJA)
 		return;
 
@@ -244,6 +245,17 @@ void CCharacter::HandleNinja()
 	{
 		// time's up, return
 		RemoveNinja();
+
+		return;
+	}
+
+	if ((Server()->Tick() - m_StunTime) / Server()->TickSpeed() > 1) {
+		Unstun();
+		return;
+	}
+
+	if (Stunned()) {
+		m_Core.m_Vel = vec2(0.f, 0.f);
 		return;
 	}
 
@@ -770,13 +782,30 @@ void CCharacter::GiveNinja()
 		GameServer()->CreateSound(m_Pos, SOUND_PICKUP_NINJA, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
 }
 
+void CCharacter::Unstun()
+{
+	if (!Stunned()) {
+		return;
+	}
+	RemoveNinja();
+	m_IsStunned = false;
+
+/* 	if (m_FreezeReason == FREEZEREASON_UNDEAD)
+	{
+		m_Health = 10.0;
+	}
+ */
+	//TBD: do we need it?
+	GameServer()->CreatePlayerSpawn(m_Pos);
+}
+
 void CCharacter::RemoveNinja()
 {
 	m_Ninja.m_CurrentMoveTime = 0;
 	m_aWeapons[WEAPON_NINJA].m_Got = false;
 	m_Core.m_ActiveWeapon = m_LastWeapon;
 
-		SetWeapon(m_Core.m_ActiveWeapon);
+	//SetWeapon(m_LastWeapon);
 }
 
 void CCharacter::SetEmote(int Emote, int Tick)
@@ -2783,33 +2812,25 @@ CCharacterCore& CCharacter::GetCharacterCore()
 	return m_Core;
 }
 
-/* void CCharacter::Freeze(float Time, int Player, int Reason)
+void CCharacter::Stun(float Time)
 {
-	//if (m_IsFrozen && m_FreezeReason == FREEZEREASON_UNDEAD)
-	//	return;
+	if (Stunned() || Frozen())
+		return;
 
 	if(GetCroyaPlayer()->GetClassNum() == Class::SCIENTIST) {
 		return;
 	}
 
-
-
-	if (m_IsFrozen) {
+	// immunity for 4 seconds after last stun
+	if ((Server()->Tick() - m_StunTime) / Server()->TickSpeed() < 4)
 		return;
-	}
 
-  if (m_FrozenTime + 4 * Server()->TickSpeed() > Server()->Tick())
-    return;
-
-
-	m_IsFrozen = true;
-	m_FrozenTime = Server()->Tick();
+	m_IsStunned = true;
+	m_StunTime = Server()->Tick();
 	//m_FrozenTime = Server()->TickSpeed() * Time;
-	m_FreezeReason = Reason;
 
-	m_LastFreezer = Player;
 	GiveNinja();
-} */
+}
 
 /* void CCharacter::Unfreeze()
 {
@@ -2828,14 +2849,21 @@ CCharacterCore& CCharacter::GetCharacterCore()
 } */
 
 bool CCharacter::Frozen() {
-	if (m_FreezeTime <= 1)
+	if (m_FreezeTime <= 0)
 	  return false;
 	return true;
 }
 
+bool CCharacter::Stunned() {
+	return m_IsStunned;
+/* 	if (m_StunTime <= 0)
+	  return false;
+	return true; */
+}
+
 bool CCharacter::UnFreeze()
 {
-	if (Frozen())
+	if (!Frozen())
 	  return false;
 
 	m_Health = 10;
