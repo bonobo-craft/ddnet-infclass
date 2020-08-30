@@ -53,7 +53,7 @@ CCharacter::CCharacter(CGameWorld *pWorld)
 	//m_IsFrozen = false;
 	//m_FrozenTime = -1;
 	//m_PoisonTick = 0;
-	//m_InAirTick = 0;
+	m_InAirTick = 0;
 	//m_HookProtected = true; // will be updated from CPlayer
 	// INFCROYA END ------------------------------------------------------------//
 }
@@ -721,6 +721,14 @@ void CCharacter::HandleWeapons()
 	int MaxAmmo = Server()->GetMaxAmmo(InfWID);
 	int AmmoRegenTime = Server()->GetAmmoRegenTime(InfWID);
 
+	if (InfWID == INFWEAPON_MERCENARY_GUN)
+	{
+		if (m_InAirTick > Server()->TickSpeed() * 4)
+		{
+			AmmoRegenTime = 0;
+		}
+	}
+
 	if(AmmoRegenTime)
 	{
 		// If equipped and not active, regen ammo?
@@ -741,6 +749,10 @@ void CCharacter::HandleWeapons()
 			m_aWeapons[m_Core.m_ActiveWeapon].m_AmmoRegenStart = -1;
 		}
 	}
+	if (!IsGrounded() && (m_Core.m_HookState != HOOK_GRABBED || m_Core.m_HookedPlayer != -1))
+		m_InAirTick++;
+	else
+		m_InAirTick = 0;
 
 	return;
 }
