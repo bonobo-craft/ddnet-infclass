@@ -99,7 +99,7 @@ void CMedic::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCharac
 
 	case WEAPON_SHOTGUN: {
 		int ShotSpread = 3;
-		float Force = 10.0f;
+		float Force = 4.0f;
 
 		for (int i = -ShotSpread; i <= ShotSpread; ++i)
 		{
