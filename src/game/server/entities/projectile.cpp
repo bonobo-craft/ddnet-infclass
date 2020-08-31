@@ -136,6 +136,7 @@ void CProjectile::Tick()
 
 void CProjectile::TickDDNet()
 {
+	// not used
 	float Pt = (Server()->Tick()-m_StartTick-1)/(float)Server()->TickSpeed();
 	float Ct = (Server()->Tick()-m_StartTick)/(float)Server()->TickSpeed();
 	vec2 PrevPos = GetPos(Pt);

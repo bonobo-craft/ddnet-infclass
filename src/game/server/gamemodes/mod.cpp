@@ -172,7 +172,7 @@ void CGameControllerMOD::OnRoundStart()
 			int y = safezone_node["y"].as<int>() * TILE_SIZE;
 			float radius = safezone_node["radius"].as<float>();
 			float min_radius = safezone_node["min_radius"].as<float>();
-			float shrink_speed = safezone_node["shrink_speed"].as<float>() * 10.0f;
+			float shrink_speed = safezone_node["shrink_speed"].as<float>();
 			str_format(aBuf, sizeof(aBuf), "Success parsing safezone node");
 			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
 			safezones.push_back(new CCircle(&GameServer()->m_World, vec2(x, y), -1, radius, min_radius, shrink_speed));
