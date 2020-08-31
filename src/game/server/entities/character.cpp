@@ -1585,10 +1585,26 @@ int CCharacter::NetworkClipped(int SnappingClient, vec2 CheckPos)
 
 // DDRace
 
+bool CCharacter::CanCollideInf(int ClientID)
+{
+	bool IsTargetZombie = GameServer()->m_apPlayers[ClientID]->GetCharacter()->IsZombie();
+	bool IsTargetHuman = !IsTargetZombie;
+	if (IsZombie() && IsTargetZombie)
+	  return false;
+	if (IsHuman() && IsTargetHuman)
+	  return false;
+	if (IsZombie() && IsTargetHuman)
+	  return true;
+	if (IsHuman() && IsTargetZombie)
+	  return true;
+	return true;
+}
+
 bool CCharacter::CanCollide(int ClientID)
 {
 	return Teams()->m_Core.CanCollide(GetPlayer()->GetCID(), ClientID);
 }
+
 bool CCharacter::SameTeam(int ClientID)
 {
 	return Teams()->m_Core.SameTeam(GetPlayer()->GetCID(), ClientID);

@@ -277,6 +277,7 @@ public:
 	int m_DDRaceState;
 	int Team();
 	bool CanCollide(int ClientID);
+	bool CanCollideInf(int ClientID); // INFLUCK
 	bool SameTeam(int ClientID);
 	bool m_Super;
 	bool m_SuperJump;
