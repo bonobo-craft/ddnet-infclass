@@ -28,7 +28,7 @@ CScientistLaser::CScientistLaser(CGameWorld *pGameWorld, vec2 Pos, vec2 Directio
 bool CScientistLaser::HitCharacter(vec2 From, vec2 To)
 {
 	vec2 At;
-	CCharacter *pHit = GameServer()->m_World.IntersectCharacter(m_Pos, To, 0.f, At, m_OwnerChar);
+	CCharacter *pHit = GameServer()->m_World.IntersectCharacterInf(m_Pos, To, 0.f, At, m_OwnerChar);
 	if(!pHit)
 		return false;
 

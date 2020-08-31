@@ -27,7 +27,7 @@ bool CMedicLaser::HitCharacter(vec2 From, vec2 To)
 {
 	vec2 At;
 	CCharacter *pOwnerChar = GameServer()->GetPlayerChar(m_Owner);
-	CCharacter *pHit = GameServer()->m_World.IntersectCharacter(m_Pos, To, 0.f, At, pOwnerChar);
+	CCharacter *pHit = GameServer()->m_World.IntersectCharacterInf(m_Pos, To, 0.f, At, pOwnerChar);
 	if(!pHit)
 		return false;
 

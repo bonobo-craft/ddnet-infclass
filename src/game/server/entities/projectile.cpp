@@ -114,7 +114,7 @@ void CProjectile::Tick()
 	vec2 CurPos = GetPos(Ct);
 	int Collide = GameServer()->Collision()->IntersectLine(PrevPos, CurPos, &CurPos, 0);
 	CCharacter *OwnerChar = GameServer()->GetPlayerChar(m_Owner);
-	CCharacter *TargetChr = GameWorld()->IntersectCharacter(PrevPos, CurPos, 6.0f, CurPos, OwnerChar);
+	CCharacter *TargetChr = GameWorld()->IntersectCharacterInf(PrevPos, CurPos, 6.0f, CurPos, OwnerChar);
 
 	m_LifeSpan--;
 
@@ -151,7 +151,7 @@ void CProjectile::TickDDNet()
 	CCharacter *pTargetChr = 0;
 
 	if(pOwnerChar ? !(pOwnerChar->m_Hit&CCharacter::DISABLE_HIT_GRENADE) : g_Config.m_SvHit)
-		pTargetChr = GameServer()->m_World.IntersectCharacter(PrevPos, ColPos, m_Freeze ? 1.0f : 6.0f, ColPos, pOwnerChar, m_Owner);
+		pTargetChr = GameServer()->m_World.IntersectCharacterInf(PrevPos, ColPos, m_Freeze ? 1.0f : 6.0f, ColPos, pOwnerChar, m_Owner);
 
 	if(m_LifeSpan > -1)
 		m_LifeSpan--;

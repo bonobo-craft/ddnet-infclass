@@ -51,7 +51,7 @@ void CScatterGrenade::Tick()
 	if(m_IsFlashGrenade) {
 		
 		CCharacter *OwnerChar = GameServer()->GetPlayerChar(m_Owner);
-		CCharacter *TargetChr = GameServer()->m_World.IntersectCharacter(PrevPos, CurPos, 6.0f, CurPos, OwnerChar);
+		CCharacter *TargetChr = GameServer()->m_World.IntersectCharacterInf(PrevPos, CurPos, 6.0f, CurPos, OwnerChar);
 		
 		if(TargetChr)
 		{
