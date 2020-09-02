@@ -67,6 +67,7 @@ protected:
 	int m_GameOverTick;
 	int m_SuddenDeath;
 
+	int m_MatchCount;
 	int m_RoundCount;
 
 	int m_GameFlags;
@@ -95,6 +96,7 @@ public:
 		int m_ScoreLimit;
 		int m_TimeLimit;
 	} m_GameInfo;
+
 
 	void UpdateGameInfo(int ClientID);
 

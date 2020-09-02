@@ -1327,7 +1327,7 @@ void CGameContext::OnClientEnter(int ClientID)
 			protocol7::CNetMsg_Sv_GameInfo Msg;
 			//Msg.m_GameFlags = protocol7::GAMEFLAG_RACE;
 			Msg.m_MatchCurrent = 1;
-			Msg.m_MatchNum = 0;
+			Msg.m_MatchNum = 5;
 			Msg.m_ScoreLimit = 0;
 			Msg.m_TimeLimit = g_Config.m_SvTimelimit;
 			Server()->SendPackMsg(&Msg, MSGFLAG_VITAL|MSGFLAG_NORECORD, ClientID);

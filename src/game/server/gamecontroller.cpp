@@ -41,6 +41,10 @@ IGameController::IGameController(class CGameContext *pGameServer)
 	m_aNumSpawnPoints[2] = 0;
 
 	m_CurrentRecord = 0;
+
+	m_MatchCount = 0;
+	m_RoundCount = 0;
+
 }
 
 IGameController::~IGameController()
@@ -349,6 +353,7 @@ void IGameController::EndMatch()
 	GameServer()->m_World.m_Paused = true;
 	m_GameOverTick = Server()->Tick();
 	m_SuddenDeath = 0;
+	m_MatchCount++;
 }
 
 void IGameController::EndRound()
@@ -525,8 +530,9 @@ void IGameController::Snap(int SnappingClient)
 	pGameInfoObj->m_RoundStartTick = m_RoundStartTick;
 	pGameInfoObj->m_WarmupTimer = m_Warmup;
 
-	pGameInfoObj->m_RoundNum = 0;
+	pGameInfoObj->m_RoundNum = 5;
 	pGameInfoObj->m_RoundCurrent = m_RoundCount+1;
+	pGameInfoObj->m_TimeLimit = 1;
 
 	CCharacter *pChr;
 	CPlayer *pPlayer = SnappingClient > -1 ? GameServer()->m_apPlayers[SnappingClient] : 0;
