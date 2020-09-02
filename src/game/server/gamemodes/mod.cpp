@@ -150,6 +150,7 @@ void CGameControllerMOD::OnRoundStart()
 			const YAML::Node& inf_circle_node = *it;
 			int x = inf_circle_node["x"].as<int>();
 			int y = inf_circle_node["y"].as<int>();
+			m_GrowingMap[y * m_MapWidth + x] = 6; // final explosion start pos (?)
 			int radius = inf_circle_node["radius"].as<int>();
 			str_format(aBuf, sizeof(aBuf), "Success parsing inf_circle node");
 			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
@@ -204,6 +205,7 @@ void CGameControllerMOD::OnRoundStart()
 		GameServer()->SendChatTarget(-1, aBuf);
 
 	}
+
 
 
 }
@@ -765,12 +767,16 @@ int CGameControllerMOD::GetIZombieCount() const
 int CGameControllerMOD::GetZombieCount() const
 {
 	int ZombieCount = 0;
-	for (CroyaPlayer* each : players) {
+	for (CPlayer* each : GameServer()->m_apPlayers) {
 		if (!each)
 			continue;
-		if (each->IsZombie() && each->GetPlayer()->GetTeam() != TEAM_SPECTATORS) {
-			ZombieCount++;
-		}
+		if (!each->GetCroyaPlayer())
+			continue;
+		if(!each->GetTeam() == 0)
+			continue;
+		if (!each->GetCroyaPlayer()->IsZombie())
+			continue;
+		ZombieCount++;
 	}
 	return ZombieCount;
 }

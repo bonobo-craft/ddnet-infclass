@@ -143,8 +143,8 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 					Rate = 1.0f;
 					Damage = 0;
 					if (VictimChar->IsHuman()) {
-						const CSkin skin = VictimChar->GetCroyaPlayer()->GetClass()->GetSkin();
-						CPlayer *pPlayer = GetPlayer();
+						//const CSkin skin = VictimChar->GetCroyaPlayer()->GetClass()->GetSkin();
+						//CPlayer *pPlayer = GetPlayer();
 
 				        //str_copy(pPlayer->m_TeeInfos.m_aaSkinPartNames[SKINPART_BODY], skin.GetBodyName(), 24);
 				        //pPlayer->m_TeeInfos.m_aUseCustomColors[SKINPART_BODY] = true;
@@ -272,6 +272,11 @@ int CroyaPlayer::GetClassNum()
 
 void CroyaPlayer::SetClassNum(int Class, bool DrawPurpleThing, bool ShowInfo, bool destroyChildEntities)
 {
+	char aBuf[512];
+	str_format(aBuf, sizeof(aBuf),
+			"SetClassNum, Client ID = %d, class = %d'",
+			m_ClientID, Class);
+	m_pGameServer->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "server", aBuf);
 	SetClass(m_Classes[Class], DrawPurpleThing, destroyChildEntities);
 	m_pGameServer->SendClassSelectorByClassId(Class, GetClientID(), ShowInfo);
 }
@@ -700,11 +705,22 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 	m_pPlayer->m_TeeInfos.FromSixup();
 
 	if (m_pClass->IsInfectedClass()) {
+		char aBuf[512];
+		str_format(aBuf, sizeof(aBuf),
+			"Infected class Client ID = %d, class = %s",
+			m_ClientID, m_pClass->m_Name.c_str());
+		m_pGameServer->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "server", aBuf);
+
 		m_Infected = true;
 		if (GetCharacter())
 			GetCharacter()->SetInfected(true);
 	}
 	else {
+		char aBuf[512];
+		str_format(aBuf, sizeof(aBuf),
+			"Not infected class Client ID = %d, class = %s",
+			m_ClientID, m_pClass->m_Name.c_str());
+		m_pGameServer->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "server", aBuf);
 		m_InitialZombie = false;
 		m_Infected = false;
 		if (GetCharacter())

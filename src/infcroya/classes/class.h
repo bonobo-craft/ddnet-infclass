@@ -7,10 +7,10 @@
 
 class IClass {
 private:
-	std::string m_Name;
 	CSkin m_Skin;
 	bool m_Infected;
 public:
+	std::string m_Name;
 	static std::unordered_map<int, class IClass*> classes;
 	virtual ~IClass();
 

@@ -281,8 +281,8 @@ public:
 	bool m_DeepFrozen;
 
 	// INFCROYA BEGIN ------------------------------------------------------------
-	bool m_HookProtected; // initial value is set on CCharacter::Spawn by SetHookProtected() setter function
-	bool m_Infected;
+	bool m_HookProtected = false; // NO MORE -> // initial value is set on CCharacter::Spawn by SetHookProtected() setter function
+	bool m_Infected = false;
 	// INFCROYA END ------------------------------------------------------------//
 
 private:
