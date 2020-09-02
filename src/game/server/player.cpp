@@ -133,7 +133,7 @@ void CPlayer::Reset()
 	m_DND = false;
 
 	m_LastPause = 0;
-	m_Score = -9999;
+	m_Score = 0;
 	m_HasFinishScore = false;
 
 	// Variable initialized:
@@ -186,7 +186,7 @@ void CPlayer::Tick()
 #ifdef CONF_DEBUG
 	if(!g_Config.m_DbgDummies || m_ClientID < MAX_CLIENTS-g_Config.m_DbgDummies)
 #endif
-	if(m_ScoreQueryResult != nullptr && m_ScoreQueryResult.use_count() == 1)
+/* 	if(m_ScoreQueryResult != nullptr && m_ScoreQueryResult.use_count() == 1)
 	{
 		ProcessScoreResult(*m_ScoreQueryResult);
 		m_ScoreQueryResult = nullptr;
@@ -195,13 +195,13 @@ void CPlayer::Tick()
 	{
 		ProcessScoreResult(*m_ScoreFinishResult);
 		m_ScoreFinishResult = nullptr;
-	}
+	} */
 
 	if(!Server()->ClientIngame(m_ClientID))
 		return;
 
-	if (m_ChatScore > 0)
-		m_ChatScore--;
+/* 	if (m_ChatScore > 0)
+		m_ChatScore--; */ //TBD removed ddrace scores
 
 	Server()->SetClientScore(m_ClientID, m_Score);
 

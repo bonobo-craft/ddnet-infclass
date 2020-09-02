@@ -212,6 +212,9 @@ void CGameControllerMOD::OnRoundStart()
 
 void CGameControllerMOD::TurnDefaultIntoRandomHuman()
 {
+	char aBuf[256];
+	str_format(aBuf, sizeof(aBuf), "Turning default to random human TDIRH");
+	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", aBuf);
 	for (CroyaPlayer* each : players) {
 		if (!each)
 			continue;
@@ -328,7 +331,7 @@ bool CGameControllerMOD::ShouldDoFinalExplosion() {
 	if (m_ExplosionStarted || GameServer()->m_World.m_Paused)
 	  return false;
 	int Seconds = (Server()->Tick() - m_GameStartTick) / ((float)Server()->TickSpeed());
-	if (m_InfectedStarted && !m_ExplosionStarted && m_TimeLimit > 0 && Seconds >= m_TimeLimit * 60)
+	if (m_InfectedStarted && !m_ExplosionStarted && m_TimeLimit > 0 && Seconds >= m_TimeLimit * 30) // TBD 60 after debug
 	{
 		for (CCharacter* p = (CCharacter*)GameServer()->m_World.FindFirst(CGameWorld::ENTTYPE_CHARACTER); p; p = (CCharacter*)p->TypeNext())
 		{
@@ -407,6 +410,7 @@ void CGameControllerMOD::DoFinalExplosion() {
 	//If no more explosions, game over, decide who win
 	if (!NewExplosion)
 	{
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "No more explosions");
 		if (GameServer()->GetHumanCount())
 		{
 			int NumHumans = GameServer()->GetHumanCount();
@@ -451,10 +455,11 @@ void CGameControllerMOD::Tick()
 	if (RoundJustStarted()) { // executed twice: 1. after map start 2. after warmup end
 		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "RoundJustStarted");
 		if (WarmupJustended()) {
+			m_GameStartTick = Server()->Tick();
 			OnRoundStart(); // draw circles and such only after a warmup
 			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Initial infection first");
+			TurnDefaultIntoRandomHuman();
 			StartInitialInfection();
-			m_GameStartTick = Server()->Tick();
 		}
 	}
 
@@ -468,7 +473,6 @@ void CGameControllerMOD::Tick()
 	if (ShouldEndGame()) { // 1. no humans survived 2. less than 2 players in game
 		DoInfectedWon();
 		OnRoundEnd();
-		m_InfectedStarted = false;
 	}
 
 	if (IsGamePhase()) {
@@ -496,13 +500,14 @@ void CGameControllerMOD::Tick()
 	}
 
 	//Start the final explosion if the time is over
-	if (ShouldDoFinalExplosion() && !m_ExplosionStarted && !GameServer()->m_World.m_Paused)
+	if (ShouldDoFinalExplosion() && !m_ExplosionStarted && !GameServer()->m_World.m_Paused) {
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "ShouldDoFinalExplosion");
 		m_ExplosionStarted = true;
+	}
 
 	//Do the final explosion
 	if (m_ExplosionStarted) {
 		DoFinalExplosion();
-		m_InfectedStarted = false;
 	}
 
 }
@@ -653,7 +658,7 @@ void CGameControllerMOD::OnRoundEnd()
 		m_apFlag->Destroy();
 		m_apFlag = 0;
 	}
-	m_ExplosionStarted = false;
+	m_InfectedStarted = false;
 	IGameController::EndMatch(); // Endmatch instead of endround
 }
 
@@ -783,6 +788,9 @@ int CGameControllerMOD::GetZombieCount() const
 
 void CGameControllerMOD::ResetHumansToDefault() const
 {
+	char aBuf[256];
+	str_format(aBuf, sizeof(aBuf), "Turning zombies back to default humans RHTD");
+	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", aBuf);
   	for (CroyaPlayer* each : players) {
 		if (!each)
 			continue;
