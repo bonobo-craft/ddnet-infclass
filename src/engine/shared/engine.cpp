@@ -56,6 +56,7 @@ public:
 
 	CEngine(const char *pAppname, bool Silent, int Jobs)
 	{
+		srand(time_get());
 		if(!Silent)
 			dbg_logger_stdout();
 		dbg_logger_debugger();
