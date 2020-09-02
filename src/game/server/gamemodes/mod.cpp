@@ -42,8 +42,6 @@ CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
 	InitTeleporter();
 
 	//IGameController::m_MOD = this; // temporarily, todo: avoid this
-	//lua = nullptr;
-	//TBD
 
 	m_ExplosionStarted = false;
 	m_InfectedStarted = false;
@@ -90,7 +88,7 @@ CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
 	classes[Class::WORKER] = new CWorker();
 	classes[Class::PARASITE] = new CParasite();
   
-	//g_Config.m_SvTimelimit = 4 // TODO: load from map config
+	m_TimeLimit = g_Config.m_SvTimelimit; // will be updated by a map load
 }
 
 CGameControllerMOD::~CGameControllerMOD()
@@ -146,6 +144,7 @@ void CGameControllerMOD::OnRoundStart()
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
 	try {
 		YAML::Node mapconfig = YAML::LoadFile(path_to_yaml);
+		m_TimeLimit = mapconfig["timelimit"].as<int>();
 		const YAML::Node& inf_circle_nodes = mapconfig["inf_circles"];
 		for (YAML::const_iterator it = inf_circle_nodes.begin(); it != inf_circle_nodes.end(); ++it) {
 			const YAML::Node& inf_circle_node = *it;
@@ -327,7 +326,7 @@ bool CGameControllerMOD::ShouldDoFinalExplosion() {
 	if (m_ExplosionStarted || GameServer()->m_World.m_Paused)
 	  return false;
 	int Seconds = (Server()->Tick() - m_GameStartTick) / ((float)Server()->TickSpeed());
-	if (m_InfectedStarted && !m_ExplosionStarted && g_Config.m_SvTimelimit > 0 && Seconds >= g_Config.m_SvTimelimit * 60)
+	if (m_InfectedStarted && !m_ExplosionStarted && m_TimeLimit > 0 && Seconds >= m_TimeLimit * 60)
 	{
 		for (CCharacter* p = (CCharacter*)GameServer()->m_World.FindFirst(CGameWorld::ENTTYPE_CHARACTER); p; p = (CCharacter*)p->TypeNext())
 		{
@@ -348,7 +347,7 @@ bool CGameControllerMOD::ShouldDoFinalExplosion() {
 void CGameControllerMOD::DoFinalExplosion() {
 	bool NewExplosion = false;
 
-/* 	for (int j = 0; j < m_MapHeight; j++)
+	for (int j = 0; j < m_MapHeight; j++)
 	{
 		for (int i = 0; i < m_MapWidth; i++)
 		{
@@ -401,7 +400,7 @@ void CGameControllerMOD::DoFinalExplosion() {
 		{
 			p->Die(p->GetPlayer()->GetCID(), WEAPON_GAME);
 		}
-	} */
+	}
 
 	//If no more explosions, game over, decide who win
 	if (!NewExplosion)
@@ -428,7 +427,7 @@ void CGameControllerMOD::DoFinalExplosion() {
 		}
 		else
 		{
-			int Seconds = g_Config.m_SvTimelimit * 60;
+			int Seconds = m_TimeLimit * 60;
 			for (CPlayer* each : GameServer()->m_apPlayers) {
 				if (!each)
 					continue;
