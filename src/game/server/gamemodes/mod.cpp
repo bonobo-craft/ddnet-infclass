@@ -331,7 +331,7 @@ bool CGameControllerMOD::ShouldDoFinalExplosion() {
 	if (m_ExplosionStarted || GameServer()->m_World.m_Paused)
 	  return false;
 	int Seconds = (Server()->Tick() - m_GameStartTick) / ((float)Server()->TickSpeed());
-	if (m_InfectedStarted && !m_ExplosionStarted && m_TimeLimit > 0 && Seconds >= m_TimeLimit * 30) // TBD 60 after debug
+	if (m_InfectedStarted && !m_ExplosionStarted && m_TimeLimit > 0 && Seconds >= m_TimeLimit * 60)
 	{
 		for (CCharacter* p = (CCharacter*)GameServer()->m_World.FindFirst(CGameWorld::ENTTYPE_CHARACTER); p; p = (CCharacter*)p->TypeNext())
 		{
