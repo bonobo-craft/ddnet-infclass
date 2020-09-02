@@ -235,7 +235,8 @@ void CGameContext::CreateExplosion(vec2 Pos, int Owner, int Weapon, int MaxDamag
 	int Num = m_World.FindEntities(Pos, Radius, (CEntity**)apEnts, MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
 	for(int i = 0; i < Num; i++)
 	{
-		if (!apEnts[i]->CanCollideInf(Owner))
+		// don't affect other humans but affect owner
+		if ((!apEnts[i]->CanCollideInf(Owner)) && (Owner != i))
 		  continue;
 		// INFCROYA BEGIN ------------------------------------------------------------
 		if (MercBomb && m_apPlayers[Owner]->GetCroyaPlayer()->IsZombie()) {
