@@ -89,6 +89,7 @@ private:
 	std::vector<class CCircle*> safezones;
 	std::vector<class CInfCircle*> inf_circles;
 
+	void ResetZombiesToDefaultHumans() const;
 	void ResetHumansToDefault() const;
 	void FlagTick();
 

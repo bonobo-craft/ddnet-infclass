@@ -464,7 +464,7 @@ void CGameControllerMOD::Tick()
 	}
 
 	if (ShouldDoWarmup()) {
-		ResetHumansToDefault();
+		ResetZombiesToDefaultHumans();
 		m_GameStartTick = Server()->Tick();
 		DoWarmup(10);
 		m_InfectedStarted = true;
@@ -651,7 +651,6 @@ void CGameControllerMOD::OnRoundEnd()
 {
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "OnRoundEnd");
 	ResetFinalExplosion();
-	ResetHumansToDefault();
 	safezones.clear();
 	inf_circles.clear();
     if (m_apFlag != 0) {
@@ -786,7 +785,7 @@ int CGameControllerMOD::GetZombieCount() const
 	return ZombieCount;
 }
 
-void CGameControllerMOD::ResetHumansToDefault() const
+void CGameControllerMOD::ResetZombiesToDefaultHumans() const
 {
 	char aBuf[256];
 	str_format(aBuf, sizeof(aBuf), "Turning zombies back to default humans RHTD");
