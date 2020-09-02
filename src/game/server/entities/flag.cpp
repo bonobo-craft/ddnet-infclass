@@ -4,13 +4,15 @@
 #include "flag.h"
 
 CFlag::CFlag(CGameWorld *pGameWorld, int Team, vec2 Pos)
-: CEntity(pGameWorld, CGameWorld::ENTTYPE_FLAG)
+: CEntity(pGameWorld, CGameWorld::ENTTYPE_FLAG, Pos)
 {
 	m_Team = Team;
+	GameWorld()->InsertEntity(this);
 	m_ProximityRadius = ms_PhysSize;
 	m_pCarryingCharacter = NULL;
 	m_GrabTick = 0;
 	m_StandPos = Pos;
+	m_Pos = Pos;
 
 	Reset();
 }
@@ -34,6 +36,7 @@ void CFlag::TickPaused()
 void CFlag::SetPos(vec2 newPos)
 {
 	m_Pos = newPos;
+	m_StandPos = newPos;
 }
 
 void CFlag::Snap(int SnappingClient)
@@ -42,20 +45,20 @@ void CFlag::Snap(int SnappingClient)
 		return;
 
 	if (Server()->IsSixup(SnappingClient)) {
-		CNetObj_Flag *pFlag = (CNetObj_Flag *)Server()->SnapNewItem(NETOBJTYPE_FLAG, m_Team, sizeof(CNetObj_Flag));
-		if(!pFlag)
-			return;
-
-		pFlag->m_X = (int)m_Pos.x;
-		pFlag->m_Y = (int)m_Pos.y;
-		pFlag->m_Team = m_Team;
-	} else {
 		protocol7::CNetObj_Flag *pFlag = (protocol7::CNetObj_Flag *)Server()->SnapNewItem(NETOBJTYPE_FLAG, m_Team, sizeof(protocol7::CNetObj_Flag));
 		if(!pFlag)
 			return;
 
-		pFlag->m_X = (int)m_Pos.x;
-		pFlag->m_Y = (int)m_Pos.y;
-		pFlag->m_Team = m_Team;
+		pFlag->m_X = (int)m_StandPos.x;
+		pFlag->m_Y = (int)m_StandPos.y;
+		pFlag->m_Team = 0;
+	} else {
+		CNetObj_Flag *pFlag = (CNetObj_Flag *)Server()->SnapNewItem(NETOBJTYPE_FLAG, m_Team, sizeof(CNetObj_Flag));
+		if(!pFlag)
+			return;
+
+		pFlag->m_X = (int)m_StandPos.x;
+		pFlag->m_Y = (int)m_StandPos.y;
+		pFlag->m_Team = 0;
 	}
 }
