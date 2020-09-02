@@ -1587,6 +1587,12 @@ int CCharacter::NetworkClipped(int SnappingClient, vec2 CheckPos)
 
 bool CCharacter::CanCollideInf(int ClientID)
 {
+	if (ClientID < 0)
+	    return false;
+	if (!GameServer()->m_apPlayers[ClientID])
+		return false;
+	if (!GameServer()->m_apPlayers[ClientID]->GetCharacter())
+		return false;
 	bool IsTargetZombie = GameServer()->m_apPlayers[ClientID]->GetCharacter()->IsZombie();
 	bool IsTargetHuman = !IsTargetZombie;
 	if (IsZombie() && IsTargetZombie)
