@@ -532,7 +532,7 @@ void IGameController::Snap(int SnappingClient)
 
 	pGameInfoObj->m_RoundNum = 5;
 	pGameInfoObj->m_RoundCurrent = m_RoundCount+1;
-	pGameInfoObj->m_TimeLimit = 1;
+	pGameInfoObj->m_TimeLimit = 3;
 
 	CCharacter *pChr;
 	CPlayer *pPlayer = SnappingClient > -1 ? GameServer()->m_apPlayers[SnappingClient] : 0;
