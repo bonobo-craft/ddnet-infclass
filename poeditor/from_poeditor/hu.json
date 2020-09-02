@@ -1,0 +1,314 @@
+[
+    {
+        "term": "cmd.commands",
+        "definition": "-- Parancsok --\n\/humans az ember oszt\u00e1ly list\u00e1j\u00e1hoz\n\/zombies a zombi oszt\u00e1ly list\u00e1j\u00e1hoz\n\/help - seg\u00edts\u00e9get ny\u00fajt",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.humans",
+        "definition": "-- EMBER OSZT\u00c1LY --\npr\u00f3b\u00e1lj ki: \/medic? \/soldier? \/scientist? \/engineer?\n\/hero? \/mercenary? \/biologist?\nAz emberek megfert\u0151z\u00f6dnek kalap\u00e1cs \u00fct\u00e9s\u00e9re, vagy ha t\u00fal alacsony a HP-j\u00fck",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.zombies",
+        "definition": "-- ZOMBI OSZT\u00c1LY --\npr\u00f3b\u00e1ld ki: \/bat? \/hunter? \/smoker? \/boomer?\n\/queen? \/worker? \/freezer? \/poisoner?",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.scientist",
+        "definition": "-- TUD\u00d3S (ember) --\nGr\u00e1n\u00e1tvet\u0151vel tud teleport\u00e1lni\n2 akn\u00e1t tud lerakni\nImm\u00fanis a dermeszt\u00e9sekre\n",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.engineer",
+        "definition": "-- M\u00c9RN\u00d6K (ember) --\nKalap\u00e1ccsal l\u00e9zerfalakat \u00e9p\u00edt\nA fal f\u00e9l percig tart, 5 m\u00e1sodpercet levonva minden zombi \u00f6l\u00e9s\u00e9rt",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.mercenary",
+        "definition": "-- ZSOLDOS (ember) --\nA pisztoly\u00e1t jetpack-k\u00e9nt tudja haszn\u00e1lni\nEgy hatalmas akn\u00e1t tud \u00e9p\u00edteni, ami kalap\u00e1ccsal felrobbanthat\u00f3\nVannak m\u00e9rgez\u0151 gr\u00e1n\u00e1t akn\u00e1i, ami zombikon hat\u00e1sos",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.soldier",
+        "definition": "-- KATONA (ember) --\nSz\u00e1mos lebeg\u0151 gr\u00e1n\u00e1t akn\u00e1t k\u00e9pes lerakni kalap\u00e1ccsal\nMinden kalap\u00e1cs\u00fct\u00e9ssel egyes\u00e9vel felrobbannak",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.biologist",
+        "definition": "-- BIOL\u00d3GUS (ember) --\nTeljes t\u00f6ltettel egy l\u00e9zerfalat tud lerakni l\u00e9zerrel\nShotgun sokszor visszapattan\nImm\u00fanis a m\u00e9rgez\u00e9sre \u00e9s a m\u00e9rgez\u0151 k\u00f6d\u00f6ket kalap\u00e1ccsal leszedheti",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.medic",
+        "definition": "-- DOKTOR (ember) --\nTud embereket gy\u00f3gy\u00edtani kalap\u00e1ccsal, vagy gy\u00f3gy\u00edt\u00f3 gr\u00e1n\u00e1tjaival\nL\u00e9zerrel visszatud t\u00e1masztani egy zombit emberr\u00e9",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.hero",
+        "definition": "-- H\u0150S (ember) --\nA h\u0151s ad 4HP\/Pajzs-ot minden embernek, mikor felszed egy z\u00e1szl\u00f3t\nPisztolya navig\u00e1lja a z\u00e1szl\u00f3khoz\nImm\u00fanis a m\u00e9rgez\u00e9sre\nKevesebb sebz\u00e9st kap a k\u00e9k z\u00f3n\u00e1n k\u00edv\u0171l\n",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.smoker",
+        "definition": "-- F\u00dcST\u00d6S (zombi) --\nEmberek megragad\u00e1s\u00e1val -2HP\/mp-el sebz\u0151dnek",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.boomer",
+        "definition": "-- ROBBANT\u00d3S (zombi) --\nEmberek megragad\u00e1s\u00e1val -1HP\/mp-t sebz\u0151dnek\nFelrobban hal\u00e1lakor\nKalap\u00e1ccsal felrobbanhatsz",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.hunter",
+        "definition": "-- VAD\u00c1SZ (zombi) --\nK\u00e9tszer tud ugrani a leveg\u0151ben\nEmberek megragad\u00e1s\u00e1val -1HP\/mp-t sebz\u0151dnek\nPisztollyal embereket nyomozhatsz le",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.poisoner",
+        "definition": "-- M\u00c9RGEZ\u0150 (zombi) --\nM\u00e9reg felh\u0151t k\u00e9pez hal\u00e1lakor\nAz emberek -4HP-t vesztenek a k\u00f6dben\nBIOL\u00d3GUS \u00e9s H\u0150S imm\u00fanis a m\u00e9rgez\u00e9sre\nKalap\u00e1ccsal meghalhatsz, mint a ROBBANT\u00d3S",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.freezer",
+        "definition": "-- DERMESZT\u0150 (zombi) --\nMeg tud \u00e1ll\u00edtani egy embert horogj\u00e1val 1mp-ig\nAz emberek k\u00f6zbe imm\u00fanit\u00e1st kapnak, ha nem haltak meg\nTUD\u00d3S imm\u00fanis a dermeszt\u00e9sedre",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.bat",
+        "definition": "-- DENEV\u00c9R (zombi) --\nV\u00e9gtelen ugr\u00e1ssal rendelkezik\nEmbereket fel tud emelni a leveg\u0151be\nKalap\u00e1ccsal nem fert\u0151ztet, de -1HP-t sebez",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.queen",
+        "definition": "-- KIR\u00c1LYN\u0150 (zombi) --\nHa vannak MUNK\u00c1SOK a j\u00e1t\u00e9kban, a MUNK\u00c1SOK vissza\u00e9lednek a KIR\u00c1LYN\u0150H\u00d6Z\nKalap\u00e1ccsal fert\u0151zhetsz",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.worker",
+        "definition": "-- MUNK\u00c1S (zombi) --\nHa van KIR\u00c1LYN\u0150 a j\u00e1t\u00e9kban, a MUNK\u00c1SOK vissza\u00e9lednek a KIR\u00c1LYN\u0150H\u00d6Z\nKalap\u00e1ccsal nem fert\u0151ztet, de -2HP-t sebez",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.help",
+        "definition": "-- Seg\u00edts\u00e9g --\n\"Infection\" m\u00f3d\nFuss el a zombikt\u00f3l (z\u00f6ldek) emberk\u00e9nt\nFert\u0151zz embereket zombik\u00e9nt\npr\u00f3b\u00e1ld meg: \/commands",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.wrong",
+        "definition": "Nincs ilyen parancs, pr\u00f3b\u00e1ld meg: \/commands",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.random",
+        "definition": "V\u00e9letlenszer\u0171 v\u00e1laszt\u00e1s",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.biologist",
+        "definition": "Biol\u00f3gus",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.medic",
+        "definition": "Orvos",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.engineer",
+        "definition": "M\u00e9rn\u00f6k",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.soldier",
+        "definition": "Katona",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.scientist",
+        "definition": "Tud\u00f3s",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.mercenary",
+        "definition": "Zsoldos",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.hero",
+        "definition": "H\u0151s",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.boomer",
+        "definition": "Robbant\u00f3s",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.smoker",
+        "definition": "F\u00fcst\u00f6s",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.hunter",
+        "definition": "Vad\u00e1sz",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.bat",
+        "definition": "Denev\u00e9r",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.queen",
+        "definition": "Kir\u00e1lyn\u0151",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.worker",
+        "definition": "Munk\u00e1s",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.freezer",
+        "definition": "Dermeszt\u0151",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.poisoner",
+        "definition": "M\u00e9rgez\u0151",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.won.infected",
+        "definition": "A zombik megnyert\u00e9k a j\u00e1t\u00e9kot %d m\u00e1sodpercn\u00e9l",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.won.humans",
+        "definition": "%d ember nyerte meg a j\u00e1t\u00e9kot",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.survived",
+        "definition": "T\u00fal\u00e9lted, kapsz +5 pontot",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    }
+]

@@ -1,0 +1,120 @@
+
+everything.bellow.is.added
+== EVERYTHINGBELLOWISADDED
+
+cmd.commands
+== -- Parancsok --\n/humans az ember osztály listájához\n/zombies a zombi osztály listájához\n/help - segítséget nyújt
+
+cmd.help.humans
+== -- EMBER OSZTÁLY --\npróbálj ki: /medic? /soldier? /scientist? /engineer?\n/hero? /mercenary? /biologist?\nAz emberek megfertőzödnek kalapács ütésére, vagy ha túl alacsony a HP-jük
+
+cmd.help.zombies
+== -- ZOMBI OSZTÁLY --\npróbáld ki: /bat? /hunter? /smoker? /boomer?\n/queen? /worker? /freezer? /poisoner?
+
+cmd.help.scientist
+== -- TUDÓS (ember) --\nGránátvetővel tud teleportálni\n2 aknát tud lerakni\nImmúnis a dermesztésekre
+
+cmd.help.engineer
+== -- MÉRNÖK (ember) --\nKalapáccsal lézerfalakat épít\nA fal fél percig tart, 5 másodpercet levonva minden zombi ölésért
+
+cmd.help.mercenary
+== -- ZSOLDOS (ember) --\nA pisztolyát jetpack-ként tudja használni\nEgy hatalmas aknát tud építeni, ami kalapáccsal felrobbantható\nVannak mérgező gránát aknái, ami zombikon hatásos
+
+cmd.help.soldier
+== -- KATONA (ember) --\nSzámos lebegő gránát aknát képes lerakni kalapáccsal\nMinden kalapácsütéssel egyesével felrobbannak
+
+cmd.help.biologist
+== -- BIOLÓGUS (ember) --\nTeljes töltettel egy lézerfalat tud lerakni lézerrel\nShotgun sokszor visszapattan\nImmúnis a mérgezésre és a mérgező ködöket kalapáccsal leszedheti
+
+cmd.help.medic
+== -- DOKTOR (ember) --\nTud embereket gyógyítani kalapáccsal, vagy gyógyító gránátjaival\nLézerrel visszatud támasztani egy zombit emberré
+
+cmd.help.hero
+== -- HŐS (ember) --\nA hős ad 4HP/Pajzs-ot minden embernek, mikor felszed egy zászlót\nPisztolya navigálja a zászlókhoz\nImmúnis a mérgezésre\nKevesebb sebzést kap a kék zónán kívűl
+
+cmd.help.smoker
+== -- FÜSTÖS (zombi) --\nEmberek megragadásával -2HP/mp-el sebződnek
+
+cmd.help.boomer
+== -- ROBBANTÓS (zombi) --\nEmberek megragadásával -1HP/mp-t sebződnek\nFelrobban halálakor\nKalapáccsal felrobbanhatsz
+
+cmd.help.hunter
+== -- VADÁSZ (zombi) --\nKétszer tud ugrani a levegőben\nEmberek megragadásával -1HP/mp-t sebződnek\nPisztollyal embereket nyomozhatsz le
+
+cmd.help.poisoner
+== -- MÉRGEZŐ (zombi) --\nMéreg felhőt képez halálakor\nAz emberek -4HP-t vesztenek a ködben\nBIOLÓGUS és HŐS immúnis a mérgezésre\nKalapáccsal meghalhatsz, mint a ROBBANTÓS
+
+cmd.help.freezer
+== -- DERMESZTŐ (zombi) --\nMeg tud állítani egy embert horogjával 1mp-ig\nAz emberek közbe immúnitást kapnak, ha nem haltak meg\nTUDÓS immúnis a dermesztésedre
+
+cmd.help.bat
+== -- DENEVÉR (zombi) --\nVégtelen ugrással rendelkezik\nEmbereket fel tud emelni a levegőbe\nKalapáccsal nem fertőztet, de -1HP-t sebez
+
+cmd.help.queen
+== -- KIRÁLYNŐ (zombi) --\nHa vannak MUNKÁSOK a játékban, a MUNKÁSOK visszaélednek a KIRÁLYNŐHÖZ\nKalapáccsal fertőzhetsz
+
+cmd.help.worker
+== -- MUNKÁS (zombi) --\nHa van KIRÁLYNŐ a játékban, a MUNKÁSOK visszaélednek a KIRÁLYNŐHÖZ\nKalapáccsal nem fertőztet, de -2HP-t sebez
+
+cmd.help.help
+== -- Segítség --\n"Infection" mód\nFuss el a zombiktól (zöldek) emberként\nFertőzz embereket zombiként\npróbáld meg: /commands
+
+cmd.wrong
+== Nincs ilyen parancs, próbáld meg: /commands
+
+game.class.random
+== Véletlenszerű választás
+
+game.class.biologist
+== Biológus
+
+game.class.medic
+== Orvos
+
+game.class.engineer
+== Mérnök
+
+game.class.soldier
+== Katona
+
+game.class.scientist
+== Tudós
+
+game.class.mercenary
+== Zsoldos
+
+game.class.hero
+== Hős
+
+game.class.boomer
+== Robbantós
+
+game.class.smoker
+== Füstös
+
+game.class.hunter
+== Vadász
+
+game.class.bat
+== Denevér
+
+game.class.queen
+== Királynő
+
+game.class.worker
+== Munkás
+
+game.class.freezer
+== Dermesztő
+
+game.class.poisoner
+== Mérgező
+
+game.won.infected
+== A zombik megnyerték a játékot %d másodpercnél
+
+game.won.humans
+== %d ember nyerte meg a játékot
+
+game.survived
+== Túlélted, kapsz +5 pontot

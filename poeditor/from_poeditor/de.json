@@ -1,0 +1,314 @@
+[
+    {
+        "term": "cmd.commands",
+        "definition": "- Befehle -\n\/humans f\u00fcr eine Liste der menschlichen Klassen\n\/zombies f\u00fcr eine Liste der Zombieklassen\n\/help - zeigt Hilfe",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.humans",
+        "definition": "- MENSCHLICHE KLASSEN -\nversuche: \/medic? \/soldier? \/scientist? \/engineer?\n\/hero? \/mercenary? \/biologist?\nMenschen werden infiziert wenn sie niedrige HP haben oder von Zombiehammern geschlagen werden",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.zombies",
+        "definition": "- ZOMBIE-KLASSEN -\nversuche: \/bat? \/hunter? \/smoker? \/boomer?\n\/queen? \/worker? \/freezer? \/poisoner?",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.scientist",
+        "definition": "- WISSENSCHAFTLER (Mensch) -\nKann mit Granatenwerfer teleportieren\nKann 2 Minen platzieren\n Immun gegen Gefrieren",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.engineer",
+        "definition": "- INGENIEUR (Mensch) -\nKann Laserw\u00e4nde mit einem Hammer bauen\nDie Wand bleibt 30 Sekunden und die Dauer sinkt um 5 Sekunden mit jedem get\u00f6tetem Zombie",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.mercenary",
+        "definition": "- S\u00d6LDNER (Mensch) -\nKann seine Pistole als Jetpack zum Fliegen verwenden\nKann eine gro\u00dfe schwebende Mine bauen und mit einem Hammer ausl\u00f6sen\nHat Giftminen, welche Zombies vergiften",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.soldier",
+        "definition": "- SOLDAT (Mensch) -\nKann mit seinem Hammer zwei schwebende Minen platzieren\nHammer erneut benutzen damit sie jeweils explodieren",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.biologist",
+        "definition": "- BIOLOGE (Mensch) -\nKann eine Falle mit seinem Laser bauen, wenn sie voll aufgeladen ist\nSchrotflinte prallt \u00f6fters an W\u00e4nden viel ab\nImmun gegen Vergiftungen und kann Wolken mit seinem Hammer entfernen",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.medic",
+        "definition": "- SANIT\u00c4TER (Mensch) -\nKann Menschen mit Hammer oder Heilgranaten heilen\nKann Zombies mit einem Laser wiederbeleben",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.hero",
+        "definition": "- HELD (Mensch) -\nSammelt Flaggen um Menschen + 4HP\/Schilde zu geben\nBenutze Pistole als Flaggennavigator\nImmun gegen Vergiftungen\nWeniger Schaden au\u00dferhalb der blauen Zone",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.smoker",
+        "definition": " - RAUCHER (Zombie) -\n Haken schmerzt Menschen -2 HP \/ Sek",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.boomer",
+        "definition": " - BOMBER (Zombie) -\n Haken schmerzt Menschen -1 HP \/ Sek\n Explodiert beim Sterben\n Benutze Hammer um zu explodieren",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.hunter",
+        "definition": " - J\u00c4GER (Zombie) -\n Springt zweimal in der Luft\n Haken schmerzt Menschen -1 HP \/ Sek\n Benutze Pistole um Menschen zu finden",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.poisoner",
+        "definition": " - VERGIFTER (Zombie) -\n Erzeugt beim Sterben Giftwolken\n Menschen werden darin mit -4 HP Schaden verletzt\n BIOLOGE und HELD sind immun gegen Vergiftungen\n Stirbt beim Benutzen eines Hammers wie ein BOMBER",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.freezer",
+        "definition": "- ERFRIERER (Zombie) -\n Kann einen Menschen 1 Sekunde lang mit seinem Haken bet\u00e4uben\n Menschen erhalten 2 Sekunden Immunit\u00e4t, wenn sie nicht get\u00f6tet werden\n Der WISSENSCHAFTLER ist dagegen immun",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.bat",
+        "definition": "- FLEDERMAUS (Zombie) -\nKann mit wiederholtem Dr\u00fccken der Sprungtaste fliegen\nKann Menschen ergreifen und sie in die Luft heben\nInfiziert nicht mit Hammer, verursacht aber -1 HP Schaden",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.queen",
+        "definition": " - K\u00d6NIGIN (Zombie) -\n Wenn irgendwelche Arbeiter im Spiel sind, werden sie nach ihrem Tod\n sofort in der N\u00e4he der K\u00d6NIGIN wieder erscheinen\n Infiziert mit Hammer",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.worker",
+        "definition": " - ARBEITER (Zombie) -\n Wenn K\u00d6NIGIN im Spiel ist erscheinen ARBEITER in der N\u00e4he der K\u00f6nigin wieder nachdem sie sterben\n Infiziert nicht, verursacht aber mit Hammer -2 HP Schaden",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.help",
+        "definition": " -- Hilfe --\n Infektionsmod\n Entferne dich als Mensch von Zombies (Gr\u00fcn) davon\n Infiziere Menschen als Zombie\n versuche: \/commands",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.wrong",
+        "definition": "Kein solcher Befehl, versuche: \/commands",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.random",
+        "definition": "Zuf\u00e4llige Wahl",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.biologist",
+        "definition": "Biologe",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.medic",
+        "definition": "Sanit\u00e4ter",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.engineer",
+        "definition": "Ingenieur",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.soldier",
+        "definition": "Soldat",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.scientist",
+        "definition": "Wissenschaftler",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.mercenary",
+        "definition": "S\u00f6ldner",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.hero",
+        "definition": "Held",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.boomer",
+        "definition": "Bomber",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.smoker",
+        "definition": "Raucher",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.hunter",
+        "definition": "J\u00e4ger",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.bat",
+        "definition": "Fledermaus",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.queen",
+        "definition": "K\u00f6nigin",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.worker",
+        "definition": "Arbeiter",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.freezer",
+        "definition": "Erfrierer",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.poisoner",
+        "definition": "Vergifter",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.won.infected",
+        "definition": "Die Infizierten haben die Runde in %d Sekunden gewonnen",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.won.humans",
+        "definition": "%d Menschen haben in der Runde gewonnen",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.survived",
+        "definition": "Du hast \u00fcberlebt, +5 Punkte",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    }
+]

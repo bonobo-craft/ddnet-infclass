@@ -1,0 +1,120 @@
+
+everything.bellow.is.added
+== EVERYTHINGBELLOWISADDED
+
+cmd.commands
+== - Befehle -\n/humans für eine Liste der menschlichen Klassen\n/zombies für eine Liste der Zombieklassen\n/help - zeigt Hilfe
+
+cmd.help.humans
+== - MENSCHLICHE KLASSEN -\nversuche: /medic? /soldier? /scientist? /engineer?\n/hero? /mercenary? /biologist?\nMenschen werden infiziert wenn sie niedrige HP haben oder von Zombiehammern geschlagen werden
+
+cmd.help.zombies
+== - ZOMBIE-KLASSEN -\nversuche: /bat? /hunter? /smoker? /boomer?\n/queen? /worker? /freezer? /poisoner?
+
+cmd.help.scientist
+== - WISSENSCHAFTLER (Mensch) -\nKann mit Granatenwerfer teleportieren\nKann 2 Minen platzieren\n Immun gegen Gefrieren
+
+cmd.help.engineer
+== - INGENIEUR (Mensch) -\nKann Laserwände mit einem Hammer bauen\nDie Wand bleibt 30 Sekunden und die Dauer sinkt um 5 Sekunden mit jedem getötetem Zombie
+
+cmd.help.mercenary
+== - SÖLDNER (Mensch) -\nKann seine Pistole als Jetpack zum Fliegen verwenden\nKann eine große schwebende Mine bauen und mit einem Hammer auslösen\nHat Giftminen, welche Zombies vergiften
+
+cmd.help.soldier
+== - SOLDAT (Mensch) -\nKann mit seinem Hammer zwei schwebende Minen platzieren\nHammer erneut benutzen damit sie jeweils explodieren
+
+cmd.help.biologist
+== - BIOLOGE (Mensch) -\nKann eine Falle mit seinem Laser bauen, wenn sie voll aufgeladen ist\nSchrotflinte prallt öfters an Wänden viel ab\nImmun gegen Vergiftungen und kann Wolken mit seinem Hammer entfernen
+
+cmd.help.medic
+== - SANITÄTER (Mensch) -\nKann Menschen mit Hammer oder Heilgranaten heilen\nKann Zombies mit einem Laser wiederbeleben
+
+cmd.help.hero
+== - HELD (Mensch) -\nSammelt Flaggen um Menschen + 4HP/Schilde zu geben\nBenutze Pistole als Flaggennavigator\nImmun gegen Vergiftungen\nWeniger Schaden außerhalb der blauen Zone
+
+cmd.help.smoker
+==  - RAUCHER (Zombie) -\n Haken schmerzt Menschen -2 HP / Sek
+
+cmd.help.boomer
+==  - BOMBER (Zombie) -\n Haken schmerzt Menschen -1 HP / Sek\n Explodiert beim Sterben\n Benutze Hammer um zu explodieren
+
+cmd.help.hunter
+==  - JÄGER (Zombie) -\n Springt zweimal in der Luft\n Haken schmerzt Menschen -1 HP / Sek\n Benutze Pistole um Menschen zu finden
+
+cmd.help.poisoner
+==  - VERGIFTER (Zombie) -\n Erzeugt beim Sterben Giftwolken\n Menschen werden darin mit -4 HP Schaden verletzt\n BIOLOGE und HELD sind immun gegen Vergiftungen\n Stirbt beim Benutzen eines Hammers wie ein BOMBER
+
+cmd.help.freezer
+== - ERFRIERER (Zombie) -\n Kann einen Menschen 1 Sekunde lang mit seinem Haken betäuben\n Menschen erhalten 2 Sekunden Immunität, wenn sie nicht getötet werden\n Der WISSENSCHAFTLER ist dagegen immun
+
+cmd.help.bat
+== - FLEDERMAUS (Zombie) -\nKann mit wiederholtem Drücken der Sprungtaste fliegen\nKann Menschen ergreifen und sie in die Luft heben\nInfiziert nicht mit Hammer, verursacht aber -1 HP Schaden
+
+cmd.help.queen
+==  - KÖNIGIN (Zombie) -\n Wenn irgendwelche Arbeiter im Spiel sind, werden sie nach ihrem Tod\n sofort in der Nähe der KÖNIGIN wieder erscheinen\n Infiziert mit Hammer
+
+cmd.help.worker
+==  - ARBEITER (Zombie) -\n Wenn KÖNIGIN im Spiel ist erscheinen ARBEITER in der Nähe der Königin wieder nachdem sie sterben\n Infiziert nicht, verursacht aber mit Hammer -2 HP Schaden
+
+cmd.help.help
+==  -- Hilfe --\n Infektionsmod\n Entferne dich als Mensch von Zombies (Grün) davon\n Infiziere Menschen als Zombie\n versuche: /commands
+
+cmd.wrong
+== Kein solcher Befehl, versuche: /commands
+
+game.class.random
+== Zufällige Wahl
+
+game.class.biologist
+== Biologe
+
+game.class.medic
+== Sanitäter
+
+game.class.engineer
+== Ingenieur
+
+game.class.soldier
+== Soldat
+
+game.class.scientist
+== Wissenschaftler
+
+game.class.mercenary
+== Söldner
+
+game.class.hero
+== Held
+
+game.class.boomer
+== Bomber
+
+game.class.smoker
+== Raucher
+
+game.class.hunter
+== Jäger
+
+game.class.bat
+== Fledermaus
+
+game.class.queen
+== Königin
+
+game.class.worker
+== Arbeiter
+
+game.class.freezer
+== Erfrierer
+
+game.class.poisoner
+== Vergifter
+
+game.won.infected
+== Die Infizierten haben die Runde in %d Sekunden gewonnen
+
+game.won.humans
+== %d Menschen haben in der Runde gewonnen
+
+game.survived
+== Du hast überlebt, +5 Punkte

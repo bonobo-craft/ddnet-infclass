@@ -1,0 +1,120 @@
+
+everything.bellow.is.added
+== EVERYTHINGBELLOWISADDED
+
+cmd.commands
+== - Comandos -\n/humans para la lista de clases humanas\n/zombies para la lista de clases de zombies\n/help - mostrar ayuda
+
+cmd.help.humans
+== - CLASES HUMANAS -\nprueba: /medic? /soldier? /scientist? /engineer?\n/hero? /mercenary? /biologist?\nlos humanos se infectan cuando tienen un HP bajo o con un martillo
+
+cmd.help.zombies
+== - CLASES DE ZOMBIE -\nprueba: /bat? /hunter? /smoker? /boomer?\n/queen? /worker? /freezer? /poisoner?
+
+cmd.help.scientist
+== - CIENTÍFICO (humano) -\nPuede teletransportarse con lanzagranadas\npuede generar 2 minas\n inmune al congelamiento
+
+cmd.help.engineer
+== - INGENIERO (humano) -\nPuede construir paredes con un martillo.\nLa pared dura 30 segundos, menos en 5 segundos con cada zombi asesinado.
+
+cmd.help.mercenary
+== - MERCENARIO (humano) -\nPuede usar su arma como jetpack para volar\nPuede construir una gran mina flotante y activarla con un martillo.\ntienen minas de envenenamiento, que funcionan en zombies
+
+cmd.help.soldier
+== - SOLDADO (humano) -\nPuede generar varias minas flotantes con su martillo.\nMartillo de fuego de nuevo para hacerlos explotar uno por uno
+
+cmd.help.biologist
+== - BIÓLOGO (humano) -\nPuede construir una trampa con un láser cuando está completamente cargada\nescopeta rebota mucho\ninmune al envenenamiento y puede eliminar la nube con un martillo
+
+cmd.help.medic
+== - MEDIC (humano) -\nPuede curar a los humanos con un martillo o curar granadas.\npuede revivir zombies con un láser
+
+cmd.help.hero
+== - HÉROE (humano) -\nRecoge banderas para dar + 4HP / escudos a los humanos\nusa la pistola como navegador\ninmune al envenenamiento\nmenos daño cuando está fuera de la zona azul
+
+cmd.help.smoker
+== - FUMADOR (zombi) -\n el gancho daña a los humanos -2 HP / seg
+
+cmd.help.boomer
+== - BOOMER (zombi) -\n El gancho daña a los humanos -1 HP / seg\n explota al morir\n dispara un martillo para explotar
+
+cmd.help.hunter
+== - CAZADOR (zombi) -\n Salta dos veces en el aire\n El gancho daña a los humanos -1 HP / seg\n usa armas para rastrear humanos
+
+cmd.help.poisoner
+== - VENENO (zombi) -\n Produce nube de veneno al morir\n los humanos se envenenaron por -4 HP de daño con él\n BIOLOGIST y HERO son inmunes al envenenamiento\n morir al disparar un martillo como un BOOMER
+
+cmd.help.freezer
+== - CONGELADOR (zombi) -\n Puede aturdir a un humano con un gancho durante 1 segundo\n los humanos obtienen 2 segundos de inmunidad si no los matan\n EL CIENTÍFICO es inmune a él
+
+cmd.help.bat
+== - BAT (zombi) -\nPuede volar presionando repetidamente un botón de salto\npuede agarrar a los humanos y levantarlos en el aire\nno infecta con martillo, pero inflige -1 de daño de HP
+
+cmd.help.queen
+== - REINA (zombi) -\n Si hay TRABAJADORES en juego\n reaparecerán instantáneamente cerca de la REINA\n infecta con martillo
+
+cmd.help.worker
+== - TRABAJADOR (zombi) -\n Si QUEEN está en juego\n WORKER reaparecerá instantáneamente cerca de la REINA.\n no infecta, pero inflige -2 puntos de daño con un martillo
+
+cmd.help.help
+== -- Ayuda --\n Mod de infección\n Huye de los zombies (verdes) como humano\n Infectar a los humanos como un zombi\n prueba: /commands
+
+cmd.wrong
+== no hay tal comando, intente: /commands
+
+game.class.random
+== Elección aleatoria
+
+game.class.biologist
+== Biólogo
+
+game.class.medic
+== Médico
+
+game.class.engineer
+== Ingeniero
+
+game.class.soldier
+== Soldado
+
+game.class.scientist
+== Científico
+
+game.class.mercenary
+== Mercenario
+
+game.class.hero
+== Héroe
+
+game.class.boomer
+== Boomer
+
+game.class.smoker
+== Fumador
+
+game.class.hunter
+== Cazador
+
+game.class.bat
+== Murciélago
+
+game.class.queen
+== Reina
+
+game.class.worker
+== Trabajador
+
+game.class.freezer
+== Congelador
+
+game.class.poisoner
+== Envenenador
+
+game.won.infected
+== Los infectados ganaron la ronda en% d segundos
+
+game.won.humans
+== % d humanos ganaron la ronda
+
+game.survived
+== Has sobrevivido, +5 puntos

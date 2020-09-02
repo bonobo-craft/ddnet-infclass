@@ -1,0 +1,120 @@
+
+everything.bellow.is.added
+== EVERYTHINGBELLOWISADDED
+
+cmd.commands
+== - Commandes -\n/humans for list of human classes\n/zombies for list of zombie classes\n/help - afficher l'aide
+
+cmd.help.humans
+== - CLASSES HUMAINES -\nessayez: /medic? /soldier? /scientist? /engineer?\n/hero? /mercenary? /biologist?\nles humains sont infectés par un faible HP ou par un coup de marteau
+
+cmd.help.zombies
+== - COURS DE ZOMBIE -\nessayez: /bat? /hunter? /smoker? /boomer?\n/queen? /worker? /freezer? /poisoner?
+
+cmd.help.scientist
+== - SCIENTIFIQUE (humain) -\nPeut se téléporter avec un lance-grenades\npeut engendrer 2 mines\n immunisé contre le gel
+
+cmd.help.engineer
+== - INGÉNIEUR (humain) -\nPeut construire des murs avec un marteau\nle mur dure 30 secondes, moins de 5 secondes à chaque zombie tué
+
+cmd.help.mercenary
+== - MERCENAIRE (humain) -\nPeut utiliser son arme comme jetpack pour voler\npeut construire une grande mine flottante et la déclencher avec un marteau\navoir des mines d'empoisonnement, qui fonctionnent sur les zombies
+
+cmd.help.soldier
+== - SOLDAT (humain) -\nPeut engendrer un certain nombre de mines flottantes avec son marteau\nmarteau à feu à nouveau pour les faire exploser un par un
+
+cmd.help.biologist
+== - BIOLOGUE (humain) -\nPeut construire un piège avec un laser lorsqu'il est complètement chargé\nle fusil de chasse ricoche beaucoup\nimmunisé contre les intoxications et peut éliminer les nuages avec un marteau
+
+cmd.help.medic
+== - MEDIC (humain) -\nPeut soigner les humains avec un marteau ou soigner des grenades\npeut faire revivre les zombies avec un laser
+
+cmd.help.hero
+== - HERO (humain) -\nCollecte des drapeaux pour donner + 4HP / boucliers aux humains\nutiliser le pistolet comme navigateur\nimmunisé contre l'empoisonnement\nmoins de dégâts en dehors de la zone bleue
+
+cmd.help.smoker
+==  - FUMEUR (zombie) -\n le crochet endommage les humains -2 HP / s
+
+cmd.help.boomer
+==  - BOOMER (zombie) -\n crochet endommage les humains -1 HP / s\n explose en mourant\n tirer un marteau pour exploser
+
+cmd.help.hunter
+==  - CHASSEUR (zombie) -\n Saute deux fois en l'air\n crochet endommage les humains -1 HP / s\n utiliser un pistolet pour suivre les humains
+
+cmd.help.poisoner
+==  -. POISONNIER (zombie) -\n Produit un nuage de poison en mourant\n les humains ont été empoisonnés pour -4 HP de dégâts avec lui\n BIOLOGIST et HERO sont immunisés contre les intoxications\n mourir en tirant un marteau comme un BOOMER
+
+cmd.help.freezer
+== - CONGÉLATEUR (zombie) -\n Peut étourdir un humain avec un crochet pendant 1 seconde\n les humains obtiennent une immunité de 2 s s'ils ne sont pas tués\n SCIENTIFIQUE y est immunisé
+
+cmd.help.bat
+== - BAT (zombie) -\nPeut voler avec une pression répétée sur un bouton de saut\npeut attraper les humains et les soulever dans les airs\nn'infecte pas avec un marteau, mais inflige -1 points de dégâts
+
+cmd.help.queen
+==  - REINE (zombie) -\n Si des TRAVAILLEURS sont en jeu\n ils réapparaîtront instantanément près de la REINE\n infecte avec un marteau
+
+cmd.help.worker
+==  - TRAVAILLEUR (zombie) -\n Si REINE est en jeu\n WORKER réapparaîtra instantanément près de la REINE\n n'infecte pas, mais inflige -2 points de dégâts avec le marteau
+
+cmd.help.help
+==  -- Aidez-moi --\n Mod d'infection\n Fuyez les zombies (verts) en tant qu'humain\n Infecter les humains comme un zombie\n essayez: /commands
+
+cmd.wrong
+== aucune commande de ce type, essayez: /commands
+
+game.class.random
+== Choix aléatoire
+
+game.class.biologist
+== Biologiste
+
+game.class.medic
+== Médical
+
+game.class.engineer
+== Ingénieur
+
+game.class.soldier
+== Soldat
+
+game.class.scientist
+== Scientifique
+
+game.class.mercenary
+== Mercenaire
+
+game.class.hero
+== héros
+
+game.class.boomer
+== Boomer
+
+game.class.smoker
+== Fumeur
+
+game.class.hunter
+== chasseur
+
+game.class.bat
+== Chauve souris
+
+game.class.queen
+== Reine
+
+game.class.worker
+== Ouvrier
+
+game.class.freezer
+== Congélateur
+
+game.class.poisoner
+== Empoisonneur
+
+game.won.infected
+== Les infectés ont remporté la manche en% d secondes
+
+game.won.humans
+== % d humains ont gagné la manche
+
+game.survived
+== Vous avez survécu, +5 points

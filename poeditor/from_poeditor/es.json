@@ -1,0 +1,314 @@
+[
+    {
+        "term": "cmd.commands",
+        "definition": "- Comandos -\n\/humans para la lista de clases humanas\n\/zombies para la lista de clases de zombies\n\/help - mostrar ayuda",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.humans",
+        "definition": "- CLASES HUMANAS -\nprueba: \/medic? \/soldier? \/scientist? \/engineer?\n\/hero? \/mercenary? \/biologist?\nlos humanos se infectan cuando tienen un HP bajo o con un martillo",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.zombies",
+        "definition": "- CLASES DE ZOMBIE -\nprueba: \/bat? \/hunter? \/smoker? \/boomer?\n\/queen? \/worker? \/freezer? \/poisoner?",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.scientist",
+        "definition": "- CIENT\u00cdFICO (humano) -\nPuede teletransportarse con lanzagranadas\npuede generar 2 minas\n inmune al congelamiento",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.engineer",
+        "definition": "- INGENIERO (humano) -\nPuede construir paredes con un martillo.\nLa pared dura 30 segundos, menos en 5 segundos con cada zombi asesinado.",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.mercenary",
+        "definition": "- MERCENARIO (humano) -\nPuede usar su arma como jetpack para volar\nPuede construir una gran mina flotante y activarla con un martillo.\ntienen minas de envenenamiento, que funcionan en zombies",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.soldier",
+        "definition": "- SOLDADO (humano) -\nPuede generar varias minas flotantes con su martillo.\nMartillo de fuego de nuevo para hacerlos explotar uno por uno",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.biologist",
+        "definition": "- BI\u00d3LOGO (humano) -\nPuede construir una trampa con un l\u00e1ser cuando est\u00e1 completamente cargada\nescopeta rebota mucho\ninmune al envenenamiento y puede eliminar la nube con un martillo",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.medic",
+        "definition": "- MEDIC (humano) -\nPuede curar a los humanos con un martillo o curar granadas.\npuede revivir zombies con un l\u00e1ser",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.hero",
+        "definition": "- H\u00c9ROE (humano) -\nRecoge banderas para dar + 4HP \/ escudos a los humanos\nusa la pistola como navegador\ninmune al envenenamiento\nmenos da\u00f1o cuando est\u00e1 fuera de la zona azul",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.smoker",
+        "definition": "- FUMADOR (zombi) -\n el gancho da\u00f1a a los humanos -2 HP \/ seg",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.boomer",
+        "definition": "- BOOMER (zombi) -\n El gancho da\u00f1a a los humanos -1 HP \/ seg\n explota al morir\n dispara un martillo para explotar",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.hunter",
+        "definition": "- CAZADOR (zombi) -\n Salta dos veces en el aire\n El gancho da\u00f1a a los humanos -1 HP \/ seg\n usa armas para rastrear humanos",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.poisoner",
+        "definition": "- VENENO (zombi) -\n Produce nube de veneno al morir\n los humanos se envenenaron por -4 HP de da\u00f1o con \u00e9l\n BIOLOGIST y HERO son inmunes al envenenamiento\n morir al disparar un martillo como un BOOMER",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.freezer",
+        "definition": "- CONGELADOR (zombi) -\n Puede aturdir a un humano con un gancho durante 1 segundo\n los humanos obtienen 2 segundos de inmunidad si no los matan\n EL CIENT\u00cdFICO es inmune a \u00e9l",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.bat",
+        "definition": "- BAT (zombi) -\nPuede volar presionando repetidamente un bot\u00f3n de salto\npuede agarrar a los humanos y levantarlos en el aire\nno infecta con martillo, pero inflige -1 de da\u00f1o de HP",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.queen",
+        "definition": "- REINA (zombi) -\n Si hay TRABAJADORES en juego\n reaparecer\u00e1n instant\u00e1neamente cerca de la REINA\n infecta con martillo",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.worker",
+        "definition": "- TRABAJADOR (zombi) -\n Si QUEEN est\u00e1 en juego\n WORKER reaparecer\u00e1 instant\u00e1neamente cerca de la REINA.\n no infecta, pero inflige -2 puntos de da\u00f1o con un martillo",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.help",
+        "definition": "-- Ayuda --\n Mod de infecci\u00f3n\n Huye de los zombies (verdes) como humano\n Infectar a los humanos como un zombi\n prueba: \/commands",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.wrong",
+        "definition": "no hay tal comando, intente: \/commands",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.random",
+        "definition": "Elecci\u00f3n aleatoria",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.biologist",
+        "definition": "Bi\u00f3logo",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.medic",
+        "definition": "M\u00e9dico",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.engineer",
+        "definition": "Ingeniero",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.soldier",
+        "definition": "Soldado",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.scientist",
+        "definition": "Cient\u00edfico",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.mercenary",
+        "definition": "Mercenario",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.hero",
+        "definition": "H\u00e9roe",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.boomer",
+        "definition": "Boomer",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.smoker",
+        "definition": "Fumador",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.hunter",
+        "definition": "Cazador",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.bat",
+        "definition": "Murci\u00e9lago",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.queen",
+        "definition": "Reina",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.worker",
+        "definition": "Trabajador",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.freezer",
+        "definition": "Congelador",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.poisoner",
+        "definition": "Envenenador",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.won.infected",
+        "definition": "Los infectados ganaron la ronda en% d segundos",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.won.humans",
+        "definition": "% d humanos ganaron la ronda",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.survived",
+        "definition": "Has sobrevivido, +5 puntos",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    }
+]

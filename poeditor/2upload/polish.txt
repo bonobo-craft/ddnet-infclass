@@ -1,0 +1,120 @@
+
+everything.bellow.is.added
+== EVERYTHINGBELLOWISADDED
+
+cmd.commands
+== -- Komendy --\n/humans by zobaczyć listę klas ludzi\n/zombies aby wyświetlić listę klas zombie\n/help - pokaż pomoc
+
+cmd.help.humans
+== - KLASY LUDZI -\nspróbuj: /medic? /soldier? /scientist? /engineer?\n/hero? /mercenary? /biologist?\nludzie mogą zostać zarażeni gdy mają mało życia lub przy uderzeniu młotem
+
+cmd.help.zombies
+== - KLASY ZOMBIE -\nspróbuj: /bat? /hunter? /smoker? /boomer?\n/queen? /worker? /freezer? /poisoner?
+
+cmd.help.scientist
+== - NAUKOWIEC (człowiek) -\nMoże teleportować się za pomocą granatnika\nmoże stworzyć 2 miny\nodporny na zamarzanie
+
+cmd.help.engineer
+== - INŻYNIER (człowiek) -\nPotrafi budować ściany młotkiem\nściana trwa 30 sekund, o 5 sekund mniej przy zabiciu każdego zombie
+
+cmd.help.mercenary
+== - NAJEMNIK (człowiek) -\nMoże używać swojego pistoletu jako plecaka odrzutowego do latania\nmoże stworzyć wielką lewitującą minę i uruchomić ją młotkiem\nposiada trujące miny, które działają na zombie
+
+cmd.help.soldier
+== - ŻOŁNIERZ (człowiek) -\nZa pomocą swojego młotka może wytworzyć kilka lewitujących min\nodpal młotek ponownie, aby je po kolei wysadzić
+
+cmd.help.biologist
+== - BIOLOG (człowiek) -\nMoże zbudować pułapkę laserem jeśli w pełni naładowany\nstrzelba duzo rykoszetuje\nodporny na zatrucie i może usunąć chmurę młotkiem
+
+cmd.help.medic
+== - MEDYK (człowiek) -\nMoże leczyć ludzi młotkiem lub granatami\nmoże ożywić zombie za pomocą lasera
+
+cmd.help.hero
+== - BOHATER (człowiek) -\nZbiera flagi, aby dać ludziom + życia / tarcz\nużyj pistoletu jako nawigatora\nodporny na zatrucie\notrzymuje mniej obrażeń poza niebieską strefą
+
+cmd.help.smoker
+==  - CHWYTACZ (zombie) -\n hak rani ludzi -2 życia / sek
+
+cmd.help.boomer
+==  - WYBUCHACZ (zombie) -\n hak rani ludzi -1 życia / sek\n wybucha po śmierci\n odpal młotek, aby eksplodować
+
+cmd.help.hunter
+==  - ŁOWCA (zombie) -\n Podskakuje dwa razy w powietrzu\n hak rani ludzi -1 życia / sek\n używaj pistoletu do tropienia ludzi
+
+cmd.help.poisoner
+==  -. TRUCICIEL (zombie) -\n Po śmierci wytwarza chmurę trucizny\n ludzie są otruwani nią za -4 życia\n BIOLOG i BOHATER są odporni na zatrucie\n zginąć na rozkaz możesz uderzając młotkiem niczym WYBUCHACZ
+
+cmd.help.freezer
+== - ZAMRAŻACZ (zombie) -\n Może ogłuszyć człowieka hakiem na 1 sek\n ludzie otrzymują 2 sek odporności, jeśli nie zostaną zabici\n NAUKOWIEC jest na to odporny
+
+cmd.help.bat
+== - NIETOPERZ (zombie) -\nPotrafi latać przy wielokrotnym naciskaniu przycisku skoku\nmoże złapać ludzi i unieść ich w powietrze\nnie infekuje młotem, ale zadaje -1 obrażeń
+
+cmd.help.queen
+==  - KRÓLOWA (zombie) -\n Jeśli jacyś ROBOTNICY są w grze\n odrodzą się natychmiast w pobliżu KRÓLOWEJ\n infekuje młotkiem
+
+cmd.help.worker
+==  - Robotnik (zombie) -\n Jeśli KRÓLOWA jest w grze\n ROBOTNIK odrodzi się natychmiast w pobliżu KRÓLOWEJ\n nie infekuje, ale zadaje -2 obrażeń młotkiem
+
+cmd.help.help
+==  -- Pomoc --\n Tryb infekcji\n Uciekaj od zombie (zielonych) jako człowiek\n Zarażaj ludzi jako zombie\n spróbuj: /commands
+
+cmd.wrong
+== nie ma takiej komendy, spróbuj: /commands
+
+game.class.random
+== Losowy wybór
+
+game.class.biologist
+== Biolog
+
+game.class.medic
+== Medyk
+
+game.class.engineer
+== Inżynier
+
+game.class.soldier
+== Żołnierz
+
+game.class.scientist
+== Naukowiec
+
+game.class.mercenary
+== Najemnik
+
+game.class.hero
+== Bohater
+
+game.class.boomer
+== Wybuchacz
+
+game.class.smoker
+== Chwytacz
+
+game.class.hunter
+== Łowca
+
+game.class.bat
+== Nietoperz
+
+game.class.queen
+== Królowa
+
+game.class.worker
+== Robotnik
+
+game.class.freezer
+== Zamrażacz
+
+game.class.poisoner
+== Truciciel
+
+game.won.infected
+== Zainfekowani wygrali rundę w %d sekund
+
+game.won.humans
+== %d ludzi wygrało rundę
+
+game.survived
+== Przetrwałeś, +5 punktów

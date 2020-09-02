@@ -1,0 +1,314 @@
+[
+    {
+        "term": "cmd.commands",
+        "definition": "-- Komutlar --\n\/humans insan s\u0131n\u0131f\u0131 listesi i\u00e7in\n\/zombies zombi s\u0131n\u0131f\u0131 listesi i\u00e7in\n\/help - yard\u0131m i\u00e7in",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.humans",
+        "definition": "-- \u0130NSAN SINIFLARI --\ndene: \/medic? \/soldier? \/scientist? \/engineer?\n\/hero? \/mercenary? \/biologist?\ninsanlar d\u00fc\u015f\u00fck HP'ye sahip olduklar\u0131nda veya bir \u00e7eki\u00e7le vurulduklar\u0131nda enfekte olurlar",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.zombies",
+        "definition": "-- ZOMB\u0130 SINIFLARI --\ndene: \/bat? \/hunter? \/smoker? \/boomer?\n\/queen? \/worker? \/freezer? \/poisoner?",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.scientist",
+        "definition": "-- PROFES\u00d6R (insan) --\nEl bombas\u0131 f\u0131rlat\u0131c\u0131 ile \u0131\u015f\u0131nlanabilir\n2 may\u0131n \u00fcretebilir\n donmaya kar\u015f\u0131 ba\u011f\u0131\u015f\u0131kl\u0131k",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.engineer",
+        "definition": "-- M\u00dcHEND\u0130S (insan) --\n\u00c7eki\u00e7 ile duvar in\u015fa edebilir\nduvar 30 saniye s\u00fcrer, \u00f6ld\u00fcr\u00fclen her zombi ile 5 saniye azal\u0131r",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.mercenary",
+        "definition": "-- NEFER (insan) --\nSilah\u0131n\u0131 u\u00e7mak i\u00e7in jetpack olarak kullanabilir\nb\u00fcy\u00fck bir u\u00e7an mayin in\u015fa edebilir ve bir \u00e7eki\u00e7le tetikleyebilir\nzombi \u00fczerinde \u00e7al\u0131\u015fan zehirli may\u0131nlar var",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.soldier",
+        "definition": "-- ASKER (insan) --\n\u00c7eki\u00e7iyle u\u00e7an may\u0131n \u00fcretebilir\nonlar\u0131 tek tek patlatmak i\u00e7in tekrar \u00e7eki\u00e7 kullan",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.biologist",
+        "definition": "-- B\u0130YOLOJ\u0130\u00c7\u0130 (insan) --\nTamamen \u015farj oldu\u011funda lazer ile bir tuzak olu\u015fturabilir\nav t\u00fcfe\u011fi \u00e7ok sekiyor\nzehirlenmeye kar\u015f\u0131 ba\u011f\u0131\u015f\u0131kt\u0131r ve bir \u00e7eki\u00e7le zehirli bulutu kald\u0131rabilir",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.medic",
+        "definition": "-- DOKTOR (insan) --\n\u0130nsanlar\u0131 \u00e7eki\u00e7le iyile\u015ftirebilir veya el bombalarla iyile\u015ftirebilir\nlazerle zombileri canland\u0131rabilir",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.hero",
+        "definition": "-- KAHRAMAN (insan) -\n\u0130nsanlara + 4HP \/kalkan vermek i\u00e7in bayraklar toplar\nsilah\u0131 navigat\u00f6r olarak kullan bayraklar i\u00e7in \nzehirlenmeye kar\u015f\u0131 ba\u011f\u0131\u015f\u0131kl\u0131k\nmavi b\u00f6lgenin d\u0131\u015f\u0131ndayken daha az hasar",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.smoker",
+        "definition": "-- DUMAN\u00c7\u0130 (zombi) --\n kanca insanlara zarar verir -2 HP \/ sn",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.boomer",
+        "definition": "-- BOMBACI (zombi) --\n kanca insanlara zarar verir -1 HP \/ sn\n \u00f6lmek \u00fczere patlar\n patlamak i\u00e7in bir \u00e7eki\u00e7 kullan",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.hunter",
+        "definition": "-- AVCI (zombi) --\n Havada iki kez z\u0131plar\n kanca insanlara zarar verir -1 HP \/ sn\n insanlar\u0131 bulmak i\u00e7in silah kullan",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.poisoner",
+        "definition": "-- ZEH\u0130RLENDIREN (zombi) --\n \u00d6l\u00fcrken zehir bulutu olu\u015fturur\n insanlar onunla -4 HP hasar i\u00e7in zehirlendi\n B\u0130YOLOJ\u0130 ve KAHRAMAN zehirlenmeye kar\u015f\u0131 ba\u011f\u0131\u015f\u0131kt\u0131r\n BOMBACI gibi bir \u00e7eki\u00e7 kullan\u0131rken \u00f6l\u00fcyorsun",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.freezer",
+        "definition": "-- DONDURUCU (zombi) --\n Bir insan\u0131 bir kanca ile 1 saniyeli\u011fine sersemletebilir\n insanlar \u00f6ld\u00fcr\u00fclmezse 2 saniye ba\u011f\u0131\u015f\u0131kl\u0131k kazan\u0131r\n PROFES\u00d6R ona kar\u015f\u0131 ba\u011f\u0131\u015f\u0131k",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.bat",
+        "definition": "-- YARASA (zombi) --\nBir atlama d\u00fc\u011fmesine art arda basarak u\u00e7abilir\ninsanlar\u0131 al\u0131p havaya kald\u0131rabilir\n\u00e7eki\u00e7le enfekte olmaz ancak -1 HP hasar verir",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.queen",
+        "definition": "-- KRAL\u0130\u00c7E (zombi) --\n Herhangi bir \u0130\u015e\u00c7\u0130 oyundaysa\n QUEEN yak\u0131n\u0131nda an\u0131nda yeniden do\u011facaklar\n \u00e7eki\u00e7 ile enfekte ediyor",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.worker",
+        "definition": "-- \u0130\u015e\u00c7\u0130 (zombi) --\n QUEEN oyundaysa\n \u0130\u015e\u00c7\u0130, KRAL\u0130\u00c7E yak\u0131n\u0131nda an\u0131nda yeniden do\u011facak\n bula\u015fmaz, ancak \u00e7eki\u00e7le -2 HP hasar verir",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.help",
+        "definition": "-- Yard\u0131m --\n Enfeksiyon modu\n \u0130nsan olarak zombilerden (ye\u015fil) ka\u00e7\n Bir zombi olarak insanlar\u0131 enfekte\n dene: \/commands",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.wrong",
+        "definition": "b\u00f6yle bir komut yok, \u015funu dene: \/commands",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.random",
+        "definition": "Rastgele se\u00e7im",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.biologist",
+        "definition": "Biyolog",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.medic",
+        "definition": "Doktor",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.engineer",
+        "definition": "M\u00fchendis",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.soldier",
+        "definition": "Asker",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.scientist",
+        "definition": "Profes\u00f6r",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.mercenary",
+        "definition": "Nefer",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.hero",
+        "definition": "Kahraman",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.boomer",
+        "definition": "Bombac\u0131",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.smoker",
+        "definition": "Dumanc\u0131",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.hunter",
+        "definition": "Avc\u0131",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.bat",
+        "definition": "Yarasa",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.queen",
+        "definition": "Krali\u00e7e",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.worker",
+        "definition": "I\u015f\u00e7i",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.freezer",
+        "definition": "Dondurucu",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.poisoner",
+        "definition": "Zehirlendiren",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.won.infected",
+        "definition": "Enfekte raundu %d saniye i\u00e7inde kazand\u0131",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.won.humans",
+        "definition": "%d insan raundu kazand\u0131",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.survived",
+        "definition": "Hayatta kald\u0131n, +5 puan",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    }
+]

@@ -1,0 +1,120 @@
+
+everything.bellow.is.added
+== EVERYTHINGBELLOWISADDED
+
+cmd.commands
+== -- Komutlar --\n/humans insan sınıfı listesi için\n/zombies zombi sınıfı listesi için\n/help - yardım için
+
+cmd.help.humans
+== -- İNSAN SINIFLARI --\ndene: /medic? /soldier? /scientist? /engineer?\n/hero? /mercenary? /biologist?\ninsanlar düşük HP'ye sahip olduklarında veya bir çekiçle vurulduklarında enfekte olurlar
+
+cmd.help.zombies
+== -- ZOMBİ SINIFLARI --\ndene: /bat? /hunter? /smoker? /boomer?\n/queen? /worker? /freezer? /poisoner?
+
+cmd.help.scientist
+== -- PROFESÖR (insan) --\nEl bombası fırlatıcı ile ışınlanabilir\n2 mayın üretebilir\n donmaya karşı bağışıklık
+
+cmd.help.engineer
+== -- MÜHENDİS (insan) --\nÇekiç ile duvar inşa edebilir\nduvar 30 saniye sürer, öldürülen her zombi ile 5 saniye azalır
+
+cmd.help.mercenary
+== -- NEFER (insan) --\nSilahını uçmak için jetpack olarak kullanabilir\nbüyük bir uçan mayin inşa edebilir ve bir çekiçle tetikleyebilir\nzombi üzerinde çalışan zehirli mayınlar var
+
+cmd.help.soldier
+== -- ASKER (insan) --\nÇekiçiyle uçan mayın üretebilir\nonları tek tek patlatmak için tekrar çekiç kullan
+
+cmd.help.biologist
+== -- BİYOLOJİÇİ (insan) --\nTamamen şarj olduğunda lazer ile bir tuzak oluşturabilir\nav tüfeği çok sekiyor\nzehirlenmeye karşı bağışıktır ve bir çekiçle zehirli bulutu kaldırabilir
+
+cmd.help.medic
+== -- DOKTOR (insan) --\nİnsanları çekiçle iyileştirebilir veya el bombalarla iyileştirebilir\nlazerle zombileri canlandırabilir
+
+cmd.help.hero
+== -- KAHRAMAN (insan) -\nİnsanlara + 4HP /kalkan vermek için bayraklar toplar\nsilahı navigatör olarak kullan bayraklar için \nzehirlenmeye karşı bağışıklık\nmavi bölgenin dışındayken daha az hasar
+
+cmd.help.smoker
+== -- DUMANÇİ (zombi) --\n kanca insanlara zarar verir -2 HP / sn
+
+cmd.help.boomer
+== -- BOMBACI (zombi) --\n kanca insanlara zarar verir -1 HP / sn\n ölmek üzere patlar\n patlamak için bir çekiç kullan
+
+cmd.help.hunter
+== -- AVCI (zombi) --\n Havada iki kez zıplar\n kanca insanlara zarar verir -1 HP / sn\n insanları bulmak için silah kullan
+
+cmd.help.poisoner
+== -- ZEHİRLENDIREN (zombi) --\n Ölürken zehir bulutu oluşturur\n insanlar onunla -4 HP hasar için zehirlendi\n BİYOLOJİ ve KAHRAMAN zehirlenmeye karşı bağışıktır\n BOMBACI gibi bir çekiç kullanırken ölüyorsun
+
+cmd.help.freezer
+== -- DONDURUCU (zombi) --\n Bir insanı bir kanca ile 1 saniyeliğine sersemletebilir\n insanlar öldürülmezse 2 saniye bağışıklık kazanır\n PROFESÖR ona karşı bağışık
+
+cmd.help.bat
+== -- YARASA (zombi) --\nBir atlama düğmesine art arda basarak uçabilir\ninsanları alıp havaya kaldırabilir\nçekiçle enfekte olmaz ancak -1 HP hasar verir
+
+cmd.help.queen
+== -- KRALİÇE (zombi) --\n Herhangi bir İŞÇİ oyundaysa\n QUEEN yakınında anında yeniden doğacaklar\n çekiç ile enfekte ediyor
+
+cmd.help.worker
+== -- İŞÇİ (zombi) --\n QUEEN oyundaysa\n İŞÇİ, KRALİÇE yakınında anında yeniden doğacak\n bulaşmaz, ancak çekiçle -2 HP hasar verir
+
+cmd.help.help
+== -- Yardım --\n Enfeksiyon modu\n İnsan olarak zombilerden (yeşil) kaç\n Bir zombi olarak insanları enfekte\n dene: /commands
+
+cmd.wrong
+== böyle bir komut yok, şunu dene: /commands
+
+game.class.random
+== Rastgele seçim
+
+game.class.biologist
+== Biyolog
+
+game.class.medic
+== Doktor
+
+game.class.engineer
+== Mühendis
+
+game.class.soldier
+== Asker
+
+game.class.scientist
+== Profesör
+
+game.class.mercenary
+== Nefer
+
+game.class.hero
+== Kahraman
+
+game.class.boomer
+== Bombacı
+
+game.class.smoker
+== Dumancı
+
+game.class.hunter
+== Avcı
+
+game.class.bat
+== Yarasa
+
+game.class.queen
+== Kraliçe
+
+game.class.worker
+== Işçi
+
+game.class.freezer
+== Dondurucu
+
+game.class.poisoner
+== Zehirlendiren
+
+game.won.infected
+== Enfekte raundu %d saniye içinde kazandı
+
+game.won.humans
+== %d insan raundu kazandı
+
+game.survived
+== Hayatta kaldın, +5 puan
