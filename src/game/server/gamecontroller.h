@@ -83,6 +83,9 @@ public:
 
 	void DoWarmup(int Seconds);
 
+	int m_TimeLimit;
+	int m_RoundNum;
+
 	void StartRound();
 	void EndRound();
 	void EndMatch();

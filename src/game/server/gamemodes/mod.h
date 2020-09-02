@@ -83,7 +83,6 @@ private:
 	std::unordered_map<int, class IClass*> classes;
 	class Geolocation* geolocation;
 	std::vector<int> humans;
-	int m_TimeLimit;
 	//class LuaLoader* lua;
 	//TBD
 	std::vector<class CCircle*> safezones;
