@@ -1329,7 +1329,7 @@ void CGameContext::OnClientEnter(int ClientID)
 			Msg.m_MatchCurrent = 1;
 			Msg.m_MatchNum = 5;
 			Msg.m_ScoreLimit = 0;
-			Msg.m_TimeLimit = g_Config.m_SvTimelimit;
+			Msg.m_TimeLimit = m_pController->m_TimeLimit;
 			Server()->SendPackMsg(&Msg, MSGFLAG_VITAL|MSGFLAG_NORECORD, ClientID);
 		}
 
