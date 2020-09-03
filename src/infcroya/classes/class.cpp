@@ -81,7 +81,7 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		else
 			Dir = vec2(0.f, -1.f);
 
-		int DAMAGE = 0; // fng
+		int DAMAGE = 20;
 		bool ShouldHit = false;
 		bool ShouldHeal = false;
 		bool ShouldUnfreeze = false;
