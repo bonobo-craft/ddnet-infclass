@@ -166,17 +166,29 @@ void CGameControllerMOD::OnRoundStart()
 			flag_positions.push_back(vec2(x, y));
 		}
 		const YAML::Node& safezone_nodes = mapconfig["safezones"];
-		for (YAML::const_iterator it = safezone_nodes.begin(); it != safezone_nodes.end(); ++it) {
-			const YAML::Node& safezone_node = *it;
-			int x = safezone_node["x"].as<int>() * TILE_SIZE;
-			int y = safezone_node["y"].as<int>() * TILE_SIZE;
-			float radius = safezone_node["radius"].as<float>();
-			float min_radius = safezone_node["min_radius"].as<float>();
-			float shrink_speed = safezone_node["shrink_speed"].as<float>();
-			str_format(aBuf, sizeof(aBuf), "Success parsing safezone node");
-			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
-			safezones.push_back(new CCircle(&GameServer()->m_World, vec2(x, y), -1, radius, min_radius, shrink_speed));
+		if ( safezone_nodes.size() > 0) {
+			int safezone_num = rand() % safezone_nodes.size();
+			str_format(aBuf, sizeof(aBuf), "Safezone spot id %ld of %ld", safezone_num, safezone_nodes.size() - 1);
+			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "Server", aBuf);
+			GameServer()->SendChatTarget(-1, aBuf);
+
+			int pos = 0;
+
+			for (YAML::const_iterator it = safezone_nodes.begin(); it != safezone_nodes.end(); ++it) {
+				const YAML::Node& safezone_node = *it;
+				int x = safezone_node["x"].as<int>() * TILE_SIZE;
+				int y = safezone_node["y"].as<int>() * TILE_SIZE;
+				float radius = safezone_node["radius"].as<float>();
+				float min_radius = safezone_node["min_radius"].as<float>();
+				float shrink_speed = safezone_node["shrink_speed"].as<float>();
+				str_format(aBuf, sizeof(aBuf), "Success parsing safezone node");
+				GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
+				if (pos == safezone_num)
+					safezones.push_back(new CCircle(&GameServer()->m_World, vec2(x, y), -1, radius, min_radius, shrink_speed * 10));
+				pos++;
+			}
 		}
+
 	} catch (const YAML::BadFile&) {
 		str_format(aBuf, sizeof(aBuf), "Error parsing YAML file: %s", path_to_yaml.c_str());
 		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
