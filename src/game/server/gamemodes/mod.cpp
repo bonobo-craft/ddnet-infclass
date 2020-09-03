@@ -143,6 +143,7 @@ void CGameControllerMOD::OnRoundStart()
 	str_format(aBuf, sizeof(aBuf), "Loading YAML file: %s", path_to_yaml.c_str());
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
 	try {
+		inf_circles.clear();
 		YAML::Node mapconfig = YAML::LoadFile(path_to_yaml);
 		m_TimeLimit = mapconfig["timelimit"].as<int>();
 		const YAML::Node& inf_circle_nodes = mapconfig["inf_circles"];
@@ -156,6 +157,7 @@ void CGameControllerMOD::OnRoundStart()
 			GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
 			inf_circles.push_back(new CInfCircle(&GameServer()->m_World, vec2(x * TILE_SIZE, y * TILE_SIZE), -1, radius));
 		}
+		flag_positions.clear();
 		const YAML::Node& flag_nodes = mapconfig["flags"];
 		for (YAML::const_iterator it = flag_nodes.begin(); it != flag_nodes.end(); ++it) {
 			const YAML::Node& flag_node = *it;
@@ -166,6 +168,7 @@ void CGameControllerMOD::OnRoundStart()
 			flag_positions.push_back(vec2(x, y));
 		}
 		const YAML::Node& safezone_nodes = mapconfig["safezones"];
+		safezones.clear();
 		if ( safezone_nodes.size() > 0) {
 			int safezone_num = rand() % safezone_nodes.size();
 			str_format(aBuf, sizeof(aBuf), "Safezone spot id %ld of %ld", safezone_num, safezone_nodes.size() - 1);
