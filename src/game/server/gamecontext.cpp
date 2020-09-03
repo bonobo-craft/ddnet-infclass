@@ -1386,8 +1386,12 @@ void CGameContext::OnClientEnter(int ClientID)
 		}
 
 		char aBuf[512];
-		str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s", Server()->ClientName(ClientID), m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()));
-		SendChat(-1, CGameContext::CHAT_ALL, aBuf, -1, CHAT_SIX);
+		if (Server()->IsSixup(ClientID))
+			str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s (0.7)", Server()->ClientName(ClientID), m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()));
+		else
+			str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s (0.6)", Server()->ClientName(ClientID), m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()));
+		
+		SendChat(-1, CGameContext::CHAT_ALL, aBuf, -1);
 
 		//SendChatTarget(ClientID, "DDraceNetwork Mod. Version: " GAME_VERSION);
 		//SendChatTarget(ClientID, "please visit DDNet.tw or say /info for more info");
