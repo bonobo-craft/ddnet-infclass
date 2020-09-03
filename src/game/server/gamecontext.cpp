@@ -232,12 +232,27 @@ void CGameContext::CreateExplosion(vec2 Pos, int Owner, int Weapon, int MaxDamag
 	float InnerRadius = 48.0f; // Breton's
 	//float MaxForce = g_pData->m_Explosion.m_MaxForce; // TBD
 	float MaxForce = 8.0f; // guessed
+	char aBuf[256];
+/* 	str_format(aBuf, sizeof(aBuf), "Create explosion owner %d", Owner);
+	Console()->Print(IConsole::OUTPUT_LEVEL_ADDINFO, "debug", aBuf); */
 	int Num = m_World.FindEntities(Pos, Radius, (CEntity**)apEnts, MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
+/* 	str_format(aBuf, sizeof(aBuf), "Entities found near %d", Num);
+	Console()->Print(IConsole::OUTPUT_LEVEL_ADDINFO, "debug", aBuf); */
 	for(int i = 0; i < Num; i++)
 	{
-		// don't affect other humans but affect owner
-		if ((!apEnts[i]->CanCollideInf(Owner)) && (Owner != i))
+		CCharacter *pTarget = apEnts[i];
+		if (!apEnts[i] || !pTarget || !pTarget->GetPlayer())
 		  continue;
+		int TargetID = pTarget->GetPlayer()->GetCID();
+/* 		str_format(aBuf, sizeof(aBuf), "Will affect %d?", TargetID);
+		Console()->Print(IConsole::OUTPUT_LEVEL_ADDINFO, "debug", aBuf); */
+		// don't affect other humans but affect owner
+		if (Owner != TargetID) {
+/* 			str_format(aBuf, sizeof(aBuf), "not owner %d of %d?", TargetID, Owner);
+			Console()->Print(IConsole::OUTPUT_LEVEL_ADDINFO, "debug", aBuf); */
+			if (!apEnts[i]->CanCollideInf(Owner))
+				continue;
+		}
 		// INFCROYA BEGIN ------------------------------------------------------------
 		if (MercBomb && m_apPlayers[Owner]->GetCroyaPlayer()->IsZombie()) {
 			break;
@@ -249,6 +264,8 @@ void CGameContext::CreateExplosion(vec2 Pos, int Owner, int Weapon, int MaxDamag
 		if(l)
 			Force = normalize(Diff) * MaxForce;
 		float Factor = 1 - clamp((l-InnerRadius)/(Radius-InnerRadius), 0.0f, 1.0f);
+/* 		str_format(aBuf, sizeof(aBuf), "Will affect %d!", TargetID);
+		Console()->Print(IConsole::OUTPUT_LEVEL_ADDINFO, "debug", aBuf); */
 		if((int)(Factor * MaxDamage))
 			apEnts[i]->TakeDamage(Force * Factor, Diff*-1, (int)(Factor * MaxDamage), Owner, Weapon);
 	}
