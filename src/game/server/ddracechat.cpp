@@ -83,7 +83,7 @@ void CGameContext::ConHelp(IConsole::IResult *pResult, void *pUserData)
 	if (pResult->NumArguments() == 0)
 	{
  		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help",
-				"visit https://tiny.cc/inf-luck-wiki for more info");
+				"visit https://tiny.cc/infnext for more info");
 /* 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help",
 				"/cmdlist will show a list of all chat commands");
 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help",
