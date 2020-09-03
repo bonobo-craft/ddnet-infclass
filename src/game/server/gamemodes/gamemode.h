@@ -3,6 +3,6 @@
 #ifndef GAME_SERVER_GAMEMODES_GAMEMODE_H
 #define GAME_SERVER_GAMEMODES_GAMEMODE_H
 
-#define GAME_NAME "infLuck"
-#define TEST_NAME "TestInfLuck
+#define GAME_NAME "infNext"
+#define TEST_NAME "TestInfNext"
 #endif // GAME_SERVER_GAMEMODES_GAMEMODE_H
