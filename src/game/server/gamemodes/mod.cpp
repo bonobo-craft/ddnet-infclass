@@ -184,7 +184,7 @@ void CGameControllerMOD::OnRoundStart()
 				str_format(aBuf, sizeof(aBuf), "Success parsing safezone node");
 				GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "yaml", aBuf);
 				if (pos == safezone_num)
-					safezones.push_back(new CCircle(&GameServer()->m_World, vec2(x, y), -1, radius, min_radius, shrink_speed * 10));
+					safezones.push_back(new CCircle(&GameServer()->m_World, vec2(x, y), -1, radius, min_radius, shrink_speed));
 				pos++;
 			}
 		}
