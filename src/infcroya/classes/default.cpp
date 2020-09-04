@@ -10,7 +10,7 @@ CDefault::CDefault()
 {
 	SetSkin(CSkin());
 	SetInfectedClass(false);
-	SetName("Random choice");
+	SetName("");
 }
 
 void CDefault::InitialWeaponsHealth(CCharacter* pChr)

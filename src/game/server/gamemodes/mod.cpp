@@ -874,8 +874,8 @@ void CGameControllerMOD::OnPlayerConnect(CPlayer* pPlayer)
 	else
 	{
 		players[ClientID]->TurnIntoRandomZombie();
-		players[ClientID]->SetOldClassNum(Class::SCIENTIST); // turn into medic on medic revive
-		for (CroyaPlayer *each : players)
+		players[ClientID]->SetOldClassNum(Class::SCIENTIST); // turn into it on medic revive
+/* 		for (CroyaPlayer *each : players)
 		{
 			if (each && each->GetPlayer())
 			{
@@ -888,7 +888,7 @@ void CGameControllerMOD::OnPlayerConnect(CPlayer* pPlayer)
 					GameServer()->SendClanChange(each->GetClientID(), ClientID, "Human");
 				}
 			}
-		}
+		} */
 	}
 	//GameServer()->SendChatTarget(ClientID, g_Config.m_SvWelcome);
 }

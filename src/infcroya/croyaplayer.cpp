@@ -727,7 +727,29 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 			GetCharacter()->SetInfected(false);
 	}
 
-	for (const CPlayer* each : m_pGameServer->m_apPlayers) {
+
+	std::string NewClan = "Unknown";
+	if (m_pClass->IsInfectedClass()) {
+		if (m_InitialZombie) {
+			NewClan = std::string("i") + m_pClass->m_Name;
+		}
+		else {
+			NewClan = m_pClass->m_Name;
+		}
+	} else {
+		NewClan = m_pClass->m_Name;
+	}
+
+	m_pGameServer->Server()->SetClientClan(m_ClientID, NewClan.c_str());
+	dbg_msg("Newclan %s", NewClan.c_str());
+
+ 	for (const CPlayer* each : m_pGameServer->m_apPlayers) {
+		if (each) {
+			m_pGameServer->SendSkinChange(m_pPlayer->GetCID(), each->GetCID());
+			m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), NewClan.c_str());
+		}
+	}
+/* 	for (const CPlayer* each : m_pGameServer->m_apPlayers) {
 		if (each) {
 			m_pGameServer->SendSkinChange(m_pPlayer->GetCID(), each->GetCID());
 			if (m_pClass->IsInfectedClass()) {
@@ -739,7 +761,7 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 				m_pGameServer->SendClanChange(m_pPlayer->GetCID(), each->GetCID(), "Human");
 			}
 		}
-	}
+	} */
 	if (!destroyChildEntities)
 	  return;
 
