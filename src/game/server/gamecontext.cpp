@@ -4624,7 +4624,7 @@ int CGameContext::ShortnameToClassId(const std::string shortname) {
 bool CGameContext::IsDevServer() {
 	//return (g_Config.m_SvDevServer && (g_Config.m_SvDevServer == 1));
 	//TBD
-	return true;
+	return false;
 }
 
 void CGameContext::MkAdmin(int ClientID) {
