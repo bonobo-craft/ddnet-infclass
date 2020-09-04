@@ -2364,18 +2364,18 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 				SixupNeedsUpdate = true;
 			}
 
-			if(str_comp(Server()->ClientClan(ClientID), pMsg->m_pClan))
-				SixupNeedsUpdate = true;
-			Server()->SetClientClan(ClientID, pMsg->m_pClan);
+			//if(str_comp(Server()->ClientClan(ClientID), pMsg->m_pClan))
+			//	SixupNeedsUpdate = true;
+			//Server()->SetClientClan(ClientID, pMsg->m_pClan);
 
 			if(Server()->ClientCountry(ClientID) != pMsg->m_Country)
 				SixupNeedsUpdate = true;
 			Server()->SetClientCountry(ClientID, pMsg->m_Country);
 
-			str_copy(pPlayer->m_TeeInfos.m_SkinName, pMsg->m_pSkin, sizeof(pPlayer->m_TeeInfos.m_SkinName));
-			pPlayer->m_TeeInfos.m_UseCustomColor = pMsg->m_UseCustomColor;
-			pPlayer->m_TeeInfos.m_ColorBody = pMsg->m_ColorBody;
-			pPlayer->m_TeeInfos.m_ColorFeet = pMsg->m_ColorFeet;
+			//str_copy(pPlayer->m_TeeInfos.m_SkinName, pMsg->m_pSkin, sizeof(pPlayer->m_TeeInfos.m_SkinName));
+			//pPlayer->m_TeeInfos.m_UseCustomColor = pMsg->m_UseCustomColor;
+			//pPlayer->m_TeeInfos.m_ColorBody = pMsg->m_ColorBody;
+			//pPlayer->m_TeeInfos.m_ColorFeet = pMsg->m_ColorFeet;
 			if(!Server()->IsSixup(ClientID))
 				pPlayer->m_TeeInfos.ToSixup();
 
