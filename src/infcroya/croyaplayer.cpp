@@ -705,22 +705,11 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 	m_pPlayer->m_TeeInfos.FromSixup();
 
 	if (m_pClass->IsInfectedClass()) {
-		char aBuf[512];
-		str_format(aBuf, sizeof(aBuf),
-			"Infected class Client ID = %d, class = %s",
-			m_ClientID, m_pClass->m_Name.c_str());
-		m_pGameServer->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "server", aBuf);
-
 		m_Infected = true;
 		if (GetCharacter())
 			GetCharacter()->SetInfected(true);
 	}
 	else {
-		char aBuf[512];
-		str_format(aBuf, sizeof(aBuf),
-			"Not infected class Client ID = %d, class = %s",
-			m_ClientID, m_pClass->m_Name.c_str());
-		m_pGameServer->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "server", aBuf);
 		m_InitialZombie = false;
 		m_Infected = false;
 		if (GetCharacter())
