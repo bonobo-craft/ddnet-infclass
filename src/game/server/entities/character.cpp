@@ -249,7 +249,7 @@ void CCharacter::HandleNinja()
 		return;
 	}
 
-	if ((Server()->Tick() - m_StunTime) / Server()->TickSpeed() > 1) {
+	if ((Server()->Tick() - m_StunTime) * 10 / Server()->TickSpeed() > 4) {
 		Unstun();
 		return;
 	}
@@ -789,14 +789,6 @@ void CCharacter::Unstun()
 	}
 	RemoveNinja();
 	m_IsStunned = false;
-
-/* 	if (m_FreezeReason == FREEZEREASON_UNDEAD)
-	{
-		m_Health = 10.0;
-	}
- */
-	//TBD: do we need it?
-	GameServer()->CreatePlayerSpawn(m_Pos);
 }
 
 void CCharacter::RemoveNinja()
