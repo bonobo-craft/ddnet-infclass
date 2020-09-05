@@ -39,6 +39,10 @@ void CGameWorld::SetGameServer(CGameContext *pGameServer)
 
 CEntity *CGameWorld::FindFirst(int Type)
 {
+	if (!m_apFirstEntityTypes)
+		return 0;
+	if (!m_apFirstEntityTypes[Type])
+		return 0;
 	return Type < 0 || Type >= NUM_ENTTYPES ? 0 : m_apFirstEntityTypes[Type];
 }
 
