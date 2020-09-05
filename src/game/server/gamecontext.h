@@ -119,6 +119,8 @@ class CGameContext : public IGameServer
 
 	bool m_Resetting;
 public:
+	int Get06PlayerNum() const;
+	int Get07PlayerNum() const;
 	IServer *Server() const { return m_pServer; }
 	IConsole *Console() { return m_pConsole; }
 	IEngine *Engine() { return m_pEngine; }

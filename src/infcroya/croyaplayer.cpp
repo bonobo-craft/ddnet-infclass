@@ -741,7 +741,6 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 	}
 
 	m_pGameServer->Server()->SetClientClan(m_ClientID, NewClan.c_str());
-	dbg_msg("Newclan %s", NewClan.c_str());
 
  	for (const CPlayer* each : m_pGameServer->m_apPlayers) {
 		if (each) {

@@ -494,6 +494,16 @@ void CPlayer::OnDisconnect(const char *pReason)
 
 	if(Server()->ClientIngame(m_ClientID))
 	{
+		int players06 = GameServer()->Get06PlayerNum();
+		int players07 = GameServer()->Get07PlayerNum();
+		if (Server()->IsSixup(m_ClientID))
+		  players07--;
+		else
+		  players06--;
+		int playersAll = players06 + players07;
+		  
+		dbg_msg("stats", "Players: %d (0.6: %d, 0.7: %d)", playersAll, players06, players07);
+
 		char aBuf[512];
 		if(pReason && *pReason)
 			str_format(aBuf, sizeof(aBuf), "'%s' has left the game (%s)", Server()->ClientName(m_ClientID), pReason);

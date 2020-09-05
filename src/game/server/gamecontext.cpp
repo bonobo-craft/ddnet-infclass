@@ -1325,6 +1325,34 @@ void CGameContext::ProgressVoteOptions(int ClientID)
 	pPl->m_SendVoteIndex += NumVotesToSend;
 }
 
+int CGameContext::Get06PlayerNum() const {
+	int PlayersNum = 0;
+	for (CPlayer* each : m_apPlayers) {
+		if (!each)
+			continue;
+		if(!each->GetTeam() == 0)
+			continue;
+		if(Server()->IsSixup(each->GetCID()))
+		  continue;
+		PlayersNum++;
+	}
+	return (int) PlayersNum;
+}
+
+int CGameContext::Get07PlayerNum() const {
+	int PlayersNum = 0;
+	for (CPlayer* each : m_apPlayers) {
+		if (!each)
+			continue;
+		if(!each->GetTeam() == 0)
+			continue;
+		if(!Server()->IsSixup(each->GetCID()))
+		  continue;
+		PlayersNum++;
+	}
+	return (int) PlayersNum;
+}
+
 void CGameContext::OnClientEnter(int ClientID)
 {
 	m_pController->OnPlayerConnect(m_apPlayers[ClientID]);
@@ -1407,6 +1435,11 @@ void CGameContext::OnClientEnter(int ClientID)
 			str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s (0.7)", Server()->ClientName(ClientID), m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()));
 		else
 			str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s (0.6)", Server()->ClientName(ClientID), m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()));
+
+		int players06 = Get06PlayerNum();
+		int players07 = Get07PlayerNum();
+		int playersAll = players06 + players07;
+		dbg_msg("stats", "Players: %d (0.6: %d, 0.7: %d)", playersAll, players06, players07);
 		
 		SendChat(-1, CGameContext::CHAT_ALL, aBuf, -1);
 
