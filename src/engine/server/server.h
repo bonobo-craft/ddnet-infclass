@@ -454,6 +454,7 @@ public:
 	void SetErrorShutdown(const char *pReason);
 
 	bool IsSixup(int ClientID) const { return m_aClients[ClientID].m_Sixup; }
+	void ClientDDNetVersion(int ClientID, char* outStr) const;
 
 #ifdef CONF_FAMILY_UNIX
 	enum CONN_LOGGING_CMD

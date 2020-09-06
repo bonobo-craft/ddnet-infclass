@@ -621,6 +621,9 @@ int CServer::GetClientInfo(int ClientID, CClientInfo *pInfo)
 	return 0;
 }
 
+void CServer::ClientDDNetVersion(int ClientID, char* outStr) const
+	 { str_copy(outStr, m_aClients[ClientID].m_aDDNetVersionStr, 64); };
+
 void CServer::SetClientDDNetVersion(int ClientID, int DDNetVersion)
 {
 	dbg_assert(ClientID >= 0 && ClientID < MAX_CLIENTS, "client_id is not valid");
