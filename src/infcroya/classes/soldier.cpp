@@ -19,6 +19,7 @@ CSoldier::CSoldier()
 	SetSkin(skin);
 	SetInfectedClass(false);
 	SetName("Soldier");
+	Set06SkinName("brownbear");
 }
 
 void CSoldier::InitialWeaponsHealth(CCharacter* pChr)

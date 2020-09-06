@@ -16,6 +16,7 @@ CMercenary::CMercenary()
 	SetSkin(skin);
 	SetInfectedClass(false);
 	SetName("Mercenary");
+	Set06SkinName("bluestripe");
 }
 
 void CMercenary::InitialWeaponsHealth(CCharacter* pChr)

@@ -10,6 +10,8 @@ private:
 	CSkin m_Skin;
 	bool m_Infected;
 public:
+    char m_06SkinName[64] = {'\0'};
+	void Set06SkinName(const char* name);
 	std::string m_Name;
 	static std::unordered_map<int, class IClass*> classes;
 	virtual ~IClass();

@@ -20,6 +20,7 @@ CScientist::CScientist()
 	SetSkin(skin);
 	SetInfectedClass(false);
 	SetName("Scientist");
+	Set06SkinName("toptri");
 }
 
 void CScientist::InitialWeaponsHealth(CCharacter* pChr)

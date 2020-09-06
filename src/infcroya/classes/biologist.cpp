@@ -20,6 +20,7 @@ CBiologist::CBiologist()
 	SetSkin(skin);
 	SetInfectedClass(false);
 	SetName("Biologist");
+	Set06SkinName("twintri");
 }
 
 void CBiologist::InitialWeaponsHealth(CCharacter* pChr)

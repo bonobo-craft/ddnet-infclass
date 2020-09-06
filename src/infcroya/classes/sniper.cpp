@@ -20,6 +20,7 @@ CSniper::CSniper()
 	SetInfectedClass(false);
 	SetName("Sniper");
 	LockPositionTimeLeft = 0;
+	Set06SkinName("warpaint");
 }
 
 void CSniper::InitialWeaponsHealth(CCharacter* pChr)

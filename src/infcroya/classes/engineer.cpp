@@ -19,6 +19,7 @@ CEngineer::CEngineer()
 	SetSkin(skin);
 	SetInfectedClass(false);
 	SetName("Engineer");
+	Set06SkinName("limekitty");
 }
 
 void CEngineer::InitialWeaponsHealth(CCharacter* pChr)

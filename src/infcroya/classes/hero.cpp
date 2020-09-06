@@ -19,6 +19,7 @@ CHero::CHero()
 	SetSkin(skin);
 	SetInfectedClass(false);
 	SetName("Hero");
+	Set06SkinName("redstripe");
 }
 
 void CHero::InitialWeaponsHealth(CCharacter* pChr)

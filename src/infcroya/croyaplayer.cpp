@@ -702,7 +702,10 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[3], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[3]), "%s", skin.GetHandsName());
 	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[4], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[4]), "%s", skin.GetFeetName());
 	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[5], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[5]), "%s", skin.GetEyesName());
-	m_pPlayer->m_TeeInfos.FromSixup();
+	if (m_pClass->m_06SkinName[0] != '\0')
+		m_pPlayer->m_TeeInfos.Set06Skin(m_pClass->m_06SkinName);
+	else
+		m_pPlayer->m_TeeInfos.FromSixup();
 
 	if (m_pClass->IsInfectedClass()) {
 		m_Infected = true;

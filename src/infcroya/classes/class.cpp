@@ -178,6 +178,13 @@ const CSkin& IClass::GetSkin() const
 	return m_Skin;
 }
 
+void IClass::Set06SkinName(const char* name)
+{
+	char SkinName[64];
+	str_format(SkinName, sizeof(SkinName), "%s", name);
+	str_copy(m_06SkinName, SkinName, 64);
+}
+
 void IClass::SetSkin(CSkin skin)
 {
 	m_Skin = skin;

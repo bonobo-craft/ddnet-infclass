@@ -23,6 +23,7 @@ public:
     // This constructor will assume all arrays are of length 6
     CTeeInfo(const char *pSkinPartNames[6], int *pUseCustomColors, int *pSkinPartColors);
 
+    void Set06Skin(const char *pSkinName, int UseCustomColor = false, int ColorBody = 0, int ColorFeet = 0);
     void FromSixup();
     void ToSixup();
 };

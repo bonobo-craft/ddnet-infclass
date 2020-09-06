@@ -19,6 +19,7 @@ CMedic::CMedic()
 	SetSkin(skin);
 	SetInfectedClass(false);
 	SetName("Medic");
+	Set06SkinName("twinbop");
 }
 
 void CMedic::InitialWeaponsHealth(CCharacter* pChr)
