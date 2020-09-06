@@ -1436,7 +1436,7 @@ void CGameContext::OnClientEnter(int ClientID)
 		if (Server()->IsSixup(ClientID))
 			str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s (0.7)", Server()->ClientName(ClientID), m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()));
 		else
-			str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s (0.6) (%s)",
+			str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s (0.6) %s",
 			           Server()->ClientName(ClientID),
 					   m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()),
 					   DDNetVersion
