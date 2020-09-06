@@ -142,7 +142,7 @@ void CTeeInfo::FromSixup()
 	for(int s = 0; s < 16; s++)
 	{
 		int matches = 0;
-		for(int p = 0; p < 3; p++)
+		for(int p = 0; p < 2; p++)
 			if(str_comp(m_apSkinPartNames[p], g_StdSkins[s].m_apSkinPartNames[p]) == 0)
 				matches++;
 
@@ -157,4 +157,6 @@ void CTeeInfo::FromSixup()
 	m_UseCustomColor = true;
 	m_ColorBody = ColorHSLA(m_aUseCustomColors[0] ? m_aSkinPartColors[0] : 255).UnclampLighting(DARKEST_LGT_7).Pack(ColorHSLA::DARKEST_LGT);
 	m_ColorFeet = ColorHSLA(m_aUseCustomColors[4] ? m_aSkinPartColors[4] : 255).UnclampLighting(DARKEST_LGT_7).Pack(ColorHSLA::DARKEST_LGT);
+/* 	dbg_msg("skins", "body %d", m_ColorBody);
+	dbg_msg("skins", "feet %d", m_ColorFeet); */
 }
