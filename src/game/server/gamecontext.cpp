@@ -4367,6 +4367,8 @@ void CGameContext::SendClassInfoByCommand(const std::string command, int ClientI
 
 void CGameContext::SendZombieClassSelectorByClassId(int ClassId, int ClientID) {
 	std::vector<std::string> messageList;
+	messageList.push_back("Choose your class with mouse wheel:\n");
+	messageList.push_back("(stand in a white circle)\n");
 
 	if (ClassId == Class::SMOKER)
 		messageList.push_back("> SMOKER");
@@ -4406,12 +4408,16 @@ void CGameContext::SendZombieClassSelectorByClassId(int ClassId, int ClientID) {
 		else
 			messageList.push_back("    PARASITE *");
 	}
+	messageList.push_back("\nClasses with * are selectable by an initial zombie only");
+	messageList.push_back("\nPress Tab briefly to close this menu");
+
 	SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
 }
 
 void CGameContext::SendHumanClassSelectorByClassId(int ClassId, int ClientID) {
 	
 	std::vector<std::string> messageList;
+	messageList.push_back("Choose your class with mouse wheel:\n");
 
 	if (ClassId == Class::DEFAULT)
 		messageList.push_back("> RANDOM");
@@ -4449,6 +4455,8 @@ void CGameContext::SendHumanClassSelectorByClassId(int ClassId, int ClientID) {
 		messageList.push_back("> SNIPER");
 	else
 		messageList.push_back("    SNIPER");
+	messageList.push_back("\nPress Tab briefly to close this menu");
+
 	SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
 }
 

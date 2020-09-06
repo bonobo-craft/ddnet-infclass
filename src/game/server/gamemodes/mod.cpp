@@ -483,6 +483,13 @@ void CGameControllerMOD::Tick()
 		m_GameStartTick = Server()->Tick();
 		DoWarmup(10);
 		m_InfectedStarted = true;
+		for (CroyaPlayer* each : players) {
+			if (!each)
+				continue;
+			if (each->GetPlayer()->GetTeam() == TEAM_SPECTATORS)
+				continue;
+			GameServer()->SendClassSelectorByClassId(each->GetClassNum(), each->GetClientID(), true);
+		}
 	}
 
 	if (ShouldEndGame()) { // 1. no humans survived 2. less than 2 players in game
@@ -649,6 +656,8 @@ void CGameControllerMOD::StartInitialInfection()
 			players[RandomHumanID]->SetOldClassNum(players[RandomHumanID]->GetClassNum());
 			players[RandomHumanID]->TurnIntoRandomZombie();
 			humans.erase(humans.begin() + HumanVecID);
+			CroyaPlayer* each = players[RandomHumanID];
+			GameServer()->SendClassSelectorByClassId(each->GetClassNum(), each->GetClientID(), true);
 		}
 	};
 
