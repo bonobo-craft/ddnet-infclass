@@ -25,7 +25,8 @@ void CInfCircle::Snap(int SnappingClient)
 {
 	if (NetworkClipped(SnappingClient))
 		return;
-	const float MAGIC_NUMBER = NUM_SIDE / 3.125f; // a magic number for NUM_SIDE = 24, NUM_HINT = 24, when dots stay
+	//const float MAGIC_NUMBER = NUM_SIDE / 3.125f; // a magic number for NUM_SIDE = 24, NUM_HINT = 24, when dots stay
+	const float MAGIC_NUMBER = NUM_SIDE / 3.0f; // a magic number for NUM_SIDE = 24, NUM_HINT = 24, when dots stay
 	float AngleStart = (2.0f * pi * Server()->Tick() / static_cast<float>(Server()->TickSpeed())) / (MAGIC_NUMBER / 8);
 	float AngleStep = 2.0f * pi / NUM_SIDE;
 	AngleStart = AngleStart * 2.0f;
