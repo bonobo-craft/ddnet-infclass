@@ -2901,6 +2901,7 @@ void CCharacter::Poison(int Count, int From)
 		m_Poison = Count;
 		m_PoisonFrom = From;
 	}
+	GameServer()->SendBroadcast("You've been poisoned!", GetPlayer()->GetCID());
 }
 
 void CCharacter::DestroyChildEntities()

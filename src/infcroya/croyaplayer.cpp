@@ -61,6 +61,7 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 			float dist = distance(m_pCharacter->GetPos(), circle->GetPos());
 			if (dist < circle->GetRadius()) {
 				m_pCharacter->Infect(-1);
+				m_pGameServer->SendBroadcast("You've fallen into an infection circle!", m_pPlayer->GetCID());
 			}
 		}
 
@@ -71,10 +72,13 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 			{ // each second
 				if (m_pCharacter->GetCroyaPlayer()->GetClassNum() == Class::HERO)
 				{
-					if (m_pGameServer->Server()->Tick() % (m_pGameServer->Server()->TickSpeed() * 3) == 0)
-					  m_pCharacter->TakeDamage(vec2(0, 0), m_pCharacter->GetPos(), Dmg, m_ClientID, WEAPON_WORLD);
+					if (m_pGameServer->Server()->Tick() % (m_pGameServer->Server()->TickSpeed() * 3) == 0) {
+						m_pCharacter->TakeDamage(vec2(0, 0), m_pCharacter->GetPos(), Dmg, m_ClientID, WEAPON_WORLD);
+						m_pGameServer->SendBroadcast("Get back to safe zone!", m_pPlayer->GetCID());
+					}
 				} else {
 					m_pCharacter->TakeDamage(vec2(0, 0), m_pCharacter->GetPos(), Dmg, m_ClientID, WEAPON_WORLD);
+					m_pGameServer->SendBroadcast("Get back to safe zone!", m_pPlayer->GetCID());
 				}
 			}
 		}
@@ -521,11 +525,14 @@ void CroyaPlayer::TurnIntoPrevHumanClass()
 
 void CroyaPlayer::TurnIntoRandomZombie()
 {
-	if (m_pGameController->GetRealPlayerNum() >= 2 && m_pGameController->GetIZombieCount() < 1)
-		m_InitialZombie = true;
-
 	int RandomZombieClass = random_int_range(Class::ZOMBIE_CLASS_START + 1, Class::BOOMER - 1);
 	SetClassNum(RandomZombieClass, true);
+
+	if (m_pGameController->GetRealPlayerNum() >= 2 && m_pGameController->GetIZombieCount() < 1)
+	{
+		m_InitialZombie = true;
+		m_pGameServer->SendBroadcast("You can choose ANY zombie class!", m_pPlayer->GetCID());
+	}
 }
 
 void CroyaPlayer::TurnIntoRandomHuman()
