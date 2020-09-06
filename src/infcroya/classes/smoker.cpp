@@ -14,6 +14,8 @@ CSmoker::CSmoker() : IClass()
 	SetSkin(skin);
 	SetInfectedClass(true);
 	SetName("Smoker");
+	Set06SkinName("cammo");
+	Set06SkinColors(5278720, 5255680);
 }
 
 void CSmoker::InitialWeaponsHealth(CCharacter* pChr)

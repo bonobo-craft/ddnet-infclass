@@ -11,7 +11,10 @@ private:
 	bool m_Infected;
 public:
     char m_06SkinName[64] = {'\0'};
+	int m_06SkinBodyColor = 0;
+	int m_06SkinFeetColor = 0;
 	void Set06SkinName(const char* name);
+	void Set06SkinColors(int SkinBodyColor06, int SkinFeetColor06);
 	std::string m_Name;
 	static std::unordered_map<int, class IClass*> classes;
 	virtual ~IClass();

@@ -17,6 +17,8 @@ CBoomer::CBoomer() : IClass()
 	SetSkin(skin);
 	SetInfectedClass(true);
 	SetName("Boomer");
+	Set06SkinName("voodoo_tee");
+	Set06SkinColors(5766912, 5344000);
 }
 
 void CBoomer::InitialWeaponsHealth(CCharacter* pChr)

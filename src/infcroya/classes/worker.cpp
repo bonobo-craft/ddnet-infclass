@@ -16,6 +16,8 @@ CWorker::CWorker() : IClass()
 	SetSkin(skin);
 	SetInfectedClass(true);
 	SetName("Worker");
+	Set06SkinName("musmann");
+	Set06SkinColors(4953600, 4940800);
 }
 
 void CWorker::InitialWeaponsHealth(CCharacter* pChr)

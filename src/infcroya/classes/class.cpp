@@ -178,6 +178,12 @@ const CSkin& IClass::GetSkin() const
 	return m_Skin;
 }
 
+void IClass::Set06SkinColors(int SkinBodyColor06, int SkinFeetColor06)
+{
+	m_06SkinBodyColor = SkinBodyColor06;
+	m_06SkinFeetColor = SkinFeetColor06;
+}
+
 void IClass::Set06SkinName(const char* name)
 {
 	char SkinName[64];

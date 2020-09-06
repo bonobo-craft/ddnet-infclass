@@ -16,6 +16,8 @@ CFreezer::CFreezer() : IClass()
 	SetSkin(skin);
 	SetInfectedClass(true);
 	SetName("Freezer");
+	Set06SkinName("jeet");
+	Set06SkinColors(6473777, 7905280);
 }
 
 void CFreezer::InitialWeaponsHealth(CCharacter* pChr)

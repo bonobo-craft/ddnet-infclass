@@ -11,7 +11,7 @@ CDefault::CDefault()
 	SetSkin(CSkin());
 	SetInfectedClass(false);
 	SetName("");
-	Set06SkinName("default");
+	Set06SkinName("random");
 }
 
 void CDefault::InitialWeaponsHealth(CCharacter* pChr)

@@ -16,6 +16,8 @@ CHunter::CHunter() : IClass()
 	SetSkin(skin);
 	SetInfectedClass(true);
 	SetName("Hunter");
+	Set06SkinName("warpaint");
+	Set06SkinColors(4325120, 6618880);
 }
 
 void CHunter::InitialWeaponsHealth(CCharacter* pChr)

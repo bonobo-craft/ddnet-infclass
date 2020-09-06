@@ -16,6 +16,8 @@ CPoisoner::CPoisoner() : IClass()
 	SetSkin(skin);
 	SetInfectedClass(true);
 	SetName("Poisoner");
+	Set06SkinName("antiantey");
+	Set06SkinColors(3997440, 3964160);
 }
 
 void CPoisoner::InitialWeaponsHealth(CCharacter* pChr)

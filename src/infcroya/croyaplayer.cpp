@@ -702,8 +702,18 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[3], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[3]), "%s", skin.GetHandsName());
 	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[4], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[4]), "%s", skin.GetFeetName());
 	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[5], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[5]), "%s", skin.GetEyesName());
-	if (m_pClass->m_06SkinName[0] != '\0')
+	if (m_pClass->m_06SkinName[0] != '\0') {
+		dbg_msg("Setting skin %s", m_pClass->m_06SkinName);
 		m_pPlayer->m_TeeInfos.Set06Skin(m_pClass->m_06SkinName);
+		if (m_pClass->m_06SkinBodyColor) {
+			m_pPlayer->m_TeeInfos.m_UseCustomColor = 1;
+			m_pPlayer->m_TeeInfos.m_ColorBody = m_pClass->m_06SkinBodyColor;
+			m_pPlayer->m_TeeInfos.m_ColorFeet = m_pClass->m_06SkinFeetColor;
+			dbg_msg("Setting skin custom colors", m_pClass->m_06SkinName);
+		} else {
+			m_pPlayer->m_TeeInfos.m_UseCustomColor = 0;
+		}
+	}
 	else
 		m_pPlayer->m_TeeInfos.FromSixup();
 

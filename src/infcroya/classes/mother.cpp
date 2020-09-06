@@ -17,6 +17,8 @@ CMother::CMother() : IClass()
 	SetSkin(skin);
 	SetInfectedClass(true);
 	SetName("Queen");
+	Set06SkinName("caesar");
+	Set06SkinColors(4953600, 4940800);
 }
 
 void CMother::InitialWeaponsHealth(CCharacter* pChr)

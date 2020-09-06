@@ -17,6 +17,8 @@ CBat::CBat() : IClass()
 	SetSkin(skin);
 	SetInfectedClass(true);
 	SetName("Bat");
+	Set06SkinName("demonlimekitty");
+	Set06SkinColors(11234304, 11104768);
 }
 
 void CBat::InitialWeaponsHealth(CCharacter* pChr)
