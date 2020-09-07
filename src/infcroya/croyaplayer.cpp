@@ -74,11 +74,11 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 				{
 					if (m_pGameServer->Server()->Tick() % (m_pGameServer->Server()->TickSpeed() * 3) == 0) {
 						m_pCharacter->TakeDamage(vec2(0, 0), m_pCharacter->GetPos(), Dmg, m_ClientID, WEAPON_WORLD);
-						m_pGameServer->SendBroadcast("Get back to safe zone!", m_pPlayer->GetCID());
+						m_pGameServer->SendBroadcast("You've stepped outside of the safezone!", m_pPlayer->GetCID());
 					}
 				} else {
 					m_pCharacter->TakeDamage(vec2(0, 0), m_pCharacter->GetPos(), Dmg, m_ClientID, WEAPON_WORLD);
-					m_pGameServer->SendBroadcast("Get back to safe zone!", m_pPlayer->GetCID());
+					m_pGameServer->SendBroadcast("You've stepped outside of the safezone!", m_pPlayer->GetCID());
 				}
 			}
 		}
