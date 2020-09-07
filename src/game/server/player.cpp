@@ -247,6 +247,7 @@ void CPlayer::Tick()
 
 	if(!GameServer()->m_World.m_Paused)
 	{
+		// auto respawn on timer
 		int EarliestRespawnTick = m_PreviousDieTick+Server()->TickSpeed()*3;
 		int RespawnTick = maximum(m_DieTick, EarliestRespawnTick) + (2 * Server()->TickSpeed());
 		if(!m_pCharacter && RespawnTick <= Server()->Tick())
@@ -582,8 +583,13 @@ void CPlayer::OnDirectInput(CNetObj_PlayerInput *NewInput)
 	if(m_pCharacter && m_Paused)
 		m_pCharacter->ResetInput();
 
-	if(!m_pCharacter && m_Team != TEAM_SPECTATORS && (NewInput->m_Fire&1))
-		m_Spawning = true;
+	// click to respawn instantly
+	if(!m_pCharacter && m_Team != TEAM_SPECTATORS && (NewInput->m_Fire&1)) {
+		int EarliestRespawnTick = m_PreviousDieTick+Server()->TickSpeed()*1;
+		int RespawnTick = maximum(m_DieTick, EarliestRespawnTick) + (1 * Server()->TickSpeed());
+		if(!m_pCharacter && RespawnTick <= Server()->Tick())
+			m_Spawning = true;
+	}
 
 	// check for activity
 	if(NewInput->m_Direction || m_LatestActivity.m_TargetX != NewInput->m_TargetX ||
@@ -944,7 +950,7 @@ int CPlayer::ForcePause(int Time)
 
 int CPlayer::IsPaused()
 {
-	//return m_ForcePauseTime ? m_ForcePauseTime : -1 * m_Paused;
+	return m_ForcePauseTime ? m_ForcePauseTime : -1 * m_Paused;
 	return false;
 }
 
