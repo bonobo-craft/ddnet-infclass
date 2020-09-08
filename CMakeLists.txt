@@ -26,6 +26,10 @@ if(POLICY CMP0017)
   cmake_policy(SET CMP0017 NEW)
 endif()
 
+if(POLICY CMP0042)
+  cmake_policy(SET CMP0042 NEW)
+endif()
+
 if(POLICY CMP0048)
   cmake_policy(SET CMP0048 NEW)
   if(VERSION_PATCH STREQUAL "0")
@@ -93,6 +97,7 @@ option(UPNP "Enable UPnP support" OFF)
 option(ANTIBOT "Enable support for a dynamic anticheat library" OFF)
 option(CLIENT "Compile client" ON)
 option(DOWNLOAD_GTEST "Download and compile GTest" ${AUTO_DEPENDENCIES_DEFAULT})
+option(STEAM "Build the Steam release version" OFF)
 option(PREFER_BUNDLED_LIBS "Prefer bundled libraries over system libraries" ${AUTO_DEPENDENCIES_DEFAULT})
 option(DEV "Don't generate stuff necessary for packaging" OFF)
 
@@ -252,6 +257,23 @@ function(set_src VAR GLOBBING DIRECTORY) # ...
   set_glob(${VAR} ${GLOBBING} "c;cpp;h" ${DIRECTORY} ${ARGN})
   set(${VAR} ${${VAR}} PARENT_SCOPE)
 endfunction()
+
+function(set_own_rpath TARGET)
+  if(NOT TARGET_OS STREQUAL "windows" AND NOT TARGET_OS STREQUAL "mac")
+    if(CMAKE_VERSION VERSION_GREATER 3.14 OR CMAKE_VERSION VERSION_EQUAL 3.14)
+      set_property(TARGET ${TARGET} PROPERTY BUILD_RPATH_USE_ORIGIN TRUE)
+    elseif(CMAKE_VERSION VERSION_GREATER 3.8 OR CMAKE_VERSION VERSION_EQUAL 3.8)
+      set_property(TARGET ${TARGET} PROPERTY BUILD_RPATH "$ORIGIN")
+    endif()
+    set_property(TARGET ${TARGET} PROPERTY INSTALL_RPATH "$ORIGIN/../lib/ddnet")
+  endif()
+endfunction()
+
+if(NOT TARGET_OS STREQUAL "windows" AND NOT TARGET_OS STREQUAL "mac" AND CMAKE_VERSION VERSION_LESS 3.8)
+  if((CLIENT AND STEAM) OR ANTIBOT)
+    message(STATUS "Can't set BUILD_RPATH in CMake before 3.8, pass -Wl,-rpath,'$ORIGIN' manually if you wish to emulate this. Or just install a newer version of CMake...")
+  endif()
+endif()
 
 ########################################################################
 # INITIALIZE TARGET LISTS
@@ -720,7 +742,6 @@ set(EXPECTED_DATA
   audio/wp_switch-03.wv
   blob.png
   browse_icons.png
-  ca-ddnet.pem
   console.png
   console_bar.png
   countryflags/AD.png
@@ -1015,9 +1036,9 @@ set(EXPECTED_DATA
   editor/winter_main.rules
   emoticons.png
   file_icons.png
-  fonts/DejaVuSansCJKName.ttf
-  fonts/DejavuWenQuanYiMicroHei.ttf
+  fonts/DejaVuSans.ttf
   fonts/Icons.ttf
+  fonts/SourceHanSansSC-Regular.otf
   game.png
   gui_buttons.png
   gui_cursor.png
@@ -1107,8 +1128,7 @@ set(EXPECTED_DATA
   mapres/winter_mountains.png
   mapres/winter_mountains2.png
   mapres/winter_mountains3.png
-  maps/Goo!.map
-  maps/Kobra\ 4.map
+  maps/Gold\ Mine.map
   maps/ctf1.map
   maps/ctf2.map
   maps/ctf3.map
@@ -1122,21 +1142,16 @@ set(EXPECTED_DATA
   maps/dm7.map
   maps/dm8.map
   maps/dm9.map
+  maps/license.txt
+  maps7/Gold\ Mine.map
+  maps7/readme.txt
   particles.png
-  shader/bordertile.frag
-  shader/bordertile.vert
-  shader/bordertileline.frag
-  shader/bordertileline.vert
-  shader/bordertilelinetex.frag
-  shader/bordertilelinetex.vert
-  shader/bordertiletex.frag
-  shader/bordertiletex.vert
+  shader/pipeline.frag
+  shader/pipeline.vert
   shader/prim.frag
   shader/prim.vert
   shader/quad.frag
   shader/quad.vert
-  shader/quadtex.frag
-  shader/quadtex.vert
   shader/sprite.frag
   shader/sprite.vert
   shader/spritemulti.frag
@@ -1145,8 +1160,6 @@ set(EXPECTED_DATA
   shader/text.vert
   shader/tile.frag
   shader/tile.vert
-  shader/tiletex.frag
-  shader/tiletex.vert
   "skins/Ablush NeoN.png"
   skins/Aoe4leg.png
   "skins/Apish Coke.png"
@@ -1163,6 +1176,7 @@ set(EXPECTED_DATA
   skins/blacktee.png
   skins/bluekitty.png
   skins/bluestripe.png
+  skins/bomb.png
   skins/brownbear.png
   skins/bunny.png
   skins/caesar.png
@@ -1271,7 +1285,7 @@ set(EXPECTED_DATA
   wordlist.txt
 )
 
-set_glob(DATA GLOB_RECURSE "frag;json;map;pem;png;rules;ttf;txt;vert;wv" data ${EXPECTED_DATA})
+set_glob(DATA GLOB_RECURSE "frag;json;map;otf;png;rules;ttf;txt;vert;wv" data ${EXPECTED_DATA})
 
 ########################################################################
 # COPY DATA AND DLLS
@@ -1383,6 +1397,7 @@ generate_maps("src/game/generated/protocolglue.h")
 set_src(BASE GLOB_RECURSE src/base
   color.h
   detect.h
+  dynamic.h
   hash.c
   hash.h
   hash_bundled.c
@@ -1426,6 +1441,7 @@ set_src(ENGINE_INTERFACE GLOB src/engine
   server.h
   serverbrowser.h
   sound.h
+  steam.h
   storage.h
   textrender.h
   updater.h
@@ -1581,6 +1597,20 @@ list(APPEND TARGETS_OWN engine-shared game-shared)
 
 if(CLIENT)
   # Sources
+  set_src(STEAMAPI_SRC GLOB_RECURSE src/steam
+    steam_api_flat.h
+    steam_api_stub.cpp
+  )
+
+  if(STEAM OR TARGET_OS STREQUAL "windows" OR TARGET_OS STREQUAL "mac")
+    set(STEAMAPI_KIND SHARED)
+  else()
+    set(STEAMAPI_KIND STATIC)
+  endif()
+  set(TARGET_STEAMAPI steam_api)
+  add_library(${TARGET_STEAMAPI} ${STEAMAPI_KIND} ${STEAMAPI_SRC})
+  list(APPEND TARGETS_OWN ${TARGET_STEAMAPI})
+
   set_src(ENGINE_CLIENT GLOB src/engine/client
     backend_sdl.cpp
     backend_sdl.h
@@ -1607,6 +1637,7 @@ if(CLIENT)
     serverbrowser.h
     sound.cpp
     sound.h
+    steam.cpp
     text.cpp
     updater.cpp
     updater.h
@@ -1746,6 +1777,8 @@ if(CLIENT)
     ${OPUS_LIBRARIES}
     ${OGG_LIBRARIES}
 
+    ${TARGET_STEAMAPI}
+
     ${PLATFORM_CLIENT_LIBS}
 
     # Add pthreads (on non-Windows) at the end, so that other libraries can depend
@@ -1759,6 +1792,7 @@ if(CLIENT)
       set(CLIENT_MANIFEST "other/manifest/DDNet.manifest")
     else()
       set(CLIENT_MANIFEST "other/manifest/DDNet.rc")
+      set_target_properties(${TARGET_STEAMAPI} PROPERTIES PREFIX "")
     endif()
   else()
     set(CLIENT_ICON)
@@ -1792,9 +1826,8 @@ if(CLIENT)
     ${PLATFORM_CLIENT_INCLUDE_DIRS}
   )
 
-  # Support shipped SDL2 shared lib for Steam release
-  if(TARGET_OS STREQUAL "linux")
-    set_property(TARGET ${TARGET_CLIENT} PROPERTY BUILD_RPATH "$ORIGIN")
+  if(STEAMAPI_KIND STREQUAL SHARED)
+    set_own_rpath(${TARGET_CLIENT})
   endif()
 
   set(PARAMS "${WAVPACK_INCLUDE_DIRS};${WAVPACK_INCLUDE_DIRS}")
@@ -2004,7 +2037,7 @@ endif()
 
 # Antibot
 if(ANTIBOT)
-  set(TARGET_ANTIBOT ddnet-antibot)
+  set(TARGET_ANTIBOT antibot)
   add_library(${TARGET_ANTIBOT} SHARED ${ANTIBOT_SRC})
   list(APPEND TARGETS_OWN ${TARGET_ANTIBOT})
 endif()
@@ -2035,16 +2068,6 @@ target_link_libraries(${TARGET_SERVER} ${LIBS_SERVER})
 target_link_libraries(${TARGET_SERVER} -lyaml-cpp)
 list(APPEND TARGETS_OWN ${TARGET_SERVER})
 list(APPEND TARGETS_LINK ${TARGET_SERVER})
-
-if(ANTIBOT)
-  if(CMAKE_VERSION VERSION_GREATER 3.8 OR CMAKE_VERSION VERSION_EQUAL 3.8)
-    if(CMAKE_VERSION VERSION_LESS 3.14)
-      set_property(TARGET ${TARGET_SERVER} PROPERTY BUILD_RPATH "$ORIGIN")
-    endif()
-  else()
-    message(STATUS "Can't set BUILD_RPATH in CMake before 3.8, pass -Wl,-rpath,'$ORIGIN' manually if you wish to emulate this. Or just install a newer version of CMake...")
-  endif()
-endif()
 
 if(TARGET_OS AND TARGET_OS STREQUAL "mac")
   set(SERVER_LAUNCHER_SRC src/osxlaunch/server.mm)
@@ -2150,6 +2173,7 @@ if(GTEST_FOUND OR DOWNLOAD_GTEST)
     json.cpp
     mapbugs.cpp
     name_ban.cpp
+    packer.cpp
     prng.cpp
     str.cpp
     strip_path_and_extension.cpp
@@ -2341,9 +2365,13 @@ set(CPACK_TARGETS
   config_retrieve
   config_store
   dilate
+  map_convert_07
   map_diff
   map_extract
 )
+if(STEAMAPI_KIND STREQUAL SHARED)
+  list(APPEND CPACK_TARGETS ${TARGET_STEAMAPI})
+endif()
 set(CPACK_DIRS data)
 set(CPACK_FILES
   license.txt
@@ -2359,9 +2387,12 @@ if(NOT DEV)
   include(GNUInstallDirs)
   install(DIRECTORY data DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/ddnet COMPONENT data)
   install(TARGETS ${TARGET_CLIENT} DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT client)
+  if(STEAMAPI_KIND STREQUAL SHARED)
+    install(TARGETS ${TARGET_STEAMAPI} DESTINATION ${CMAKE_INSTALL_LIBDIR}/ddnet COMPONENT client)
+  endif()
   install(TARGETS ${TARGET_SERVER} DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT server)
   if(ANTIBOT)
-    install(TARGETS ${TARGET_ANTIBOT} DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT server)
+    install(TARGETS ${TARGET_ANTIBOT} DESTINATION ${CMAKE_INSTALL_LIBDIR}/ddnet COMPONENT server)
   endif()
   install(TARGETS ${TARGETS_TOOLS} DESTINATION ${CMAKE_INSTALL_LIBDIR}/ddnet COMPONENT tools)
   install(FILES other/ddnet.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications COMPONENT client)
@@ -2423,22 +2454,49 @@ if(CLIENT AND (DMGTOOLS_FOUND OR HDIUTIL))
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TARGET_CLIENT}> ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/MacOS/
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/ddnet-libs/sdl/mac/lib64/SDL2.framework ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/SDL2.framework
     COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/ddnet-libs/freetype/mac/lib64/libfreetype.6.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/
-    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/ddnet-libs/sqlite3/mac/lib64/libsqlite3.0.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/ddnet-libs/ffmpeg/mac/lib64/libavcodec.58.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/ddnet-libs/ffmpeg/mac/lib64/libavformat.58.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/ddnet-libs/ffmpeg/mac/lib64/libavutil.56.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/ddnet-libs/ffmpeg/mac/lib64/libswresample.3.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/ddnet-libs/ffmpeg/mac/lib64/libswscale.5.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/libsteam_api.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/
     COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/scripts/darwin_strip_rpath.py ${CMAKE_OTOOL} ${CMAKE_INSTALL_NAME_TOOL} ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/MacOS/${TARGET_CLIENT}
     COMMAND ${CMAKE_INSTALL_NAME_TOOL} -add_rpath @loader_path/../Frameworks ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/MacOS/${TARGET_CLIENT}
-    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change /usr/local/lib/libfreetype.6.dylib @executable_path/../Frameworks/libfreetype.6.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/MacOS/${TARGET_CLIENT}
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -add_rpath @loader_path/../Frameworks ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/libavcodec.58.dylib
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -add_rpath @loader_path/../Frameworks ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/libavformat.58.dylib
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -add_rpath @loader_path/../Frameworks ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/libswscale.5.dylib
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -add_rpath @loader_path/../Frameworks ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/libswresample.3.dylib
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change /usr/local/lib/libavcodec.58.dylib @rpath/libavcodec.58.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/MacOS/${TARGET_CLIENT}
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change /usr/local/lib/libavcodec.58.dylib @rpath/libavcodec.58.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/libavformat.58.dylib
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change /usr/local/lib/libavformat.58.dylib @rpath/libavformat.58.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/MacOS/${TARGET_CLIENT}
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change /usr/local/lib/libavutil.56.dylib @rpath/libavutil.56.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/MacOS/${TARGET_CLIENT}
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change /usr/local/lib/libavutil.56.dylib @rpath/libavutil.56.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/libavcodec.58.dylib
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change /usr/local/lib/libavutil.56.dylib @rpath/libavutil.56.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/libavformat.58.dylib
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change /usr/local/lib/libavutil.56.dylib @rpath/libavutil.56.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/libswscale.5.dylib
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change /usr/local/lib/libavutil.56.dylib @rpath/libavutil.56.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/libswresample.3.dylib
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change /usr/local/lib/libswscale.5.dylib @rpath/libswscale.5.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/MacOS/${TARGET_CLIENT}
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change /usr/local/lib/libswresample.3.dylib @rpath/libswresample.3.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/MacOS/${TARGET_CLIENT}
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change /usr/local/lib/libfreetype.6.dylib @rpath/libfreetype.6.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/MacOS/${TARGET_CLIENT}
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change ${PROJECT_BINARY_DIR}/libsteam_api.dylib @rpath/libsteam_api.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/MacOS/${TARGET_CLIENT}
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change ${PROJECT_BINARY_DIR}/libsteam_api.dylib @rpath/libsteam_api.dylib ${DMG_TMPDIR}/${TARGET_CLIENT}.app/Contents/Frameworks/libsteam_api.dylib
 
     # SERVER
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/data/maps ${DMG_TMPDIR}/${TARGET_SERVER}.app/Contents/Resources/data/maps
     COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/other/icons/${TARGET_SERVER}.icns ${DMG_TMPDIR}/${TARGET_SERVER}.app/Contents/Resources/
     COMMAND ${CMAKE_COMMAND} -E copy bundle/server/Info.plist ${PROJECT_SOURCE_DIR}/other/bundle/server/PkgInfo ${DMG_TMPDIR}/${TARGET_SERVER}.app/Contents/
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TARGET_SERVER}> $<TARGET_FILE:${TARGET_SERVER_LAUNCHER}> ${DMG_TMPDIR}/${TARGET_SERVER}.app/Contents/MacOS/
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${DMG_TMPDIR}/${TARGET_SERVER}.app/Contents/Frameworks/
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/ddnet-libs/sqlite3/mac/lib64/libsqlite3.0.dylib ${DMG_TMPDIR}/${TARGET_SERVER}.app/Contents/Frameworks/
+    COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/scripts/darwin_strip_rpath.py ${CMAKE_OTOOL} ${CMAKE_INSTALL_NAME_TOOL} ${DMG_TMPDIR}/${TARGET_SERVER}.app/Contents/MacOS/${TARGET_SERVER}
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -add_rpath @loader_path/../Frameworks ${DMG_TMPDIR}/${TARGET_SERVER}.app/Contents/MacOS/${TARGET_SERVER}
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL} -change /usr/local/lib/libsqlite3.0.dylib @rpath/libsqlite3.0.dylib ${DMG_TMPDIR}/${TARGET_SERVER}.app/Contents/MacOS/${TARGET_SERVER}
 
     # DMG
     COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/scripts/dmg.py create ${DMG_PARAMS} ${CPACK_PACKAGE_FILE_NAME}.dmg ${CPACK_PACKAGE_FILE_NAME} ${DMG_TMPDIR}
 
     DEPENDS
       ${TARGET_CLIENT}
+      ${TARGET_STEAMAPI}
       ${TARGET_SERVER_LAUNCHER}
       ${TARGET_SERVER}
       ${PROJECT_BINARY_DIR}/bundle/client/Info.plist
@@ -2534,6 +2592,10 @@ macro(source_group_tree dir)
 endmacro()
 source_group_tree(src)
 
+if(ANTIBOT)
+  set_own_rpath(${TARGET_SERVER})
+endif()
+
 set(TARGETS ${TARGETS_OWN} ${TARGETS_DEP})
 
 foreach(target ${TARGETS})
@@ -2575,9 +2637,6 @@ foreach(target ${TARGETS_OWN})
   if((CMAKE_VERSION VERSION_GREATER 3.1 OR CMAKE_VERSION VERSION_EQUAL 3.1) AND NOT TARGET_OS STREQUAL "mac")
     set_property(TARGET ${target} PROPERTY CXX_STANDARD 11)
     set_property(TARGET ${target} PROPERTY CXX_STANDARD_REQUIRED ON)
-  endif()
-  if(CMAKE_VERSION VERSION_GREATER 3.14 OR CMAKE_VERSION VERSION_EQUAL 3.14)
-    set_property(TARGET ${TARGET_SERVER} PROPERTY BUILD_RPATH_USE_ORIGIN TRUE)
   endif()
 
   if(MSVC)

@@ -118,9 +118,6 @@ Controls
 Count players only
 == Tel alleen spelers
 
-Country
-== Land
-
 Current
 == Huidig
 
@@ -346,9 +343,6 @@ Please balance teams!
 Prev. weapon
 == Vorig wapen
 
-Quality Textures
-== Structuurkwaliteit
-
 Quit
 == Afsluiten
 
@@ -480,9 +474,6 @@ Team
 
 Team chat
 == Team chat
-
-Texture Compression
-== Structuurscompressie
 
 The audio device couldn't be initialised.
 == Het geluid kon niet worden geladen.
@@ -738,8 +729,8 @@ Video name:
 Show DDNet map finishes in server browser
 == Laat gefinishte maps zien in de verkenner
 
-transmits your player name to info.ddnet.tw
-== Verzend je speler naam naar info.ddnet.tw
+transmits your player name to info2.ddnet.tw
+== Verzend je speler naam naar info2.ddnet.tw
 
 Search
 == Zoek
@@ -779,9 +770,6 @@ Update now
 
 Restart
 == Herstarten
-
-DDNet %s is out! Download it at DDNet.tw!
-== DDnet %s is beschikbaar! Download het op DDnet.tw!
 
 Select a name
 == Selecteer een naam
@@ -1198,6 +1186,15 @@ Grabs
 
 9+ new mentions
 == 9+ nieuwe berichten
+
+The width or height of texture %s is not divisible by 16, which might cause visual bugs.
+== 
+
+Use k key to kill (restart), q to pause and watch other players. See settings for other key binds.
+== 
+
+Country / Region
+== 
 
 Client message
 == 

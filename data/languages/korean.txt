@@ -105,9 +105,6 @@ Controls
 Count players only
 == 플레이어만 세기
 
-Country
-== 국가
-
 Current
 == 현재
 
@@ -324,9 +321,6 @@ Please balance teams!
 Prev. weapon
 == 이전 무기
 
-Quality Textures
-== 텍스처 품질
-
 Quit
 == 종료
 
@@ -452,9 +446,6 @@ Team
 
 Team chat
 == 팀 채팅
-
-Texture Compression
-== 텍스처 압축
 
 The audio device couldn't be initialised.
 == 오디오 장치를 초기화할 수 없음
@@ -653,6 +644,9 @@ Successfully saved the replay!
 Replay feature is disabled!
 == 
 
+The width or height of texture %s is not divisible by 16, which might cause visual bugs.
+== 
+
 Server best:
 == 
 
@@ -710,10 +704,16 @@ Hook (right mouse) can be used to swing through the map and to hook other tees t
 Most importantly communication is key: There is no tutorial so you'll have to chat (t key) with other players to learn the basics and tricks of the game.
 == 
 
+Use k key to kill (restart), q to pause and watch other players. See settings for other key binds.
+== 
+
 It's recommended that you check the settings to adjust them to your liking before joining a server.
 == 
 
 Please enter your nick name below.
+== 
+
+Country / Region
 == 
 
 Destination file already exist
@@ -725,7 +725,7 @@ Video name:
 Show DDNet map finishes in server browser
 == 
 
-transmits your player name to info.ddnet.tw
+transmits your player name to info2.ddnet.tw
 == 
 
 Search
@@ -765,9 +765,6 @@ Update now
 == 
 
 Restart
-== 
-
-DDNet %s is out! Download it at DDNet.tw!
 == 
 
 Select a name

@@ -146,6 +146,8 @@ void CServerBan::InitServerBan(IConsole *pConsole, IStorage *pStorage, CServer *
 
 	// overwrites base command, todo: improve this
 	Console()->Register("ban", "s[ip|id] ?i[minutes] r[reason]", CFGFLAG_SERVER|CFGFLAG_STORE, ConBanExt, this, "Ban player with ip/client id for x minutes for any reason");
+	Console()->Register("ban_region", "s[region] s[ip|id] ?i[minutes] r[reason]", CFGFLAG_SERVER|CFGFLAG_STORE, ConBanRegion, this, "Ban player in a region");
+	Console()->Register("ban_region_range", "s[region] s[first ip] s[last ip] ?i[minutes] r[reason]", CFGFLAG_SERVER|CFGFLAG_STORE, ConBanRegionRange, this, "Ban range in a region");
 }
 
 template<class T>
@@ -245,6 +247,27 @@ void CServerBan::ConBanExt(IConsole::IResult *pResult, void *pUser)
 		ConBan(pResult, pUser);
 }
 
+void CServerBan::ConBanRegion(IConsole::IResult *pResult, void *pUser)
+{
+	const char *pRegion = pResult->GetString(0);
+	if(str_comp_nocase(pRegion, g_Config.m_SvRegionName))
+		return;
+
+	pResult->RemoveArgument(0);
+	ConBanExt(pResult, pUser);
+}
+
+void CServerBan::ConBanRegionRange(IConsole::IResult *pResult, void *pUser)
+{
+	CServerBan *pServerBan = static_cast<CServerBan *>(pUser);
+
+	const char *pRegion = pResult->GetString(0);
+	if(str_comp_nocase(pRegion, g_Config.m_SvRegionName))
+		return;
+
+	pResult->RemoveArgument(0);
+	ConBanRange(pResult, static_cast<CNetBan *>(pServerBan));
+}
 
 void CServer::CClient::Reset()
 {
@@ -681,6 +704,11 @@ bool CServer::ClientIngame(int ClientID)
 bool CServer::ClientAuthed(int ClientID)
 {
 	return ClientID >= 0 && ClientID < MAX_CLIENTS && m_aClients[ClientID].m_Authed;
+}
+
+int CServer::Port() const
+{
+	return m_NetServer.Address().port;
 }
 
 int CServer::MaxClients() const
@@ -1207,7 +1235,7 @@ void CServer::SendMap(int ClientID)
 		Msg.AddInt(m_aCurrentMapSize[Sixup]);
 		if(Sixup)
 		{
-			Msg.AddInt(1);
+			Msg.AddInt(g_Config.m_SvMapWindow);
 			Msg.AddInt(1024-128);
 			Msg.AddRaw(m_aCurrentMapSha256[Sixup].data, sizeof(m_aCurrentMapSha256[Sixup].data));
 		}
@@ -1484,8 +1512,10 @@ void CServer::ProcessClientPacket(CNetChunk *pPacket)
 
 			if(m_aClients[ClientID].m_Sixup)
 			{
-				SendMapData(ClientID, m_aClients[ClientID].m_NextMapChunk);
-				m_aClients[ClientID].m_NextMapChunk++;
+				for(int i = 0; i < g_Config.m_SvMapWindow; i++)
+				{
+					SendMapData(ClientID, m_aClients[ClientID].m_NextMapChunk++);
+				}
 				return;
 			}
 
@@ -2301,7 +2331,7 @@ int CServer::LoadMap(const char *pMapName)
 		if(i < MAX_CLIENTS)
 		{
 			char aPath[256];
-			str_format(aPath, sizeof(aPath), "demos/%s_%d_%d_tmp.demo", m_aCurrentMap, g_Config.m_SvPort, i);
+			str_format(aPath, sizeof(aPath), "demos/%s_%d_%d_tmp.demo", m_aCurrentMap, m_NetServer.Address().port, i);
 			Storage()->RemoveFile(aPath, IStorage::TYPE_SAVE);
 		}
 	}
@@ -2420,16 +2450,17 @@ int CServer::Run()
 
 	BindAddr.type = NetType;
 
-	for(BindAddr.port = g_Config.m_SvPort != 0 ? g_Config.m_SvPort : 8303; !m_NetServer.Open(BindAddr, &m_ServerBan, g_Config.m_SvMaxClients, g_Config.m_SvMaxClientsPerIP, 0); BindAddr.port++)
+	int Port = g_Config.m_SvPort;
+	for(BindAddr.port = Port != 0 ? Port  : 8303; !m_NetServer.Open(BindAddr, &m_ServerBan, g_Config.m_SvMaxClients, g_Config.m_SvMaxClientsPerIP, 0); BindAddr.port++)
 	{
-		if(g_Config.m_SvPort != 0 || BindAddr.port >= 8310)
+		if(Port  != 0 || BindAddr.port >= 8310)
 		{
 			dbg_msg("server", "couldn't open socket. port %d might already be in use", BindAddr.port);
 			return -1;
 		}
 	}
 
-	if(g_Config.m_SvPort == 0)
+	if(Port  == 0)
 		dbg_msg("server", "using port %d", BindAddr.port);
 
 #if defined(CONF_UPNP)
@@ -2566,7 +2597,7 @@ int CServer::Run()
 
 					if (m_aClients[ClientID].m_DnsblState == CClient::DNSBL_STATE_BLACKLISTED &&
 							g_Config.m_SvDnsblBan)
-						m_NetServer.NetBan()->BanAddr(m_NetServer.ClientAddr(ClientID), 60*10, "Blacklisted by DNSBL");
+						m_NetServer.NetBan()->BanAddr(m_NetServer.ClientAddr(ClientID), 60*10, "VPN detected, try connecting without. Contact admin if mistaken");
 				}
 			}
 
@@ -3089,7 +3120,7 @@ void CServer::SaveDemo(int ClientID, float Time)
 		// rename the demo
 		char aOldFilename[256];
 		char aNewFilename[256];
-		str_format(aOldFilename, sizeof(aOldFilename), "demos/%s_%d_%d_tmp.demo", m_aCurrentMap, g_Config.m_SvPort, ClientID);
+		str_format(aOldFilename, sizeof(aOldFilename), "demos/%s_%d_%d_tmp.demo", m_aCurrentMap, m_NetServer.Address().port, ClientID);
 		str_format(aNewFilename, sizeof(aNewFilename), "demos/%s_%s_%5.2f.demo", m_aCurrentMap, m_aClients[ClientID].m_aName, Time);
 		Storage()->RenameFile(aOldFilename, aNewFilename, IStorage::TYPE_SAVE);
 	}
@@ -3100,7 +3131,7 @@ void CServer::StartRecord(int ClientID)
 	if(g_Config.m_SvPlayerDemoRecord)
 	{
 		char aFilename[128];
-		str_format(aFilename, sizeof(aFilename), "demos/%s_%d_%d_tmp.demo", m_aCurrentMap, g_Config.m_SvPort, ClientID);
+		str_format(aFilename, sizeof(aFilename), "demos/%s_%d_%d_tmp.demo", m_aCurrentMap, m_NetServer.Address().port, ClientID);
 		m_aDemoRecorder[ClientID].Start(Storage(), Console(), aFilename, GameServer()->NetVersion(), m_aCurrentMap, &m_aCurrentMapSha256[SIX], m_aCurrentMapCrc[SIX], "server", m_aCurrentMapSize[SIX], m_apCurrentMapData[SIX]);
 	}
 }
@@ -3112,7 +3143,7 @@ void CServer::StopRecord(int ClientID)
 		m_aDemoRecorder[ClientID].Stop();
 
 		char aFilename[128];
-		str_format(aFilename, sizeof(aFilename), "demos/%s_%d_%d_tmp.demo", m_aCurrentMap, g_Config.m_SvPort, ClientID);
+		str_format(aFilename, sizeof(aFilename), "demos/%s_%d_%d_tmp.demo", m_aCurrentMap, m_NetServer.Address().port, ClientID);
 		Storage()->RemoveFile(aFilename, IStorage::TYPE_SAVE);
 	}
 }
@@ -3591,8 +3622,8 @@ int main(int argc, const char **argv) // ignore_convention
 	if(argc > 1) // ignore_convention
 		pConsole->ParseArguments(argc-1, &argv[1]); // ignore_convention
 
-	pConsole->Register("sv_test_cmds", "", CFGFLAG_SERVER, CServer::ConTestingCommands, pConsole, "Turns testing commands aka cheats on/off");
-	pConsole->Register("sv_rescue", "", CFGFLAG_SERVER, CServer::ConRescue, pConsole, "Allow /rescue command so players can teleport themselves out of freeze");
+	pConsole->Register("sv_test_cmds", "", CFGFLAG_SERVER, CServer::ConTestingCommands, pConsole, "Turns testing commands aka cheats on/off (setting only works in initial config)");
+	pConsole->Register("sv_rescue", "", CFGFLAG_SERVER, CServer::ConRescue, pConsole, "Allow /rescue command so players can teleport themselves out of freeze (setting only works in initial config)");
 
 	pEngine->InitLogfile();
 

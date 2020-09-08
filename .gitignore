@@ -3,6 +3,8 @@
 data/
 !/data/
 
+docs/
+
 bundle/
 !/other/bundle/
 
@@ -99,6 +101,7 @@ tags
 *.sdf
 *.sln
 *.so
+*.sqlite
 *.suo
 *.swp
 *.tar.gz

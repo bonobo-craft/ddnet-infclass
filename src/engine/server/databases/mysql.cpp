@@ -113,9 +113,9 @@ IDbConnection::Status CMysqlConnection::Connect()
 		connection_properties["port"]          = m_Port;
 		connection_properties["userName"]      = sql::SQLString(m_aUser);
 		connection_properties["password"]      = sql::SQLString(m_aPass);
-		connection_properties["OPT_CONNECT_TIMEOUT"] = 10;
-		connection_properties["OPT_READ_TIMEOUT"] = 10;
-		connection_properties["OPT_WRITE_TIMEOUT"] = 20;
+		connection_properties["OPT_CONNECT_TIMEOUT"] = 60;
+		connection_properties["OPT_READ_TIMEOUT"] = 60;
+		connection_properties["OPT_WRITE_TIMEOUT"] = 120;
 		connection_properties["OPT_RECONNECT"] = true;
 		connection_properties["OPT_CHARSET_NAME"] = sql::SQLString("utf8mb4");
 		connection_properties["OPT_SET_CHARSET_NAME"] = sql::SQLString("utf8mb4");
@@ -310,6 +310,11 @@ int CMysqlConnection::GetBlob(int Col, unsigned char *pBuffer, int BufferSize) c
 #else
 	return 0;
 #endif
+}
+
+const char *CMysqlConnection::GetInsertIgnore() const
+{
+	return "INSERT IGNORE";
 }
 
 void CMysqlConnection::AddPoints(const char *pPlayer, int Points)

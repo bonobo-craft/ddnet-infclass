@@ -509,7 +509,7 @@ bool CScore::SaveScoreThread(IDbConnection *pSqlServer, const ISqlData *pGameDat
 
 	// save score. Can't fail, because no UNIQUE/PRIMARY KEY constrain is defined.
 	str_format(aBuf, sizeof(aBuf),
-			"INSERT INTO %s_race("
+			"%s INTO %s_race("
 				"Map, Name, Timestamp, Time, Server, "
 				"cp1, cp2, cp3, cp4, cp5, cp6, cp7, cp8, cp9, cp10, cp11, cp12, cp13, "
 				"cp14, cp15, cp16, cp17, cp18, cp19, cp20, cp21, cp22, cp23, cp24, cp25, "
@@ -519,7 +519,8 @@ bool CScore::SaveScoreThread(IDbConnection *pSqlServer, const ISqlData *pGameDat
 				"%.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, "
 				"%.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, "
 				"?, false);",
-			pSqlServer->GetPrefix(), pSqlServer->InsertTimestampAsUtc(), pData->m_Time,
+			pSqlServer->GetInsertIgnore(), pSqlServer->GetPrefix(),
+			pSqlServer->InsertTimestampAsUtc(), pData->m_Time,
 			pData->m_aCpCurrent[0], pData->m_aCpCurrent[1], pData->m_aCpCurrent[2],
 			pData->m_aCpCurrent[3], pData->m_aCpCurrent[4], pData->m_aCpCurrent[5],
 			pData->m_aCpCurrent[6], pData->m_aCpCurrent[7], pData->m_aCpCurrent[8],
@@ -574,11 +575,6 @@ bool CScore::SaveTeamScoreThread(IDbConnection *pSqlServer, const ISqlData *pGam
 	for(unsigned int i = 0; i < pData->m_Size; i++)
 		aNames.push_back(pData->m_aNames[i]);
 
-	char aTable[512];
-	str_format(aTable, sizeof(aTable),
-			"%s_teamrace WRITE, %s_teamrace AS r WRITE",
-			pSqlServer->GetPrefix(), pSqlServer->GetPrefix());
-	pSqlServer->Lock(aTable);
 	std::sort(aNames.begin(), aNames.end());
 	str_format(aBuf, sizeof(aBuf),
 			"SELECT l.ID, Name, Time "
@@ -587,8 +583,8 @@ bool CScore::SaveTeamScoreThread(IDbConnection *pSqlServer, const ISqlData *pGam
 					"FROM %s_teamrace "
 					"WHERE Map = ? AND Name = ? AND DDNet7 = false"
 			") as l INNER JOIN %s_teamrace AS r ON l.ID = r.ID "
-			"ORDER BY l.ID, Name;",
-			pSqlServer->GetPrefix(), pSqlServer->GetPrefix());
+			"ORDER BY l.ID, Name COLLATE %s;",
+			pSqlServer->GetPrefix(), pSqlServer->GetPrefix(), pSqlServer->BinaryCollate());
 	pSqlServer->PrepareStatement(aBuf);
 	pSqlServer->BindString(1, pData->m_Map);
 	pSqlServer->BindString(2, pData->m_aNames[0]);
@@ -632,9 +628,10 @@ bool CScore::SaveTeamScoreThread(IDbConnection *pSqlServer, const ISqlData *pGam
 		{
 			// if no entry found... create a new one
 			str_format(aBuf, sizeof(aBuf),
-					"INSERT INTO %s_teamrace(Map, Name, Timestamp, Time, ID, GameID, DDNet7) "
+					"%s INTO %s_teamrace(Map, Name, Timestamp, Time, ID, GameID, DDNet7) "
 					"VALUES (?, ?, %s, %.2f, ?, ?, false);",
-					pSqlServer->GetPrefix(), pSqlServer->InsertTimestampAsUtc(), pData->m_Time);
+					pSqlServer->GetInsertIgnore(), pSqlServer->GetPrefix(),
+					pSqlServer->InsertTimestampAsUtc(), pData->m_Time);
 			pSqlServer->PrepareStatement(aBuf);
 			pSqlServer->BindString(1, pData->m_Map);
 			pSqlServer->BindString(2, pData->m_aNames[i]);
@@ -644,8 +641,6 @@ bool CScore::SaveTeamScoreThread(IDbConnection *pSqlServer, const ISqlData *pGam
 			pSqlServer->Step();
 		}
 	}
-	pSqlServer->Unlock();
-
 	return true;
 }
 
@@ -1047,16 +1042,15 @@ bool CScore::ShowPointsThread(IDbConnection *pSqlServer, const ISqlData *pGameDa
 
 	char aBuf[512];
 	str_format(aBuf, sizeof(aBuf),
-			"SELECT Rank, Points, Name "
-			"FROM ("
-				"SELECT RANK() OVER w AS Rank, Points, Name "
-				"FROM %s_points "
-				"WINDOW w as (ORDER BY Points DESC)"
-			") as a "
-			"WHERE Name = ?;",
-			pSqlServer->GetPrefix());
+			"SELECT ("
+				"SELECT COUNT(Name) + 1 FROM %s_points WHERE Points > ("
+					"SELECT points FROM %s_points WHERE Name = ?"
+			")) as Rank, Points, Name "
+			"FROM %s_points WHERE Name = ?;",
+			pSqlServer->GetPrefix(), pSqlServer->GetPrefix(), pSqlServer->GetPrefix());
 	pSqlServer->PrepareStatement(aBuf);
 	pSqlServer->BindString(1, pData->m_Name);
+	pSqlServer->BindString(2, pData->m_Name);
 
 	if(pSqlServer->Step())
 	{
@@ -1322,9 +1316,9 @@ bool CScore::SaveTeamThread(IDbConnection *pSqlServer, const ISqlData *pGameData
 	if(UseCode)
 	{
 		str_format(aBuf, sizeof(aBuf),
-				"INSERT INTO %s_saves(Savegame, Map, Code, Timestamp, Server, SaveID, DDNet7) "
+				"%s INTO %s_saves(Savegame, Map, Code, Timestamp, Server, SaveID, DDNet7) "
 				"VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?, ?, false)",
-				pSqlServer->GetPrefix());
+				pSqlServer->GetInsertIgnore(), pSqlServer->GetPrefix());
 		pSqlServer->PrepareStatement(aBuf);
 		pSqlServer->BindString(1, pSaveState);
 		pSqlServer->BindString(2, pData->m_Map);
@@ -1443,7 +1437,7 @@ bool CScore::LoadTeamThread(IDbConnection *pSqlServer, const ISqlData *pGameData
 
 		char aBuf[512];
 		str_format(aBuf, sizeof(aBuf),
-				"SELECT Savegame, Server, %s-%s AS Ago, SaveID "
+				"SELECT Savegame, %s-%s AS Ago, SaveID "
 				"FROM %s_saves "
 				"where Code = ? AND Map = ? AND DDNet7 = false AND Savegame LIKE ?;",
 				aCurrentTimestamp, aTimestamp,
@@ -1458,16 +1452,8 @@ bool CScore::LoadTeamThread(IDbConnection *pSqlServer, const ISqlData *pGameData
 			strcpy(pData->m_pResult->m_aMessage, "No such savegame for this map");
 			goto end;
 		}
-		char aServerName[32];
-		pSqlServer->GetString(2, aServerName, sizeof(aServerName));
-		if(str_comp(aServerName, g_Config.m_SvSqlServerName) != 0)
-		{
-			str_format(pData->m_pResult->m_aMessage, sizeof(pData->m_pResult->m_aMessage),
-					"You have to be on the '%s' server to load this savegame", aServerName);
-			goto end;
-		}
 
-		int Since = pSqlServer->GetInt(3);
+		int Since = pSqlServer->GetInt(2);
 		if(Since < g_Config.m_SvSaveGamesDelay)
 		{
 			str_format(pData->m_pResult->m_aMessage, sizeof(pData->m_pResult->m_aMessage),
@@ -1478,9 +1464,9 @@ bool CScore::LoadTeamThread(IDbConnection *pSqlServer, const ISqlData *pGameData
 
 		char aSaveID[UUID_MAXSTRSIZE];
 		memset(pData->m_pResult->m_SaveID.m_aData, 0, sizeof(pData->m_pResult->m_SaveID.m_aData));
-		if(!pSqlServer->IsNull(4))
+		if(!pSqlServer->IsNull(3))
 		{
-			pSqlServer->GetString(4, aSaveID, sizeof(aSaveID));
+			pSqlServer->GetString(3, aSaveID, sizeof(aSaveID));
 			if(str_length(aSaveID) + 1 != UUID_MAXSTRSIZE)
 			{
 				strcpy(pData->m_pResult->m_aMessage, "Unable to load savegame: SaveID corrupted");

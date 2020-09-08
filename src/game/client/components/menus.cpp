@@ -174,7 +174,9 @@ int CMenus::DoButton_MenuTab(const void *pID, const char *pText, int Checked, co
 
 int CMenus::DoButton_GridHeader(const void *pID, const char *pText, int Checked, const CUIRect *pRect)
 {
-	if(Checked)
+	if(Checked == 2)
+		RenderTools()->DrawUIRect(pRect, ColorRGBA(1,0.98f,0.5f,0.55f), CUI::CORNER_T, 5.0f);
+	else if(Checked)
 		RenderTools()->DrawUIRect(pRect, ColorRGBA(1,1,1,0.5f), CUI::CORNER_T, 5.0f);
 	CUIRect t;
 	pRect->VSplitLeft(5.0f, 0, &t);
@@ -247,12 +249,16 @@ int CMenus::DoEditBox(void *pID, const CUIRect *pRect, char *pStr, unsigned StrS
 			{
 				int Offset = str_length(pStr);
 				int CharsLeft = StrSize - Offset - 1;
-				for(int i = 0; i < str_length(Text) && i < CharsLeft; i++)
+				char *pCur = pStr + Offset;
+				str_utf8_copy(pCur, Text, CharsLeft);
+				for(int i = 0; i < CharsLeft; i++)
 				{
-					if(Text[i] == '\n')
-						pStr[i + Offset] = ' ';
-					else
-						pStr[i + Offset] = Text[i];
+					if(pCur[i] == 0)
+						break;
+					else if(pCur[i] == '\r')
+						pCur[i] = ' ';
+					else if(pCur[i] == '\n')
+						pCur[i] = ' ';
 				}
 				s_AtIndex = str_length(pStr);
 				ReturnValue = true;
@@ -262,6 +268,23 @@ int CMenus::DoEditBox(void *pID, const CUIRect *pRect, char *pStr, unsigned StrS
 		if(Input()->KeyIsPressed(KEY_LCTRL) && Input()->KeyPress(KEY_C))
 		{
 			Input()->SetClipboardText(pStr);
+		}
+
+		/* TODO: Doesn't work, SetClipboardText doesn't retain the string quickly enough?
+		if(Input()->KeyIsPressed(KEY_LCTRL) && Input()->KeyPress(KEY_X))
+		{
+			Input()->SetClipboardText(pStr);
+			pStr[0] = '\0';
+			s_AtIndex = 0;
+			ReturnValue = true;
+		}
+		*/
+
+		if(Input()->KeyIsPressed(KEY_LCTRL) && Input()->KeyPress(KEY_U))
+		{
+			pStr[0] = '\0';
+			s_AtIndex = 0;
+			ReturnValue = true;
 		}
 
 		if(Inside && UI()->MouseButton(0))
@@ -958,9 +981,31 @@ void CMenus::PopupMessage(const char *pTopic, const char *pBody, const char *pBu
 	m_Popup = POPUP_MESSAGE;
 }
 
+void CMenus::PopupWarning(const char *pTopic, const char *pBody, const char *pButton, int64 Duration)
+{
+	// reset active item
+	UI()->SetActiveItem(0);
+
+	str_copy(m_aMessageTopic, pTopic, sizeof(m_aMessageTopic));
+	str_copy(m_aMessageBody, pBody, sizeof(m_aMessageBody));
+	str_copy(m_aMessageButton, pButton, sizeof(m_aMessageButton));
+	m_Popup = POPUP_WARNING;
+	SetActive(true);
+
+	m_PopupWarningDuration = Duration;
+	m_PopupWarningLastTime = time_get_microseconds();
+}
+
+bool CMenus::CanDisplayWarning()
+{
+	return m_Popup == POPUP_NONE && (Client()->State() == IClient::STATE_DEMOPLAYBACK || Client()->State() == IClient::STATE_ONLINE);
+}
 
 int CMenus::Render()
 {
+	if(Client()->State() == IClient::STATE_DEMOPLAYBACK && m_Popup == POPUP_NONE)
+		return 0;
+
 	CUIRect Screen = *UI()->Screen();
 	Graphics()->MapScreen(Screen.x, Screen.y, Screen.w, Screen.h);
 
@@ -989,7 +1034,7 @@ int CMenus::Render()
 			ServerBrowser()->Refresh(IServerBrowser::TYPE_KOG);
 	}
 
-	if(Client()->State() == IClient::STATE_ONLINE)
+	if(Client()->State() >= IClient::STATE_ONLINE)
 	{
 		ms_ColorTabbarInactive = ms_ColorTabbarInactiveIngame;
 		ms_ColorTabbarActive = ms_ColorTabbarActiveIngame;
@@ -1076,6 +1121,7 @@ int CMenus::Render()
 		const char *pButtonText = "";
 		int ExtraAlign = 0;
 
+		ColorRGBA BgColor = ColorRGBA{0.0f, 0.0f, 0.0f, 0.5f};
 		if(m_Popup == POPUP_MESSAGE)
 		{
 			pTitle = m_aMessageTopic;
@@ -1181,16 +1227,25 @@ int CMenus::Render()
 		else if(m_Popup == POPUP_FIRST_LAUNCH)
 		{
 			pTitle = Localize("Welcome to DDNet");
-			str_format(aBuf, sizeof(aBuf), "%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s",
+			str_format(aBuf, sizeof(aBuf), "%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s",
 				Localize("DDraceNetwork is a cooperative online game where the goal is for you and your group of tees to reach the finish line of the map. As a newcomer you should start on Novice servers, which host the easiest maps. Consider the ping to choose a server close to you."),
 				Localize("The maps contain freeze, which temporarily make a tee unable to move. You have to work together to get through these parts."),
 				Localize("The mouse wheel changes weapons. Hammer (left mouse) can be used to hit other tees and wake them up from being frozen."),
 				Localize("Hook (right mouse) can be used to swing through the map and to hook other tees to you."),
 				Localize("Most importantly communication is key: There is no tutorial so you'll have to chat (t key) with other players to learn the basics and tricks of the game."),
+				Localize("Use k key to kill (restart), q to pause and watch other players. See settings for other key binds."),
 				Localize("It's recommended that you check the settings to adjust them to your liking before joining a server."),
 				Localize("Please enter your nick name below."));
 			pExtraText = aBuf;
 			pButtonText = Localize("Ok");
+			ExtraAlign = -1;
+		}
+		else if(m_Popup == POPUP_WARNING)
+		{
+			BgColor = ColorRGBA{0.5f, 0.0f, 0.0f, 0.7f};
+			pTitle = m_aMessageTopic;
+			pExtraText = m_aMessageBody;
+			pButtonText = m_aMessageButton;
 			ExtraAlign = -1;
 		}
 
@@ -1203,7 +1258,7 @@ int CMenus::Render()
 		}
 
 		// render the box
-		RenderTools()->DrawUIRect(&Box, ColorRGBA(0,0,0,0.5f), CUI::CORNER_ALL, 15.0f);
+		RenderTools()->DrawUIRect(&Box, BgColor, CUI::CORNER_ALL, 15.0f);
 
 		Box.HSplitTop(20.f/UI()->Scale(), &Part, &Box);
 		Box.HSplitTop(24.f/UI()->Scale(), &Part, &Box);
@@ -1298,6 +1353,7 @@ int CMenus::Render()
 			{
 				Client()->DummyDisconnect(0);
 				m_Popup = POPUP_NONE;
+				SetActive(false);
 			}
 		}
 		else if(m_Popup == POPUP_PASSWORD)
@@ -1434,7 +1490,7 @@ int CMenus::Render()
 				ActSelection = g_Config.m_BrFilterCountryIndex;
 			static float s_ScrollValue = 0.0f;
 			int OldSelected = -1;
-			UiDoListboxStart(&s_ScrollValue, &Box, 50.0f, Localize("Country"), "", m_pClient->m_pCountryFlags->Num(), 6, OldSelected, s_ScrollValue);
+			UiDoListboxStart(&s_ScrollValue, &Box, 50.0f, Localize("Country / Region"), "", m_pClient->m_pCountryFlags->Num(), 6, OldSelected, s_ScrollValue);
 
 			for(int i = 0; i < m_pClient->m_pCountryFlags->Num(); ++i)
 			{
@@ -1771,7 +1827,7 @@ int CMenus::Render()
 			char aBuf[128];
 			str_format(aBuf, sizeof(aBuf), "%s\n(%s)",
 				Localize("Show DDNet map finishes in server browser"),
-				Localize("transmits your player name to info.ddnet.tw"));
+				Localize("transmits your player name to info2.ddnet.tw"));
 
 			if(DoButton_CheckBox(&g_Config.m_BrIndicateFinished, aBuf, g_Config.m_BrIndicateFinished, &Part))
 				g_Config.m_BrIndicateFinished ^= 1;
@@ -1785,7 +1841,20 @@ int CMenus::Render()
 			TextBox.VSplitRight(60.0f, &TextBox, 0);
 			UI()->DoLabel(&Label, Localize("Nickname"), 16.0f, -1);
 			static float Offset = 0.0f;
-			DoEditBox(&g_Config.m_PlayerName, &TextBox, g_Config.m_PlayerName, sizeof(g_Config.m_PlayerName), 12.0f, &Offset);
+			DoEditBox(&g_Config.m_PlayerName, &TextBox, g_Config.m_PlayerName, sizeof(g_Config.m_PlayerName), 12.0f, &Offset, false, CUI::CORNER_ALL, Client()->PlayerName());
+		}
+		else if(m_Popup == POPUP_WARNING)
+		{
+			Box.HSplitBottom(20.f, &Box, &Part);
+			Box.HSplitBottom(24.f, &Box, &Part);
+			Part.VMargin(120.0f, &Part);
+
+			static int s_Button = 0;
+			if(DoButton_Menu(&s_Button, pButtonText, 0, &Part) || m_EscapePressed || m_EnterPressed || (time_get_microseconds() - m_PopupWarningLastTime >= m_PopupWarningDuration))
+			{
+				m_Popup = POPUP_NONE;
+				SetActive(false);
+			}
 		}
 		else
 		{
@@ -1934,8 +2003,11 @@ void CMenus::OnStateChange(int NewState, int OldState)
 		m_Popup = POPUP_CONNECTING;
 	else if(NewState == IClient::STATE_ONLINE || NewState == IClient::STATE_DEMOPLAYBACK)
 	{
-		m_Popup = POPUP_NONE;
-		SetActive(false);
+		if(m_Popup != POPUP_WARNING)
+		{
+			m_Popup = POPUP_NONE;
+			SetActive(false);
+		}
 	}
 }
 
@@ -2005,8 +2077,7 @@ void CMenus::OnRender()
 	UI()->Update(mx,my,mx*3.0f,my*3.0f,Buttons);
 
 	// render
-	if(Client()->State() != IClient::STATE_DEMOPLAYBACK)
-		Render();
+	Render();
 
 	// render cursor
 	Graphics()->TextureSet(g_pData->m_aImages[IMAGE_CURSOR].m_Id);
@@ -2037,6 +2108,8 @@ void CMenus::OnRender()
 
 void CMenus::RenderBackground()
 {
+	Graphics()->BlendNormal();
+
 	float sw = 300*Graphics()->ScreenAspect();
 	float sh = 300;
 	Graphics()->MapScreen(0, 0, sw, sh);
@@ -2113,7 +2186,6 @@ void CMenus::RenderUpdating(const char *pCaption, int current, int total)
 	CUIRect Screen = *UI()->Screen();
 	Graphics()->MapScreen(Screen.x, Screen.y, Screen.w, Screen.h);
 
-	Graphics()->BlendNormal();
 	RenderBackground();
 
 	float w = 700;

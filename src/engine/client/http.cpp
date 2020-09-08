@@ -11,7 +11,6 @@
 #include "curl/curl.h"
 #include "curl/easy.h"
 
-static char CA_FILE_PATH[512];
 // TODO: Non-global pls?
 static CURLSH *gs_Share;
 static LOCK gs_aLocks[CURL_LOCK_DATA_LAST+1];
@@ -48,7 +47,6 @@ bool HttpInit(IStorage *pStorage)
 		dbg_msg("http", "libcurl version %s (compiled = " LIBCURL_VERSION ")", pVersion->version);
 	}
 
-	pStorage->GetBinaryPath("data/ca-ddnet.pem", CA_FILE_PATH, sizeof(CA_FILE_PATH));
 	if(curl_global_init(CURL_GLOBAL_DEFAULT))
 	{
 		return true;
@@ -77,8 +75,8 @@ void EscapeUrl(char *pBuf, int Size, const char *pStr)
 	curl_free(pEsc);
 }
 
-CRequest::CRequest(const char *pUrl, bool CanTimeout) :
-	m_CanTimeout(CanTimeout),
+CRequest::CRequest(const char *pUrl, CTimeout Timeout) :
+	m_Timeout(Timeout),
 	m_Size(0),
 	m_Progress(0),
 	m_State(HTTP_QUEUED),
@@ -117,18 +115,10 @@ int CRequest::RunImpl(CURL *pHandle)
 	char aErr[CURL_ERROR_SIZE];
 	curl_easy_setopt(pHandle, CURLOPT_ERRORBUFFER, aErr);
 
-	if(m_CanTimeout)
-	{
-		curl_easy_setopt(pHandle, CURLOPT_CONNECTTIMEOUT_MS, (long)g_Config.m_ClHTTPConnectTimeoutMs);
-		curl_easy_setopt(pHandle, CURLOPT_LOW_SPEED_LIMIT, (long)g_Config.m_ClHTTPLowSpeedLimit);
-		curl_easy_setopt(pHandle, CURLOPT_LOW_SPEED_TIME, (long)g_Config.m_ClHTTPLowSpeedTime);
-	}
-	else
-	{
-		curl_easy_setopt(pHandle, CURLOPT_CONNECTTIMEOUT_MS, 0L);
-		curl_easy_setopt(pHandle, CURLOPT_LOW_SPEED_LIMIT, 0L);
-		curl_easy_setopt(pHandle, CURLOPT_LOW_SPEED_TIME, 0L);
-	}
+	curl_easy_setopt(pHandle, CURLOPT_CONNECTTIMEOUT_MS, m_Timeout.ConnectTimeoutMs);
+	curl_easy_setopt(pHandle, CURLOPT_LOW_SPEED_LIMIT, m_Timeout.LowSpeedLimit);
+	curl_easy_setopt(pHandle, CURLOPT_LOW_SPEED_TIME, m_Timeout.LowSpeedTime);
+
 	curl_easy_setopt(pHandle, CURLOPT_SHARE, gs_Share);
 	curl_easy_setopt(pHandle, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 	curl_easy_setopt(pHandle, CURLOPT_FOLLOWLOCATION, 1L);
@@ -136,20 +126,8 @@ int CRequest::RunImpl(CURL *pHandle)
 	curl_easy_setopt(pHandle, CURLOPT_FAILONERROR, 1L);
 	curl_easy_setopt(pHandle, CURLOPT_URL, m_aUrl);
 	curl_easy_setopt(pHandle, CURLOPT_NOSIGNAL, 1L);
-	curl_easy_setopt(pHandle, CURLOPT_USERAGENT, "DDNet " GAME_RELEASE_VERSION " (" CONF_PLATFORM_STRING "; " CONF_ARCH_STRING ")");
+	curl_easy_setopt(pHandle, CURLOPT_USERAGENT, GAME_NAME " " GAME_RELEASE_VERSION " (" CONF_PLATFORM_STRING "; " CONF_ARCH_STRING ")");
 
-	// We only trust our own custom-selected CAs for our own servers.
-	// Other servers can use any CA trusted by the system.
-	if(false
-		|| str_comp_nocase_num("maps.ddnet.tw/", m_aUrl, 14) == 0
-		|| str_comp_nocase_num("http://maps.ddnet.tw/", m_aUrl, 21) == 0
-		|| str_comp_nocase_num("https://maps.ddnet.tw/", m_aUrl, 22) == 0
-		|| str_comp_nocase_num("http://info.ddnet.tw/", m_aUrl, 21) == 0
-		|| str_comp_nocase_num("https://info.ddnet.tw/", m_aUrl, 22) == 0
-		|| str_comp_nocase_num("https://update5.ddnet.tw/", m_aUrl, 25) == 0)
-	{
-		curl_easy_setopt(pHandle, CURLOPT_CAINFO, CA_FILE_PATH);
-	}
 	curl_easy_setopt(pHandle, CURLOPT_WRITEDATA, this);
 	curl_easy_setopt(pHandle, CURLOPT_WRITEFUNCTION, WriteCallback);
 	curl_easy_setopt(pHandle, CURLOPT_NOPROGRESS, 0L);
@@ -195,8 +173,8 @@ int CRequest::ProgressCallback(void *pUser, double DlTotal, double DlCurr, doubl
 	return pTask->m_Abort ? -1 : 0;
 }
 
-CGet::CGet(const char *pUrl, bool CanTimeout) :
-	CRequest(pUrl, CanTimeout),
+CGet::CGet(const char *pUrl, CTimeout Timeout) :
+	CRequest(pUrl, Timeout),
 	m_BufferSize(0),
 	m_BufferLength(0),
 	m_pBuffer(NULL)
@@ -268,8 +246,8 @@ size_t CGet::OnData(char *pData, size_t DataSize)
 	return DataSize;
 }
 
-CGetFile::CGetFile(IStorage *pStorage, const char *pUrl, const char *pDest, int StorageType, bool CanTimeout) :
-	CRequest(pUrl, CanTimeout),
+CGetFile::CGetFile(IStorage *pStorage, const char *pUrl, const char *pDest, int StorageType, CTimeout Timeout) :
+	CRequest(pUrl, Timeout),
 	m_pStorage(pStorage),
 	m_StorageType(StorageType)
 {
@@ -309,8 +287,8 @@ bool CGetFile::BeforeCompletion()
 	return io_close(m_File) == 0;
 }
 
-CPostJson::CPostJson(const char *pUrl, bool CanTimeout, const char *pJson)
-	: CRequest(pUrl, CanTimeout)
+CPostJson::CPostJson(const char *pUrl, CTimeout Timeout, const char *pJson)
+	: CRequest(pUrl, Timeout)
 {
 	str_copy(m_aJson, pJson, sizeof(m_aJson));
 }

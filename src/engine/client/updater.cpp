@@ -27,7 +27,7 @@ public:
 
 static const char *GetUpdaterUrl(char *pBuf, int BufSize, const char *pFile)
 {
-	str_format(pBuf, BufSize, "https://update5.ddnet.tw/%s", pFile);
+	str_format(pBuf, BufSize, "https://update6.ddnet.tw/%s", pFile);
 	return pBuf;
 }
 
@@ -42,7 +42,7 @@ static const char *GetUpdaterDestPath(char *pBuf, int BufSize, const char *pFile
 }
 
 CUpdaterFetchTask::CUpdaterFetchTask(CUpdater *pUpdater, const char *pFile, const char *pDestPath) :
-	CGetFile(pUpdater->m_pStorage, GetUpdaterUrl(m_aBuf, sizeof(m_aBuf), pFile), GetUpdaterDestPath(m_aBuf2, sizeof(m_aBuf), pFile, pDestPath), -2, false),
+	CGetFile(pUpdater->m_pStorage, GetUpdaterUrl(m_aBuf, sizeof(m_aBuf), pFile), GetUpdaterDestPath(m_aBuf2, sizeof(m_aBuf), pFile, pDestPath), -2, CTimeout{0, 0, 0}),
 	m_pUpdater(pUpdater)
 {
 }
@@ -150,7 +150,7 @@ bool CUpdater::MoveFile(const char *pFile)
 		return Success;
 #endif
 
-	if(!str_comp_nocase(pFile + len - 4, ".dll") || !str_comp_nocase(pFile + len - 4, ".ttf"))
+	if(!str_comp_nocase(pFile + len - 4, ".dll") || !str_comp_nocase(pFile + len - 4, ".ttf") || !str_comp_nocase(pFile + len - 3, ".so"))
 	{
 		str_format(aBuf, sizeof(aBuf), "%s.old", pFile);
 		m_pStorage->RenameBinaryFile(pFile, aBuf);
@@ -319,6 +319,17 @@ void CUpdater::PerformUpdate()
 				str_copy(aBuf, pFile, sizeof(aBuf)); // SDL
 				str_copy(aBuf + len - 4, "-" PLAT_NAME, sizeof(aBuf) - len + 4); // -win32
 				str_append(aBuf, pFile + len - 4, sizeof(aBuf)); // .dll
+				FetchFile(aBuf, pFile);
+#endif
+				// Ignore DLL downloads on other platforms
+			}
+			else if(!str_comp_nocase(pFile + len - 3, ".so"))
+			{
+#if defined(CONF_PLATFORM_LINUX)
+				char aBuf[512];
+				str_copy(aBuf, pFile, sizeof(aBuf)); // libsteam_api
+				str_copy(aBuf + len - 3, "-" PLAT_NAME, sizeof(aBuf) - len + 3); // -linux-x86_64
+				str_append(aBuf, pFile + len - 3, sizeof(aBuf)); // .so
 				FetchFile(aBuf, pFile);
 #endif
 				// Ignore DLL downloads on other platforms, on Linux we statically link anyway

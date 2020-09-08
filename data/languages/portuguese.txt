@@ -112,9 +112,6 @@ Controls
 Count players only
 == Contar apenas jogadores
 
-Country
-== País
-
 Current
 == Atual
 
@@ -349,9 +346,6 @@ Please balance teams!
 Prev. weapon
 == Arma anterior
 
-Quality Textures
-== Texturas de Qualidade
-
 Quit
 == Sair
 
@@ -492,9 +486,6 @@ Team
 
 Team chat
 == Chat de equipa
-
-Texture Compression
-== Compressão de Textura
 
 The audio device couldn't be initialised.
 == O dispositivo de som não pode ser iniciado.
@@ -790,9 +781,6 @@ Check now
 Background (regular)
 == Plano de fundo (regular)
 
-DDNet %s is out! Download it at DDNet.tw!
-== DDNet %s saiu! Saca-o em DDNet.tw!
-
 AntiPing: predict other players
 == Antiping: prever os outros jogadores
 
@@ -907,6 +895,9 @@ Successfully saved the replay!
 Replay feature is disabled!
 == 
 
+The width or height of texture %s is not divisible by 16, which might cause visual bugs.
+== 
+
 Server best:
 == 
 
@@ -952,10 +943,16 @@ Hook (right mouse) can be used to swing through the map and to hook other tees t
 Most importantly communication is key: There is no tutorial so you'll have to chat (t key) with other players to learn the basics and tricks of the game.
 == 
 
+Use k key to kill (restart), q to pause and watch other players. See settings for other key binds.
+== 
+
 It's recommended that you check the settings to adjust them to your liking before joining a server.
 == 
 
 Please enter your nick name below.
+== 
+
+Country / Region
 == 
 
 Destination file already exist
@@ -967,7 +964,7 @@ Video name:
 Show DDNet map finishes in server browser
 == 
 
-transmits your player name to info.ddnet.tw
+transmits your player name to info2.ddnet.tw
 == 
 
 Filter connecting players

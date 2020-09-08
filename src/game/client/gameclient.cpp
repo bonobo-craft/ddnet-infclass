@@ -221,7 +221,7 @@ void CGameClient::OnConsoleInit()
 
 	// add the some console commands
 	Console()->Register("team", "i[team-id]", CFGFLAG_CLIENT, ConTeam, this, "Switch team");
-	Console()->Register("kill", "", CFGFLAG_CLIENT, ConKill, this, "Kill yourself");
+	Console()->Register("kill", "", CFGFLAG_CLIENT, ConKill, this, "Kill yourself to restart");
 
 	// register server dummy commands for tab completion
 	Console()->Register("tune", "s[tuning] i[value]", CFGFLAG_SERVER, 0, 0, "Tune variable to value");
@@ -535,6 +535,8 @@ void CGameClient::OnReset()
 	m_DDRaceMsgSent[1] = false;
 	m_ShowOthers[0] = -1;
 	m_ShowOthers[1] = -1;
+
+	m_ReceivedDDNetPlayer = false;
 }
 
 
@@ -583,7 +585,7 @@ void CGameClient::UpdatePositions()
 		}
 		else if(m_Snap.m_pSpectatorInfo && ((Client()->State() == IClient::STATE_DEMOPLAYBACK && m_DemoSpecID == SPEC_FOLLOW) || (Client()->State() != IClient::STATE_DEMOPLAYBACK && m_Snap.m_SpecInfo.m_SpectatorID != SPEC_FREEVIEW)))
 		{
-			if(m_Snap.m_pPrevSpectatorInfo)
+			if(m_Snap.m_pPrevSpectatorInfo && m_Snap.m_pPrevSpectatorInfo->m_SpectatorID == m_Snap.m_pSpectatorInfo->m_SpectatorID)
 				m_Snap.m_SpecInfo.m_Position = mix(vec2(m_Snap.m_pPrevSpectatorInfo->m_X, m_Snap.m_pPrevSpectatorInfo->m_Y),
 													vec2(m_Snap.m_pSpectatorInfo->m_X, m_Snap.m_pSpectatorInfo->m_Y), Client()->IntraGameTick(g_Config.m_ClDummy));
 			else
@@ -623,6 +625,21 @@ void CGameClient::OnRender()
 	// update the local character and spectate position
 	UpdatePositions();
 
+	// display gfx warnings
+	if(g_Config.m_GfxShowWarnings == 1)
+	{
+		SGraphicsWarning* pWarning = Graphics()->GetCurWarning();
+		if(pWarning != NULL)
+		{
+			if(m_pMenus->CanDisplayWarning())
+			{
+				m_pMenus->PopupWarning("Warning!", pWarning->m_aWarningMsg, "Ok", 10000000);
+
+				pWarning->m_WasShown = true;
+			}
+		}
+	}
+
 	// render all systems
 	for(int i = 0; i < m_All.m_Num; i++)
 		m_All.m_paComponents[i]->OnRender();
@@ -641,7 +658,7 @@ void CGameClient::OnRender()
 	if(Client()->State() == IClient::STATE_ONLINE && !m_pMenus->IsActive()) {
 		if(m_CheckInfo[0] == 0) {
 			if(
-			str_comp(m_aClients[m_LocalIDs[0]].m_aName, g_Config.m_PlayerName) ||
+			str_comp(m_aClients[m_LocalIDs[0]].m_aName, Client()->PlayerName()) ||
 			str_comp(m_aClients[m_LocalIDs[0]].m_aClan, g_Config.m_PlayerClan) ||
 			m_aClients[m_LocalIDs[0]].m_Country != g_Config.m_PlayerCountry ||
 			str_comp(m_aClients[m_LocalIDs[0]].m_aSkinName, g_Config.m_ClPlayerSkin) ||
@@ -660,7 +677,7 @@ void CGameClient::OnRender()
 		if(Client()->DummyConnected()) {
 			if(m_CheckInfo[1] == 0) {
 				if(
-				str_comp(m_aClients[m_LocalIDs[1]].m_aName, g_Config.m_ClDummyName) ||
+				str_comp(m_aClients[m_LocalIDs[1]].m_aName, Client()->DummyName()) ||
 				str_comp(m_aClients[m_LocalIDs[1]].m_aClan, g_Config.m_ClDummyClan) ||
 				m_aClients[m_LocalIDs[1]].m_Country != g_Config.m_ClDummyCountry ||
 				str_comp(m_aClients[m_LocalIDs[1]].m_aSkinName, g_Config.m_ClDummySkin) ||
@@ -1233,6 +1250,7 @@ void CGameClient::OnNewSnapshot()
 			}
 			else if(Item.m_Type == NETOBJTYPE_DDNETPLAYER)
 			{
+				m_ReceivedDDNetPlayer = true;
 				const CNetObj_DDNetPlayer *pInfo = (const CNetObj_DDNetPlayer *)pData;
 				if(Item.m_ID < MAX_CLIENTS)
 				{
@@ -1566,7 +1584,7 @@ void CGameClient::OnNewSnapshot()
 	{
 		CNetMsg_Cl_ShowDistance Msg;
 		float x, y;
-		RenderTools()->CalcScreenParams(Graphics()->ScreenAspect(), ZoomToSend, &x, &y);
+		RenderTools()->CalcScreenParams(Graphics()->ScreenAspect(), ZoomToSend * 1.25, &x, &y);
 		Msg.m_X = x;
 		Msg.m_Y = y;
 		CMsgPacker Packer(Msg.MsgID(), false);
@@ -1938,7 +1956,7 @@ void CGameClient::SendInfo(bool Start)
 	if(Start)
 	{
 		CNetMsg_Cl_StartInfo Msg;
-		Msg.m_pName = g_Config.m_PlayerName;
+		Msg.m_pName = Client()->PlayerName();
 		Msg.m_pClan = g_Config.m_PlayerClan;
 		Msg.m_Country = g_Config.m_PlayerCountry;
 		Msg.m_pSkin = g_Config.m_ClPlayerSkin;
@@ -1953,7 +1971,7 @@ void CGameClient::SendInfo(bool Start)
 	else
 	{
 		CNetMsg_Cl_ChangeInfo Msg;
-		Msg.m_pName = g_Config.m_PlayerName;
+		Msg.m_pName = Client()->PlayerName();
 		Msg.m_pClan = g_Config.m_PlayerClan;
 		Msg.m_Country = g_Config.m_PlayerCountry;
 		Msg.m_pSkin = g_Config.m_ClPlayerSkin;
@@ -1972,7 +1990,7 @@ void CGameClient::SendDummyInfo(bool Start)
 	if(Start)
 	{
 		CNetMsg_Cl_StartInfo Msg;
-		Msg.m_pName = g_Config.m_ClDummyName;
+		Msg.m_pName = Client()->DummyName();
 		Msg.m_pClan = g_Config.m_ClDummyClan;
 		Msg.m_Country = g_Config.m_ClDummyCountry;
 		Msg.m_pSkin = g_Config.m_ClDummySkin;
@@ -1987,7 +2005,7 @@ void CGameClient::SendDummyInfo(bool Start)
 	else
 	{
 		CNetMsg_Cl_ChangeInfo Msg;
-		Msg.m_pName = g_Config.m_ClDummyName;
+		Msg.m_pName = Client()->DummyName();
 		Msg.m_pClan = g_Config.m_ClDummyClan;
 		Msg.m_Country = g_Config.m_ClDummyCountry;
 		Msg.m_pSkin = g_Config.m_ClDummySkin;

@@ -109,15 +109,26 @@ void CMenus::RenderServerbrowserServerList(CUIRect View)
 			s_aCols[i].m_Rect = Headers;
 	}
 
+	const bool PlayersOrPing = (g_Config.m_BrSort == IServerBrowser::SORT_NUMPLAYERS || g_Config.m_BrSort == IServerBrowser::SORT_PING);
+
 	// do headers
 	for(int i = 0; i < NumCols; i++)
 	{
-		if(DoButton_GridHeader(s_aCols[i].m_Caption, s_aCols[i].m_Caption, g_Config.m_BrSort == s_aCols[i].m_Sort, &s_aCols[i].m_Rect))
+		int Checked = g_Config.m_BrSort == s_aCols[i].m_Sort;
+		if(PlayersOrPing && g_Config.m_BrSortOrder == 2 && (s_aCols[i].m_Sort == IServerBrowser::SORT_NUMPLAYERS || s_aCols[i].m_Sort == IServerBrowser::SORT_PING))
+			Checked = 2;
+
+		if(DoButton_GridHeader(s_aCols[i].m_Caption, s_aCols[i].m_Caption, Checked, &s_aCols[i].m_Rect))
 		{
 			if(s_aCols[i].m_Sort != -1)
 			{
 				if(g_Config.m_BrSort == s_aCols[i].m_Sort)
-					g_Config.m_BrSortOrder ^= 1;
+				{
+					if(PlayersOrPing)
+						g_Config.m_BrSortOrder = (g_Config.m_BrSortOrder+1)%3;
+					else
+						g_Config.m_BrSortOrder = (g_Config.m_BrSortOrder+1)%2;
+				}
 				else
 					g_Config.m_BrSortOrder = 0;
 				g_Config.m_BrSort = s_aCols[i].m_Sort;
@@ -175,44 +186,44 @@ void CMenus::RenderServerbrowserServerList(CUIRect View)
 		else
 			g_Config.m_UiToolboxPage = (g_Config.m_UiToolboxPage + 3 + 1) % 3;
 	}
-	if(m_SelectedIndex > -1)
+	if(m_SelectedIndex < 0)
+		m_SelectedIndex = 0;
+
+	for(int i = 0; i < m_NumInputEvents; i++)
 	{
-		for(int i = 0; i < m_NumInputEvents; i++)
+		int NewIndex = -1;
+		if(m_aInputEvents[i].m_Flags&IInput::FLAG_PRESS)
 		{
-			int NewIndex = -1;
-			if(m_aInputEvents[i].m_Flags&IInput::FLAG_PRESS)
+			if(m_aInputEvents[i].m_Key == KEY_DOWN) NewIndex = minimum(m_SelectedIndex + 1, NumServers - 1);
+			else if(m_aInputEvents[i].m_Key == KEY_UP) NewIndex = maximum(m_SelectedIndex - 1, 0);
+			else if(m_aInputEvents[i].m_Key == KEY_PAGEUP) NewIndex = maximum(m_SelectedIndex - 25, 0);
+			else if(m_aInputEvents[i].m_Key == KEY_PAGEDOWN) NewIndex = minimum(m_SelectedIndex + 25, NumServers - 1);
+			else if(m_aInputEvents[i].m_Key == KEY_HOME) NewIndex = 0;
+			else if(m_aInputEvents[i].m_Key == KEY_END) NewIndex = NumServers - 1;
+		}
+		if(NewIndex > -1 && NewIndex < NumServers)
+		{
+			//scroll
+			float IndexY = View.y - s_ScrollValue*ScrollNum*s_aCols[0].m_Rect.h + NewIndex*s_aCols[0].m_Rect.h;
+			int Scroll = View.y > IndexY ? -1 : View.y+View.h < IndexY+s_aCols[0].m_Rect.h ? 1 : 0;
+			if(Scroll)
 			{
-				if(m_aInputEvents[i].m_Key == KEY_DOWN) NewIndex = m_SelectedIndex + 1;
-				else if(m_aInputEvents[i].m_Key == KEY_UP) NewIndex = m_SelectedIndex - 1;
-				else if(m_aInputEvents[i].m_Key == KEY_PAGEUP) NewIndex = maximum(m_SelectedIndex - 25, 0);
-				else if(m_aInputEvents[i].m_Key == KEY_PAGEDOWN) NewIndex = minimum(m_SelectedIndex + 25, NumServers - 1);
-				else if(m_aInputEvents[i].m_Key == KEY_HOME) NewIndex = 0;
-				else if(m_aInputEvents[i].m_Key == KEY_END) NewIndex = NumServers - 1;
-			}
-			if(NewIndex > -1 && NewIndex < NumServers)
-			{
-				//scroll
-				float IndexY = View.y - s_ScrollValue*ScrollNum*s_aCols[0].m_Rect.h + NewIndex*s_aCols[0].m_Rect.h;
-				int Scroll = View.y > IndexY ? -1 : View.y+View.h < IndexY+s_aCols[0].m_Rect.h ? 1 : 0;
-				if(Scroll)
+				if(Scroll < 0)
 				{
-					if(Scroll < 0)
-					{
-						int NumScrolls = (View.y-IndexY+s_aCols[0].m_Rect.h-1.0f)/s_aCols[0].m_Rect.h;
-						s_ScrollValue -= (1.0f/ScrollNum)*NumScrolls;
-					}
-					else
-					{
-						int NumScrolls = (IndexY+s_aCols[0].m_Rect.h-(View.y+View.h)+s_aCols[0].m_Rect.h-1.0f)/s_aCols[0].m_Rect.h;
-						s_ScrollValue += (1.0f/ScrollNum)*NumScrolls;
-					}
+					int NumScrolls = (View.y-IndexY+s_aCols[0].m_Rect.h-1.0f)/s_aCols[0].m_Rect.h;
+					s_ScrollValue -= (1.0f/ScrollNum)*NumScrolls;
 				}
-
-				m_SelectedIndex = NewIndex;
-
-				const CServerInfo *pItem = ServerBrowser()->SortedGet(m_SelectedIndex);
-				str_copy(g_Config.m_UiServerAddress, pItem->m_aAddress, sizeof(g_Config.m_UiServerAddress));
+				else
+				{
+					int NumScrolls = (IndexY+s_aCols[0].m_Rect.h-(View.y+View.h)+s_aCols[0].m_Rect.h-1.0f)/s_aCols[0].m_Rect.h;
+					s_ScrollValue += (1.0f/ScrollNum)*NumScrolls;
+				}
 			}
+
+			m_SelectedIndex = NewIndex;
+
+			const CServerInfo *pItem = ServerBrowser()->SortedGet(m_SelectedIndex);
+			str_copy(g_Config.m_UiServerAddress, pItem->m_aAddress, sizeof(g_Config.m_UiServerAddress));
 		}
 	}
 
@@ -369,8 +380,9 @@ void CMenus::RenderServerbrowserServerList(CUIRect View)
 					Button.VMargin(4.0f, &Button);
 					Button.VSplitLeft(Button.h, &Icon, &Button);
 					Icon.Margin(2.0f, &Icon);
-					if(pItem->m_HasRank == 1)
-						DoButton_Icon(IMAGE_BROWSEICONS, SPRITE_BROWSE_RANK, &Icon);
+
+					if (g_Config.m_BrIndicateFinished && pItem->m_HasRank == 1)
+							DoButton_Icon(IMAGE_BROWSEICONS, SPRITE_BROWSE_RANK, &Icon);
 				}
 
 				CTextCursor Cursor;
@@ -602,11 +614,15 @@ void CMenus::RenderServerbrowserFilters(CUIRect View)
 
 		UI()->DoLabelScaled(&Button, Localize("Maximum ping:"), FontSize, -1);
 
-		char aBuf[5];
-		str_format(aBuf, sizeof(aBuf), "%d", g_Config.m_BrFilterPing);
+		char aBuf[5] = "";
+		if(g_Config.m_BrFilterPing != 0)
+			str_format(aBuf, sizeof(aBuf), "%d", g_Config.m_BrFilterPing);
 		static float Offset = 0.0f;
-		DoEditBox(&g_Config.m_BrFilterPing, &EditBox, aBuf, sizeof(aBuf), FontSize, &Offset);
-		g_Config.m_BrFilterPing = clamp(str_toint(aBuf), 0, 999);
+		if (DoEditBox(&g_Config.m_BrFilterPing, &EditBox, aBuf, sizeof(aBuf), FontSize, &Offset))
+		{
+			g_Config.m_BrFilterPing = clamp(str_toint(aBuf), 0, 999);
+			Client()->ServerBrowserUpdate();
+		}
 	}
 
 	// server address
@@ -652,7 +668,12 @@ void CMenus::RenderServerbrowserFilters(CUIRect View)
 	{
 		ServerFilter.HSplitTop(20.0f, &Button, &ServerFilter);
 		if(DoButton_CheckBox(&g_Config.m_BrIndicateFinished, Localize("Indicate map finish"), g_Config.m_BrIndicateFinished, &Button))
+		{
 			g_Config.m_BrIndicateFinished ^= 1;
+
+			if (g_Config.m_BrIndicateFinished)
+				ServerBrowser()->Refresh(ServerBrowser()->GetCurrentType());
+		}
 
 		if(g_Config.m_BrIndicateFinished)
 		{
@@ -1360,8 +1381,8 @@ void CMenus::RenderServerbrowser(CUIRect MainView)
 		char aBuf[64];
 		if(str_comp(Client()->LatestVersion(), "0") != 0)
 		{
-			str_format(aBuf, sizeof(aBuf), Localize("DDNet %s is out! Download it at DDNet.tw!"), Client()->LatestVersion());
-			TextRender()->TextColor(1.0f, 0.4f, 0.4f, 1.0f);
+			str_format(aBuf, sizeof(aBuf), Localize("DDNet %s is out!"), Client()->LatestVersion());
+			TextRender()->TextColor(1.0f, 1.0f, 1.0f, 1.0f);
 		}
 		else
 			str_format(aBuf, sizeof(aBuf), Localize("Current version: %s"), GAME_VERSION);
