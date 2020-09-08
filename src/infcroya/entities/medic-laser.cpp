@@ -40,7 +40,7 @@ bool CMedicLaser::HitCharacter(vec2 From, vec2 To)
 		auto zombie = pHit;
 		CGameContext* pGameServer = medic->GameServer();
         //int MinZombies = g_Config.m_InfMedicReviveMinZombies;
-		int MinZombies = 3; //TBD wtf? why it reads 0?
+		int MinZombies = 4; //TBD wtf? why it reads 0?
 
 		if (medic && medic->GetHealthArmorSum() <= g_Config.m_InfMedicReviveDamage) {
 			int HealthArmor = g_Config.m_InfMedicReviveDamage + 1;
