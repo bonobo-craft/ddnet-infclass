@@ -1474,6 +1474,66 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 		pCharacter->m_Armor = Armor;
 		pCharacter->m_TriggeredEvents = 0;
 	}
+
+		// INFCROYA BEGIN ------------------------------------------------------------
+	// Heart displayed on top of injured tees
+	CPlayer* pClient = GameServer()->m_apPlayers[SnappingClient];
+	if (IsZombie() && GetHealthArmorSum() < 10 && SnappingClient != m_pPlayer->GetCID() && pClient->GetCroyaPlayer()->IsZombie()) {
+		if (Server()->IsSixup(SnappingClient)) {
+			protocol7::CNetObj_Pickup* pP = static_cast<protocol7::CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_HeartID, sizeof(protocol7::CNetObj_Pickup)));
+			if (!pP)
+				return;
+
+			pP->m_X = (int)m_Pos.x;
+			pP->m_Y = (int)m_Pos.y - 60.0;
+			pP->m_Type = POWERUP_HEALTH;
+		} else {
+			CNetObj_Pickup* pP = static_cast<CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_HeartID, sizeof(CNetObj_Pickup)));
+			if (!pP)
+				return;
+
+			pP->m_X = (int)m_Pos.x;
+			pP->m_Y = (int)m_Pos.y - 60.0;
+			pP->m_Type = POWERUP_HEALTH;
+		}
+	}
+	if (IsHuman() && m_Armor < 10 && SnappingClient != m_pPlayer->GetCID() && pClient->GetCroyaPlayer()->GetClassNum() == Class::MEDIC) {
+		if (Server()->IsSixup(SnappingClient)) {
+			protocol7::CNetObj_Pickup* pP = static_cast<protocol7::CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_HeartID, sizeof(protocol7::CNetObj_Pickup)));
+			if (!pP)
+				return;
+			pP->m_X = (int)m_Pos.x;
+			pP->m_Y = (int)m_Pos.y - 60.0;
+			if (m_Health < 10)
+				pP->m_Type = POWERUP_HEALTH;
+			else if (m_Armor < 10)
+				pP->m_Type = POWERUP_ARMOR;
+		} else {
+			CNetObj_Pickup* pP = static_cast<CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_HeartID, sizeof(CNetObj_Pickup)));
+			if (!pP)
+				return;
+
+			pP->m_X = (int)m_Pos.x;
+			pP->m_Y = (int)m_Pos.y - 60.0;
+			if (m_Health < 10)
+				pP->m_Type = POWERUP_HEALTH;
+			else if (m_Armor < 10)
+				pP->m_Type = POWERUP_ARMOR;
+		}
+	}
+	if (!m_FirstShot)
+	{
+		CNetObj_Laser* pObj = static_cast<CNetObj_Laser*>(Server()->SnapNewItem(NETOBJTYPE_LASER, m_BarrierHintID, sizeof(CNetObj_Laser)));
+		if (!pObj)
+			return;
+
+		pObj->m_X = (int)m_FirstShotCoord.x;
+		pObj->m_Y = (int)m_FirstShotCoord.y;
+		pObj->m_FromX = (int)m_FirstShotCoord.x;
+		pObj->m_FromY = (int)m_FirstShotCoord.y;
+		pObj->m_StartTick = Server()->Tick();
+	}
+	// INFCROYA END ------------------------------------------------------------//
 }
 
 void CCharacter::Snap(int SnappingClient)
