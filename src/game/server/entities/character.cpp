@@ -70,6 +70,7 @@ bool CCharacter::Spawn(CPlayer *pPlayer, vec2 Pos)
 	m_EmoteStop = -1;
 	m_LastAction = -1;
 	m_LastNoAmmoSound = -1;
+	m_LastNoAttachSound = -1;
 	m_LastWeapon = WEAPON_HAMMER;
 	m_QueuedWeapon = -1;
 	m_LastRefillJumps = false;
@@ -215,9 +216,7 @@ void CCharacter::HandleJetpack()
 
 	// check for ammo
 	if(!m_aWeapons[m_Core.m_ActiveWeapon].m_Ammo || m_FreezeTime)
-	{
 		return;
-	}
 
 	switch(m_Core.m_ActiveWeapon)
 	{
@@ -472,6 +471,12 @@ void CCharacter::FireWeapon()
 	}
 
 	vec2 ProjStartPos = m_Pos+Direction*m_ProximityRadius*0.75f;
+
+	if (!m_pCroyaPlayer->WillItFire(Direction, ProjStartPos, m_Core.m_ActiveWeapon, this)) {
+
+		return;
+	}
+
 
 	if (!m_pCroyaPlayer || !m_pCroyaPlayer->WillItFire(Direction, ProjStartPos, m_Core.m_ActiveWeapon, this))
 		  return;
@@ -3097,6 +3102,15 @@ int CCharacter::GetLastNoAmmoSound() const
 void CCharacter::SetLastNoAmmoSound(int LastNoAmmoSound)
 {
 	m_LastNoAmmoSound = LastNoAmmoSound;
+}
+
+int CCharacter::GetLastNoAttachSound() const
+{
+	return m_LastNoAttachSound;
+}
+void CCharacter::SetLastNoAttachSound(int LastNoAttachSound)
+{
+	m_LastNoAttachSound = LastNoAttachSound;
 }
 // INFCROYA END ------------------------------------------------------------//
 

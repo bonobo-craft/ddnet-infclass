@@ -162,6 +162,9 @@ public:
 	int GetLastNoAmmoSound() const;
 	void SetLastNoAmmoSound(int LastNoAmmoSound);
 
+	int GetLastNoAttachSound() const;
+	void SetLastNoAttachSound(int LastNoAttachSound);
+
 	// INFCROYA END ------------------------------------------------------------//
 
 private:
@@ -208,6 +211,7 @@ private:
 	// last tick that the player took any action ie some input
 	int m_LastAction;
 	int m_LastNoAmmoSound;
+	int m_LastNoAttachSound;
 
 	// these are non-heldback inputs
 	CNetObj_PlayerInput m_LatestPrevPrevInput;

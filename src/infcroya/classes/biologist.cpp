@@ -38,6 +38,15 @@ bool CBiologist::WillItFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CChar
 	if (Weapon == WEAPON_LASER) {
 		if (pChr->m_aWeapons[WEAPON_LASER].m_Ammo < 10)
 		  return false;		
+		vec2 To = pChr->GetPos() + Direction * 400.0f;
+		if (!pChr->GameServer()->Collision()->IntersectLine(pChr->GetPos(), To, 0x0, &To)) {
+			if (pChr->GetLastNoAttachSound() + pChr->Server()->TickSpeed() * 0.5 <= pChr->Server()->Tick())
+			{
+				pChr->GameServer()->CreateSound(pChr->GetPos(), SOUND_WEAPON_NOAMMO);
+				pChr->SetLastNoAttachSound(pChr->Server()->Tick());
+			}
+			return false;
+		}
 	}
 	return true;
 }
