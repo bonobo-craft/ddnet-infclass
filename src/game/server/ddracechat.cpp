@@ -79,11 +79,23 @@ void CGameContext::ConList(IConsole::IResult *pResult, void *pUserData)
 void CGameContext::ConHelp(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *) pUserData;
+	if (!CheckClientID(pResult->m_ClientID))
+	  return;
 
 	if (pResult->NumArguments() == 0)
 	{
- 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help",
-				"visit https://tiny.cc/infnext for more info");
+		std::vector<std::string> messageList;
+		messageList.push_back("==== Infection 'Next' Mod ====\n");
+		messageList.push_back("Infection mod is a game where one player starts as a zombie and \nthen tries to infect everyone by a chain reaction.");
+		messageList.push_back("");
+		messageList.push_back("When you're zombie your goal is to infect everyone\n");
+		messageList.push_back("When you're human you goal is to survive. If at the end of a round any humans remains uninfected then an army will come to the rescue and will wipe zombies from the game.\n");
+		messageList.push_back("Syntax for help on classes is:\n");
+		messageList.push_back(" /help scientist or /help sci\n");
+		messageList.push_back("Read wiki: tiny.cc/infnext\n");
+		messageList.push_back("Join chat: tiny.cc/infnext-chat");
+
+		pSelf->SendBroadcastBig(pSelf->Join(messageList, "\n").c_str(), pResult->m_ClientID);
 /* 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help",
 				"/cmdlist will show a list of all chat commands");
 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help",
@@ -108,11 +120,13 @@ void CGameContext::ConHelp(IConsole::IResult *pResult, void *pUserData)
 			if (pCmdInfo->m_pHelp)
 				pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help", pCmdInfo->m_pHelp);
 		}
-		else
-			pSelf->Console()->Print(
+		else {
+			if (!pSelf->SendClassInfoByCommand(pArg, pResult->m_ClientID))
+				pSelf->Console()->Print(
 					IConsole::OUTPUT_LEVEL_STANDARD,
 					"help",
 					"Command is either unknown or you have given a blank command without any parameters.");
+		}
 	}
 }
 

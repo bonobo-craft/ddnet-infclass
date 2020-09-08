@@ -474,7 +474,7 @@ public:
 	int GetZombieCount() const;
 	void MkAdmin(int ClientID);
 	void TryChangeClassByShortname(const std::string shortname, int ClientID);
-	void SendClassInfoByCommand(const std::string command, int ClientID);
+	bool SendClassInfoByCommand(const std::string command, int ClientID);
 	void SendClassInfoByClassId(int ClassId, int ClientID, bool ShowInfo = false);
 	void SendClassSelectorByClassId(int ClassId, int ClientID, bool ShowInfo);
 	void SendHumanClassSelectorByClassId(int ClassId, int ClientID);

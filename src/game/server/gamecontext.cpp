@@ -4356,11 +4356,11 @@ void CGameContext::SendCommand(int ChatterClientID, const std::string& command)
 	//}
 }
 
-void CGameContext::SendClassInfoByCommand(const std::string command, int ClientID) {
+bool CGameContext::SendClassInfoByCommand(const std::string command, int ClientID) {
 	int ClassId = CommandToClassId(command);
 
 	if (ClassId == 0)
-		return;
+		return false;
 
 	SendClassInfoByClassId(ClassId, ClientID, true);
 }
@@ -4470,7 +4470,6 @@ void CGameContext::SendClassSelectorByClassId(int ClassId, int ClientID, bool Sh
 	if (ClassId > HUMAN_CLASS_START && ClassId < HUMAN_CLASS_END)
 		SendHumanClassSelectorByClassId(ClassId, ClientID);
 }
-
 
 void CGameContext::SendClassInfoByClassId(int ClassId, int ClientID, bool ShowInfo) {
 	if (!ShowInfo)
@@ -4597,37 +4596,37 @@ void CGameContext::SendClassInfoByClassId(int ClassId, int ClientID, bool ShowIn
 }
 
 int CGameContext::CommandToClassId(const std::string command) {
-	if (command == "scientist?" || command == "help scientist")
+	if (command == "sci" || command == "sci")
 		return Class::SCIENTIST;
-	if (command == "engineer?" || command == "help engineer")
+	if (command == "eng" || command == "engineer")
 		return Class::ENGINEER;
-	if (command == "mercenary?" || command == "help mercenary")
+	if (command == "mer" || command == "mercenary")
 		return Class::MERCENARY;
-	if (command == "soldier?" || command == "help soldier")
+	if (command == "sol" || command == "soldier")
 		return Class::SOLDIER;
-	if (command == "biologist?" || command == "help biologist")
+	if (command == "bio" || command == "biologist")
 		return Class::BIOLOGIST;
-	if (command == "medic?" || command == "help medic")
+	if (command == "med" || command == "medic")
 		return Class::MEDIC;
-	if (command == "hero?" || command == "help hero")
+	if (command == "her" || command == "hero")
 		return Class::HERO;
-	if (command == "smoker?" || command == "help smoker")
+	if (command == "smo" || command == "smoker")
 		return Class::SMOKER;
-	if (command == "boomer?" || command == "help boomer")
+	if (command == "boo" || command == "boomer")
 		return Class::BOOMER;
-	if (command == "hunter?" || command == "help hunter")
+	if (command == "hun" || command == "hunter")
 		return Class::HUNTER;
-	if (command == "poisoner?" || command == "help poisoner")
+	if (command == "poi" || command == "poisoner")
 		return Class::POISONER;
-	if (command == "freezer?" || command == "help freezer")
+	if (command == "fre" || command == "freezer")
 		return Class::FREEZER;
-	if (command == "bat?" || command == "help bat")
+	if (command == "bat" || command == "bat")
 		return Class::BAT;
-	if (command == "queen?" || command == "help queen")
+	if (command == "que" || command == "queen")
 		return Class::MOTHER;
-	if (command == "sniper?" || command == "help sniper")
+	if (command == "sni" || command == "sniper")
 		return Class::SNIPER;
-	if (command == "worker?" || command == "help worker")
+	if (command == "wor" || command == "worker")
 		return Class::WORKER;
   return 0;
 }
