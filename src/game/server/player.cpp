@@ -503,9 +503,13 @@ void CPlayer::OnDisconnect(const char *pReason)
 		  players06--;
 		int playersAll = players06 + players07;
 		  
-		dbg_msg("stats", "Players: %d (0.6: %d, 0.7: %d)", playersAll, players06, players07);
-
 		char aBuf[512];
+		str_format(aBuf, sizeof(aBuf),
+				"Players: %d (0.6: %d, 0.7: %d)",
+				playersAll,players06,
+				players07);
+		m_pGameServer->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "stats", aBuf);
+
 		if(pReason && *pReason)
 			str_format(aBuf, sizeof(aBuf), "'%s' has left the game (%s)", Server()->ClientName(m_ClientID), pReason);
 		else

@@ -1445,7 +1445,12 @@ void CGameContext::OnClientEnter(int ClientID)
 		int players06 = Get06PlayerNum();
 		int players07 = Get07PlayerNum();
 		int playersAll = players06 + players07;
-		dbg_msg("stats", "Players: %d (0.6: %d, 0.7: %d)", playersAll, players06, players07);
+
+		str_format(aBuf, sizeof(aBuf),
+				"Players: %d (0.6: %d, 0.7: %d)",
+				playersAll,players06,
+				players07);
+		Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "stats", aBuf);
 		
 		SendChat(-1, CGameContext::CHAT_ALL, aBuf, -1);
 
