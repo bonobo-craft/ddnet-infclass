@@ -7,7 +7,6 @@
 #include <game/generated/server_data.h>
 #include <game/generated/protocol7.h>
 
-
 IClass::~IClass()
 {
 }

@@ -1216,6 +1216,10 @@ bool CCharacter::TakeDamage(vec2 Force, vec2 Source, int Dmg, int From, int Weap
 }
 bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 {
+	if(From != m_pPlayer->GetCID())
+		if (GameServer()->m_pController->IsWarmup())
+			return false;
+
 	if (m_IsFrozen)
 	  return false;
 
@@ -2834,8 +2838,11 @@ void CCharacter::SetNumObjectsHit(int NumObjectsHit)
 	m_NumObjectsHit = NumObjectsHit;
 }
 
+// by a hammer or stepping into inf zone
 void CCharacter::Infect(int From)
 {
+	if (GameServer()->m_pController->IsWarmup())
+	  return;
 	if (From >= 0) { // -1 and below is a special case (e.g infect when inside infection zone)
 		// Kill message (copypasted from CCharacter::TakeDamage)
 		CNetMsg_Sv_KillMsg Msg;
