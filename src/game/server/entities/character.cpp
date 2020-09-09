@@ -472,14 +472,14 @@ void CCharacter::FireWeapon()
 
 	vec2 ProjStartPos = m_Pos+Direction*m_ProximityRadius*0.75f;
 
-	if (!m_pCroyaPlayer->WillItFire(Direction, ProjStartPos, m_Core.m_ActiveWeapon, this)) {
-
+	if (!m_pCroyaPlayer || !m_pCroyaPlayer->WillItFire(Direction, ProjStartPos, m_Core.m_ActiveWeapon, this)) {
+		if (GetLastNoAttachSound() + Server()->TickSpeed() * 0.5 <= Server()->Tick())
+		{
+			GameServer()->CreateSound(GetPos(), SOUND_WEAPON_NOAMMO);
+			SetLastNoAttachSound(Server()->Tick());
+		}
 		return;
 	}
-
-
-	if (!m_pCroyaPlayer || !m_pCroyaPlayer->WillItFire(Direction, ProjStartPos, m_Core.m_ActiveWeapon, this))
-		  return;
 
 	switch(m_Core.m_ActiveWeapon)
 	{

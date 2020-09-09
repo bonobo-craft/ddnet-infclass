@@ -133,3 +133,12 @@ void CScientist::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCh
 	} break;
 	}
 }
+
+bool CScientist::WillItFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCharacter* pChr) {
+	if (Weapon == WEAPON_GRENADE) {
+		if (pChr->GetHealthArmorSum() <= 1) {
+			return false;
+		}
+	}
+	return true;
+}
