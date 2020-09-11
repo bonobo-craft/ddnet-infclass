@@ -79,28 +79,27 @@ struct CScoreRandomMapResult
 
 struct CScoreSaveResult
 {
-	//TBD
-	//CScoreSaveResult(int PlayerID, IGameController* Controller) :
-	//	m_Status(SAVE_FAILED),
-	//	m_SavedTeam(CSaveTeam(Controller)),
-	//	m_RequestingPlayer(PlayerID)
-	//{
-	//	m_aMessage[0] = '\0';
-	//	m_aBroadcast[0] = '\0';
-	//}
-	//enum
-	//{
-	//	SAVE_SUCCESS,
-	//	// load team in the following two cases
-	//	SAVE_FAILED,
-	//	LOAD_SUCCESS,
-	//	LOAD_FAILED,
-	//} m_Status;
-	//char m_aMessage[512];
-	//char m_aBroadcast[512];
-	//CSaveTeam m_SavedTeam;
-	//int m_RequestingPlayer;
-	//CUuid m_SaveID;
+	CScoreSaveResult(int PlayerID, IGameController* Controller) :
+		m_Status(SAVE_FAILED),
+		m_SavedTeam(CSaveTeam(Controller)),
+		m_RequestingPlayer(PlayerID)
+	{
+		m_aMessage[0] = '\0';
+		m_aBroadcast[0] = '\0';
+	}
+	enum
+	{
+		SAVE_SUCCESS,
+		// load team in the following two cases
+		SAVE_FAILED,
+		LOAD_SUCCESS,
+		LOAD_FAILED,
+	} m_Status;
+	char m_aMessage[512];
+	char m_aBroadcast[512];
+	CSaveTeam m_SavedTeam;
+	int m_RequestingPlayer;
+	CUuid m_SaveID;
 };
 
 struct CScoreInitResult

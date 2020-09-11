@@ -351,6 +351,19 @@ void IGameController::EndMatch()
 	GameServer()->SendBroadcast("Match End", -1);
 
 	GameServer()->m_World.m_Paused = true;
+
+	char aTimestamp[TIMESTAMP_STR_LENGTH];
+	str_timestamp_format(aTimestamp, sizeof(aTimestamp), FORMAT_SPACE); // 2019-04-02 19:41:58
+	for(int i = 0; i < MAX_CLIENTS; i++)
+		if(GameServer()->m_apPlayers[i]) {
+			CPlayer *player = GameServer()->m_apPlayers[i];
+			CCharacter* pChar = player->GetCharacter();
+			if (!pChar)
+				continue;
+			GameServer()->Score()->SaveScore(player->GetCID(), player->m_Score, aTimestamp,
+					pChar->m_CpCurrent, false); 
+
+		}
 	m_GameOverTick = Server()->Tick();
 	m_SuddenDeath = 0;
 	m_MatchCount++;

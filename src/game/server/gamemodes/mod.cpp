@@ -220,6 +220,11 @@ void CGameControllerMOD::OnRoundStart()
 		GameServer()->SendChatTarget(-1, aBuf);
 
 	}
+	for(int i = 0; i < MAX_CLIENTS; i++)
+		if(GameServer()->m_apPlayers[i]) {
+			CPlayer *player = GameServer()->m_apPlayers[i];
+			player->m_Score = 0;
+		}
 
 
 
