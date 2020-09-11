@@ -100,8 +100,8 @@ void CEngineerWall::Tick()
 				
 				p->Die(m_Owner, WEAPON_HAMMER);
 				CPlayer* pKiller = GameServer()->m_apPlayers[m_Owner];
-				if (p->GetPlayer()->GetCID() != pKiller->GetCID())
-					pKiller->GetCroyaPlayer()->OnKill(p->GetPlayer()->GetCID());
+/* 				if (p->GetPlayer()->GetCID() != pKiller->GetCID())
+					pKiller->GetCroyaPlayer()->OnKill(p->GetPlayer()->GetCID()); */
 			}
 		}
 	}
