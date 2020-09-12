@@ -1441,6 +1441,8 @@ void CGameContext::OnClientEnter(int ClientID)
 					   m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()),
 					   DDNetVersion
 					   );
+		Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "stats", aBuf);
+		SendChat(-1, CGameContext::CHAT_ALL, aBuf, -1);
 
 		int players06 = Get06PlayerNum();
 		int players07 = Get07PlayerNum();
@@ -1452,7 +1454,7 @@ void CGameContext::OnClientEnter(int ClientID)
 				players07);
 		Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "stats", aBuf);
 		
-		SendChat(-1, CGameContext::CHAT_ALL, aBuf, -1);
+		//SendChat(-1, CGameContext::CHAT_ALL, aBuf, -1);
 
 		//SendChatTarget(ClientID, "DDraceNetwork Mod. Version: " GAME_VERSION);
 		//SendChatTarget(ClientID, "please visit DDNet.tw or say /info for more info");

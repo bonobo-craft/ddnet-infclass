@@ -77,7 +77,6 @@ class CGameContext : public IGameServer
 	bool m_TeeHistorianActive;
 	CTeeHistorian m_TeeHistorian;
 	ASYNCIO *m_pTeeHistorianFile;
-	CUuid m_GameUuid;
 	CMapBugs m_MapBugs;
 	CPrng m_Prng;
 
@@ -119,6 +118,7 @@ class CGameContext : public IGameServer
 
 	bool m_Resetting;
 public:
+	CUuid m_GameUuid;
 	int Get06PlayerNum() const;
 	int Get07PlayerNum() const;
 	IServer *Server() const { return m_pServer; }

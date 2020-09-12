@@ -201,6 +201,7 @@ public:
 	void ProcessScoreResult(CScorePlayerResult &Result);
 	std::shared_ptr<CScorePlayerResult> m_ScoreQueryResult;
 	std::shared_ptr<CScorePlayerResult> m_ScoreFinishResult;
+	std::shared_ptr<CPlayerMatchResult> m_PlayerMatchResult;
 	bool m_NotEligibleForFinish;
 	int64 m_EligibleForFinishCheck;
 	bool m_VotedForPractice;

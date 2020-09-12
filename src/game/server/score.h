@@ -24,6 +24,41 @@ enum
 	TIMESTAMP_STR_LENGTH = 20, // 2019-04-02 19:38:36
 };
 
+struct CPlayerMatchResult
+{
+ 	//std::atomic_bool m_Done;
+	//CPlayerMatchResult();
+
+/*	enum Variant
+	{
+		DIRECT,
+		ALL,
+		BROADCAST,
+		MAP_VOTE,
+		PLAYER_INFO,
+	} m_MessageKind; */
+	enum {
+		MAX_MESSAGES_2 = 7,
+	};
+
+	union {
+		char m_aaMessages[MAX_MESSAGES_2][512];
+		char m_Broadcast[1024];
+		struct {
+			float m_Time;
+			int m_Score;
+		} m_Info;
+		struct
+		{
+			char m_Reason[VOTE_REASON_LENGTH];
+			char m_Server[32+1];
+			char m_Map[MAX_MAP_LENGTH+1];
+		} m_MapVote;
+	} m_Data; // PLAYER_MATCH_INFO
+
+	//void SetVariant(Variant v);
+};
+
 struct CScorePlayerResult
 {
 	std::atomic_bool m_Done;
@@ -181,6 +216,33 @@ struct CSqlRandomMapRequest : ISqlData
 	int m_Stars;
 };
 
+struct CSqlPlayerMatchScoreData : ISqlData
+{
+	CSqlPlayerMatchScoreData (std::shared_ptr<CPlayerMatchResult> pResult) :
+		m_pResult(pResult)
+	{}
+	virtual ~CSqlPlayerMatchScoreData() {};
+
+	std::shared_ptr<CPlayerMatchResult> m_pResult;
+
+	char m_Map[MAX_MAP_LENGTH];
+	char m_GameUuid[UUID_MAXSTRSIZE];
+	char m_Name[MAX_MAP_LENGTH];
+	int m_Score;
+	int m_ClientVersion;
+	int m_IsSixup;
+	char m_ClientAddress[48];
+
+
+	int m_ClientID;
+	float m_Time;
+	char m_aTimestamp[TIMESTAMP_STR_LENGTH];
+	float m_aCpCurrent[NUM_CHECKPOINTS];
+	int m_Num;
+	bool m_Search;
+	char m_aRequestingPlayer[MAX_NAME_LENGTH];
+};
+
 struct CSqlScoreData : ISqlData
 {
 	CSqlScoreData(std::shared_ptr<CScorePlayerResult> pResult) :
@@ -294,6 +356,7 @@ class CScore
 	static bool LoadTeamThread(IDbConnection *pSqlServer, const ISqlData *pGameData, bool Failure);
 
 	static bool SaveScoreThread(IDbConnection *pSqlServer, const ISqlData *pGameData, bool Failure);
+	static bool SavePlayerMatchScoreThread(IDbConnection *pSqlServer, const ISqlData *pGameData, bool Failure);
 	static bool SaveTeamScoreThread(IDbConnection *pSqlServer, const ISqlData *pGameData, bool Failure);
 
 	CGameContext *GameServer() const { return m_pGameServer; }
@@ -327,6 +390,7 @@ public:
 	void MapInfo(int ClientID, const char *pMapName);
 	void MapVote(int ClientID, const char *pMapName);
 	void LoadPlayerData(int ClientID);
+	void SavePlayerMatchScoreInf(CPlayer *pCurPlayer);
 	void SaveScore(int ClientID, float Time, const char *pTimestamp, float aCpTime[NUM_CHECKPOINTS], bool NotEligible);
 
 	void SaveTeamScore(int *pClientIDs, unsigned int Size, float Time, const char *pTimestamp);

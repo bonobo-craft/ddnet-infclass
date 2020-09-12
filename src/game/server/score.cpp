@@ -452,6 +452,34 @@ bool CScore::MapInfoThread(IDbConnection *pSqlServer, const ISqlData *pGameData)
 	return true;
 }
 
+void CScore::SavePlayerMatchScoreInf(CPlayer *pCurPlayer) {
+	if (!pCurPlayer)
+		return;
+/* 	CCharacter* pChar = pCurPlayer->GetCharacter();
+	if (!pChar)
+		return; */
+	int ClientID = pCurPlayer->GetCID();
+	char aTimestamp[TIMESTAMP_STR_LENGTH];
+	str_timestamp_format(aTimestamp, sizeof(aTimestamp), FORMAT_SPACE); // 2019-04-02 19:41:58
+	pCurPlayer->m_PlayerMatchResult = std::make_shared<CPlayerMatchResult>();
+	// TODO: everything bellow
+	auto Tmp = std::unique_ptr<CSqlPlayerMatchScoreData >(new CSqlPlayerMatchScoreData(pCurPlayer->m_PlayerMatchResult));
+	str_copy(Tmp->m_Map, g_Config.m_SvMap, sizeof(Tmp->m_Map));
+	FormatUuid(GameServer()->GameUuid(), Tmp->m_GameUuid, sizeof(Tmp->m_GameUuid));
+	Tmp->m_ClientID = ClientID;
+	str_copy(Tmp->m_Name, Server()->ClientName(ClientID), sizeof(Tmp->m_Name));
+	Tmp->m_Score = pCurPlayer->m_Score;
+	str_copy(Tmp->m_aTimestamp, aTimestamp, sizeof(Tmp->m_aTimestamp));
+	Tmp->m_Time = (Server()->Tick() - GameServer()->m_pController->m_GameStartTick) / ((float)Server()->TickSpeed());
+	Tmp->m_ClientVersion = pCurPlayer->GetClientVersion();
+	Tmp->m_IsSixup = Server()->IsSixup(ClientID);
+	char ClientAddress[48] = {0};
+	Server()->GetClientAddr(ClientID, ClientAddress, 48);
+	str_copy(Tmp->m_ClientAddress, ClientAddress, 48);
+
+	m_pPool->ExecuteWrite(SavePlayerMatchScoreThread, std::move(Tmp), "save player match score");
+}
+
 void CScore::SaveScore(int ClientID, float Time, const char *pTimestamp, float CpTime[NUM_CHECKPOINTS], bool NotEligible)
 {
 	CConsole* pCon = (CConsole*)GameServer()->Console();
@@ -539,6 +567,39 @@ bool CScore::SaveScoreThread(IDbConnection *pSqlServer, const ISqlData *pGameDat
 	pSqlServer->Step();
 
 	pData->m_pResult->m_Done = true;
+	return true;
+}
+
+bool CScore::SavePlayerMatchScoreThread(IDbConnection *pSqlServer, const ISqlData *pGameData, bool Failure)
+{
+	const CSqlPlayerMatchScoreData *pData = dynamic_cast<const CSqlPlayerMatchScoreData*>(pGameData);
+
+	char aBuf[1024];
+
+	// save score. Can't fail, because no UNIQUE/PRIMARY KEY constrain is defined.
+	str_format(aBuf, sizeof(aBuf),
+			"INSERT INTO player_matches("
+				"player_name, map_name, match_id, timestamp, "
+				"score, duration, version_number, is_sixup, ip_address"
+				") "
+			"VALUES ("
+			    "?, ?, ?, ?, "
+			    "?, ?, ?, ?, ? "
+				");"
+			);
+	pSqlServer->PrepareStatement(aBuf);
+	pSqlServer->BindString(1, pData->m_Name);
+	pSqlServer->BindString(2, pData->m_Map);
+	pSqlServer->BindString(3, pData->m_GameUuid);
+	pSqlServer->BindString(4, pData->m_aTimestamp);
+	pSqlServer->BindInt(5, pData->m_Score);
+	pSqlServer->BindFloat(6, pData->m_Time);
+	pSqlServer->BindInt(7, pData->m_ClientVersion);
+	pSqlServer->BindInt(8, pData->m_IsSixup);
+	pSqlServer->BindString(9, pData->m_ClientAddress);
+	pSqlServer->Step();
+
+	//pData->m_pResult->m_Done = true;
 	return true;
 }
 
