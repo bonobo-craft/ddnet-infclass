@@ -133,6 +133,9 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 
 		if (ShouldInfect) {
 			pTarget->Infect(ClientID); 
+			CPlayer *pPlayer = pChr->GetPlayer();
+			if (pPlayer)
+			  pPlayer->m_Infections += 1;
 		}
 
 		if (ShouldFreeze) {

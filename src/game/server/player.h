@@ -22,6 +22,7 @@ public:
 	~CPlayer();
 
 	void Reset();
+	void ResetScore();
 
 	void TryRespawn();
 	void Respawn(bool WeakHook = false); // with WeakHook == true the character will be spawned after all calls of Tick from other Players
@@ -91,6 +92,9 @@ public:
 	int m_DieTick;
 	int m_PreviousDieTick;
 	int m_Score;
+	int m_Deaths;
+	int m_Kills;
+	int m_Infections;
 	int m_JoinTick;
 	bool m_ForceBalanced;
 	int m_LastActionTick;

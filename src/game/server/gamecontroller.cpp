@@ -359,6 +359,11 @@ void IGameController::EndMatch()
 			CPlayer *pPlayer = GameServer()->m_apPlayers[i];
 			if (!pPlayer)
 				continue;
+			char aBuf[256];
+			str_format(aBuf, sizeof(aBuf),
+			 "This match you've scored %d kills, %d deaths, %d infects",
+			 pPlayer->m_Kills, pPlayer->m_Deaths, pPlayer->m_Infections);
+			GameServer()->SendChatTarget(pPlayer->GetCID(), aBuf);
 			GameServer()->Score()->SavePlayerMatchScoreInf(pPlayer);
 		}
 	m_GameOverTick = Server()->Tick();

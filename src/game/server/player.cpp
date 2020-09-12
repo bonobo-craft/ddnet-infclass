@@ -51,6 +51,13 @@ CPlayer::~CPlayer()
 	m_pCharacter = 0;
 }
 
+void CPlayer::ResetScore()
+{
+	m_Deaths = 0;
+	m_Kills = 0;
+	m_Infections = 0;
+}
+
 void CPlayer::Reset()
 {
 	m_DieTick = Server()->Tick();
@@ -122,6 +129,8 @@ void CPlayer::Reset()
 	m_DefEmoteReset = -1;
 
 	GameServer()->Score()->PlayerData(m_ClientID)->Reset();
+
+	ResetScore();
 
 	m_ShowOthers = g_Config.m_SvShowOthersDefault;
 	m_ShowAll = g_Config.m_SvShowAllDefault;
