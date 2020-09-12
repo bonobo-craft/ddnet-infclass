@@ -365,6 +365,7 @@ void IGameController::EndMatch()
 			 pPlayer->m_Kills, pPlayer->m_Deaths, pPlayer->m_Infections);
 			GameServer()->SendChatTarget(pPlayer->GetCID(), aBuf);
 			GameServer()->Score()->SavePlayerMatchScoreInf(pPlayer);
+			pPlayer->ResetScore();
 		}
 	m_GameOverTick = Server()->Tick();
 	m_SuddenDeath = 0;
