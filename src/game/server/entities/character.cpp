@@ -2990,38 +2990,59 @@ void CCharacter::DestroyChildEntities()
 {
 	for (CEngineerWall* pWall = (CEngineerWall*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_ENGINEER_WALL); pWall; pWall = (CEngineerWall*)pWall->TypeNext())
 	{
-		if (pWall->m_Owner != m_pPlayer->GetCID()) continue;
-		GameServer()->m_World.DestroyEntity(pWall);
+		if (pWall)
+		{
+			if (pWall->m_Owner != m_pPlayer->GetCID()) continue;
+			GameServer()->m_World.DestroyEntity(pWall);
+		}
 	}
 	for (CSoldierBomb* pBomb = (CSoldierBomb*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_SOLDIER_BOMB); pBomb; pBomb = (CSoldierBomb*)pBomb->TypeNext())
 	{
-		if (pBomb->m_Owner != m_pPlayer->GetCID()) continue;
-		GameServer()->m_World.DestroyEntity(pBomb);
+		if (pBomb)
+		{
+			if (pBomb->m_Owner != m_pPlayer->GetCID()) continue;
+			GameServer()->m_World.DestroyEntity(pBomb);
+		}
 	}
 	for (CScientistMine* pMine = (CScientistMine*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_SCIENTIST_MINE); pMine; pMine = (CScientistMine*)pMine->TypeNext())
 	{
-		if (pMine->m_Owner != m_pPlayer->GetCID()) continue;
-		GameServer()->m_World.DestroyEntity(pMine);
+		if (pMine)
+		{
+			if (pMine->m_Owner != m_pPlayer->GetCID()) continue;
+			GameServer()->m_World.DestroyEntity(pMine);
+		}
 	}
 	for (CBiologistMine* pMine = (CBiologistMine*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_BIOLOGIST_MINE); pMine; pMine = (CBiologistMine*)pMine->TypeNext())
 	{
-		if (pMine->m_Owner != m_pPlayer->GetCID()) continue;
-		GameServer()->m_World.DestroyEntity(pMine);
+		if (pMine)
+		{
+			if (pMine->m_Owner != m_pPlayer->GetCID()) continue;
+			GameServer()->m_World.DestroyEntity(pMine);
+		}
 	}
 	for (CMedicGrenade* pGrenade = (CMedicGrenade*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_MEDIC_GRENADE); pGrenade; pGrenade = (CMedicGrenade*)pGrenade->TypeNext())
 	{
-		if (pGrenade->m_Owner != m_pPlayer->GetCID()) continue;
-		GameServer()->m_World.DestroyEntity(pGrenade);
+		if (pGrenade)
+		{
+			if (pGrenade->m_Owner != m_pPlayer->GetCID()) continue;
+			GameServer()->m_World.DestroyEntity(pGrenade);
+		}
 	}
 	for (CMercenaryBomb* pBomb = (CMercenaryBomb*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_MERCENARY_BOMB); pBomb; pBomb = (CMercenaryBomb*)pBomb->TypeNext())
 	{
-		if (pBomb->m_Owner != m_pPlayer->GetCID()) continue;
-		GameServer()->m_World.DestroyEntity(pBomb);
+		if (pBomb)
+		{
+			if (pBomb->m_Owner != m_pPlayer->GetCID()) continue;
+			GameServer()->m_World.DestroyEntity(pBomb);
+		}
 	}
 	for (CScatterGrenade* pGrenade = (CScatterGrenade*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_SCATTER_GRENADE); pGrenade; pGrenade = (CScatterGrenade*)pGrenade->TypeNext())
 	{
-		if (pGrenade->m_Owner != m_pPlayer->GetCID()) continue;
-		GameServer()->m_World.DestroyEntity(pGrenade);
+		if (pGrenade)
+		{
+			if (pGrenade->m_Owner != m_pPlayer->GetCID()) continue;
+			GameServer()->m_World.DestroyEntity(pGrenade);
+		}
 	}
 
 	m_FirstShot = true;
