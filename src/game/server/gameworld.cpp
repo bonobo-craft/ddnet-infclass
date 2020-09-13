@@ -20,15 +20,17 @@ CGameWorld::CGameWorld()
 	m_Paused = false;
 	m_ResetRequested = false;
 	for(int i = 0; i < NUM_ENTTYPES; i++)
-		m_apFirstEntityTypes[i] = 0;
+		m_apFirstEntityTypes[i] = nullptr;
 }
 
 CGameWorld::~CGameWorld()
 {
 	// delete all entities
 	for(int i = 0; i < NUM_ENTTYPES; i++)
-		while(m_apFirstEntityTypes[i])
+		while(m_apFirstEntityTypes[i]) {
 			delete m_apFirstEntityTypes[i];
+			m_apFirstEntityTypes[i] = nullptr;
+		}
 }
 
 void CGameWorld::SetGameServer(CGameContext *pGameServer)
@@ -142,17 +144,24 @@ void CGameWorld::Reset()
 void CGameWorld::RemoveEntities()
 {
 	// destroy objects marked for destruction
-	for(int i = 0; i < NUM_ENTTYPES; i++)
+	for(int i = 0; i < NUM_ENTTYPES; i++) {
+		int traversed = 0;
+		int destroyed = 0;
 		for(CEntity *pEnt = m_apFirstEntityTypes[i]; pEnt; )
 		{
 			m_pNextTraverseEntity = pEnt->m_pNextTypeEntity;
 			if(pEnt->m_MarkedForDestroy)
 			{
+				destroyed++;
 				RemoveEntity(pEnt);
 				pEnt->Destroy();
 			}
 			pEnt = m_pNextTraverseEntity;
+			traversed++;
 		}
+		if (traversed == destroyed)
+			m_apFirstEntityTypes[i] = nullptr;
+	}
 }
 
 bool distCompare(std::pair<float,int> a, std::pair<float,int> b)
