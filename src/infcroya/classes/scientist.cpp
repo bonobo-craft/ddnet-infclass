@@ -116,6 +116,18 @@ void CScientist::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCh
 			Core.m_HookedPlayer = -1;
 			Core.m_HookState = HOOK_RETRACTED;
 			Core.m_HookPos = Core.m_Pos;
+			int ClientID = pChr->GetPlayer()->GetCID();
+			for(int i = 0; i < MAX_CLIENTS; i++) // linear search, better would be a stored attribute of hooker
+			{
+				CCharacterCore *pCharCore = Core.m_pWorld->m_apCharacters[i];
+				if (!pCharCore || pCharCore == &Core)
+					continue;
+				if (pCharCore->m_HookedPlayer == -1 || pCharCore->m_HookedPlayer != ClientID)
+				    continue;
+				pCharCore->m_HookedPlayer = -1;
+				pCharCore->m_HookState = HOOK_RETRACTED;
+				pCharCore->m_HookPos = Core.m_Pos;
+			}
 			if (g_Config.m_InfScientistTpSelfharm > 0) {
 				pChr->TakeDamage(vec2(0.0f, 0.0f), pChr->GetPos(), g_Config.m_InfScientistTpSelfharm, ClientID, WEAPON_HAMMER);
 			}
