@@ -937,8 +937,16 @@ void CCharacter::Tick()
 		if(m_Core.m_HookedPlayer != -1
 			&& GameServer()->m_apPlayers[m_Core.m_HookedPlayer]->GetTeam() != -1)
 		{
+			m_Core.m_TaxiPassengerCore = GameWorld()->m_Core.m_apCharacters[m_Core.m_HookedPlayer];
 			Antibot()->OnHookAttach(m_pPlayer->GetCID(), true);
 		}
+	}
+
+	if (m_Core.m_TaxiPassengerCore) {
+		m_Core.m_TaxiPassengerCore->m_Pos.x = m_Core.m_Pos.x;
+		m_Core.m_TaxiPassengerCore->m_Pos.y = m_Core.m_Pos.y;
+		m_Core.m_TaxiPassengerCore->m_Vel.x = m_Core.m_Vel.x;
+		m_Core.m_TaxiPassengerCore->m_Vel.y = m_Core.m_Vel.y;
 	}
 
 	// Previnput
