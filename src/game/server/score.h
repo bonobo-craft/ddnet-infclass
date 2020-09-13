@@ -229,6 +229,9 @@ struct CSqlPlayerMatchScoreData : ISqlData
 	char m_GameUuid[UUID_MAXSTRSIZE];
 	char m_Name[MAX_MAP_LENGTH];
 	int m_Score;
+	int m_Kills;
+	int m_Deaths;
+	int m_Infections;
 	int m_ClientVersion;
 	int m_IsSixup;
 	char m_ClientAddress[48];
