@@ -199,6 +199,7 @@ void CGameControllerMOD::OnRoundStart()
 	}
 	TurnDefaultIntoRandomHuman();
 	UnlockPositions();
+	ResetTaxi();
 
 	for (CCircle* safezone : safezones) {
 		if (safezone->GetRadius() > safezone->GetMinRadius())
@@ -245,6 +246,19 @@ void CGameControllerMOD::TurnDefaultIntoRandomHuman()
 			each->SetBeenOnRoundStart();
 			each->GetCharacter()->IncreaseArmor(10);
 		}
+	}
+}
+
+void CGameControllerMOD::ResetTaxi()
+{
+	for (CroyaPlayer* each : players) {
+		if (!each)
+			continue;
+		if (!each->GetCharacter())
+			continue;
+		each->GetCharacter()->m_FreeTaxi = false;
+		each->GetCharacter()->m_TaxiPassenger = false;
+		each->GetCharacter()->GetpCore()->m_TaxiPassengerCore = 0;
 	}
 }
 
