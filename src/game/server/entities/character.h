@@ -111,6 +111,7 @@ public:
 	class CPlayer *GetPlayer() { return m_pPlayer; }
 
 	// INFCROYA BEGIN ------------------------------------------------------------
+	void SwitchTaxi();
 	void SetNormalEmote(int Emote);
 
 	bool IsHuman() const;
@@ -183,6 +184,7 @@ private:
 	bool m_Infected;
 	CroyaPlayer* m_pCroyaPlayer;
 	int m_HeartID;
+	int m_TaxiID;
 	int m_NormalEmote;
 	bool m_IsFrozen;
 	bool m_IsStunned;
@@ -341,6 +343,7 @@ public:
 	void SetLastAction(int LastAction) { m_LastAction = LastAction; };
 	int GetArmor() { return m_Armor; };
 	void SetArmor(int Armor) { m_Armor = Armor; };
+	CCharacterCore *GetpCore() { return &m_Core; };
 	CCharacterCore GetCore() { return m_Core; };
 	void SetCore(CCharacterCore Core) { m_Core = Core; };
 	CCharacterCore* Core() { return &m_Core; };
@@ -358,6 +361,9 @@ public:
 	bool HasTelegunGun() { return m_Core.m_HasTelegunGun; };
 	bool HasTelegunGrenade() { return m_Core.m_HasTelegunGrenade; };
 	bool HasTelegunLaser() { return m_Core.m_HasTelegunLaser; };
+	bool m_FreeTaxi;
+	bool m_TaxiPassenger;
+	CCharacterCore *m_TaxiDriverCore;
 };
 
 enum

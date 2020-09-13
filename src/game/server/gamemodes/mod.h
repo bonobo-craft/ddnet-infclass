@@ -42,6 +42,7 @@ public:
 	void StartInitialInfection();
 	void TurnDefaultIntoRandomHuman();
 	void UnlockPositions();
+	void ResetTaxi();
 
 	void OnRoundEnd();
 	bool DoWincheckMatch();

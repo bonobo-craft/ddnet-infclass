@@ -41,6 +41,9 @@ CCharacter::CCharacter(CGameWorld *pWorld)
 	// INFCROYA BEGIN ------------------------------------------------------------
 	m_Infected = false;
 	m_HeartID = Server()->SnapNewID();
+	m_TaxiID = Server()->SnapNewID();
+	m_FreeTaxi = false;
+	m_TaxiPassenger = false;
 	m_FirstShot = true;
 	m_BarrierHintID = Server()->SnapNewID();
 	m_BarrierHintIDs.set_size(2);
@@ -143,6 +146,12 @@ void CCharacter::Destroy()
 			Server()->SnapFreeID(m_BarrierHintIDs[i]);
 			m_BarrierHintIDs[i] = -1;
 		}
+	}
+	if (m_TaxiID >= 0) {
+		Server()->SnapFreeID(m_TaxiID);
+		m_TaxiID = -1;
+		m_FreeTaxi = false;
+		m_TaxiPassenger = false;
 	}
 	DestroyChildEntities();
 	// INFCROYA END ------------------------------------------------------------//
@@ -925,14 +934,61 @@ void CCharacter::Tick()
 
 	DDRacePostCoreTick();
 
+	// passenger jump to exit
+	if(m_Core.m_TriggeredEvents&COREEVENT_AIR_JUMP ||
+	   m_Core.m_TriggeredEvents&COREEVENT_GROUND_JUMP)
+	{
+		if (m_pPlayer && m_pPlayer->GetCharacter() &&
+			m_pPlayer->GetCharacter()->m_TaxiPassenger)
+		{
+			// dbg_msg("taxi", "passenger jumped");
+			m_pPlayer->GetCharacter()->m_TaxiPassenger = false;
+			if (m_pPlayer->GetCharacter()->m_TaxiDriverCore)
+			{
+				m_pPlayer->GetCharacter()->m_TaxiDriverCore->m_TaxiPassengerCore = nullptr;
+				m_pPlayer->GetCharacter()->m_TaxiDriverCore = nullptr;
+			}
+		}
+	}
+
+
 	if(m_Core.m_TriggeredEvents&COREEVENT_HOOK_ATTACH_PLAYER)
 	{
 		if(m_Core.m_HookedPlayer != -1
-			&& GameServer()->m_apPlayers[m_Core.m_HookedPlayer]->GetTeam() != -1)
+			&& GameServer()->m_apPlayers[m_Core.m_HookedPlayer]->GetTeam() != -1
+			&& GameServer()->m_apPlayers[m_Core.m_HookedPlayer]->GetCharacter())
 		{
+			CCharacter *TargetChar = GameServer()->m_apPlayers[m_Core.m_HookedPlayer]->GetCharacter();
+			if (TargetChar->m_FreeTaxi &&
+			    !TargetChar->m_TaxiPassenger &&
+				!TargetChar->GetCore().m_TaxiPassengerCore)
+			{
+				// driver is no longer vacant and he is not a passenger anymore
+				TargetChar->m_FreeTaxi = false;
+				TargetChar-> m_TaxiPassenger = false;
+				// hooker is now a passenger and is no longer vacant
+				m_pPlayer->GetCharacter()->m_TaxiPassenger = true;
+				m_pPlayer->GetCharacter()->m_FreeTaxi = false;
+				// driver now has a link to a passenger's core to follow him
+				TargetChar->GetpCore()->m_TaxiPassengerCore = &m_Core;
+				// but passenger now frees a previous passenger
+				m_Core.m_TaxiPassengerCore = nullptr;
+				// let's remember a core of a driver to exit it later
+				m_pPlayer->GetCharacter()->m_TaxiDriverCore = TargetChar->GetpCore();
+			}
+			// m_Core.m_TaxiPassengerCore = GameWorld()->m_Core.m_apCharacters[m_Core.m_HookedPlayer];
 			Antibot()->OnHookAttach(m_pPlayer->GetCID(), true);
 		}
 	}
+
+	// passenger follows a taxi
+	if (m_Core.m_TaxiPassengerCore) {
+		m_Core.m_TaxiPassengerCore->m_Pos.x = m_Core.m_Pos.x;
+		m_Core.m_TaxiPassengerCore->m_Pos.y = m_Core.m_Pos.y - 60;
+		m_Core.m_TaxiPassengerCore->m_Vel.x = m_Core.m_Vel.x;
+		m_Core.m_TaxiPassengerCore->m_Vel.y = m_Core.m_Vel.y;
+	}
+
 
 	// Previnput
 	m_PrevInput = m_Input;
@@ -1491,8 +1547,29 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 	}
 
 		// INFCROYA BEGIN ------------------------------------------------------------
-	// Heart displayed on top of injured tees
+	// Taxi icon
 	CPlayer* pClient = GameServer()->m_apPlayers[SnappingClient];
+	if (m_FreeTaxi) {
+		if (Server()->IsSixup(SnappingClient)) {
+			protocol7::CNetObj_Pickup* pP = static_cast<protocol7::CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_HeartID, sizeof(protocol7::CNetObj_Pickup)));
+			if (!pP)
+				return;
+
+			pP->m_X = (int)m_Pos.x;
+			pP->m_Y = (int)m_Pos.y - 60.0;
+			pP->m_Type = 5;
+		} else {
+			CNetObj_Pickup* pP = static_cast<CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_HeartID, sizeof(CNetObj_Pickup)));
+			if (!pP)
+				return;
+
+			pP->m_X = (int)m_Pos.x;
+			pP->m_Y = (int)m_Pos.y - 60.0;
+			pP->m_Type = POWERUP_NINJA;
+			pP->m_Subtype = WEAPON_NINJA;
+		}
+	}
+	// Heart displayed on top of injured tees
 	if (IsZombie() && GetHealthArmorSum() < 10 && SnappingClient != m_pPlayer->GetCID() && pClient->GetCroyaPlayer()->IsZombie()) {
 		if (Server()->IsSixup(SnappingClient)) {
 			protocol7::CNetObj_Pickup* pP = static_cast<protocol7::CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_HeartID, sizeof(protocol7::CNetObj_Pickup)));
@@ -2799,6 +2876,29 @@ void CCharacter::Rescue()
 }
 
 // INFCROYA BEGIN ------------------------------------------------------------
+void CCharacter::SwitchTaxi()
+{
+	if (m_FreeTaxi)
+		m_FreeTaxi = false;
+	else {
+		// if was a passenger tell driver to release me
+		if (m_TaxiDriverCore || m_TaxiPassenger) {
+			m_TaxiDriverCore->m_TaxiPassengerCore = nullptr;
+			m_TaxiDriverCore = nullptr;
+			m_TaxiPassenger = false;
+			return;
+		}
+		// if was a driver release a passenger
+		if (m_Core.m_TaxiPassengerCore) {
+			m_Core.m_TaxiPassengerCore = nullptr;	
+			m_TaxiPassenger = false;
+			return;
+		}
+		// be vacant
+		m_FreeTaxi = true;
+	}
+}
+
 void CCharacter::SetNormalEmote(int Emote)
 {
 	m_NormalEmote = Emote;
