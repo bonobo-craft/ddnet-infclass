@@ -41,6 +41,8 @@ CCharacter::CCharacter(CGameWorld *pWorld)
 	// INFCROYA BEGIN ------------------------------------------------------------
 	m_Infected = false;
 	m_HeartID = Server()->SnapNewID();
+	m_TaxiID = Server()->SnapNewID();
+	m_FreeTaxi = false;
 	m_FirstShot = true;
 	m_BarrierHintID = Server()->SnapNewID();
 	m_BarrierHintIDs.set_size(2);
@@ -143,6 +145,11 @@ void CCharacter::Destroy()
 			Server()->SnapFreeID(m_BarrierHintIDs[i]);
 			m_BarrierHintIDs[i] = -1;
 		}
+	}
+	if (m_TaxiID >= 0) {
+		Server()->SnapFreeID(m_TaxiID);
+		m_TaxiID = -1;
+		m_FreeTaxi = false;
 	}
 	DestroyChildEntities();
 	// INFCROYA END ------------------------------------------------------------//
@@ -1491,8 +1498,29 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 	}
 
 		// INFCROYA BEGIN ------------------------------------------------------------
-	// Heart displayed on top of injured tees
+	// Taxi icon
 	CPlayer* pClient = GameServer()->m_apPlayers[SnappingClient];
+	if (m_FreeTaxi) {
+		if (Server()->IsSixup(SnappingClient)) {
+			protocol7::CNetObj_Pickup* pP = static_cast<protocol7::CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_HeartID, sizeof(protocol7::CNetObj_Pickup)));
+			if (!pP)
+				return;
+
+			pP->m_X = (int)m_Pos.x;
+			pP->m_Y = (int)m_Pos.y - 60.0;
+			pP->m_Type = 5;
+		} else {
+			CNetObj_Pickup* pP = static_cast<CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_HeartID, sizeof(CNetObj_Pickup)));
+			if (!pP)
+				return;
+
+			pP->m_X = (int)m_Pos.x;
+			pP->m_Y = (int)m_Pos.y - 60.0;
+			pP->m_Type = POWERUP_NINJA;
+			pP->m_Subtype = WEAPON_NINJA;
+		}
+	}
+	// Heart displayed on top of injured tees
 	if (IsZombie() && GetHealthArmorSum() < 10 && SnappingClient != m_pPlayer->GetCID() && pClient->GetCroyaPlayer()->IsZombie()) {
 		if (Server()->IsSixup(SnappingClient)) {
 			protocol7::CNetObj_Pickup* pP = static_cast<protocol7::CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_HeartID, sizeof(protocol7::CNetObj_Pickup)));
@@ -2799,6 +2827,14 @@ void CCharacter::Rescue()
 }
 
 // INFCROYA BEGIN ------------------------------------------------------------
+void CCharacter::SwitchTaxi()
+{
+	if (m_FreeTaxi)
+		m_FreeTaxi = false;
+	else
+		m_FreeTaxi = true;
+}
+
 void CCharacter::SetNormalEmote(int Emote)
 {
 	m_NormalEmote = Emote;

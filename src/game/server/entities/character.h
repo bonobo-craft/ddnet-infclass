@@ -111,6 +111,7 @@ public:
 	class CPlayer *GetPlayer() { return m_pPlayer; }
 
 	// INFCROYA BEGIN ------------------------------------------------------------
+	void SwitchTaxi();
 	void SetNormalEmote(int Emote);
 
 	bool IsHuman() const;
@@ -183,6 +184,8 @@ private:
 	bool m_Infected;
 	CroyaPlayer* m_pCroyaPlayer;
 	int m_HeartID;
+	bool m_FreeTaxi;
+	int m_TaxiID;
 	int m_NormalEmote;
 	bool m_IsFrozen;
 	bool m_IsStunned;
