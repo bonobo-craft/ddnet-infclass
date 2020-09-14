@@ -1140,6 +1140,7 @@ bool CCharacter::IncreaseArmor(int Amount)
 
 void CCharacter::Die(int Killer, int Weapon)
 {
+	ResetTaxi();
 	if(Server()->IsRecording(m_pPlayer->GetCID()))
 		Server()->StopRecord(m_pPlayer->GetCID());
 
@@ -2881,6 +2882,21 @@ void CCharacter::Rescue()
 }
 
 // INFCROYA BEGIN ------------------------------------------------------------
+void CCharacter::ResetTaxi()
+{
+	m_FreeTaxi = false;
+	m_FreeTaxi = false;
+	m_TaxiPassenger = false;
+	if (m_Core.m_TaxiDriverCore) {
+		m_Core.m_TaxiDriverCore->m_TaxiPassengerCore = nullptr;
+		m_Core.m_TaxiDriverCore = nullptr;
+	}
+	if (m_Core.m_TaxiPassengerCore) {
+		m_Core.m_TaxiPassengerCore->m_TaxiDriverCore = nullptr;
+		m_Core.m_TaxiPassengerCore = nullptr;
+	}
+}
+
 void CCharacter::SwitchTaxi()
 {
 	if (m_FreeTaxi)

@@ -276,6 +276,8 @@ int CroyaPlayer::GetClassNum()
 
 void CroyaPlayer::SetClassNum(int Class, bool DrawPurpleThing, bool ShowInfo, bool destroyChildEntities)
 {
+	if (GetCharacter())
+		GetCharacter()->ResetTaxi();
 	char aBuf[512];
 	str_format(aBuf, sizeof(aBuf),
 			"SetClassNum, Client ID = %d, class = %d'",

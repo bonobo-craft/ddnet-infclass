@@ -256,9 +256,7 @@ void CGameControllerMOD::ResetTaxi()
 			continue;
 		if (!each->GetCharacter())
 			continue;
-		each->GetCharacter()->m_FreeTaxi = false;
-		each->GetCharacter()->m_TaxiPassenger = false;
-		each->GetCharacter()->GetpCore()->m_TaxiPassengerCore = 0;
+		each->GetCharacter()->ResetTaxi();
 	}
 }
 
