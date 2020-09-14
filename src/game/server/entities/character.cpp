@@ -945,7 +945,12 @@ void CCharacter::Tick()
 			m_pPlayer->GetCharacter()->m_TaxiPassenger = false;
 			if (m_pPlayer->GetCharacter()->m_TaxiDriverCore)
 			{
-				m_pPlayer->GetCharacter()->m_TaxiDriverCore->m_TaxiPassengerCore = nullptr;
+				CCharacterCore *DriverCore = m_pPlayer->GetCharacter()->m_TaxiDriverCore;
+				m_Core.m_Pos.x = DriverCore->m_Pos.x;
+				m_Core.m_Pos.y = DriverCore->m_Pos.y;
+				m_Core.m_Vel.x = DriverCore->m_Vel.x;
+				m_Core.m_Vel.y = DriverCore->m_Vel.y;
+				DriverCore->m_TaxiPassengerCore = nullptr;
 				m_pPlayer->GetCharacter()->m_TaxiDriverCore = nullptr;
 			}
 		}
@@ -986,7 +991,7 @@ void CCharacter::Tick()
 		m_Core.m_TaxiPassengerCore->m_Pos.x = m_Core.m_Pos.x;
 		m_Core.m_TaxiPassengerCore->m_Pos.y = m_Core.m_Pos.y - 60;
 		m_Core.m_TaxiPassengerCore->m_Vel.x = m_Core.m_Vel.x;
-		m_Core.m_TaxiPassengerCore->m_Vel.y = m_Core.m_Vel.y;
+		m_Core.m_TaxiPassengerCore->m_Vel.y = m_Core.m_Vel.y - 1.5f;
 	}
 
 
@@ -2883,6 +2888,11 @@ void CCharacter::SwitchTaxi()
 	else {
 		// if was a passenger tell driver to release me
 		if (m_TaxiDriverCore || m_TaxiPassenger) {
+			m_Core.m_Pos.x = m_TaxiDriverCore->m_Pos.x;
+			m_Core.m_Pos.y = m_TaxiDriverCore->m_Pos.y;
+			m_Core.m_Vel.x = m_TaxiDriverCore->m_Vel.x;
+			m_Core.m_Vel.y = m_TaxiDriverCore->m_Vel.y;
+
 			m_TaxiDriverCore->m_TaxiPassengerCore = nullptr;
 			m_TaxiDriverCore = nullptr;
 			m_TaxiPassenger = false;
@@ -2890,6 +2900,10 @@ void CCharacter::SwitchTaxi()
 		}
 		// if was a driver release a passenger
 		if (m_Core.m_TaxiPassengerCore) {
+			m_Core.m_TaxiPassengerCore->m_Pos.x = m_Core.m_Pos.x;
+			m_Core.m_TaxiPassengerCore->m_Pos.y = m_Core.m_Pos.y;
+			m_Core.m_TaxiPassengerCore->m_Vel.x = m_Core.m_Vel.x;
+			m_Core.m_TaxiPassengerCore->m_Vel.y = m_Core.m_Vel.y;
 			m_Core.m_TaxiPassengerCore = nullptr;	
 			m_TaxiPassenger = false;
 			return;
