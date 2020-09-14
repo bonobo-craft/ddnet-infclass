@@ -2887,7 +2887,7 @@ void CCharacter::SwitchTaxi()
 		m_FreeTaxi = false;
 	else {
 		// if was a passenger tell driver to release me
-		if (m_Core.m_TaxiDriverCore || m_TaxiPassenger) {
+		if (m_Core.m_TaxiDriverCore) {
 			m_Core.m_Pos.x = m_Core.m_TaxiDriverCore->m_Pos.x;
 			m_Core.m_Pos.y = m_Core.m_TaxiDriverCore->m_Pos.y;
 			m_Core.m_Vel.x = m_Core.m_TaxiDriverCore->m_Vel.x;
