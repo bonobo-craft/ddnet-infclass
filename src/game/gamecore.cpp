@@ -69,6 +69,8 @@ void CCharacterCore::Init(CWorldCore *pWorld, CCollision *pCollision, CTeamsCore
 	m_Collision = true;
 	m_JumpedTotal = 0;
 	m_Jumps = 2;
+	m_TaxiPassengerCore = nullptr;
+	m_TaxiDriverCore = nullptr;
 }
 
 void CCharacterCore::Init(CWorldCore *pWorld, CCollision *pCollision, CTeamsCore *pTeams, std::map<int, std::vector<vec2> > *pTeleOuts)
@@ -281,6 +283,12 @@ void CCharacterCore::Tick(bool UseInput)
 				CCharacterCore *pCharCore = m_pWorld->m_apCharacters[i];
 				if(!pCharCore || pCharCore == this || (!(m_Super || pCharCore->m_Super) && (!m_pTeams->CanCollide(i, m_Id) || pCharCore->m_Solo || m_Solo)))
 					continue;
+				
+				if (m_TaxiPassengerCore && m_TaxiPassengerCore == pCharCore)
+				  continue;
+
+				if (m_TaxiDriverCore && m_TaxiDriverCore == pCharCore)
+				  continue;
 
 				vec2 ClosestPoint = closest_point_on_line(m_HookPos, NewPos, pCharCore->m_Pos);
 				if(distance(pCharCore->m_Pos, ClosestPoint) < PhysSize+2.0f)

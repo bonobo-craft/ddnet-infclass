@@ -943,15 +943,15 @@ void CCharacter::Tick()
 		{
 			// dbg_msg("taxi", "passenger jumped");
 			m_pPlayer->GetCharacter()->m_TaxiPassenger = false;
-			if (m_pPlayer->GetCharacter()->m_TaxiDriverCore)
+			if (m_Core.m_TaxiDriverCore)
 			{
-				CCharacterCore *DriverCore = m_pPlayer->GetCharacter()->m_TaxiDriverCore;
+				CCharacterCore *DriverCore = m_Core.m_TaxiDriverCore;
 				m_Core.m_Pos.x = DriverCore->m_Pos.x;
 				m_Core.m_Pos.y = DriverCore->m_Pos.y;
 				m_Core.m_Vel.x = DriverCore->m_Vel.x;
 				m_Core.m_Vel.y = DriverCore->m_Vel.y;
 				DriverCore->m_TaxiPassengerCore = nullptr;
-				m_pPlayer->GetCharacter()->m_TaxiDriverCore = nullptr;
+				m_Core.m_TaxiDriverCore = nullptr;
 			}
 		}
 	}
@@ -979,7 +979,7 @@ void CCharacter::Tick()
 				// but passenger now frees a previous passenger
 				m_Core.m_TaxiPassengerCore = nullptr;
 				// let's remember a core of a driver to exit it later
-				m_pPlayer->GetCharacter()->m_TaxiDriverCore = TargetChar->GetpCore();
+				m_Core.m_TaxiDriverCore = TargetChar->GetpCore();
 			}
 			// m_Core.m_TaxiPassengerCore = GameWorld()->m_Core.m_apCharacters[m_Core.m_HookedPlayer];
 			Antibot()->OnHookAttach(m_pPlayer->GetCID(), true);
@@ -2887,14 +2887,14 @@ void CCharacter::SwitchTaxi()
 		m_FreeTaxi = false;
 	else {
 		// if was a passenger tell driver to release me
-		if (m_TaxiDriverCore || m_TaxiPassenger) {
-			m_Core.m_Pos.x = m_TaxiDriverCore->m_Pos.x;
-			m_Core.m_Pos.y = m_TaxiDriverCore->m_Pos.y;
-			m_Core.m_Vel.x = m_TaxiDriverCore->m_Vel.x;
-			m_Core.m_Vel.y = m_TaxiDriverCore->m_Vel.y;
+		if (m_Core.m_TaxiDriverCore || m_TaxiPassenger) {
+			m_Core.m_Pos.x = m_Core.m_TaxiDriverCore->m_Pos.x;
+			m_Core.m_Pos.y = m_Core.m_TaxiDriverCore->m_Pos.y;
+			m_Core.m_Vel.x = m_Core.m_TaxiDriverCore->m_Vel.x;
+			m_Core.m_Vel.y = m_Core.m_TaxiDriverCore->m_Vel.y;
 
-			m_TaxiDriverCore->m_TaxiPassengerCore = nullptr;
-			m_TaxiDriverCore = nullptr;
+			m_Core.m_TaxiDriverCore->m_TaxiPassengerCore = nullptr;
+			m_Core.m_TaxiDriverCore = nullptr;
 			m_TaxiPassenger = false;
 			return;
 		}
@@ -2904,6 +2904,7 @@ void CCharacter::SwitchTaxi()
 			m_Core.m_TaxiPassengerCore->m_Pos.y = m_Core.m_Pos.y;
 			m_Core.m_TaxiPassengerCore->m_Vel.x = m_Core.m_Vel.x;
 			m_Core.m_TaxiPassengerCore->m_Vel.y = m_Core.m_Vel.y;
+			m_Core.m_TaxiPassengerCore->m_TaxiDriverCore = nullptr;
 			m_Core.m_TaxiPassengerCore = nullptr;	
 			m_TaxiPassenger = false;
 			return;

@@ -363,7 +363,6 @@ public:
 	bool HasTelegunLaser() { return m_Core.m_HasTelegunLaser; };
 	bool m_FreeTaxi;
 	bool m_TaxiPassenger;
-	CCharacterCore *m_TaxiDriverCore;
 };
 
 enum

@@ -227,6 +227,7 @@ public:
 	int m_HookState;
 	int m_HookedPlayer;
 	CCharacterCore *m_TaxiPassengerCore;
+	CCharacterCore *m_TaxiDriverCore;
 	int m_ActiveWeapon;
 
 	bool m_NewHook;
