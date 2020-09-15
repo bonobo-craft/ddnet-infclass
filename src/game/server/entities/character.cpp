@@ -2885,13 +2885,20 @@ void CCharacter::Rescue()
 void CCharacter::ResetTaxi()
 {
 	m_FreeTaxi = false;
-	m_FreeTaxi = false;
 	m_TaxiPassenger = false;
 	if (m_Core.m_TaxiDriverCore) {
+		m_Core.m_Pos.x = m_Core.m_TaxiDriverCore->m_Pos.x;
+		m_Core.m_Pos.y = m_Core.m_TaxiDriverCore->m_Pos.y;
+		m_Core.m_Vel.x = m_Core.m_TaxiDriverCore->m_Vel.x;
+		m_Core.m_Vel.y = m_Core.m_TaxiDriverCore->m_Vel.y;
 		m_Core.m_TaxiDriverCore->m_TaxiPassengerCore = nullptr;
 		m_Core.m_TaxiDriverCore = nullptr;
 	}
 	if (m_Core.m_TaxiPassengerCore) {
+		m_Core.m_TaxiPassengerCore->m_Pos.x = m_Core.m_Pos.x;
+		m_Core.m_TaxiPassengerCore->m_Pos.y = m_Core.m_Pos.y;
+		m_Core.m_TaxiPassengerCore->m_Vel.x = m_Core.m_Vel.x;
+		m_Core.m_TaxiPassengerCore->m_Vel.y = m_Core.m_Vel.y;
 		m_Core.m_TaxiPassengerCore->m_TaxiDriverCore = nullptr;
 		m_Core.m_TaxiPassengerCore = nullptr;
 	}
