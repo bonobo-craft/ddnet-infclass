@@ -118,6 +118,8 @@ public:
 	} m_Latency;
 
 	// INFCROYA BEGIN
+	bool m_HookProtected;
+	void SetHookProtected(bool Protected);
 	class CroyaPlayer* GetCroyaPlayer();
 	void SetCroyaPlayer(CroyaPlayer* pCroyaPlayer);
 	//
