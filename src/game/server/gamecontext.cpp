@@ -2253,6 +2253,10 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 		}
 		else if(MsgID == NETMSGTYPE_CL_VOTE)
 		{
+			// INFCROYA BEGIN ------------------------------------------------------------
+			pPlayer->GetCroyaPlayer()->OnButtonF3();
+			// INFCROYA END ------------------------------------------------------------//
+
 			if(!m_VoteCloseTime)
 				return;
 

@@ -41,6 +41,7 @@ CPlayer::CPlayer(CGameContext *pGameServer, int ClientID, int Team)
 	m_NumInputs = 0;
 	Reset();
 	GameServer()->Antibot()->OnPlayerInit(m_ClientID);
+	SetHookProtected(true);
 }
 
 CPlayer::~CPlayer()
@@ -779,12 +780,12 @@ void CPlayer::TryRespawn()
 	m_pCharacter = new(m_ClientID) CCharacter(&GameServer()->m_World);
 	if (GetCroyaPlayer()->IsHuman()) {
 		m_pCharacter->Spawn(this, SpawnPos);
-		//m_pCharacter->SetHookProtected(m_HookProtected);
+		m_pCharacter->SetHookProtected(m_HookProtected);
 		GameServer()->CreatePlayerSpawn(SpawnPos);
 	}
 	else if (GetCroyaPlayer()->IsZombie()) {
 		m_pCharacter->Spawn(this, SpawnPos);
-		//m_pCharacter->SetHookProtected(m_HookProtected);
+		m_pCharacter->SetHookProtected(m_HookProtected);
 	}
 /* 	m_pCharacter->Spawn(this, SpawnPos);
 	GameServer()->CreatePlayerSpawn(SpawnPos, m_pCharacter->Teams()->TeamMask(m_pCharacter->Team(), -1, m_ClientID));
@@ -1058,5 +1059,12 @@ void CPlayer::ProcessScoreResult(CScorePlayerResult &Result)
 			}
 			break;
 		}
+	}
+}
+
+void CPlayer::SetHookProtected(bool Protected) {
+	m_HookProtected = Protected;
+	if (m_pCharacter) {
+		m_pCharacter->SetHookProtected(Protected);
 	}
 }

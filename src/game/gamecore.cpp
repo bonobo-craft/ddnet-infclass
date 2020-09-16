@@ -283,6 +283,15 @@ void CCharacterCore::Tick(bool UseInput)
 				CCharacterCore *pCharCore = m_pWorld->m_apCharacters[i];
 				if(!pCharCore || pCharCore == this || (!(m_Super || pCharCore->m_Super) && (!m_pTeams->CanCollide(i, m_Id) || pCharCore->m_Solo || m_Solo)))
 					continue;
+
+				// INFCROYA BEGIN ------------------------------------------------------------
+				// human cannot hook protected human
+				if (!m_Infected && !pCharCore->m_Infected && pCharCore->m_HookProtected)
+					continue;
+				// zombie cannot hook protected zombie
+				if (m_Infected && pCharCore->m_Infected && pCharCore->m_HookProtected)
+					continue;
+				// INFCROYA END ------------------------------------------------------------//
 				
 				if (m_TaxiPassengerCore && m_TaxiPassengerCore == pCharCore)
 				  continue;
@@ -411,6 +420,11 @@ void CCharacterCore::Tick(bool UseInput)
 			float Distance = distance(m_Pos, pCharCore->m_Pos);
 			vec2 Dir = normalize(m_Pos - pCharCore->m_Pos);
 
+			if ((m_Infected && pCharCore->m_Infected) ||
+			   (!m_Infected && !pCharCore->m_Infected))
+				if (m_HookProtected || pCharCore->m_HookProtected)
+					continue;
+
 			bool CanCollide = (m_Super || pCharCore->m_Super)
 					|| (pCharCore->m_Collision && m_Collision
 						&& !m_NoCollision && !pCharCore->m_NoCollision
@@ -502,6 +516,12 @@ void CCharacterCore::Move()
 				CCharacterCore *pCharCore = m_pWorld->m_apCharacters[p];
 				if(!pCharCore || pCharCore == this )
 					continue;
+					
+				if ((m_Infected && pCharCore->m_Infected) ||
+				(!m_Infected && !pCharCore->m_Infected))
+					if (m_HookProtected || pCharCore->m_HookProtected)
+						continue;
+
 				if((!(pCharCore->m_Super || m_Super) && (m_Solo || pCharCore->m_Solo || !pCharCore->m_Collision || pCharCore->m_NoCollision || (m_Id != -1 && !m_pTeams->CanCollide(m_Id, p)))))
 					continue;
 				float D = distance(Pos, pCharCore->m_Pos);

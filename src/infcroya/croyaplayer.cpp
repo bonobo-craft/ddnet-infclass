@@ -636,16 +636,16 @@ bool CroyaPlayer::IsHookProtected() const
 
 void CroyaPlayer::SetHookProtected(bool HookProtected)
 {
-	//m_HookProtected = HookProtected;
-	//if (m_pPlayer) {
-	//	m_pPlayer->SetHookProtected(HookProtected);
-	//	if (IsHookProtected()) {
-	//		m_pGameServer->SendChatTarget(m_ClientID, "Hook protection enabled");
-	//	} else {
-	//		m_pGameServer->SendChatTarget(m_ClientID, "Hook protection disabled");
+	m_HookProtected = HookProtected;
+	if (m_pPlayer) {
+		m_pPlayer->SetHookProtected(HookProtected);
+		if (IsHookProtected()) {
+			m_pGameServer->SendChatTarget(m_ClientID, "Hook protection enabled");
+		} else {
+			m_pGameServer->SendChatTarget(m_ClientID, "Hook protection disabled");
 
-	//	}
-	//}
+		}
+	}
 }
 
 int CroyaPlayer::GetOldClassNum() const
