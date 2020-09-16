@@ -41,7 +41,7 @@ CPlayer::CPlayer(CGameContext *pGameServer, int ClientID, int Team)
 	m_NumInputs = 0;
 	Reset();
 	GameServer()->Antibot()->OnPlayerInit(m_ClientID);
-	SetHookProtected(true);
+	SetHookProtected(false);
 }
 
 CPlayer::~CPlayer()
