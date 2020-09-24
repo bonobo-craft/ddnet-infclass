@@ -1557,7 +1557,7 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 	CPlayer* pClient = GameServer()->m_apPlayers[SnappingClient];
 	if (m_FreeTaxi) {
 		if (Server()->IsSixup(SnappingClient)) {
-			protocol7::CNetObj_Pickup* pP = static_cast<protocol7::CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_HeartID, sizeof(protocol7::CNetObj_Pickup)));
+			protocol7::CNetObj_Pickup* pP = static_cast<protocol7::CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_TaxiID, sizeof(protocol7::CNetObj_Pickup)));
 			if (!pP)
 				return;
 
@@ -1565,7 +1565,7 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 			pP->m_Y = (int)m_Pos.y - 60.0;
 			pP->m_Type = 5;
 		} else {
-			CNetObj_Pickup* pP = static_cast<CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_HeartID, sizeof(CNetObj_Pickup)));
+			CNetObj_Pickup* pP = static_cast<CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_TaxiID, sizeof(CNetObj_Pickup)));
 			if (!pP)
 				return;
 
