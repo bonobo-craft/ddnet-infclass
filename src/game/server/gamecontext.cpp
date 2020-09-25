@@ -4473,6 +4473,10 @@ void CGameContext::SendHumanClassSelectorByClassId(int ClassId, int ClientID) {
 		messageList.push_back("> MERCENARY");
 	else
 		messageList.push_back("    MERCENARY");
+	if (ClassId == Class::NINJA)
+		messageList.push_back("> NINJA");
+	else
+		messageList.push_back("    NINJA");
 	if (ClassId == Class::HERO)
 		messageList.push_back("> HERO");
 	else

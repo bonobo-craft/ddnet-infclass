@@ -1902,6 +1902,7 @@ set_src(INFCROYA_SRC GLOB_RECURSE src/infcroya
   classes/poisoner.h
   classes/default.h
   classes/mercenary.h
+  classes/ninja.h
   classes/worker.h
   classes/class.h
   classes/default.cpp
@@ -1924,6 +1925,7 @@ set_src(INFCROYA_SRC GLOB_RECURSE src/infcroya
   classes/medic.cpp
   classes/boomer.cpp
   classes/mercenary.cpp
+  classes/ninja.cpp
   skin.cpp
   entities/bouncing-bullet.h
   entities/inf-circle.h

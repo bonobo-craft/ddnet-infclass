@@ -396,23 +396,26 @@ void CroyaPlayer::OnMouseWheelDown(CCharacter* pChr)
 	m_pCharacter = pChr;
 	if (m_pGameController->IsCroyaWarmup() || !m_pGameController->m_InfectedStarted) {
 		TurnIntoNextHumanClass();
-		m_pClass->OnMouseWheelDown();
 		return;
 	}
 	if (IsZombie() && IsInsideInfectionZone()) {
 		TurnIntoNextZombieClass();
 		return;
 	}
-	if (IsZombie() && m_pCharacter && m_RespawnPointCooldown == 0) {
-		if (m_RespawnPointPlaced) {
-			m_RespawnPointPos = m_pCharacter->GetPos();
+	if (IsZombie()) {
+		if (m_pCharacter && m_RespawnPointCooldown == 0) {
+			if (m_RespawnPointPlaced) {
+				m_RespawnPointPos = m_pCharacter->GetPos();
+			}
+			else {
+				m_RespawnPointPos = m_pCharacter->GetPos();
+				m_RespawnPointPlaced = true;
+			}
+			m_RespawnPointCooldown = m_RespawnPointDefaultCooldown;
 		}
-		else {
-			m_RespawnPointPos = m_pCharacter->GetPos();
-			m_RespawnPointPlaced = true;
-		}
-		m_RespawnPointCooldown = m_RespawnPointDefaultCooldown;
+		return;
 	}
+	m_pClass->OnMouseWheelDown(pChr);
 }
 
 void CroyaPlayer::OnMouseWheelUp(CCharacter* pChr)
@@ -420,13 +423,14 @@ void CroyaPlayer::OnMouseWheelUp(CCharacter* pChr)
 	m_pCharacter = pChr;
 	if (m_pGameController->IsCroyaWarmup() || !m_pGameController->m_InfectedStarted) {
 		TurnIntoPrevHumanClass();
-		m_pClass->OnMouseWheelUp();
 		return;
 	}
 
 	if (IsZombie() && IsInsideInfectionZone()) {
 		TurnIntoPrevZombieClass();
+		return;
 	}
+	m_pClass->OnMouseWheelUp(pChr);
 }
 
 void CroyaPlayer::ResetRespawnPoint()

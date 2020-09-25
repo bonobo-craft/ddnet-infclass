@@ -24,8 +24,8 @@ public:
 	virtual void Tick(class CCharacter* pChr);
 
 	virtual void OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, class CCharacter* pChr) = 0;
-	virtual void OnMouseWheelDown();
-	virtual void OnMouseWheelUp();
+	virtual void OnMouseWheelDown(class CCharacter* pChr);
+	virtual void OnMouseWheelUp(class CCharacter* pChr);
 
 	virtual void OnCharacterSpawn(class CCharacter* pChr);
 	virtual int OnCharacterDeath(class CCharacter* pVictim, class CPlayer* pKiller, int Weapon);
@@ -56,6 +56,7 @@ enum Class {
 	SOLDIER,
 	SCIENTIST,
 	MERCENARY,
+	NINJA,
 	HERO,
 	SNIPER,
 	HUMAN_CLASS_END,

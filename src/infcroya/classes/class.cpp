@@ -157,11 +157,11 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		pChr->SetReloadTimer(pChr->Server()->TickSpeed() / 3);
 }
 
-void IClass::OnMouseWheelDown()
+void IClass::OnMouseWheelDown(CCharacter *pChr)
 {
 }
 
-void IClass::OnMouseWheelUp()
+void IClass::OnMouseWheelUp(CCharacter *pChr)
 {
 }
 
