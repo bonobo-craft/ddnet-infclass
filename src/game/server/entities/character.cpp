@@ -3317,6 +3317,8 @@ int CCharacter::GetInfWeaponID(int WID)
 			return INFWEAPON_MEDIC_SHOTGUN;
 		case Class::BIOLOGIST:
 			return INFWEAPON_BIOLOGIST_SHOTGUN;
+		case Class::HERO:
+			return INFWEAPON_HERO_SHOTGUN;
 		default:
 			return INFWEAPON_SHOTGUN;
 		}

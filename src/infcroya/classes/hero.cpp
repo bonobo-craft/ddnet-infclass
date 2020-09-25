@@ -28,6 +28,7 @@ void CHero::InitialWeaponsHealth(CCharacter* pChr)
 	pChr->GiveWeapon(WEAPON_HAMMER, -1);
 	pChr->GiveWeapon(WEAPON_GRENADE, 10);
 	pChr->GiveWeapon(WEAPON_GUN, 10);
+	pChr->GiveWeapon(WEAPON_SHOTGUN, 10);
 	pChr->SetWeapon(WEAPON_GRENADE);
 	pChr->SetNormalEmote(EMOTE_NORMAL);
 }
@@ -44,6 +45,12 @@ void CHero::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCharact
 		GrenadeShoot(pChr, ProjStartPos, Direction); {
 	} break;
 	}
+
+	case WEAPON_SHOTGUN: {
+		ShotgunShoot(pChr, ProjStartPos, Direction); {
+	} break;
+	}
+
 
 	case WEAPON_GUN: {
 		int ClientID = pChr->GetPlayer()->GetCID();

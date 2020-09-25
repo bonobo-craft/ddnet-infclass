@@ -14,6 +14,40 @@ IClass::~IClass()
 void IClass::Tick(CCharacter* pChr)
 {
 }
+void IClass::ShotgunShoot(CCharacter* pChr, vec2 ProjStartPos, vec2 Direction) {
+	int ClientID = pChr->GetPlayer()->GetCID();
+	CGameContext* pGameServer = pChr->GameServer();
+	CGameWorld* pGameWorld = pChr->GameWorld();
+
+	int ShotSpread = 3;
+	float Force = 3.0f;
+
+	for (int i = -ShotSpread; i <= ShotSpread; ++i)
+	{
+		//float Spreading[] = { -0.185f, -0.070f, 0, 0.070f, 0.185f, 0.1f, -0.1f};
+		float Spreading[] = {
+			 -0.140f,
+			 0.140f,
+			 0,
+			 0.365f,
+			 -0.365f,
+			 0.2f,
+			 -0.2f};
+		float a = angle(Direction);
+		a += Spreading[i + 3] * 2.0f * (0.25f + 0.75f * static_cast<float>(10 - pChr->m_aWeapons[WEAPON_SHOTGUN].m_Ammo) / 10.0f);
+		float v = 1 - (absolute(i) / (float)ShotSpread);
+		float Speed = mix((float)pGameServer->Tuning()->m_ShotgunSpeeddiff, 1.0f, v);
+		float LifeTime = pGameServer->Tuning()->m_ShotgunLifetime + 0.1f * static_cast<float>(pChr->m_aWeapons[WEAPON_SHOTGUN].m_Ammo) / 10.0f;
+		new CProjectile(pGameWorld, WEAPON_SHOTGUN,
+			ClientID,
+			ProjStartPos,
+			vec2(cosf(a), sinf(a)) * Speed,
+			(int)(pChr->Server()->TickSpeed() * LifeTime),
+			g_pData->m_Weapons.m_Shotgun.m_pBase->m_Damage, false, Force, -1, WEAPON_SHOTGUN);
+	}
+
+	pGameServer->CreateSound(pChr->GetPos(), SOUND_SHOTGUN_FIRE);
+}
 
 void IClass::GrenadeShoot(CCharacter* pChr, vec2 ProjStartPos, vec2 Direction) {
 	int ClientID = pChr->GetPlayer()->GetCID();
