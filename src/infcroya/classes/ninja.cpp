@@ -27,7 +27,7 @@ void CNinja::InitialWeaponsHealth(CCharacter* pChr)
 
 void CNinja::OnMouseWheelDown(CCharacter* pChr) {
 	if (pChr)
-	  pChr->GiveNinja();
+	  pChr->GiveNinjaIfGrounded();
 }
 
 void CNinja::OnMouseWheelUp(CCharacter* pChr) {

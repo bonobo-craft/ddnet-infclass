@@ -262,10 +262,12 @@ void CCharacter::HandleNinja()
 		return;
 	}
 
-	if ((Server()->Tick() - m_StunTime) * 10 / Server()->TickSpeed() > 4) {
-		Unstun();
-		return;
-	}
+    if (m_IsStunned) {
+		if ((Server()->Tick() - m_StunTime) * 10 / Server()->TickSpeed() > 4) {
+			Unstun();
+			return;
+		}
+	} 
 
 	if (Stunned()) {
 		m_Core.m_Vel = vec2(0.f, 0.f);
@@ -698,14 +700,15 @@ void CCharacter::FireWeapon()
 
 		case WEAPON_NINJA:
 		{
-/* 			// reset Hit objects
+			// reset Hit objects
 			m_NumObjectsHit = 0;
 
 			m_Ninja.m_ActivationDir = Direction;
 			m_Ninja.m_CurrentMoveTime = g_pData->m_Weapons.m_Ninja.m_Movetime * Server()->TickSpeed() / 1000;
 			m_Ninja.m_OldVelAmount = length(m_Core.m_Vel);
+			m_Ninja.m_ActivationTick -= (Server()->TickSpeed() * 2);
 
-			GameServer()->CreateSound(m_Pos, SOUND_NINJA_FIRE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID())); */
+			GameServer()->CreateSound(m_Pos, SOUND_NINJA_FIRE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
 		} break;
 
 	}
@@ -808,6 +811,11 @@ void CCharacter::Unstun()
 	}
 	RemoveNinja();
 	m_IsStunned = false;
+}
+
+void CCharacter::GiveNinjaIfGrounded() {
+	if (IsGrounded())
+	  GiveNinja();
 }
 
 void CCharacter::RemoveNinja()
@@ -3076,7 +3084,8 @@ void CCharacter::Stun(float Time)
 	if (Stunned() || Frozen())
 		return;
 
-	if(GetCroyaPlayer()->GetClassNum() == Class::SCIENTIST) {
+	if(GetCroyaPlayer()->GetClassNum() == Class::SCIENTIST ||
+	   GetCroyaPlayer()->GetClassNum() == Class::NINJA) {
 		return;
 	}
 

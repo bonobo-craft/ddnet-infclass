@@ -99,6 +99,7 @@ public:
 
 	void GiveWeapon(int Weapon, int Ammo, bool Remove = false);
 	void GiveNinja();
+	void GiveNinjaIfGrounded();
 	void RemoveNinja();
 
 	void SetEmote(int Emote, int Tick);
