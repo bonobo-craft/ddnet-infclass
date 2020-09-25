@@ -18,7 +18,7 @@ CroyaPlayer::CroyaPlayer(int ClientID, CPlayer* pPlayer, CGameContext* pGameServ
 	m_pGameController = pGameController;
 	m_pCharacter = nullptr;
 	m_Infected = false;
-	m_HookProtected = true;
+	m_HookProtected = false;
 	m_Classes = Classes;
 	m_Language = "english";
 
@@ -337,6 +337,7 @@ void CroyaPlayer::OnCharacterSpawn(CCharacter* pChr)
 {
 	m_pClass->OnCharacterSpawn(pChr);
 	m_pCharacter->SetCroyaPlayer(this);
+	m_pCharacter->SetHookProtected(m_HookProtected);
 }
 
 void CroyaPlayer::OnCharacterDeath(CCharacter* pVictim, CPlayer* pKiller, int Weapon)
