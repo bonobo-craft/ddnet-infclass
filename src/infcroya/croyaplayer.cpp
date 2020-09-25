@@ -354,6 +354,10 @@ void CroyaPlayer::OnKill(int Victim)
 {
 	int64 Mask = CmaskOne(m_ClientID);
 	m_pGameServer->CreateSound(m_pPlayer->m_ViewPos, SOUND_CTF_GRAB_PL, Mask);
+
+	if (Victim == m_ClientID)
+	  return;
+
 	if (IsZombie()) {
 		m_pPlayer->m_Score += 3;
 	}

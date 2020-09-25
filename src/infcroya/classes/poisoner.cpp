@@ -42,7 +42,8 @@ void CPoisoner::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCha
 
 int CPoisoner::OnCharacterDeath(CCharacter* pVictim, CPlayer* pKiller, int Weapon)
 {
-	PlacePoison(pVictim);
+	if (Weapon != WEAPON_NINJA)
+		PlacePoison(pVictim);
     return 0;
 }
 
