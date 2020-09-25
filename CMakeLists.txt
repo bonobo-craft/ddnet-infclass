@@ -204,6 +204,8 @@ if(NOT MSVC)
   add_c_compiler_flag_if_supported(OUR_FLAGS_OWN -Wduplicated-branches)
   add_c_compiler_flag_if_supported(OUR_FLAGS_OWN -Wlogical-op)
   add_c_compiler_flag_if_supported(OUR_FLAGS_OWN -Wrestrict)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -DCONF_GEOLOCATION")
+  set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -O0")
   #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
   #set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
   #add_c_compiler_flag_if_supported(OUR_FLAGS_OWN -fno-omit-frame-pointer)
@@ -1886,6 +1888,13 @@ set_src(ANTIBOT_SRC GLOB src/antibot
 )
 
 set_src(INFCROYA_SRC GLOB_RECURSE src/infcroya
+  geolocation/GeoLite2PP/GeoLite2PP_error_category.hpp
+  geolocation/GeoLite2PP/GeoLite2PP_error_category.cpp
+  geolocation/GeoLite2PP/GeoLite2PP_version.hpp
+  geolocation/GeoLite2PP/GeoLite2PP.hpp
+  geolocation/GeoLite2PP/GeoLite2PP.cpp
+  geolocation/geolocation.h
+  geolocation/geolocation.cpp
   localization/localization.h
   localization/json.hpp
   localization/localization.cpp

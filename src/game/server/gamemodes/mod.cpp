@@ -33,7 +33,9 @@
 #include <infcroya/entities/circle.h>
 #include <infcroya/localization/localization.h>
 #include <yaml-cpp/yaml.h>
-
+#ifdef CONF_GEOLOCATION
+  #include <infcroya/geolocation/geolocation.h>
+#endif
 
 CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
 		IGameController(pGameServer), m_Teams(pGameServer), m_pInitResult(nullptr)
