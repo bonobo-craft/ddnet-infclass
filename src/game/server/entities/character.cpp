@@ -42,6 +42,7 @@ CCharacter::CCharacter(CGameWorld *pWorld)
 	m_Infected = false;
 	m_HeartID = Server()->SnapNewID();
 	m_TaxiID = Server()->SnapNewID();
+	m_HookProtID = Server()->SnapNewID();
 	m_FreeTaxi = false;
 	m_TaxiPassenger = false;
 	m_FirstShot = true;
@@ -131,6 +132,10 @@ void CCharacter::Destroy()
 	if (m_HeartID >= 0) {
 		Server()->SnapFreeID(m_HeartID);
 		m_HeartID = -1;
+	}
+	if (m_HookProtID >= 0) {
+		Server()->SnapFreeID(m_HookProtID);
+		m_HookProtID = -1;
 	}
 	if (m_BarrierHintID >= 0) {
 		Server()->SnapFreeID(m_BarrierHintID);
@@ -1553,8 +1558,26 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 	}
 
 		// INFCROYA BEGIN ------------------------------------------------------------
-	// Taxi icon
+	// protected icon
 	CPlayer* pClient = GameServer()->m_apPlayers[SnappingClient];
+	if (m_HookProtected) {
+		float AngleStart = 2.0f * pi * Server()->Tick() / static_cast<float>(Server()->TickSpeed() * 4);
+		float AngleStep = 2.0f * pi / 3;
+		AngleStart = AngleStart * 2.0f;
+		vec2 PosStart = m_Pos + vec2(5 * cos(AngleStart + AngleStep), 5 * sin(AngleStart + AngleStep) - 40);
+
+		CNetObj_Projectile * pObj = static_cast<CNetObj_Projectile*>(Server()->SnapNewItem(NETOBJTYPE_PROJECTILE, m_HookProtID, sizeof(CNetObj_Projectile)));
+		if (pObj)
+		{
+			pObj->m_X = (int)PosStart.x;
+			pObj->m_Y = (int)PosStart.y;
+			pObj->m_VelX = 0;
+			pObj->m_VelY = 0;
+			pObj->m_StartTick = Server()->Tick() - 200;
+			pObj->m_Type = WEAPON_HAMMER;
+		}
+	}
+	// Taxi icon
 	if (m_FreeTaxi) {
 		if (Server()->IsSixup(SnappingClient)) {
 			protocol7::CNetObj_Pickup* pP = static_cast<protocol7::CNetObj_Pickup*>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_TaxiID, sizeof(protocol7::CNetObj_Pickup)));

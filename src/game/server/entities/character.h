@@ -186,6 +186,7 @@ private:
 	CroyaPlayer* m_pCroyaPlayer;
 	int m_HeartID;
 	int m_TaxiID;
+	int m_HookProtID;
 	int m_NormalEmote;
 	bool m_IsFrozen;
 	bool m_IsStunned;
