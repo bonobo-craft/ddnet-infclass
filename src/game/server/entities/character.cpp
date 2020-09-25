@@ -281,7 +281,7 @@ void CCharacter::HandleNinja()
 		GameServer()->CreateDamageInd(m_Pos, 0, NinjaTime / Server()->TickSpeed(), Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
 	}
 
-	m_Armor = clamp(10 - (NinjaTime / 15), 0, 10);
+	//m_Armor = clamp(10 - (NinjaTime / 15), 0, 10);
 
 	// force ninja Weapon
 	SetWeapon(WEAPON_NINJA);
