@@ -1564,7 +1564,7 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 		float AngleStart = 2.0f * pi * Server()->Tick() / static_cast<float>(Server()->TickSpeed() * 4);
 		float AngleStep = 2.0f * pi / 3;
 		AngleStart = AngleStart * 2.0f;
-		vec2 PosStart = m_Pos + vec2(5 * cos(AngleStart + AngleStep), 5 * sin(AngleStart + AngleStep) - 40);
+		vec2 PosStart = m_Pos + vec2(40 * cos(AngleStart + AngleStep), 40 * sin(AngleStart + AngleStep));
 
 		CNetObj_Projectile * pObj = static_cast<CNetObj_Projectile*>(Server()->SnapNewItem(NETOBJTYPE_PROJECTILE, m_HookProtID, sizeof(CNetObj_Projectile)));
 		if (pObj)
