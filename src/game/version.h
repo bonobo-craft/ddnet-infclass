@@ -7,5 +7,6 @@
 #define GAME_NAME "DDNet"
 #define GAME_RELEASE_VERSION "14.7.1"
 #define CLIENT_VERSIONNR 14071
+#define FCLIENT_STRING "fclient!"
 extern const char *GIT_SHORTREV_HASH;
 #endif

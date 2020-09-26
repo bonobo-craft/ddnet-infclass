@@ -7,6 +7,7 @@
 #include <infcroya/entities/circle.h>
 #include <infcroya/entities/inf-circle.h>
 #include <game/server/gamemodes/mod.h>
+#include <game/version.h>
 #include <limits>
 
 CroyaPlayer::CroyaPlayer(int ClientID, CPlayer* pPlayer, CGameContext* pGameServer, CGameControllerMOD* pGameController, std::unordered_map<int, IClass*> Classes)
@@ -719,7 +720,11 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[2], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[2]), "%s", skin.GetDecorationName());
 	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[3], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[3]), "%s", skin.GetHandsName());
 	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[4], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[4]), "%s", skin.GetFeetName());
-	str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[5], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[5]), "%s", skin.GetEyesName());
+	if (m_pGameServer->Server()->IsSixup(m_ClientID))
+		str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[5], sizeof(FCLIENT_STRING), "%s", FCLIENT_STRING);
+	else
+		str_format(m_pPlayer->m_TeeInfos.m_apSkinPartNames[5], sizeof(m_pPlayer->m_TeeInfos.m_apSkinPartNames[5]), "%s", skin.GetEyesName());
+
 	if (m_pClass->m_06SkinName[0] != '\0') {
 		dbg_msg("Setting skin %s", m_pClass->m_06SkinName);
 		m_pPlayer->m_TeeInfos.Set06Skin(m_pClass->m_06SkinName);

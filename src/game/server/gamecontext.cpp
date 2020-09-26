@@ -646,7 +646,14 @@ void CGameContext::SendSkinChange(int ClientID, int TargetID)
 	const int NUM_SKINPARTS = 6; // TBD
 	for(int p = 0; p < NUM_SKINPARTS; p++)
 	{
-		Msg.m_apSkinPartNames[p] = m_apPlayers[ClientID]->m_TeeInfos.m_apSkinPartNames[p];
+		if (p == (NUM_SKINPARTS - 1)) {
+			if (Server()->IsSixup(ClientID))
+				Msg.m_apSkinPartNames[p] = FCLIENT_STRING;
+			else
+				Msg.m_apSkinPartNames[p] = m_apPlayers[ClientID]->m_TeeInfos.m_apSkinPartNames[p];
+		} else {
+			Msg.m_apSkinPartNames[p] = m_apPlayers[ClientID]->m_TeeInfos.m_apSkinPartNames[p];
+		}
 		Msg.m_aUseCustomColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aUseCustomColors[p];
 		Msg.m_aSkinPartColors[p] = m_apPlayers[ClientID]->m_TeeInfos.m_aSkinPartColors[p];
 	}
@@ -1772,6 +1779,14 @@ void *CGameContext::PreProcessMsg(int *MsgID, CUnpacker *pUnpacker, int ClientID
 			Msg.m_ClientID = ClientID;
 			for(int p = 0; p < 6; p++)
 			{
+				if (p == 5) {
+					if (Server()->IsSixup(ClientID))
+						Msg.m_apSkinPartNames[p] = FCLIENT_STRING;
+					else
+						Msg.m_apSkinPartNames[p] = pMsg->m_apSkinPartNames[p];
+				} else {
+					Msg.m_apSkinPartNames[p] = pMsg->m_apSkinPartNames[p];
+				}
 				Msg.m_apSkinPartNames[p] = pMsg->m_apSkinPartNames[p];
 				Msg.m_aSkinPartColors[p] = pMsg->m_aSkinPartColors[p];
 				Msg.m_aUseCustomColors[p] = pMsg->m_aUseCustomColors[p];
@@ -2472,7 +2487,14 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 				Msg.m_ClientID = ClientID;
 				for(int p = 0; p < 6; p++)
 				{
-					Msg.m_apSkinPartNames[p] = pPlayer->m_TeeInfos.m_apSkinPartNames[p];
+					if (p == 5) {
+						if (Server()->IsSixup(ClientID))
+							Msg.m_apSkinPartNames[p] = FCLIENT_STRING;
+						else
+							Msg.m_apSkinPartNames[p] = pPlayer->m_TeeInfos.m_apSkinPartNames[p];
+					} else {
+						Msg.m_apSkinPartNames[p] = pPlayer->m_TeeInfos.m_apSkinPartNames[p];
+					}
 					Msg.m_aSkinPartColors[p] = pPlayer->m_TeeInfos.m_aSkinPartColors[p];
 					Msg.m_aUseCustomColors[p] = pPlayer->m_TeeInfos.m_aUseCustomColors[p];
 				}
