@@ -276,10 +276,10 @@ void CCharacter::HandleNinja()
 
 	int NinjaTime = m_Ninja.m_ActivationTick + (g_pData->m_Weapons.m_Ninja.m_Duration * Server()->TickSpeed() / 1000) - Server()->Tick();
 
-	if (NinjaTime % Server()->TickSpeed() == 0 && NinjaTime / Server()->TickSpeed() <= 5)
+/* 	if (NinjaTime % Server()->TickSpeed() == 0 && NinjaTime / Server()->TickSpeed() <= 5)
 	{
 		GameServer()->CreateDamageInd(m_Pos, 0, NinjaTime / Server()->TickSpeed(), Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
-	}
+	} */
 
 	//m_Armor = clamp(10 - (NinjaTime / 15), 0, 10);
 
@@ -702,6 +702,21 @@ void CCharacter::FireWeapon()
 		{
 			// reset Hit objects
 			m_NumObjectsHit = 0;
+			m_Core.m_HookedPlayer = -1;
+			m_Core.m_HookState = HOOK_RETRACTED;
+			m_Core.m_HookPos = m_Core.m_Pos;
+			int ClientID = GetPlayer()->GetCID();
+			for(int i = 0; i < MAX_CLIENTS; i++) // linear search, better would be a stored attribute of hooker
+			{
+				CCharacterCore *pCharCore = m_Core.m_pWorld->m_apCharacters[i];
+				if (!pCharCore || pCharCore == &m_Core)
+					continue;
+				if (pCharCore->m_HookedPlayer == -1 || pCharCore->m_HookedPlayer != ClientID)
+				    continue;
+				pCharCore->m_HookedPlayer = -1;
+				pCharCore->m_HookState = HOOK_RETRACTED;
+				pCharCore->m_HookPos = m_Core.m_Pos;
+			}
 
 			m_Ninja.m_ActivationDir = Direction;
 			m_Ninja.m_CurrentMoveTime = g_pData->m_Weapons.m_Ninja.m_Movetime * Server()->TickSpeed() / 1000;
