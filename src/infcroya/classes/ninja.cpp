@@ -23,6 +23,7 @@ void CNinja::InitialWeaponsHealth(CCharacter* pChr)
 	pChr->GiveWeapon(WEAPON_HAMMER, -1);
 	//pChr->GiveWeapon(WEAPON_NINJA, -1);
 	pChr->SetNormalEmote(EMOTE_NORMAL);
+	pChr->SetWeapon(WEAPON_HAMMER);
 }
 
 void CNinja::OnMouseWheelDown(CCharacter* pChr) {

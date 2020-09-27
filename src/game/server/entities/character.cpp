@@ -386,8 +386,9 @@ void CCharacter::HandleWeaponSwitch()
 
 	if(Next < 128 && Next > 0) // make sure we only try sane stuff
 	{
-		if (GetCroyaPlayer())
-			GetCroyaPlayer()->OnMouseWheelDown(this);
+		if (!GetCroyaPlayer())
+			return;
+		GetCroyaPlayer()->OnMouseWheelDown(this);
 		if (Anything) {
 			while(Next) // Next Weapon selection
 			{
@@ -402,8 +403,9 @@ void CCharacter::HandleWeaponSwitch()
 
 	if(Prev < 128 && Prev > 0) // make sure we only try sane stuff
 	{
-		if (GetCroyaPlayer())
-			GetCroyaPlayer()->OnMouseWheelUp(this);
+		if (!GetCroyaPlayer())
+			return;
+		GetCroyaPlayer()->OnMouseWheelUp(this);
 		if (Anything) {
 			while(Prev) // Prev Weapon selection
 			{
@@ -422,6 +424,9 @@ void CCharacter::HandleWeaponSwitch()
 	// check for insane values
 	if(WantedWeapon >= 0 && WantedWeapon < NUM_WEAPONS && WantedWeapon != m_Core.m_ActiveWeapon && m_aWeapons[WantedWeapon].m_Got)
 		m_QueuedWeapon = WantedWeapon;
+
+	if(GetCroyaPlayer()->GetClassNum() == Class::NINJA && WantedWeapon != WEAPON_NINJA)
+	  WantedWeapon = WEAPON_HAMMER;
 
 	DoWeaponSwitch();
 }
