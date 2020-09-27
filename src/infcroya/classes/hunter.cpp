@@ -24,7 +24,7 @@ void CHunter::InitialWeaponsHealth(CCharacter* pChr)
 {
 	pChr->IncreaseHealth(10);
 	pChr->GiveWeapon(WEAPON_HAMMER, -1);
-	pChr->GiveWeapon(WEAPON_GUN, 10);
+	//pChr->GiveWeapon(WEAPON_GUN, 10);
 	pChr->SetWeapon(WEAPON_HAMMER);
 	pChr->SetNormalEmote(EMOTE_ANGRY);
 }
@@ -39,35 +39,32 @@ void CHunter::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CChara
 	switch (Weapon) {
 	case WEAPON_HAMMER: {
 		HammerShoot(pChr, ProjStartPos);
-	} break;
-
-	case WEAPON_GUN:
-	{
 		int ClientID = pChr->GetPlayer()->GetCID();
 		CGameContext *pGameServer = pChr->GameServer();
 		CGameWorld *pGameWorld = pChr->GameWorld();
 
 		CCharacter *apCloseCCharacters[MAX_CLIENTS];
 		int Num = pGameServer->m_World.FindEntities(pChr->GetPos(), 9999, (CEntity**)apCloseCCharacters, MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
-			for(int i = 0; i < Num; i++)
-			{
-				CCharacter *human = apCloseCCharacters[i];
-				if (!human->IsAlive() || human->GetPlayer()->GetTeam() == TEAM_SPECTATORS)
-					continue;					
+		for(int i = 0; i < Num; i++)
+		{
+			CCharacter *human = apCloseCCharacters[i];
+			if (!human->IsAlive() || human->GetPlayer()->GetTeam() == TEAM_SPECTATORS)
+				continue;					
 
-				if (human->IsZombie())
-				  continue;
+			if (human->IsZombie())
+			  continue;
 
-				vec2 Direction = normalize(vec2(human->GetPos().x - pChr->GetPos().x, human->GetPos().y - pChr->GetPos().y));
+			vec2 Direction = normalize(vec2(human->GetPos().x - pChr->GetPos().x, human->GetPos().y - pChr->GetPos().y));
 
-				new CProjectile(pGameWorld, WEAPON_GUN,
-						ClientID,
-						ProjStartPos,
-						Direction,
-						(int)(pChr->Server()->TickSpeed() * pGameServer->Tuning()->m_GunLifetime),
-						0, false, 0, -1, WEAPON_GUN);
-				return;
-			}
+			new CProjectile(pGameWorld, WEAPON_SHOTGUN,
+					ClientID,
+					ProjStartPos,
+					Direction,
+					(int)(pChr->Server()->TickSpeed() * pGameServer->Tuning()->m_GunLifetime / 17),
+					0, false, 0, -1, WEAPON_SHOTGUN);
+
+			return;
+		}
 	}
 	break;
 	}
