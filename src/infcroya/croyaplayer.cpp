@@ -340,6 +340,8 @@ void CroyaPlayer::OnCharacterSpawn(CCharacter* pChr)
 	m_pClass->OnCharacterSpawn(pChr);
 	m_pCharacter->SetCroyaPlayer(this);
 	m_pCharacter->SetHookProtected(m_HookProtected);
+	if (m_BeenOnRoundStart)
+	  GetCharacter()->IncreaseArmor(10);
 }
 
 void CroyaPlayer::OnCharacterDeath(CCharacter* pVictim, CPlayer* pKiller, int Weapon)

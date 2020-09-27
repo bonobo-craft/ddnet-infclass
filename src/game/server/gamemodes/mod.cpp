@@ -244,8 +244,8 @@ void CGameControllerMOD::TurnDefaultIntoRandomHuman()
 		if (!each->GetCharacter())
 			continue;
 		if (each->GetClassNum() == Class::DEFAULT && each->GetPlayer()->GetTeam() != TEAM_SPECTATORS) {
-			each->TurnIntoRandomHuman();
 			each->SetBeenOnRoundStart();
+			each->TurnIntoRandomHuman();
 			each->GetCharacter()->IncreaseArmor(10);
 		}
 	}
