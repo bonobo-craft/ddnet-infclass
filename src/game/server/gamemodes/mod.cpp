@@ -404,7 +404,7 @@ void CGameControllerMOD::DoFinalExplosion() {
 				{
 					vec2 TilePos = vec2(16.0f, 16.0f) + vec2(i * 32.0f, j * 32.0f);
 					GameServer()->CreateExplosion(TilePos, -1, WEAPON_GAME, 0);
-					GameServer()->CreateSound(TilePos, SOUND_GRENADE_EXPLODE);
+					//GameServer()->CreateSound(TilePos, SOUND_GRENADE_EXPLODE);
 				}
 			}
 		}
