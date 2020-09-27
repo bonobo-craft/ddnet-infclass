@@ -764,38 +764,42 @@ void CCharacter::HandleWeapons()
 
 	// fire Weapon, if wanted
 	FireWeapon();
+
 	// ammo regen
-	//int AmmoRegenTime = g_pData->m_Weapons.m_aId[m_Core.m_ActiveWeapon].m_Ammoregentime;
-	int InfWID = GetInfWeaponID(m_Core.m_ActiveWeapon);
-	int MaxAmmo = Server()->GetMaxAmmo(InfWID);
-	int AmmoRegenTime = Server()->GetAmmoRegenTime(InfWID);
+	for(int Weapon = 0; Weapon < WEAPON_NINJA; Weapon++) {
+/* 		if(!m_aWeapons[m_QueuedWeapon].m_Got)
+		  continue; */
+		int InfWID = GetInfWeaponID(Weapon);
+		int MaxAmmo = Server()->GetMaxAmmo(InfWID);
+		int AmmoRegenTime = Server()->GetAmmoRegenTime(InfWID);
 
-	if (InfWID == INFWEAPON_MERCENARY_GUN)
-	{
-		if (m_InAirTick > Server()->TickSpeed() * 4)
+		if (InfWID == INFWEAPON_MERCENARY_GUN)
 		{
-			AmmoRegenTime = 0;
-		}
-	}
-
-	if(AmmoRegenTime)
-	{
-		// If equipped and not active, regen ammo?
-		if (m_ReloadTimer <= 0)
-		{
-			if (m_aWeapons[m_Core.m_ActiveWeapon].m_AmmoRegenStart < 0)
-				m_aWeapons[m_Core.m_ActiveWeapon].m_AmmoRegenStart = Server()->Tick();
-
-			if ((Server()->Tick() - m_aWeapons[m_Core.m_ActiveWeapon].m_AmmoRegenStart) >= AmmoRegenTime * Server()->TickSpeed() / 1000)
+			if (m_InAirTick > Server()->TickSpeed() * 4)
 			{
-				// Add some ammo
-				m_aWeapons[m_Core.m_ActiveWeapon].m_Ammo = minimum(m_aWeapons[m_Core.m_ActiveWeapon].m_Ammo + 1, MaxAmmo);
-				m_aWeapons[m_Core.m_ActiveWeapon].m_AmmoRegenStart = -1;
+				AmmoRegenTime = 0;
 			}
 		}
-		else
+
+		if(AmmoRegenTime)
 		{
-			m_aWeapons[m_Core.m_ActiveWeapon].m_AmmoRegenStart = -1;
+			// If equipped and not active, regen ammo?
+			if (m_ReloadTimer <= 0)
+			{
+				if (m_aWeapons[Weapon].m_AmmoRegenStart < 0)
+					m_aWeapons[Weapon].m_AmmoRegenStart = Server()->Tick();
+
+				if ((Server()->Tick() - m_aWeapons[Weapon].m_AmmoRegenStart) >= AmmoRegenTime * Server()->TickSpeed() / 1000)
+				{
+					// Add some ammo
+					m_aWeapons[Weapon].m_Ammo = minimum(m_aWeapons[Weapon].m_Ammo + 1, MaxAmmo);
+					m_aWeapons[Weapon].m_AmmoRegenStart = -1;
+				}
+			}
+			else
+			{
+				m_aWeapons[Weapon].m_AmmoRegenStart = -1;
+			}
 		}
 	}
 	if (!IsGrounded() && (m_Core.m_HookState != HOOK_GRABBED || m_Core.m_HookedPlayer != -1))
