@@ -2465,12 +2465,12 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 				Info.m_Silent = true;
 				Info.m_Team = pPlayer->GetTeam();
 
-				for(int p = 0; p < 6; p++)
+/* 				for(int p = 0; p < 6; p++)
 				{
 					Info.m_apSkinPartNames[p] = pPlayer->m_TeeInfos.m_apSkinPartNames[p];
 					Info.m_aSkinPartColors[p] = pPlayer->m_TeeInfos.m_aSkinPartColors[p];
 					Info.m_aUseCustomColors[p] = pPlayer->m_TeeInfos.m_aUseCustomColors[p];
-				}
+				} */
 
 				for(int i = 0; i < MAX_CLIENTS; i++)
 				{
