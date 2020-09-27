@@ -408,7 +408,7 @@ void CroyaPlayer::OnMouseWheelDown(CCharacter* pChr)
 		return;
 	}
 	if (IsZombie()) {
-		if (m_pCharacter && m_RespawnPointCooldown == 0) {
+		if (m_pCharacter && m_RespawnPointCooldown == 0 && !pChr->m_TaxiPassenger) {
 			if (m_RespawnPointPlaced) {
 				m_RespawnPointPos = m_pCharacter->GetPos();
 			}
