@@ -1189,7 +1189,7 @@ void CCharacter::Die(int Killer, int Weapon)
 		m_pPlayer->GetCID(), Server()->ClientName(m_pPlayer->GetCID()), Weapon, ModeSpecial);
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_DEBUG, "game", aBuf);
 
-	if (Killer > 0)
+	if (Killer >= 0 && GameServer()->m_apPlayers[Killer])
 		GameServer()->m_apPlayers[Killer]->GetCroyaPlayer()->OnKill(GetPlayer()->GetCID());
 
 	// send the kill message
@@ -1222,11 +1222,11 @@ void CCharacter::Die(int Killer, int Weapon)
 
 bool CCharacter::TakeDamage(vec2 Force, vec2 Source, int Dmg, int From, int Weapon)
 {
-	return TakeDamageDDNet(Force, Dmg, From, Weapon);
-	m_Core.m_Vel += Force;
+ 	return TakeDamageDDNet(Force, Dmg, From, Weapon);
+	/* m_Core.m_Vel += Force;
 
-/* 	if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From) && !g_Config.m_SvTeamdamage)
-		return false; */
+    // 	if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From) && !g_Config.m_SvTeamdamage)
+	//	return false;
 
 	// m_pPlayer only inflicts half damage on self
 	if(From == m_pPlayer->GetCID())
@@ -1318,8 +1318,9 @@ bool CCharacter::TakeDamage(vec2 Force, vec2 Source, int Dmg, int From, int Weap
 	vec2 Temp = m_Core.m_Vel + Force;
 	m_Core.m_Vel = ClampVel(m_MoveRestrictions, Temp);
 
-	return true;
+	return true; */
 }
+
 bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 {
 	if(From != m_pPlayer->GetCID())
@@ -1415,8 +1416,6 @@ bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 			Freeze(5);
 		else {
 			m_pPlayer->m_Deaths += 1;
-			if (From && GameServer()->m_apPlayers[From])
-				GameServer()->m_apPlayers[From]->m_Kills += 1;
 			Die(From, Weapon);
 		}
 

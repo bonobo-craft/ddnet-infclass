@@ -364,8 +364,10 @@ void CroyaPlayer::OnKill(int Victim)
 
 	if (IsZombie()) {
 		m_pPlayer->m_Score += 3;
+		m_pPlayer->m_Infections += 1;
 	}
 	else {
+		m_pPlayer->m_Kills += 1;
 		m_pPlayer->m_Score++;
 	}
 }
