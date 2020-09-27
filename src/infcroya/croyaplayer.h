@@ -121,5 +121,6 @@ public:
 
 	IClass* GetClass();
 	void SetClass(IClass* pClass, bool DrawPurpleThing = false, bool destroyChildEntities = true);
+	int m_MedicHeals;
 
 };

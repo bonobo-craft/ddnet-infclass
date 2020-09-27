@@ -36,6 +36,7 @@ CroyaPlayer::CroyaPlayer(int ClientID, CPlayer* pPlayer, CGameContext* pGameServ
 	m_InsideSafeZone = true;
 	m_BeenOnRoundStart = false;
 	m_InitialZombie = false;
+	m_MedicHeals = 0;
 	SetClass(Classes[DEFAULT], false, false);
 }
 

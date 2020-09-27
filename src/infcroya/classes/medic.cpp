@@ -161,6 +161,13 @@ void CMedic::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCharac
 	} break;
 
 	case WEAPON_LASER: {
+		if (pChr->GetCroyaPlayer()->m_MedicHeals > 0) {
+			char aBuf[256];
+			str_format(aBuf, sizeof(aBuf), "You can heal this round no more");
+			pGameServer->SendBroadcast(aBuf, pChr->GetPlayer()->GetCID());
+			return;
+		}
+		pChr->GetCroyaPlayer()->m_MedicHeals += 1;
 		new CMedicLaser(pGameWorld, pChr->GetPos(), Direction, pGameServer->Tuning()->m_LaserReach, pChr->GetPlayer()->GetCID());
 		pGameServer->CreateSound(pChr->GetPos(), SOUND_LASER_FIRE);
 	}
