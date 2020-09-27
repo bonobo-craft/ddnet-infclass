@@ -194,7 +194,7 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 					m_pCharacter->m_HookDmgTick = m_pGameServer->Server()->Tick();
 					if (Damage > 0)
 					  VictimChar->TakeDamage(vec2(0.0f, 0.0f), m_pCharacter->GetPos(), Damage, m_pPlayer->GetCID(), WEAPON_NINJA);
-					if (GetClassNum() == Class::SMOKER) {
+					if (GetClassNum() == Class::SMOKER && !VictimChar->IsZombie()) {
 						m_pCharacter->IncreaseOverallHp(Damage); // blood licking
 					}
 				}
