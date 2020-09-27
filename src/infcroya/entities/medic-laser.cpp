@@ -65,6 +65,7 @@ bool CMedicLaser::HitCharacter(vec2 From, vec2 To)
 				const char* ZombieName = Server()->ClientName(zombie->GetPlayer()->GetCID());
 				char aBuf[256];
 				str_format(aBuf, sizeof(aBuf), "Medic %s revived %s", MedicName, ZombieName);
+				medic->GetCroyaPlayer()->m_MedicHeals += 1;
 				GameServer()->SendChatTarget(-1, aBuf);
 				medic->GetPlayer()->m_Score += 5;
 				//Server()->RoundStatistics()->OnScoreEvent(ClientID, SCOREEVENT_MEDIC_REVIVE, medic->GetClass(), Server()->ClientName(ClientID), GameServer()->Console());
