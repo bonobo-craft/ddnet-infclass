@@ -537,7 +537,7 @@ void CroyaPlayer::TurnIntoPrevHumanClass()
 
 void CroyaPlayer::TurnIntoRandomZombie()
 {
-	int RandomZombieClass = random_int_range(Class::ZOMBIE_CLASS_START + 1, Class::BOOMER - 1);
+	int RandomZombieClass = random_int_range(Class::ZOMBIE_CLASS_START + 1, Class::WORKER - 1);
 	SetClassNum(RandomZombieClass, true);
 
 	if (m_pGameController->GetRealPlayerNum() >= 2 && m_pGameController->GetIZombieCount() < 1)
