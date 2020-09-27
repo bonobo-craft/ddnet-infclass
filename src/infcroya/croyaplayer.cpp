@@ -337,6 +337,7 @@ int CroyaPlayer::GetClientID() const
 
 void CroyaPlayer::OnCharacterSpawn(CCharacter* pChr)
 {
+	m_MedicHeals = 0;
 	m_pClass->OnCharacterSpawn(pChr);
 	m_pCharacter->SetCroyaPlayer(this);
 	m_pCharacter->SetHookProtected(m_HookProtected);
