@@ -4427,17 +4427,17 @@ void CGameContext::SendZombieClassSelectorByClassId(int ClassId, int ClientID) {
 	else
 		messageList.push_back("    HUNTER");
 	if (ClassId == Class::BAT)
-		messageList.push_back("> BAT");
+		messageList.push_back("> BAT (weak)");
 	else
-		messageList.push_back("    BAT");
+		messageList.push_back("    BAT (weak)");
 	if (ClassId == Class::FREEZER)
 		messageList.push_back("> FREEZER");
 	else
 		messageList.push_back("    FREEZER");
 	if (ClassId == Class::WORKER)
-		messageList.push_back("> WORKER");
+		messageList.push_back("> WORKER (weak)");
 	else
-		messageList.push_back("    WORKER");
+		messageList.push_back("    WORKER (weak)");
 	if (ClassId == Class::BOOMER)
 		messageList.push_back("> BOOMER");
 	else
