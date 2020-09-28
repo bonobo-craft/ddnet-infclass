@@ -1,0 +1,5 @@
+find_package(PkgConfig QUIET)
+pkg_check_modules(GeoIP QUIET libmaxminddb)
+include(FindPackageHandleStandardArgs)
+#find_package_handle_standard_args(GeoIP DEFAULT_MSG GeoIP_LIBRARIES GeoIP_INCLUDE_DIRS)
+find_package_handle_standard_args(MaxMindDB DEFAULT_MSG MaxMindDB_LIBRARIES)

@@ -42,6 +42,10 @@ CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
 {
 	m_pGameType = g_Config.m_SvTestingCommands ? TEST_NAME : GAME_NAME;
 
+#ifdef CONF_GEOLOCATION
+	geolocation = new Geolocation("mmdb/GeoLite2-Country.mmdb");
+#endif
+
 	InitTeleporter();
 
 	//IGameController::m_MOD = this; // temporarily, todo: avoid this
@@ -97,6 +101,9 @@ CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
 
 CGameControllerMOD::~CGameControllerMOD()
 {
+#ifdef CONF_GEOLOCATION
+	delete geolocation;
+#endif
 	// Nothing to clean
 }
 
