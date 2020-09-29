@@ -30,6 +30,10 @@ void CPacker::AddInt(int i)
 
 void CPacker::AddString(const char *pStr, int Limit)
 {
+	if(pStr == 0) {
+		dbg_msg("packer", "cannot pack an empty string");
+	}
+
 	if(m_Error)
 		return;
 
