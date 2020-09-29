@@ -2483,7 +2483,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			}
 			else
 			{
-/* 				protocol7::CNetMsg_Sv_SkinChange Msg;
+				protocol7::CNetMsg_Sv_SkinChange Msg;
 				Msg.m_ClientID = ClientID;
 				for(int p = 0; p < 6; p++)
 				{
@@ -2499,7 +2499,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 					Msg.m_aUseCustomColors[p] = pPlayer->m_TeeInfos.m_aUseCustomColors[p];
 				}
 
-				Server()->SendPackMsg(&Msg, MSGFLAG_VITAL|MSGFLAG_NORECORD, -1); */
+				Server()->SendPackMsg(&Msg, MSGFLAG_VITAL|MSGFLAG_NORECORD, -1);
 			}
 
 			Server()->ExpireServerInfo();
