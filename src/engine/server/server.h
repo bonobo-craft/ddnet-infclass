@@ -266,7 +266,7 @@ public:
 
 	virtual void SetClientName(int ClientID, const char *pName);
 	virtual void SetClientClan(int ClientID, char const *pClan);
-	virtual void SetClientCountry(int ClientID, int Country);
+	virtual void SetClientCountry(int ClientID, int Country, bool Update);
 	virtual void SetClientScore(int ClientID, int Score);
 	virtual void SetClientFlags(int ClientID, int Flags);
 

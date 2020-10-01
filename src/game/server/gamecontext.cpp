@@ -4411,6 +4411,7 @@ bool CGameContext::SendClassInfoByCommand(const std::string command, int ClientI
 		return false;
 
 	SendClassInfoByClassId(ClassId, ClientID, true);
+	return true;
 }
 
 void CGameContext::SendZombieClassSelectorByClassId(int ClassId, int ClientID) {

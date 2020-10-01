@@ -417,12 +417,15 @@ void CServer::SetClientClan(int ClientID, const char *pClan)
 	str_copy(m_aClients[ClientID].m_aClan, pClan, MAX_CLAN_LENGTH);
 }
 
-void CServer::SetClientCountry(int ClientID, int Country)
+void CServer::SetClientCountry(int ClientID, int Country, bool Update = false)
 {
 	if(ClientID < 0 || ClientID >= MAX_CLIENTS || m_aClients[ClientID].m_State < CClient::STATE_READY)
 		return;
 
-	m_aClients[ClientID].m_Country = Country;
+	if (Update && Country > -1)
+		m_aClients[ClientID].m_Country = Country;
+	else
+		m_aClients[ClientID].m_Country = maximum(Country, m_aClients[ClientID].m_Country);
 }
 
 void CServer::SetClientScore(int ClientID, int Score)
