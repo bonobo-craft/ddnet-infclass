@@ -1222,7 +1222,12 @@ void CCharacter::Die(int Killer, int Weapon)
 
 bool CCharacter::TakeDamage(vec2 Force, vec2 Source, int Dmg, int From, int Weapon)
 {
- 	return TakeDamageDDNet(Force, Dmg, From, Weapon);
+	if (GetCroyaPlayer() &&
+	    GetCroyaPlayer()->GetClassNum() == Class::HUNTER &&
+		Weapon == WEAPON_SHOTGUN)
+		return TakeDamageDDNet(Force / 4.0, Dmg, From, Weapon);
+	else
+		return TakeDamageDDNet(Force, Dmg, From, Weapon);
 	/* m_Core.m_Vel += Force;
 
     // 	if(GameServer()->m_pController->IsFriendlyFire(m_pPlayer->GetCID(), From) && !g_Config.m_SvTeamdamage)
