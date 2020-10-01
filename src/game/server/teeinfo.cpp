@@ -1,5 +1,5 @@
-#include <base/system.h>
 #include <base/color.h>
+#include <base/system.h>
 
 #include "teeinfo.h"
 
@@ -121,9 +121,7 @@ void CTeeInfo::FromSixup()
 		bool match = true;
 		for(int p = 0; p < 6; p++)
 		{
-			if(str_comp(m_apSkinPartNames[p], g_StdSkins[s].m_apSkinPartNames[p])
-					|| m_aUseCustomColors[p] != g_StdSkins[s].m_aUseCustomColors[p]
-					|| (m_aUseCustomColors[p] && m_aSkinPartColors[p] != g_StdSkins[s].m_aSkinPartColors[p]))
+			if(str_comp(m_apSkinPartNames[p], g_StdSkins[s].m_apSkinPartNames[p]) || m_aUseCustomColors[p] != g_StdSkins[s].m_aUseCustomColors[p] || (m_aUseCustomColors[p] && m_aSkinPartColors[p] != g_StdSkins[s].m_aSkinPartColors[p]))
 			{
 				match = false;
 				break;

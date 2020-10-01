@@ -45,7 +45,7 @@ protected:
 		{
 			m_Got = false;
 			m_FriendlyTeam = -1;
-			m_Pos = vec2(100,100);
+			m_Pos = vec2(100, 100);
 		}
 
 		vec2 m_Pos;
@@ -60,7 +60,6 @@ protected:
 	void ResetGame();
 
 	char m_aMapWish[MAX_MAP_LENGTH];
-
 
 	int m_RoundStartTick;
 	int m_GameOverTick;
@@ -151,7 +150,6 @@ public:
 				weapon when switching team or player suicides.
 	*/
 	virtual int OnCharacterDeath(class CCharacter *pVictim, class CPlayer *pKiller, int Weapon);
-
 
 	//
 	virtual bool CanSpawn(int Team, vec2 *pPos);

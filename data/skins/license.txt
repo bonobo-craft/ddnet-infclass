@@ -31,10 +31,6 @@ kitty_warpaint, kitty_x_ninja:
 Copyright Ravie
 CC0 license
 
-lightbulb, tank, emo, bunny, hedgehog, napoleon, roman, caesar, nosey, savage:
-Copyright Lappi
-CC-BY-NC-SA license
-
 demonlimekitty, nanas, nersif:
 Copyright Miper
 CC-BY-SA license
@@ -46,13 +42,6 @@ zlib license
 Aoe4legs:
 Copyright Aoe
 CC0 license
-
-Ablush NeoN, Apish Coke, Black Phantom heinrich5991, Evil Puffi, Flying Silex,
-Hidden Assassin, Irradiated Sunny, Mobys Skull:
-Copyright Moby Dog
-CC-BY-NC-ND license
-Permission to modify the skins to fit other skin systems (split it into parts,
-etc.) and publish them under the same license was given.
 
 All other skins:
 All content is released under CC-BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0/).

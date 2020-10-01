@@ -1,15 +1,15 @@
 #ifndef GAME_SERVER_SCORE_H
 #define GAME_SERVER_SCORE_H
 
-#include <memory>
 #include <atomic>
+#include <memory>
 #include <string>
 #include <vector>
 
-#include <engine/server/databases/connection_pool.h>
 #include <engine/map.h>
-#include <game/voting.h>
+#include <engine/server/databases/connection_pool.h>
 #include <game/prng.h>
+#include <game/voting.h>
 
 #include "save.h"
 
@@ -64,7 +64,8 @@ struct CScorePlayerResult
 	std::atomic_bool m_Done;
 	CScorePlayerResult();
 
-	enum {
+	enum
+	{
 		MAX_MESSAGES = 7,
 	};
 
@@ -76,10 +77,12 @@ struct CScorePlayerResult
 		MAP_VOTE,
 		PLAYER_INFO,
 	} m_MessageKind;
-	union {
+	union
+	{
 		char m_aaMessages[MAX_MESSAGES][512];
 		char m_Broadcast[1024];
-		struct {
+		struct
+		{
 			float m_Time;
 			float m_CpTime[NUM_CHECKPOINTS];
 			int m_Score;
@@ -89,8 +92,8 @@ struct CScorePlayerResult
 		struct
 		{
 			char m_Reason[VOTE_REASON_LENGTH];
-			char m_Server[32+1];
-			char m_Map[MAX_MAP_LENGTH+1];
+			char m_Server[32 + 1];
+			char m_Map[MAX_MAP_LENGTH + 1];
 		} m_MapVote;
 	} m_Data; // PLAYER_INFO
 
@@ -114,7 +117,7 @@ struct CScoreRandomMapResult
 
 struct CScoreSaveResult
 {
-	CScoreSaveResult(int PlayerID, IGameController* Controller) :
+	CScoreSaveResult(int PlayerID, IGameController *Controller) :
 		m_Status(SAVE_FAILED),
 		m_SavedTeam(CSaveTeam(Controller)),
 		m_RequestingPlayer(PlayerID)
@@ -142,7 +145,8 @@ struct CScoreInitResult
 	CScoreInitResult() :
 		m_Done(false),
 		m_CurrentRecord(0)
-	{ }
+	{
+	}
 	std::atomic_bool m_Done;
 	float m_CurrentRecord;
 };
@@ -181,7 +185,8 @@ struct CSqlInitData : ISqlData
 {
 	CSqlInitData(std::shared_ptr<CScoreInitResult> pResult) :
 		m_pResult(pResult)
-	{}
+	{
+	}
 	std::shared_ptr<CScoreInitResult> m_pResult;
 
 	// current map
@@ -192,7 +197,8 @@ struct CSqlPlayerRequest : ISqlData
 {
 	CSqlPlayerRequest(std::shared_ptr<CScorePlayerResult> pResult) :
 		m_pResult(pResult)
-	{}
+	{
+	}
 	std::shared_ptr<CScorePlayerResult> m_pResult;
 	// object being requested, either map (128 bytes) or player (16 bytes)
 	char m_Name[MAX_MAP_LENGTH];
@@ -207,7 +213,8 @@ struct CSqlRandomMapRequest : ISqlData
 {
 	CSqlRandomMapRequest(std::shared_ptr<CScoreRandomMapResult> pResult) :
 		m_pResult(pResult)
-	{}
+	{
+	}
 	std::shared_ptr<CScoreRandomMapResult> m_pResult;
 
 	char m_ServerType[32];
@@ -250,8 +257,9 @@ struct CSqlScoreData : ISqlData
 {
 	CSqlScoreData(std::shared_ptr<CScorePlayerResult> pResult) :
 		m_pResult(pResult)
-	{}
-	virtual ~CSqlScoreData() {};
+	{
+	}
+	virtual ~CSqlScoreData(){};
 
 	std::shared_ptr<CScorePlayerResult> m_pResult;
 
@@ -282,8 +290,9 @@ struct CSqlTeamSave : ISqlData
 {
 	CSqlTeamSave(std::shared_ptr<CScoreSaveResult> pResult) :
 		m_pResult(pResult)
-	{}
-	virtual ~CSqlTeamSave() {};
+	{
+	}
+	virtual ~CSqlTeamSave(){};
 
 	std::shared_ptr<CScoreSaveResult> m_pResult;
 
@@ -298,8 +307,9 @@ struct CSqlTeamLoad : ISqlData
 {
 	CSqlTeamLoad(std::shared_ptr<CScoreSaveResult> pResult) :
 		m_pResult(pResult)
-	{}
-	virtual ~CSqlTeamLoad() {};
+	{
+	}
+	virtual ~CSqlTeamLoad(){};
 
 	std::shared_ptr<CScoreSaveResult> m_pResult;
 
@@ -313,7 +323,8 @@ struct CSqlTeamLoad : ISqlData
 	int m_NumPlayer;
 };
 
-struct CTeamrank {
+struct CTeamrank
+{
 	CUuid m_TeamID;
 	char m_aaNames[MAX_CLIENTS][MAX_NAME_LENGTH];
 	unsigned int m_NumNames;
@@ -375,11 +386,11 @@ class CScore
 	std::shared_ptr<CScorePlayerResult> NewSqlPlayerResult(int ClientID);
 	// Creates for player database requests
 	void ExecPlayerThread(
-			bool (*pFuncPtr) (IDbConnection *, const ISqlData *),
-			const char *pThreadName,
-			int ClientID,
-			const char *pName,
-			int Offset);
+		bool (*pFuncPtr)(IDbConnection *, const ISqlData *),
+		const char *pThreadName,
+		int ClientID,
+		const char *pName,
+		int Offset);
 
 	// returns true if the player should be rate limited
 	bool RateLimitPlayer(int ClientID);
@@ -398,13 +409,13 @@ public:
 
 	void SaveTeamScore(int *pClientIDs, unsigned int Size, float Time, const char *pTimestamp);
 
-	void ShowTop5(int ClientID, int Offset=1);
+	void ShowTop5(int ClientID, int Offset = 1);
 	void ShowRank(int ClientID, const char *pName);
 
-	void ShowTeamTop5(int ClientID, int Offset=1);
+	void ShowTeamTop5(int ClientID, int Offset = 1);
 	void ShowTeamRank(int ClientID, const char *pName);
 
-	void ShowTopPoints(int ClientID, int Offset=1);
+	void ShowTopPoints(int ClientID, int Offset = 1);
 	void ShowPoints(int ClientID, const char *pName);
 
 	void ShowTimes(int ClientID, const char *pName, int Offset = 1);

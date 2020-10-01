@@ -10,10 +10,10 @@
 
 #include "kernel.h"
 #include "message.h"
+#include <engine/shared/protocol.h>
 #include <game/generated/protocol.h>
 #include <game/generated/protocol7.h>
 #include <game/generated/protocolglue.h>
-#include <engine/shared/protocol.h>
 
 enum // infclass 0.6 copypaste
 {
@@ -132,7 +132,7 @@ public:
 	{
 		int Result = 0;
 		T tmp;
-		if (ClientID == -1)
+		if(ClientID == -1)
 		{
 			for(int i = 0; i < MAX_CLIENTS; i++)
 				if(ClientIngame(i))
@@ -140,7 +140,9 @@ public:
 					mem_copy(&tmp, pMsg, sizeof(T));
 					Result = SendPackMsgTranslate(&tmp, Flags, i);
 				}
-		} else {
+		}
+		else
+		{
 			mem_copy(&tmp, pMsg, sizeof(T));
 			Result = SendPackMsgTranslate(&tmp, Flags, ClientID);
 		}
@@ -200,8 +202,10 @@ public:
 
 	int SendPackMsgTranslate(CNetMsg_Sv_KillMsg *pMsg, int Flags, int ClientID)
 	{
-		if (!Translate(pMsg->m_Victim, ClientID)) return 0;
-		if (!Translate(pMsg->m_Killer, ClientID)) pMsg->m_Killer = pMsg->m_Victim;
+		if(!Translate(pMsg->m_Victim, ClientID))
+			return 0;
+		if(!Translate(pMsg->m_Killer, ClientID))
+			pMsg->m_Killer = pMsg->m_Victim;
 		return SendPackMsgOne(pMsg, Flags, ClientID);
 	}
 
@@ -216,19 +220,19 @@ public:
 		return SendMsg(&Packer, Flags, ClientID);
 	}
 
-	bool Translate(int& Target, int Client)
+	bool Translate(int &Target, int Client)
 	{
 		if(IsSixup(Client))
 			return true;
 		CClientInfo Info;
 		GetClientInfo(Client, &Info);
-		if (Info.m_DDNetVersion >= VERSION_DDNET_OLD)
+		if(Info.m_DDNetVersion >= VERSION_DDNET_OLD)
 			return true;
 		int *pMap = GetIdMap(Client);
 		bool Found = false;
-		for (int i = 0; i < VANILLA_MAX_CLIENTS; i++)
+		for(int i = 0; i < VANILLA_MAX_CLIENTS; i++)
 		{
-			if (Target == pMap[i])
+			if(Target == pMap[i])
 			{
 				Target = i;
 				Found = true;
@@ -238,17 +242,17 @@ public:
 		return Found;
 	}
 
-	bool ReverseTranslate(int& Target, int Client)
+	bool ReverseTranslate(int &Target, int Client)
 	{
 		if(IsSixup(Client))
 			return true;
 		CClientInfo Info;
 		GetClientInfo(Client, &Info);
-		if (Info.m_DDNetVersion >= VERSION_DDNET_OLD)
+		if(Info.m_DDNetVersion >= VERSION_DDNET_OLD)
 			return true;
-		Target = clamp(Target, 0, VANILLA_MAX_CLIENTS-1);
+		Target = clamp(Target, 0, VANILLA_MAX_CLIENTS - 1);
 		int *pMap = GetIdMap(Client);
-		if (pMap[Target] == -1)
+		if(pMap[Target] == -1)
 			return false;
 		Target = pMap[Target];
 		return true;
@@ -268,16 +272,16 @@ public:
 
 	virtual void SnapSetStaticsize(int ItemType, int Size) = 0;
 
-	enum {
-		RCON_CID_SERV=-1,
-		RCON_CID_VOTE=-2,
+	enum
+	{
+		RCON_CID_SERV = -1,
+		RCON_CID_VOTE = -2,
 	};
 	virtual void SetRconCID(int ClientID) = 0;
 	virtual int GetAuthedState(int ClientID) = 0;
 	virtual const char *GetAuthName(int ClientID) = 0;
 	virtual void Kick(int ClientID, const char *pReason) = 0;
 	virtual void Ban(int ClientID, int Seconds, const char *pReason) = 0;
-
 
 	virtual void DemoRecorder_HandleAutoStart() = 0;
 	virtual bool DemoRecorder_IsRecording() = 0;
@@ -291,7 +295,7 @@ public:
 
 	virtual void GetClientAddr(int ClientID, NETADDR *pAddr) = 0;
 
-	virtual int* GetIdMap(int ClientID) = 0;
+	virtual int *GetIdMap(int ClientID) = 0;
 
 	virtual bool DnsblWhite(int ClientID) = 0;
 	virtual bool DnsblPending(int ClientID) = 0;

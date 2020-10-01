@@ -3,11 +3,12 @@
 #ifndef GAME_SERVER_ENTITIES_PROJECTILE_H
 #define GAME_SERVER_ENTITIES_PROJECTILE_H
 
+#include <game/server/entity.h>
+
 class CProjectile : public CEntity
 {
 public:
-	CProjectile
-	(
+	CProjectile(
 		CGameWorld *pGameWorld,
 		int Type,
 		int Owner,
@@ -52,7 +53,6 @@ private:
 	int m_TuneZone;
 
 public:
-
 	void SetBouncing(int Value);
 	void FillExtraInfo(CNetObj_Projectile *pProj);
 };

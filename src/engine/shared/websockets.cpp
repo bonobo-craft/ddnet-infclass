@@ -10,7 +10,7 @@
 #if defined(CONF_FAMILY_UNIX)
 #include <arpa/inet.h>
 #elif defined(CONF_FAMILY_WINDOWS)
-#include <Ws2tcpip.h>
+#include <ws2tcpip.h>
 #endif
 #include <libwebsockets.h>
 
@@ -90,7 +90,8 @@ static int websocket_callback(struct lws *wsi, enum lws_callback_reasons reason,
 		int orig_port = ntohs(pss->addr.sin_port);
 		pss->send_buffer.Init();
 		char addr_str[NETADDR_MAXSTRSIZE];
-		inet_ntop(AF_INET, &pss->addr.sin_addr, addr_str, sizeof(addr_str));
+		int ip_uint32 = pss->addr.sin_addr.s_addr;
+		str_format(addr_str, sizeof(addr_str), "%d.%d.%d.%d", (ip_uint32)&0xff, (ip_uint32 >> 8) & 0xff, (ip_uint32 >> 16) & 0xff, (ip_uint32 >> 24) & 0xff);
 		dbg_msg("websockets",
 			"connection established with %s:%d",
 			addr_str, orig_port);
@@ -292,6 +293,7 @@ int websocket_fd_set(int socket, fd_set *set)
 	lws_context *context = contexts[socket].context;
 	if(context == NULL)
 		return -1;
+	lws_service(context, -1);
 	context_data *ctx_data = (context_data *)lws_context_user(context);
 	int max = 0;
 	for(auto const &x : ctx_data->port_map)
