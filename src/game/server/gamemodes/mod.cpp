@@ -255,7 +255,8 @@ void CGameControllerMOD::TurnDefaultIntoRandomHuman()
 		if (each->GetClassNum() == Class::DEFAULT && each->GetPlayer()->GetTeam() != TEAM_SPECTATORS) {
 			each->SetBeenOnRoundStart();
 			each->TurnIntoRandomHuman();
-			each->GetCharacter()->IncreaseArmor(10);
+			each->GetCharacter()->SetArmor(10);
+			dbg_msg("game", "set armor on random human");
 		}
 	}
 }
@@ -730,7 +731,8 @@ void CGameControllerMOD::OnCharacterSpawn(CCharacter* pChr)
 	players[ClientID]->OnCharacterSpawn(pChr);
 
 	if (pChr->IsZombie() && GetZombieCount() == 1) {
-		pChr->IncreaseArmor(10); // +10 armor for lonely zombie
+		dbg_msg("game", "set armor on first zombie spawn");
+		pChr->SetArmor(10); // +10 armor for lonely zombie
 	}
 
 	const vec2 *MotherPos = GetMotherPos();

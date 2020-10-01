@@ -341,8 +341,11 @@ void CroyaPlayer::OnCharacterSpawn(CCharacter* pChr)
 	m_pClass->OnCharacterSpawn(pChr);
 	m_pCharacter->SetCroyaPlayer(this);
 	m_pCharacter->SetHookProtected(m_HookProtected);
-	if (m_BeenOnRoundStart)
-	  GetCharacter()->IncreaseArmor(10);
+	if (m_BeenOnRoundStart) {
+		dbg_msg("game", "set armor on character span croya as was on round start");
+		GetCharacter()->SetArmor(10);
+		m_BeenOnRoundStart = false;
+	}
 }
 
 void CroyaPlayer::OnCharacterDeath(CCharacter* pVictim, CPlayer* pKiller, int Weapon)
