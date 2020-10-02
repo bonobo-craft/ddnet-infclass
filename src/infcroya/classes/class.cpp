@@ -143,6 +143,9 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 			}
 		}
 
+		if (pChr->IsHookProtected() || pTarget->IsHookProtected())
+			ShouldGiveUpVelocity = false;
+
 		if (pChr->GetCroyaPlayer()->GetClassNum() == Class::BAT && (ShouldFreeze || ShouldInfect)) {
 			ShouldInfect = false;
 			ShouldFreeze = false;
@@ -184,6 +187,9 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 			pTarget->IncreaseOverallHp(4);
 			pChr->IncreaseOverallHp(1);
 			pTarget->SetEmote(EMOTE_HAPPY, pChr->Server()->Tick() + pChr->Server()->TickSpeed());
+		}
+
+		if (ShouldGiveUpVelocity) {
 			pTarget->TakeDamage(vec2(0.f, -1.f) + normalize(Dir + vec2(0.f, -1.1f)) * 10.0f, Dir * -1, 0,
 								ClientID, pChr->GetActiveWeapon());
 		}
