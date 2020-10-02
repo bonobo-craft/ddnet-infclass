@@ -127,6 +127,7 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 				ShouldHit = true;
 			} else {                   // Human hits Human
 				ShouldUnfreeze = true;
+				ShouldGiveUpVelocity = true;
 			}
 		}
 
