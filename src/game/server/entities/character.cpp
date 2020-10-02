@@ -845,16 +845,18 @@ void CCharacter::Tick()
 				// disable hook protection for self
 				if (GetCroyaPlayer())
 					GetCroyaPlayer()->SetHookProtected(false);
-				// driver is no longer vacant and he is not a passenger anymore
+				TargetChar->ResetTaxi();
+				ResetTaxi();
+/* 				// driver is no longer vacant and he is not a passenger anymore
 				TargetChar->m_FreeTaxi = false;
-				TargetChar-> m_TaxiPassenger = false;
+				TargetChar-> m_TaxiPassenger = false; */
 				// hooker is now a passenger and is no longer vacant
 				m_pPlayer->GetCharacter()->m_TaxiPassenger = true;
-				m_pPlayer->GetCharacter()->m_FreeTaxi = false;
+/* 				m_pPlayer->GetCharacter()->m_FreeTaxi = false; */
 				// driver now has a link to a passenger's core to follow him
 				TargetChar->GetpCore()->m_TaxiPassengerCore = &m_Core;
 				// but passenger now frees a previous passenger
-				m_Core.m_TaxiPassengerCore = nullptr;
+/* 				m_Core.m_TaxiPassengerCore = nullptr; */
 				// let's remember a core of a driver to exit it later
 				m_Core.m_TaxiDriverCore = TargetChar->GetpCore();
 			}
