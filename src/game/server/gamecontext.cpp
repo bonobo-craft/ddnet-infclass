@@ -1475,7 +1475,6 @@ void CGameContext::OnClientEnter(int ClientID)
 		}
 
 		char aBuf[512];
-<<<<<<< HEAD
 		char DDNetVersion[64];
 		Server()->ClientDDNetVersion(ClientID, DDNetVersion);
 		if (Server()->IsSixup(ClientID))

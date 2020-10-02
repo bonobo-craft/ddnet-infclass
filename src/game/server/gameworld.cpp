@@ -311,7 +311,6 @@ void CGameWorld::Tick()
 
 // TODO: should be more general
 //CCharacter *CGameWorld::IntersectCharacter(vec2 Pos0, vec2 Pos1, float Radius, vec2& NewPos, CEntity *pNotThis)
-<<<<<<< HEAD
 CCharacter *CGameWorld::IntersectCharacterInf(vec2 Pos0, vec2 Pos1, float Radius, vec2& NewPos, CCharacter *pNotThis, int CollideWith, class CCharacter *pThisOnly)
 {
 	// Find other players

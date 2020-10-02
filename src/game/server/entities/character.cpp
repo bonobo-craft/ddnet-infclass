@@ -512,11 +512,12 @@ void CCharacter::FireWeapon()
 
 		} break;
 
-	case WEAPON_GUN:
-	{
-		if(!m_Jetpack || !m_pPlayer->m_NinjaJetpack)
+		case WEAPON_GUN:
 		{
-			m_pCroyaPlayer->OnWeaponFire(Direction, ProjStartPos, WEAPON_GUN, this);
+			if(!m_Jetpack || !m_pPlayer->m_NinjaJetpack)
+			{
+				m_pCroyaPlayer->OnWeaponFire(Direction, ProjStartPos, WEAPON_GUN, this);
+			}
 		} break;
 
 		case WEAPON_SHOTGUN:
@@ -2644,22 +2645,7 @@ bool CCharacter::Freeze()
 	return Freeze(g_Config.m_SvFreezeDelay);
 }
 
-bool CCharacter::UnFreeze()
-{
-	if (m_FreezeTime > 0)
-	{
-		m_Armor=10;
-		if(!m_aWeapons[m_Core.m_ActiveWeapon].m_Got)
-			m_Core.m_ActiveWeapon = WEAPON_GUN;
-		m_FreezeTime = 0;
-		m_FreezeTick = 0;
-		m_FrozenLastTick = true;
-		return true;
-	}
-	return false;
-}
-
-void CCharacter::GiveWeapon(int Weapon, bool Remove)
+void CCharacter::GiveWeapon(int Weapon, int Ammo, bool Remove)
 {
 	if(Weapon == WEAPON_NINJA)
 	{
