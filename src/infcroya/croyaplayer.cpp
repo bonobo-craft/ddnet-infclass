@@ -655,6 +655,8 @@ bool CroyaPlayer::IsHookProtected() const
 
 void CroyaPlayer::SetHookProtected(bool HookProtected)
 {
+	if (HookProtected && m_pCharacter && (m_pCharacter->IsTaxiPassenger() || m_pCharacter->IsTaxiDriver() || m_pCharacter->m_FreeTaxi))
+		m_pCharacter->ResetTaxi();
 	m_HookProtected = HookProtected;
 	if (m_pPlayer) {
 		m_pPlayer->SetHookProtected(HookProtected);

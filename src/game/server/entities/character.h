@@ -114,6 +114,10 @@ public:
 	// INFCROYA BEGIN ------------------------------------------------------------
 	void SwitchTaxi();
 	void ResetTaxi();
+	void ExitTaxiAsPassenger();
+	void ExitTaxiAsDriver();
+	bool IsTaxiDriver();
+	bool IsTaxiPassenger();
 	void SetNormalEmote(int Emote);
 
 	bool IsHuman() const;

@@ -291,6 +291,7 @@ void CCharacterCore::Tick(bool UseInput)
 					continue;
 				// INFCROYA END ------------------------------------------------------------//
 				
+				// passenger cannot hit a driver and vice versa
 				if (m_TaxiPassengerCore && m_TaxiPassengerCore == pCharCore)
 				  continue;
 

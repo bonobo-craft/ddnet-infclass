@@ -839,6 +839,12 @@ void CCharacter::Tick()
 			    !TargetChar->m_TaxiPassenger &&
 				!TargetChar->GetCore().m_TaxiPassengerCore)
 			{
+				// disable hook protection for a driver
+				if (TargetChar->GetCroyaPlayer())
+					TargetChar->GetCroyaPlayer()->SetHookProtected(false);
+				// disable hook protection for self
+				if (GetCroyaPlayer())
+					GetCroyaPlayer()->SetHookProtected(false);
 				// driver is no longer vacant and he is not a passenger anymore
 				TargetChar->m_FreeTaxi = false;
 				TargetChar-> m_TaxiPassenger = false;
@@ -2772,59 +2778,84 @@ void CCharacter::Rescue()
 	}
 }
 
+// riding a taxi
+bool CCharacter::IsTaxiPassenger()
+{
+	if (m_Core.m_TaxiDriverCore)
+	  return true;
+	return false;
+}
+
+// carrying a passenger right now
+bool CCharacter::IsTaxiDriver()
+{
+	if (m_Core.m_TaxiPassengerCore)
+	  return true;
+	return false;
+}
+
+void CCharacter::ExitTaxiAsPassenger()
+{
+	// passenger exits
+	m_Core.m_Pos.x = m_Core.m_TaxiDriverCore->m_Pos.x;
+	m_Core.m_Pos.y = m_Core.m_TaxiDriverCore->m_Pos.y;
+	m_Core.m_Vel.x = m_Core.m_TaxiDriverCore->m_Vel.x;
+	m_Core.m_Vel.y = m_Core.m_TaxiDriverCore->m_Vel.y;
+	// driver forgets about a passenger
+	m_Core.m_TaxiDriverCore->m_TaxiPassengerCore = nullptr;
+	// we forget about a driver
+	m_Core.m_TaxiDriverCore = nullptr;
+	// set out status
+	m_TaxiPassenger = false;
+}
+
+void CCharacter::ExitTaxiAsDriver()
+{
+	// passenger exits
+	m_Core.m_TaxiPassengerCore->m_Pos.x = m_Core.m_Pos.x;
+	m_Core.m_TaxiPassengerCore->m_Pos.y = m_Core.m_Pos.y;
+	m_Core.m_TaxiPassengerCore->m_Vel.x = m_Core.m_Vel.x;
+	m_Core.m_TaxiPassengerCore->m_Vel.y = m_Core.m_Vel.y;
+	// passengers forgets about a driver
+	m_Core.m_TaxiPassengerCore->m_TaxiDriverCore = nullptr;
+	// we forget about a passenger
+	m_Core.m_TaxiPassengerCore = nullptr;
+}
+
+
 // INFCROYA BEGIN ------------------------------------------------------------
 void CCharacter::ResetTaxi()
 {
 	m_FreeTaxi = false;
-	m_TaxiPassenger = false;
-	if (m_Core.m_TaxiDriverCore) {
-		m_Core.m_Pos.x = m_Core.m_TaxiDriverCore->m_Pos.x;
-		m_Core.m_Pos.y = m_Core.m_TaxiDriverCore->m_Pos.y;
-		m_Core.m_Vel.x = m_Core.m_TaxiDriverCore->m_Vel.x;
-		m_Core.m_Vel.y = m_Core.m_TaxiDriverCore->m_Vel.y;
-		m_Core.m_TaxiDriverCore->m_TaxiPassengerCore = nullptr;
-		m_Core.m_TaxiDriverCore = nullptr;
+	if (IsTaxiPassenger()) {
+		ExitTaxiAsPassenger();
 	}
-	if (m_Core.m_TaxiPassengerCore) {
-		m_Core.m_TaxiPassengerCore->m_Pos.x = m_Core.m_Pos.x;
-		m_Core.m_TaxiPassengerCore->m_Pos.y = m_Core.m_Pos.y;
-		m_Core.m_TaxiPassengerCore->m_Vel.x = m_Core.m_Vel.x;
-		m_Core.m_TaxiPassengerCore->m_Vel.y = m_Core.m_Vel.y;
-		m_Core.m_TaxiPassengerCore->m_TaxiDriverCore = nullptr;
-		m_Core.m_TaxiPassengerCore = nullptr;
+	if (IsTaxiDriver()) {
+		ExitTaxiAsDriver();
 	}
 }
 
 void CCharacter::SwitchTaxi()
 {
+	// we have a free taxi icon so we don't carrying or riding anybody
 	if (m_FreeTaxi)
 		m_FreeTaxi = false;
 	else {
-		// if was a passenger tell driver to release me
-		if (m_Core.m_TaxiDriverCore) {
-			m_Core.m_Pos.x = m_Core.m_TaxiDriverCore->m_Pos.x;
-			m_Core.m_Pos.y = m_Core.m_TaxiDriverCore->m_Pos.y;
-			m_Core.m_Vel.x = m_Core.m_TaxiDriverCore->m_Vel.x;
-			m_Core.m_Vel.y = m_Core.m_TaxiDriverCore->m_Vel.y;
+		// we don't have a free taxi sign
+		// either we haven't turned it on
+		// or we are a passenger or a driver
 
-			m_Core.m_TaxiDriverCore->m_TaxiPassengerCore = nullptr;
-			m_Core.m_TaxiDriverCore = nullptr;
-			m_TaxiPassenger = false;
-			return;
+		// let's get rid of passenger or driver first
+		if (IsTaxiPassenger()) {
+			ExitTaxiAsPassenger();
+			return; // we don't want a taxi icon if we exited
 		}
-		// if was a driver release a passenger
-		if (m_Core.m_TaxiPassengerCore) {
-			m_Core.m_TaxiPassengerCore->m_Pos.x = m_Core.m_Pos.x;
-			m_Core.m_TaxiPassengerCore->m_Pos.y = m_Core.m_Pos.y;
-			m_Core.m_TaxiPassengerCore->m_Vel.x = m_Core.m_Vel.x;
-			m_Core.m_TaxiPassengerCore->m_Vel.y = m_Core.m_Vel.y;
-			m_Core.m_TaxiPassengerCore->m_TaxiDriverCore = nullptr;
-			m_Core.m_TaxiPassengerCore = nullptr;	
-			m_TaxiPassenger = false;
-			return;
+		if (IsTaxiDriver()) {
+			ExitTaxiAsDriver();
+			return; // we don't want a taxi icon if we stopped driving
 		}
-		// be vacant
 		m_FreeTaxi = true;
+		GetCroyaPlayer()->SetHookProtected(false);
 	}
 }
 
