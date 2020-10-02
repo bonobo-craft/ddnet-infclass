@@ -7,10 +7,15 @@
 CNinja::CNinja()
 {
 	CSkin skin;
-	skin.SetBodyColor(155, 0, 122);
-	skin.SetMarkingName("default");
-	skin.SetMarkingColor(0, 0, 255);
-	skin.SetFeetColor(29, 0, 87);
+	skin.SetBodyColor(0, 0, 0);
+	skin.SetMarkingName("uppy");
+	skin.SetMarkingColor(0, 0, 255, 75);
+	skin.SetDecorationName("twinmello");
+	skin.SetDecorationColor(0, 0, 0);
+	skin.SetFeetColor(0, 0, 255);
+	skin.SetHandsColor(0, 0, 0);
+	skin.SetEyesName("negative");
+	skin.SetEyesColor(102, 0, 255);
 	SetSkin(skin);
 	SetInfectedClass(false);
 	SetName("Ninja");
