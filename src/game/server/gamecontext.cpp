@@ -556,6 +556,15 @@ void CGameContext::SendChat(int ChatterClientID, int Team, const char *pText, in
 		if(g_Config.m_SvDemoChat)
 			Server()->SendPackMsg(&Msg, MSGFLAG_VITAL | MSGFLAG_NOSEND, -1);
 
+		if (m_apPlayers[ChatterClientID]->GetTeam() == TEAM_SPECTATORS)
+			return;
+
+		if (!m_apPlayers[ChatterClientID]->GetCroyaPlayer())
+			return;
+
+		bool SendToZombies = (m_apPlayers[ChatterClientID]->GetCroyaPlayer()->IsZombie());
+		bool SendToHumans = (m_apPlayers[ChatterClientID]->GetCroyaPlayer()->IsHuman());
+
 		// send to the clients
 		for(int i = 0; i < MAX_CLIENTS; i++)
 		{
@@ -570,10 +579,17 @@ void CGameContext::SendChat(int ChatterClientID, int Team, const char *pText, in
 				}
 				else
 				{
-					if(Teams->Team(i) == Team && m_apPlayers[i]->GetTeam() != CHAT_SPEC)
+					bool IsZombie = (m_apPlayers[i]->GetCroyaPlayer() && m_apPlayers[i]->GetCroyaPlayer()->IsZombie());
+					bool IsHuman = (m_apPlayers[i]->GetCroyaPlayer() && m_apPlayers[i]->GetCroyaPlayer()->IsHuman());
+					if (SendToHumans && IsHuman)
+						Server()->SendPackMsg(&Msg, MSGFLAG_VITAL | MSGFLAG_NORECORD, i);
+					if (SendToZombies && IsZombie)
+						Server()->SendPackMsg(&Msg, MSGFLAG_VITAL | MSGFLAG_NORECORD, i);
+
+/* 					if(Teams->Team(i) == Team && m_apPlayers[i]->GetTeam() != CHAT_SPEC)
 					{
 						Server()->SendPackMsg(&Msg, MSGFLAG_VITAL | MSGFLAG_NORECORD, i);
-					}
+					} */
 				}
 			}
 		}
