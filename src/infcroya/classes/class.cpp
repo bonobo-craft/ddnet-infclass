@@ -120,6 +120,7 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		bool ShouldUnfreeze = false;
 		bool ShouldInfect = false;
 		bool ShouldFreeze = false;
+		bool ShouldGiveUpVelocity = false;
 
 		if (pChr->IsHuman()) {
 			if (pTarget->IsZombie()) { // Human hits Zombie
@@ -137,6 +138,7 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 					ShouldInfect = true;	
 			} else {                  // Zombie hits Zombie
 				ShouldHeal = true;
+				ShouldGiveUpVelocity = true;
 				ShouldUnfreeze = true;
 			}
 		}
@@ -182,6 +184,8 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 			pTarget->IncreaseOverallHp(4);
 			pChr->IncreaseOverallHp(1);
 			pTarget->SetEmote(EMOTE_HAPPY, pChr->Server()->Tick() + pChr->Server()->TickSpeed());
+			pTarget->TakeDamage(vec2(0.f, -1.f) + normalize(Dir + vec2(0.f, -1.1f)) * 10.0f, Dir * -1, 0,
+								ClientID, pChr->GetActiveWeapon());
 		}
 
 	}
