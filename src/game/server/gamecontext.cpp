@@ -4465,99 +4465,104 @@ bool CGameContext::SendClassInfoByCommand(const std::string command, int ClientI
 
 void CGameContext::SendZombieClassSelectorByClassId(int ClassId, int ClientID) {
 	std::vector<std::string> messageList;
-	messageList.push_back("Choose your class with mouse wheel:\n");
-	messageList.push_back("(stand in a white circle)\n");
+	auto lang = m_apPlayers[ClientID]->GetCroyaPlayer()->GetLanguage();
+	auto sel1 = "[   ";
+	auto sel2 = "   ]";
+	auto unsel = "    ";
+	messageList.push_back(localize("class.menu.zombies.header", lang));
 
 	if (ClassId == Class::SMOKER)
-		messageList.push_back("> SMOKER");
+		messageList.push_back(sel1 + localize("game.class.smoker", lang) + sel2);
 	else
-		messageList.push_back("    SMOKER");
+		messageList.push_back(unsel + localize("game.class.smoker", lang));
 	if (ClassId == Class::HUNTER)
-		messageList.push_back("> HUNTER");
+		messageList.push_back(sel1 + localize("game.class.hunter", lang) + sel2);
 	else
-		messageList.push_back("    HUNTER");
+		messageList.push_back(unsel + localize("game.class.hunter", lang));
 	if (ClassId == Class::BAT)
-		messageList.push_back("> BAT (weak)");
+		messageList.push_back(sel1 + localize("game.class.bat", lang) + sel2);
 	else
-		messageList.push_back("    BAT (weak)");
+		messageList.push_back(unsel + localize("game.class.bat", lang));
 	if (ClassId == Class::FREEZER)
-		messageList.push_back("> FREEZER");
+		messageList.push_back(sel1 + localize("game.class.freezer", lang) + sel2);
 	else
-		messageList.push_back("    FREEZER");
+		messageList.push_back(unsel + localize("game.class.freezer", lang));
 	if (ClassId == Class::WORKER)
-		messageList.push_back("> WORKER (weak)");
+		messageList.push_back(sel1 + localize("game.class.worker", lang) + sel2);
 	else
-		messageList.push_back("    WORKER (weak)");
+		messageList.push_back(unsel + localize("game.class.worker", lang));
 	if (ClassId == Class::BOOMER)
-		messageList.push_back("> BOOMER");
+		messageList.push_back(sel1 + localize("game.class.boomer", lang) + sel2);
 	else
-		messageList.push_back("    BOOMER");
+		messageList.push_back(unsel + localize("game.class.boomer", lang));
 	if (ClassId == Class::POISONER)
-		messageList.push_back("> POISONER");
+		messageList.push_back(sel1 + localize("game.class.poisoner", lang) + sel2);
 	else
-		messageList.push_back("    POISONER");
+		messageList.push_back(unsel + localize("game.class.poisoner", lang));
 	if (ClassId == Class::MOTHER)
-		messageList.push_back("> QUEEN *");
+		messageList.push_back(sel1 + localize("game.class.queen", lang) + sel2);
 	else
-		messageList.push_back("    QUEEN *");
+		messageList.push_back(unsel + localize("game.class.queen", lang));
 	if (IsDevServer()) {
 		if (ClassId == Class::PARASITE)
 			messageList.push_back("> PARASITE *");
 		else
 			messageList.push_back("    PARASITE *");
 	}
-	messageList.push_back("\nClasses with * are selectable by an initial zombie only");
-	messageList.push_back("\nPress Tab briefly to close this menu");
+	messageList.push_back(localize("class.menu.zombies.footer", lang));
 
 	SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
 }
 
 void CGameContext::SendHumanClassSelectorByClassId(int ClassId, int ClientID) {
-	
+	auto lang = m_apPlayers[ClientID]->GetCroyaPlayer()->GetLanguage();
 	std::vector<std::string> messageList;
-	messageList.push_back("Choose your class with mouse wheel:\n");
+	messageList.push_back(localize("class.menu.humans.header", lang));
+	auto sel1 = "[   ";
+	auto sel2 = "   ]";
+	auto unsel = "    ";
 
 	if (ClassId == Class::DEFAULT)
-		messageList.push_back("> RANDOM");
+		messageList.push_back(sel1 + localize("game.class.random", lang) + sel2);
 	else
-		messageList.push_back("    RANDOM");
+		messageList.push_back(unsel + localize("game.class.random", lang));
 	if (ClassId == Class::BIOLOGIST)
-		messageList.push_back("> BIOLOGIST");
+		messageList.push_back(sel1 + localize("game.class.biologist", lang) + sel2);
 	else
-		messageList.push_back("    BIOLOGIST");
+		messageList.push_back(unsel + localize("game.class.biologist", lang));
 	if (ClassId == Class::ENGINEER)
-		messageList.push_back("> ENGINEER");
+		messageList.push_back(sel1 + localize("game.class.engineer", lang) + sel2);
 	else
-		messageList.push_back("    ENGINEER");
+		messageList.push_back(unsel + localize("game.class.engineer", lang));
 	if (ClassId == Class::MEDIC)
-		messageList.push_back("> MEDIC");
+		messageList.push_back(sel1 + localize("game.class.medic", lang) + sel2);
 	else
-		messageList.push_back("    MEDIC");
+		messageList.push_back(unsel + localize("game.class.medic", lang));
 	if (ClassId == Class::SOLDIER)
-		messageList.push_back("> SOLDIER");
+		messageList.push_back(sel1 + localize("game.class.soldier", lang) + sel2);
 	else
-		messageList.push_back("    SOLDIER");
+		messageList.push_back(unsel + localize("game.class.soldier", lang));
 	if (ClassId == Class::SCIENTIST)
-		messageList.push_back("> SCIENTIST");
+		messageList.push_back(sel1 + localize("game.class.scientist", lang) + sel2);
 	else
-		messageList.push_back("    SCIENTIST");
+		messageList.push_back(unsel + localize("game.class.scientist", lang));
 	if (ClassId == Class::MERCENARY)
-		messageList.push_back("> MERCENARY");
+		messageList.push_back(sel1 + localize("game.class.mercenary", lang) + sel2);
 	else
-		messageList.push_back("    MERCENARY");
+		messageList.push_back(unsel + localize("game.class.mercenary", lang));
 	if (ClassId == Class::NINJA)
-		messageList.push_back("> NINJA");
+		messageList.push_back(sel1 + localize("game.class.ninja", lang) + sel2);
 	else
-		messageList.push_back("    NINJA");
+		messageList.push_back(unsel + localize("game.class.ninja", lang));
 	if (ClassId == Class::HERO)
-		messageList.push_back("> HERO");
+		messageList.push_back(sel1 + localize("game.class.hero", lang) + sel2);
 	else
-		messageList.push_back("    HERO");
+		messageList.push_back(unsel + localize("game.class.hero", lang));
 	if (ClassId == Class::SNIPER)
-		messageList.push_back("> SNIPER");
+		messageList.push_back(sel1 + localize("game.class.sniper", lang) + sel2);
 	else
-		messageList.push_back("    SNIPER");
-	messageList.push_back("\nPress Tab briefly to close this menu");
+		messageList.push_back(unsel + localize("game.class.sniper", lang));
+	messageList.push_back(localize("class.menu.humans.footer", lang));
 
 	SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
 }

@@ -310,5 +310,69 @@
         "term_plural": "",
         "reference": "",
         "comment": ""
+    },
+    {
+        "term": "game.flag.spawned",
+        "definition": "Flagge erschien. Helden k\u00f6nnen es nehmen, um Menschen zu helfen.",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.flag.taken",
+        "definition": "Die Flagge wird von einem Helden genommen. Menschen erhalten +4 HP \/ R\u00fcstung",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.ninja",
+        "definition": "Ninja",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.sniper",
+        "definition": "Scharfsch\u00fctze",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.humans.header",
+        "definition": "W\u00e4hlen Sie Ihre Klasse mit dem Mausrad: \\n",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.humans.footer",
+        "definition": "\\nDr\u00fccken Sie kurz die Tabulatortaste, um dieses Men\u00fc zu schlie\u00dfen",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.zombies.header",
+        "definition": "Ihre Klasse mit dem Mausrad: \\n \\n in einem wei\u00dfen Kreis stehen) \\n \\n",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.zombies.footer",
+        "definition": "\\nKlassen mit * k\u00f6nnen nur von einem anf\u00e4nglichen Zombie ausgew\u00e4hlt werden \\nDr\u00fccken Sie kurz die Tabulatortaste, um dieses Men\u00fc zu schlie\u00dfen",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
     }
 ]

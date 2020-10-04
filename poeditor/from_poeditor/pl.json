@@ -1,7 +1,7 @@
 [
     {
         "term": "cmd.commands",
-        "definition": "-- Komendy --\n\/humans by zobaczy\u0107 list\u0119 klas ludzi\n\/zombies aby wy\u015bwietli\u0107 list\u0119 klas zombie\n\/help - poka\u017c pomoc",
+        "definition": "-- Komendy --\n\/humans by zobaczy\u0107 list\u0119 klas ludzi\n\/zombies aby wy\u015bwietli\u0107 list\u0119 klas zombie\n\/help wy\u015bwietla pomoc",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -9,7 +9,7 @@
     },
     {
         "term": "cmd.help.humans",
-        "definition": "- KLASY LUDZI -\nspr\u00f3buj: \/medic? \/soldier? \/scientist? \/engineer?\n\/hero? \/mercenary? \/biologist?\nludzie mog\u0105 zosta\u0107 zara\u017ceni gdy maj\u0105 ma\u0142o \u017cycia lub przy uderzeniu m\u0142otem",
+        "definition": "-- KLASY LUDZI --\nspr\u00f3buj: \/medic? \/soldier? \/scientist? \/engineer? \/hero? \/mercenary? \/biologist?\nludzie mog\u0105 zosta\u0107 zara\u017ceni gdy maj\u0105 ma\u0142o \u017cycia lub gdy zostan\u0105 uderzeni m\u0142otem",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -17,7 +17,7 @@
     },
     {
         "term": "cmd.help.zombies",
-        "definition": "- KLASY ZOMBIE -\nspr\u00f3buj: \/bat? \/hunter? \/smoker? \/boomer?\n\/queen? \/worker? \/freezer? \/poisoner?",
+        "definition": "-- KLASY ZOMBIE --\nspr\u00f3buj: \/bat? \/hunter? \/smoker? \/boomer? \/queen? \/worker? \/freezer? \/poisoner?",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -25,7 +25,7 @@
     },
     {
         "term": "cmd.help.scientist",
-        "definition": "- NAUKOWIEC (cz\u0142owiek) -\nMo\u017ce teleportowa\u0107 si\u0119 za pomoc\u0105 granatnika\nmo\u017ce stworzy\u0107 2 miny\nodporny na zamarzanie",
+        "definition": "-- NAUKOWIEC (cz\u0142owiek) --\nMo\u017ce teleportowa\u0107 si\u0119 za pomoc\u0105 granatnika\nmo\u017ce stworzy\u0107 2 miny\nodporny na zamarzanie",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -33,7 +33,7 @@
     },
     {
         "term": "cmd.help.engineer",
-        "definition": "- IN\u017bYNIER (cz\u0142owiek) -\nPotrafi budowa\u0107 \u015bciany m\u0142otkiem\n\u015bciana trwa 30 sekund, o 5 sekund mniej przy zabiciu ka\u017cdego zombie",
+        "definition": "-- IN\u017bYNIER (cz\u0142owiek) --\nPotrafi budowa\u0107 \u015bciany m\u0142otkiem\n\u015bciana trwa 30 sekund, o 5 sekund mniej przy zabiciu ka\u017cdego zombie",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -41,7 +41,7 @@
     },
     {
         "term": "cmd.help.mercenary",
-        "definition": "- NAJEMNIK (cz\u0142owiek) -\nMo\u017ce u\u017cywa\u0107 swojego pistoletu jako plecaka odrzutowego do latania\nmo\u017ce stworzy\u0107 wielk\u0105 lewituj\u0105c\u0105 min\u0119 i uruchomi\u0107 j\u0105 m\u0142otkiem\nposiada truj\u0105ce miny, kt\u00f3re dzia\u0142aj\u0105 na zombie",
+        "definition": "-- NAJEMNIK (cz\u0142owiek) --\nMo\u017ce u\u017cywa\u0107 swojego pistoletu jako plecaka odrzutowego do latania\nmo\u017ce stworzy\u0107 wielk\u0105 lewituj\u0105c\u0105 min\u0119 i uruchomi\u0107 j\u0105 m\u0142otkiem\nPosiada truj\u0105ce miny, kt\u00f3re dzia\u0142aj\u0105 na zombie",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -49,7 +49,7 @@
     },
     {
         "term": "cmd.help.soldier",
-        "definition": "- \u017bO\u0141NIERZ (cz\u0142owiek) -\nZa pomoc\u0105 swojego m\u0142otka mo\u017ce wytworzy\u0107 kilka lewituj\u0105cych min\nodpal m\u0142otek ponownie, aby je po kolei wysadzi\u0107",
+        "definition": "-- \u017bO\u0141NIERZ (cz\u0142owiek) --\nZa pomoc\u0105 swojego m\u0142otka mo\u017ce wytworzy\u0107 kilka lewituj\u0105cych min\nodpal m\u0142otek ponownie, aby je po kolei wysadzi\u0107",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -57,7 +57,7 @@
     },
     {
         "term": "cmd.help.biologist",
-        "definition": "- BIOLOG (cz\u0142owiek) -\nMo\u017ce zbudowa\u0107 pu\u0142apk\u0119 laserem je\u015bli w pe\u0142ni na\u0142adowany\nstrzelba duzo rykoszetuje\nodporny na zatrucie i mo\u017ce usun\u0105\u0107 chmur\u0119 m\u0142otkiem",
+        "definition": "-- BIOLOG (cz\u0142owiek) --\nMo\u017ce zbudowa\u0107 pu\u0142apk\u0119 laserem je\u015bli w pe\u0142ni na\u0142adowany\nstrzelba duzo rykoszetuje\nodporny na zatrucie i mo\u017ce usun\u0105\u0107 chmur\u0119 m\u0142otkiem",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -65,7 +65,7 @@
     },
     {
         "term": "cmd.help.medic",
-        "definition": "- MEDYK (cz\u0142owiek) -\nMo\u017ce leczy\u0107 ludzi m\u0142otkiem lub granatami\nmo\u017ce o\u017cywi\u0107 zombie za pomoc\u0105 lasera",
+        "definition": "-- MEDYK (cz\u0142owiek) --\nMo\u017ce leczy\u0107 ludzi m\u0142otkiem lub granatami\nmo\u017ce o\u017cywi\u0107 zombie za pomoc\u0105 lasera",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -73,7 +73,7 @@
     },
     {
         "term": "cmd.help.hero",
-        "definition": "- BOHATER (cz\u0142owiek) -\nZbiera flagi, aby da\u0107 ludziom + \u017cycia \/ tarcz\nu\u017cyj pistoletu jako nawigatora\nodporny na zatrucie\notrzymuje mniej obra\u017ce\u0144 poza niebiesk\u0105 stref\u0105",
+        "definition": "-- BOHATER (cz\u0142owiek) --\nZbiera flagi, aby da\u0107 ludziom + \u017cycia \/ tarcz\nu\u017cyj pistoletu jako nawigatora\nodporny na zatrucie\notrzymuje mniej obra\u017ce\u0144 poza niebiesk\u0105 stref\u0105",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -81,7 +81,7 @@
     },
     {
         "term": "cmd.help.smoker",
-        "definition": " - CHWYTACZ (zombie) -\n hak rani ludzi -2 \u017cycia \/ sek",
+        "definition": "-- CHWYTACZ (zombie) --\nHak zdaje ludziom -2 \u017cycia\/sek.",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -89,7 +89,7 @@
     },
     {
         "term": "cmd.help.boomer",
-        "definition": " - WYBUCHACZ (zombie) -\n hak rani ludzi -1 \u017cycia \/ sek\n wybucha po \u015bmierci\n odpal m\u0142otek, aby eksplodowa\u0107",
+        "definition": "-- WYBUCHACZ (zombie) --\nHak zadaje ludziom -1 \u017cycia\/sek.\nWybucha po \u015bmierci\nOdpal m\u0142otek, aby si\u0119 wysadzi\u0107",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -97,7 +97,7 @@
     },
     {
         "term": "cmd.help.hunter",
-        "definition": " - \u0141OWCA (zombie) -\n Podskakuje dwa razy w powietrzu\n hak rani ludzi -1 \u017cycia \/ sek\n u\u017cywaj pistoletu do tropienia ludzi",
+        "definition": "-- \u0141OWCA (zombie) --\nPodskakuje dwa razy w powietrzu\nHak zadaje ludziom -1 \u017cycia\/sek.\nU\u017cywaj pistoletu do tropienia ludzi",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -105,7 +105,7 @@
     },
     {
         "term": "cmd.help.poisoner",
-        "definition": " -. TRUCICIEL (zombie) -\n Po \u015bmierci wytwarza chmur\u0119 trucizny\n ludzie s\u0105 otruwani ni\u0105 za -4 \u017cycia\n BIOLOG i BOHATER s\u0105 odporni na zatrucie\n zgin\u0105\u0107 na rozkaz mo\u017cesz uderzaj\u0105c m\u0142otkiem niczym WYBUCHACZ",
+        "definition": "-- TRUCICIEL (zombie) --\nPo \u015bmierci wytwarza chmur\u0119 trucizny\nLudzie s\u0105 otruwani ni\u0105 za -4 \u017cycia\nBIOLOG i BOHATER s\u0105 odporni na zatrucie\nZgin\u0105\u0107 na rozkaz mo\u017cesz uderzaj\u0105c m\u0142otkiem niczym WYBUCHACZ",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -113,7 +113,7 @@
     },
     {
         "term": "cmd.help.freezer",
-        "definition": "- ZAMRA\u017bACZ (zombie) -\n Mo\u017ce og\u0142uszy\u0107 cz\u0142owieka hakiem na 1 sek\n ludzie otrzymuj\u0105 2 sek odporno\u015bci, je\u015bli nie zostan\u0105 zabici\n NAUKOWIEC jest na to odporny",
+        "definition": "-- ZAMRA\u017bACZ (zombie) --\nMo\u017ce og\u0142uszy\u0107 cz\u0142owieka hakiem na 1 sek.\nLudzie otrzymuj\u0105 2 sek. odporno\u015bci, je\u015bli nie zostan\u0105 zabici\nNAUKOWIEC jest na to odporny",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -121,7 +121,7 @@
     },
     {
         "term": "cmd.help.bat",
-        "definition": "- NIETOPERZ (zombie) -\nPotrafi lata\u0107 przy wielokrotnym naciskaniu przycisku skoku\nmo\u017ce z\u0142apa\u0107 ludzi i unie\u015b\u0107 ich w powietrze\nnie infekuje m\u0142otem, ale zadaje -1 obra\u017ce\u0144",
+        "definition": "-- NIETOPERZ (zombie) --\nPotrafi lata\u0107 przy wielokrotnym naciskaniu przycisku skoku\nMo\u017ce z\u0142apa\u0107 ludzi i unie\u015b\u0107 ich w powietrze\nNie infekuje m\u0142otem, ale zadaje -1 obra\u017ce\u0144",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -129,7 +129,7 @@
     },
     {
         "term": "cmd.help.queen",
-        "definition": " - KR\u00d3LOWA (zombie) -\n Je\u015bli jacy\u015b ROBOTNICY s\u0105 w grze\n odrodz\u0105 si\u0119 natychmiast w pobli\u017cu KR\u00d3LOWEJ\n infekuje m\u0142otkiem",
+        "definition": "-- KR\u00d3LOWA (zombie) --\nJe\u015bli jacy\u015b ROBOTNICY s\u0105 w grze, odrodz\u0105 si\u0119 natychmiast w pobli\u017cu KR\u00d3LOWEJ\nInfekuje m\u0142otkiem",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -137,7 +137,7 @@
     },
     {
         "term": "cmd.help.worker",
-        "definition": " - Robotnik (zombie) -\n Je\u015bli KR\u00d3LOWA jest w grze\n ROBOTNIK odrodzi si\u0119 natychmiast w pobli\u017cu KR\u00d3LOWEJ\n nie infekuje, ale zadaje -2 obra\u017ce\u0144 m\u0142otkiem",
+        "definition": "-- Robotnik (zombie) --\nJe\u015bli KR\u00d3LOWA jest w grze, ROBOTNIK odrodzi si\u0119 natychmiast w pobli\u017cu KR\u00d3LOWEJ\nNie infekuje, ale zadaje -2 obra\u017ce\u0144 m\u0142otkiem",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -145,7 +145,7 @@
     },
     {
         "term": "cmd.help.help",
-        "definition": " -- Pomoc --\n Tryb infekcji\n Uciekaj od zombie (zielonych) jako cz\u0142owiek\n Zara\u017caj ludzi jako zombie\n spr\u00f3buj: \/commands",
+        "definition": "-- Pomoc --\nTryb infekcji\nUciekaj od zombie (zielonych) jako cz\u0142owiek\nZara\u017caj ludzi jako zombie\nSpr\u00f3buj: \/commands",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -306,6 +306,70 @@
     {
         "term": "game.survived",
         "definition": "Przetrwa\u0142e\u015b, +5 punkt\u00f3w",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.flag.spawned",
+        "definition": "Flaga si\u0119 pojawi\u0142a. BOHATEROWIE mog\u0105 j\u0105 wzi\u0105\u0107 by pom\u00f3c ludziom",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.flag.taken",
+        "definition": "Flag\u0119 przej\u0105\u0142 BOHATER. Ludzie zdobywaj\u0105 +4 \u017cycia\/zbroi",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.ninja",
+        "definition": "Ninja",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.sniper",
+        "definition": "Snajper",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.humans.header",
+        "definition": "Wybierz klas\u0119 za pomoc\u0105 k\u00f3\u0142ka myszy: \\ n",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.humans.footer",
+        "definition": "\\ nNaci\u015bnij kr\u00f3tko Tab, aby zamkn\u0105\u0107 to menu",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.zombies.header",
+        "definition": "Twoja klasa z k\u00f3\u0142kiem myszy: \\ n \\ nsta\u0144 w bia\u0142ym k\u00f3\u0142ku) \\ n \\ n",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.zombies.footer",
+        "definition": "\\ nKlasy oznaczone * s\u0105 wybierane tylko przez pocz\u0105tkowego zombie \\ nNaci\u015bnij kr\u00f3tko Tab, aby zamkn\u0105\u0107 to menu",
         "context": "",
         "term_plural": "",
         "reference": "",

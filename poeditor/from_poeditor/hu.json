@@ -310,5 +310,69 @@
         "term_plural": "",
         "reference": "",
         "comment": ""
+    },
+    {
+        "term": "game.flag.spawned",
+        "definition": "Z\u00e1szl\u00f3 \u00edvott. A h\u0151s\u00f6k ig\u00e9nybe vehetik az embereket.",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.flag.taken",
+        "definition": "A z\u00e1szl\u00f3t egy h\u0151s veszi. Az emberek +4 LE \/ p\u00e1nc\u00e9lt kapnak",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.ninja",
+        "definition": "Nindzsa",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.sniper",
+        "definition": "Orvl\u00f6v\u00e9sz",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.humans.header",
+        "definition": "V\u00e1lassza ki oszt\u00e1ly\u00e1t eg\u00e9rgombbal: \\ n",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.humans.footer",
+        "definition": "\\ nA men\u00fc bez\u00e1r\u00e1s\u00e1hoz nyomja meg r\u00f6viden a Tab billenty\u0171t",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.zombies.header",
+        "definition": "oszt\u00e1lyod eg\u00e9rker\u00e9kkel: \\ n \\ n\u00e1llj feh\u00e9r k\u00f6rben) \\ n \\ n",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.zombies.footer",
+        "definition": "\\ nA * jellel rendelkez\u0151 oszt\u00e1lyokat csak egy kezdeti zombi v\u00e1laszthatja ki. \\ nA men\u00fc bez\u00e1r\u00e1s\u00e1hoz nyomja le r\u00f6viden a Tab billenty\u0171t",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
     }
 ]

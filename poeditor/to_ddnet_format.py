@@ -25,7 +25,10 @@ for short in langfiles:
   for term in terms:
       f2.write("\n")
       f2.write(term["term"] + "\n")
-      f2.write("== " + term["definition"].rstrip().replace("\n", "\\n") + "\n")
+      if term["definition"]:
+          f2.write("== " + term["definition"].rstrip().replace("\n", "\\n") + "\n")
+      else:
+          f2.write("== " + term["term"].rstrip().replace("\n", "\\n") + "\n")
     
   f1.close()
   f2.close()

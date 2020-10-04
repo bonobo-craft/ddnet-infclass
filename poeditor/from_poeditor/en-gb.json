@@ -1,7 +1,7 @@
 [
     {
         "term": "cmd.commands",
-        "definition": "- Commandes -\n\/humans for list of human classes\n\/zombies for list of zombie classes\n\/help - afficher l'aide",
+        "definition": "-- Commands --\n\/humans for list of human classes\n\/zombies for list of zombie classes\n\/help' - show help",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -9,7 +9,7 @@
     },
     {
         "term": "cmd.help.humans",
-        "definition": "- CLASSES HUMAINES -\nessayez: \/medic? \/soldier? \/scientist? \/engineer?\n\/hero? \/mercenary? \/biologist?\nles humains sont infect\u00e9s par un faible HP ou par un coup de marteau",
+        "definition": "-- HUMAN CLASSES --\ntry: \/medic? \/soldier? \/scientist? \/engineer?\n\/hero? \/mercenary? \/biologist?\nhumans get infected when low hp or when hit by hammer",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -17,7 +17,7 @@
     },
     {
         "term": "cmd.help.zombies",
-        "definition": "- COURS DE ZOMBIE -\nessayez: \/bat? \/hunter? \/smoker? \/boomer?\n\/queen? \/worker? \/freezer? \/poisoner?",
+        "definition": "-- ZOMBIE CLASSES --\ntry: \/bat? \/hunter? \/smoker? \/boomer?\n\/queen? \/worker? \/freezer? \/poisoner?",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -25,7 +25,7 @@
     },
     {
         "term": "cmd.help.scientist",
-        "definition": "- SCIENTIFIQUE (humain) -\nPeut se t\u00e9l\u00e9porter avec un lance-grenades\npeut engendrer 2 mines\n immunis\u00e9 contre le gel",
+        "definition": "-- SCIENTIST (human) --\nCan teleport with grenade launcher\nCan spawn 2 mines\nImmune to freezing",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -33,7 +33,7 @@
     },
     {
         "term": "cmd.help.engineer",
-        "definition": "- ING\u00c9NIEUR (humain) -\nPeut construire des murs avec un marteau\nle mur dure 30 secondes, moins de 5 secondes \u00e0 chaque zombie tu\u00e9",
+        "definition": "-- ENGINEER (human) --\nCan build walls with a hammer\nWall lasts 30 secs, less by 5 sec with every zombie killed",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -41,7 +41,7 @@
     },
     {
         "term": "cmd.help.mercenary",
-        "definition": "- MERCENAIRE (humain) -\nPeut utiliser son arme comme jetpack pour voler\npeut construire une grande mine flottante et la d\u00e9clencher avec un marteau\navoir des mines d'empoisonnement, qui fonctionnent sur les zombies",
+        "definition": "-- MERCENARY (human) --\nCan use his gun as a jetpack to fly\nCan build a large floating mine and trigger it with a hammer\nHave poisoning mines, which work on zombies",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -49,7 +49,7 @@
     },
     {
         "term": "cmd.help.soldier",
-        "definition": "- SOLDAT (humain) -\nPeut engendrer un certain nombre de mines flottantes avec son marteau\nmarteau \u00e0 feu \u00e0 nouveau pour les faire exploser un par un",
+        "definition": "-- SOLDIER (human) --\nCan spawn a number of floating mines with his hammer\nFire hammer again to explode them one by one",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -57,7 +57,7 @@
     },
     {
         "term": "cmd.help.biologist",
-        "definition": "- BIOLOGUE (humain) -\nPeut construire un pi\u00e8ge avec un laser lorsqu'il est compl\u00e8tement charg\u00e9\nle fusil de chasse ricoche beaucoup\nimmunis\u00e9 contre les intoxications et peut \u00e9liminer les nuages avec un marteau",
+        "definition": "-- BIOLOGIST (human) --\nCan build a trap with a laser when fully charged\nShotgun ricochets a lot\nImmune to poisoning and can remove cloud with a hammer",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -65,7 +65,7 @@
     },
     {
         "term": "cmd.help.medic",
-        "definition": "- MEDIC (humain) -\nPeut soigner les humains avec un marteau ou soigner des grenades\npeut faire revivre les zombies avec un laser",
+        "definition": "-- MEDIC (human) --\nCan heal humans with hammer or heal grenades\nCan revive zombies with a laser",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -73,7 +73,7 @@
     },
     {
         "term": "cmd.help.hero",
-        "definition": "- HERO (humain) -\nCollecte des drapeaux pour donner + 4HP \/ boucliers aux humains\nutiliser le pistolet comme navigateur\nimmunis\u00e9 contre l'empoisonnement\nmoins de d\u00e9g\u00e2ts en dehors de la zone bleue",
+        "definition": "-- HERO (human) --\nCollects flags to give + 4HP\/shields to humans\nUse gun as a navigator\nImmune to poisoning\nLess damage when outside of blue zone",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -81,7 +81,7 @@
     },
     {
         "term": "cmd.help.smoker",
-        "definition": " - FUMEUR (zombie) -\n le crochet endommage les humains -2 HP \/ s",
+        "definition": "-- SMOKER (zombie) --\nHook damages humans -2 HP\/sec",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -89,7 +89,7 @@
     },
     {
         "term": "cmd.help.boomer",
-        "definition": " - BOOMER (zombie) -\n crochet endommage les humains -1 HP \/ s\n explose en mourant\n tirer un marteau pour exploser",
+        "definition": "-- BOOMER (zombie) --\nHook damages humans -1 HP\/sec\nExplodes on dying\nFire a hammer to explode",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -97,7 +97,7 @@
     },
     {
         "term": "cmd.help.hunter",
-        "definition": " - CHASSEUR (zombie) -\n Saute deux fois en l'air\n crochet endommage les humains -1 HP \/ s\n utiliser un pistolet pour suivre les humains",
+        "definition": "-- HUNTER (zombie) --\nJumps two times in the air\nHook damages humans -1 HP\/sec\nUse gun to track humans",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -105,7 +105,7 @@
     },
     {
         "term": "cmd.help.poisoner",
-        "definition": " -. POISONNIER (zombie) -\n Produit un nuage de poison en mourant\n les humains ont \u00e9t\u00e9 empoisonn\u00e9s pour -4 HP de d\u00e9g\u00e2ts avec lui\n BIOLOGIST et HERO sont immunis\u00e9s contre les intoxications\n mourir en tirant un marteau comme un BOOMER",
+        "definition": "-- POISONER (zombie) --\nProduces poison cloud when dying\nHumans got poisoned for -4 HP damage with it\nBIOLOGIST and HERO are immune to poisoning\nDie on firing a hammer like a BOOMER",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -113,7 +113,7 @@
     },
     {
         "term": "cmd.help.freezer",
-        "definition": "- CONG\u00c9LATEUR (zombie) -\n Peut \u00e9tourdir un humain avec un crochet pendant 1 seconde\n les humains obtiennent une immunit\u00e9 de 2 s s'ils ne sont pas tu\u00e9s\n SCIENTIFIQUE y est immunis\u00e9",
+        "definition": "-- FREEZER (zombie) --\nCan stun a human with a hook for 1 sec\nHumans get 2 sec immunity if not killed\nSCIENTIST is immune to it",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -121,7 +121,7 @@
     },
     {
         "term": "cmd.help.bat",
-        "definition": "- BAT (zombie) -\nPeut voler avec une pression r\u00e9p\u00e9t\u00e9e sur un bouton de saut\npeut attraper les humains et les soulever dans les airs\nn'infecte pas avec un marteau, mais inflige -1 points de d\u00e9g\u00e2ts",
+        "definition": "-- BAT (zombie) --\nCan fly with a repeatedly presses of a jump button\nCan grab humans and lift them in air\nDoes not infects with hammer, but deals -1 HP damage",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -129,7 +129,7 @@
     },
     {
         "term": "cmd.help.queen",
-        "definition": " - REINE (zombie) -\n Si des TRAVAILLEURS sont en jeu\n ils r\u00e9appara\u00eetront instantan\u00e9ment pr\u00e8s de la REINE\n infecte avec un marteau",
+        "definition": "-- QUEEN (zombie) --\nIf any WORKERS are in game\nthey will respawn instantly near the QUEEN\nInfects with hammer",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -137,15 +137,15 @@
     },
     {
         "term": "cmd.help.worker",
-        "definition": " - TRAVAILLEUR (zombie) -\n Si REINE est en jeu\n WORKER r\u00e9appara\u00eetra instantan\u00e9ment pr\u00e8s de la REINE\n n'infecte pas, mais inflige -2 points de d\u00e9g\u00e2ts avec le marteau",
+        "definition": "-- WORKER (zombie) --\nIf QUEEN is in game\nWORKER will respawn instantly near the QUEEN\nDoes not infects, but deals -2 HP damage with hammer",
         "context": "",
         "term_plural": "",
         "reference": "",
         "comment": ""
     },
     {
-        "term": "cmd.help.help)",
-        "definition": " -- Aidez-moi --\n Mod d'infection\n Fuyez les zombies (verts) en tant qu'humain\n Infecter les humains comme un zombie\n essayez: \/commands",
+        "term": "cmd.help.help",
+        "definition": "-- Help --\nInfection mod\nRun away from zombies (green) as a human\nInfect humans as a zombie\nTry: \/commands",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -153,7 +153,7 @@
     },
     {
         "term": "cmd.wrong",
-        "definition": "aucune commande de ce type, essayez: \/commands",
+        "definition": "no such command, try: \/commands",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -161,7 +161,7 @@
     },
     {
         "term": "game.class.random",
-        "definition": "Choix al\u00e9atoire",
+        "definition": "Random choice",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -169,7 +169,7 @@
     },
     {
         "term": "game.class.biologist",
-        "definition": "Biologiste",
+        "definition": "Biologist",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -177,7 +177,7 @@
     },
     {
         "term": "game.class.medic",
-        "definition": "M\u00e9dical",
+        "definition": "Medic",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -185,7 +185,7 @@
     },
     {
         "term": "game.class.engineer",
-        "definition": "Ing\u00e9nieur",
+        "definition": "Engineer",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -193,7 +193,7 @@
     },
     {
         "term": "game.class.soldier",
-        "definition": "Soldat",
+        "definition": "Soldier",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -201,7 +201,7 @@
     },
     {
         "term": "game.class.scientist",
-        "definition": "Scientifique",
+        "definition": "Scientist",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -209,7 +209,7 @@
     },
     {
         "term": "game.class.mercenary",
-        "definition": "Mercenaire",
+        "definition": "Mercenary",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -217,7 +217,7 @@
     },
     {
         "term": "game.class.hero",
-        "definition": "h\u00e9ros",
+        "definition": "Hero",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -233,7 +233,7 @@
     },
     {
         "term": "game.class.smoker",
-        "definition": "Fumeur",
+        "definition": "Smoker",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -241,7 +241,7 @@
     },
     {
         "term": "game.class.hunter",
-        "definition": "chasseur",
+        "definition": "Hunter",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -249,7 +249,7 @@
     },
     {
         "term": "game.class.bat",
-        "definition": "Chauve souris",
+        "definition": "Bat",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -257,7 +257,7 @@
     },
     {
         "term": "game.class.queen",
-        "definition": "Reine",
+        "definition": "Queen",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -265,7 +265,7 @@
     },
     {
         "term": "game.class.worker",
-        "definition": "Ouvrier",
+        "definition": "Worker",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -273,7 +273,7 @@
     },
     {
         "term": "game.class.freezer",
-        "definition": "Cong\u00e9lateur",
+        "definition": "Freezer",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -281,7 +281,7 @@
     },
     {
         "term": "game.class.poisoner",
-        "definition": "Empoisonneur",
+        "definition": "Poisoner",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -289,7 +289,7 @@
     },
     {
         "term": "game.won.infected",
-        "definition": "Les infect\u00e9s ont remport\u00e9 la manche en% d secondes",
+        "definition": "Infected won the round in %d seconds",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -297,7 +297,7 @@
     },
     {
         "term": "game.won.humans",
-        "definition": "% d humains ont gagn\u00e9 la manche",
+        "definition": "%d humans won the round",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -305,7 +305,71 @@
     },
     {
         "term": "game.survived",
-        "definition": "Vous avez surv\u00e9cu, +5 points",
+        "definition": "You have survived, +5 points",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.flag.spawned",
+        "definition": "Flag spawned. Heroes can take it to help humans.",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.flag.taken",
+        "definition": "Flag is taken by a Hero. Humans get +4 HP\/Armor",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.ninja",
+        "definition": "Ninja",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.sniper",
+        "definition": "Sniper",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.humans.header",
+        "definition": "Choose your class with mouse wheel:\\n",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.humans.footer",
+        "definition": "\\nPress Tab briefly to close this menu",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.zombies.header",
+        "definition": "your class with mouse wheel:\\n\\nstand in a white circle)\\n\\n",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.zombies.footer",
+        "definition": "\\nClasses with * are selectable by an initial zombie only\\nPress Tab briefly to close this menu",
         "context": "",
         "term_plural": "",
         "reference": "",

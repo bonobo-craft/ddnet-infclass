@@ -310,5 +310,69 @@
         "term_plural": "",
         "reference": "",
         "comment": ""
+    },
+    {
+        "term": "game.flag.spawned",
+        "definition": "Bandera engendrada. Los h\u00e9roes pueden usarlo para ayudar a los humanos.",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.flag.taken",
+        "definition": "La bandera la toma un h\u00e9roe. Los humanos obtienen +4 HP \/ Armadura",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.ninja",
+        "definition": "Ninja",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.sniper",
+        "definition": "Francotirador",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.humans.header",
+        "definition": "Elige tu clase con la rueda del mouse: \\n",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.humans.footer",
+        "definition": "\\nPresione Tab brevemente para cerrar este men\u00fa",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.zombies.header",
+        "definition": "su clase con la rueda del mouse: \\n \\npararse en un c\u00edrculo blanco) \\n \\n",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "class.menu.zombies.footer",
+        "definition": "\\nLas clases con * solo las puede seleccionar un zombi inicial \\nPresione el tabulador brevemente para cerrar este men\u00fa",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
     }
 ]

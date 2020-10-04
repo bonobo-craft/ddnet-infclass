@@ -925,7 +925,7 @@ void CGameControllerMOD::OnPlayerConnect(CPlayer* pPlayer)
 	Server()->SetClientCountry(ClientID, geolocation->get_country_iso_numeric_code(ip), true);
 #endif
 	players[ClientID] = new CroyaPlayer(ClientID, pPlayer, GameServer(), this, classes);
-	//SetLanguageByCountry(Server()->ClientCountry(ClientID), ClientID);
+	SetLanguageByCountry(Server()->ClientCountry(ClientID), ClientID);
 	//TBD
 	if (IsCroyaWarmup() || !m_InfectedStarted)
 	{
@@ -1016,3 +1016,182 @@ void CGameControllerMOD::InitTeleporter()
 	}
 }
 
+void CGameControllerMOD::SetLanguageByCountry(int Country, int ClientID)
+{
+	switch (Country)
+	{
+		/* ar - Arabic ************************************/
+	case 12: //Algeria
+	case 48: //Bahrain
+	case 262: //Djibouti
+	case 818: //Egypt
+	case 368: //Iraq
+	case 400: //Jordan
+	case 414: //Kuwait
+	case 422: //Lebanon
+	case 434: //Libya
+	case 478: //Mauritania
+	case 504: //Morocco
+	case 512: //Oman
+	case 275: //Palestine
+	case 634: //Qatar
+	case 682: //Saudi Arabia
+	case 706: //Somalia
+	case 729: //Sudan
+	case 760: //Syria
+	case 788: //Tunisia
+	case 784: //United Arab Emirates
+	case 887: //Yemen
+		// set to arabic
+		break;
+		/* bg - Bulgarian *************************************/
+	case 100: //Bulgaria
+		// set to bulgarian
+		break;
+		/* bs - Bosnian *************************************/
+	case 70: //Bosnia and Hercegovina
+		// set to bosnian
+		break;
+		/* cs - Czech *************************************/
+	case 203: //Czechia
+		// set to czech
+		break;
+		/* de - German ************************************/
+	case 40: //Austria
+	case 276: //Germany
+	case 438: //Liechtenstein
+	case 756: //Switzerland
+		players[ClientID]->SetLanguage("german");
+		break;
+		/* el - Greek ***********************************/
+	case 300: //Greece
+	case 196: //Cyprus
+		// set to greek
+		break;
+		/* es - Spanish ***********************************/
+	case 32: //Argentina
+	case 68: //Bolivia
+	case 152: //Chile
+	case 170: //Colombia
+	case 188: //Costa Rica
+	case 192: //Cuba
+	case 214: //Dominican Republic
+	case 218: //Ecuador
+	case 222: //El Salvador
+	case 226: //Equatorial Guinea
+	case 320: //Guatemala
+	case 340: //Honduras
+	case 484: //Mexico
+	case 558: //Nicaragua
+	case 591: //Panama
+	case 600: //Paraguay
+	case 604: //Peru
+	case 630: //Puerto Rico
+	case 724: //Spain
+	case 858: //Uruguay
+	case 862: //Venezuela
+		players[ClientID]->SetLanguage("spanish");
+		break;
+		/* fa - Farsi ************************************/
+	case 364: //Islamic Republic of Iran
+	case 4: //Afghanistan
+		// set to farsi
+		break;
+		/* fr - French ************************************/
+	case 204: //Benin
+	case 854: //Burkina Faso
+	case 178: //Republic of the Congo
+	case 384: //Cote d’Ivoire
+	case 266: //Gabon
+	case 324: //Ginea
+	case 466: //Mali
+	case 562: //Niger
+	case 686: //Senegal
+	case 768: //Togo
+	case 250: //France
+	case 492: //Monaco
+		players[ClientID]->SetLanguage("french");
+		break;
+		/* hr - Croatian **********************************/
+	case 191: //Croatia
+		// set to croatian
+		break;
+		/* hu - Hungarian *********************************/
+	case 348: //Hungary
+		players[ClientID]->SetLanguage("hungarian");
+		break;
+		/* it - Italian ***********************************/
+	case 380: //Italy
+		// set to italian
+		break;
+		/* ja - Japanese **********************************/
+	case 392: //Japan
+		// set to japanese
+		break;
+		/* la - Latin *************************************/
+	case 336: //Vatican
+		// set to latin
+		break;
+		/* nl - Dutch *************************************/
+	case 533: //Aruba
+	case 531: //Curaçao
+	case 534: //Sint Maarten
+	case 528: //Netherland
+	case 740: //Suriname
+	case 56: //Belgique
+		// set to dutch
+		break;
+		/* pl - Polish *************************************/
+	case 616: //Poland
+		players[ClientID]->SetLanguage("polish");
+		break;
+		/* pt - Portuguese ********************************/
+	case 24: //Angola
+	case 76: //Brazil
+	case 132: //Cape Verde
+	//case 226: //Equatorial Guinea: official language, but not national language
+	//case 446: //Macao: official language, but spoken by less than 1% of the population
+	case 508: //Mozambique
+	case 626: //Timor-Leste
+	case 678: //São Tomé and Príncipe
+		// set to portuguese
+		break;
+		/* ru - Russian ***********************************/
+	case 112: //Belarus
+	case 643: //Russia
+	case 398: //Kazakhstan
+	case 498: //Moldova
+		players[ClientID]->SetLanguage("russian");
+		break;
+		/* sk - Slovak ************************************/
+	case 703: //Slovakia
+		// set to slovak
+		break;
+		/* sr - Serbian ************************************/
+	case 688: //Serbia
+		// set to serbian
+		break;
+		/* tl - Tagalog ************************************/
+	case 608: //Philippines
+		// set to tagalog
+		break;
+		/* tr - Turkish ************************************/
+	case 31: //Azerbaijan
+	case 792: //Turkey
+		players[ClientID]->SetLanguage("turkish");
+		break;
+		/* uk - Ukrainian **********************************/
+	case 804: //Ukraine
+		players[ClientID]->SetLanguage("ukrainian");
+		break;
+		/* zh-Hans - Chinese (Simplified) **********************************/
+	case 156: //People’s Republic of China
+	case 344: //Hong Kong
+	case 446: //Macau
+		// set to chinese
+		break;
+	default:
+		players[ClientID]->SetLanguage("english");
+		break;
+	}
+}

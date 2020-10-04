@@ -27,6 +27,7 @@
 #include <engine/shared/protocol.h>
 #include <engine/shared/protocol_ex.h>
 #include <engine/shared/snapshot.h>
+#include <infcroya/localization/localization.h>
 
 #include <mastersrv/mastersrv.h>
 
@@ -3575,6 +3576,9 @@ int main(int argc, const char **argv) // ignore_convention
 	IStorage *pStorage = CreateStorage("Teeworlds", IStorage::STORAGETYPE_SERVER, argc, argv); // ignore_convention
 	IConfig *pConfig = CreateConfig();
 	IEngineAntibot *pEngineAntibot = CreateEngineAntibot();
+	// INFCROYA BEGIN ------------------------------------------------------------
+	Localization::getInstance().load("translations.json");
+	// INFCROYA END ------------------------------------------------------------//
 
 	pServer->InitRegister(&pServer->m_NetServer, pEngineMasterServer, pConsole);
 

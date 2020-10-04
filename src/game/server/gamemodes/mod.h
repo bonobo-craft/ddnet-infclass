@@ -92,6 +92,7 @@ private:
 	void ResetZombiesToDefaultHumans() const;
 	void ResetHumansToDefault() const;
 	void FlagTick();
+	void SetLanguageByCountry(int Country, int ClientID);
 
 	bool m_ExplosionStarted;
 	int m_MapWidth;
