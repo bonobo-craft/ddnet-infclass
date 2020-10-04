@@ -45,5 +45,5 @@ std::string Localization::localize(const std::string& text, const std::string& l
 	if (fallback)
 		return text;
 	std::string en  = std::string("english");
-	localize(text, en, true);
+	return localize(text, en, true);
 }
