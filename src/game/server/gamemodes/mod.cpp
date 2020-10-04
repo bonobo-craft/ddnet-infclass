@@ -157,6 +157,27 @@ void CGameControllerMOD::OnRoundStart()
 		inf_circles.clear();
 		YAML::Node mapconfig = YAML::LoadFile(path_to_yaml);
 		m_TimeLimit = mapconfig["timelimit"].as<int>();
+		g_Config.m_SvTimelimit = m_TimeLimit;
+		for (CroyaPlayer* each : players) {
+			if (!each)
+				continue;
+			if (each->GetPlayer()->GetTeam() == TEAM_SPECTATORS)
+				continue;
+			int ClientID = each->GetClientID();
+			if(Server()->IsSixup(ClientID))
+			{
+				{
+					protocol7::CNetMsg_Sv_GameInfo Msg;
+					//Msg.m_GameFlags = protocol7::GAMEFLAG_RACE;
+					Msg.m_GameFlags = 0;
+					Msg.m_MatchCurrent = 4;
+					Msg.m_MatchNum = 5;
+					Msg.m_ScoreLimit = 0;
+					Msg.m_TimeLimit = m_TimeLimit;
+					Server()->SendPackMsg(&Msg, MSGFLAG_VITAL|MSGFLAG_NORECORD, ClientID);
+				}
+			}
+		}
 		const YAML::Node& inf_circle_nodes = mapconfig["inf_circles"];
 		for (YAML::const_iterator it = inf_circle_nodes.begin(); it != inf_circle_nodes.end(); ++it) {
 			const YAML::Node& inf_circle_node = *it;
