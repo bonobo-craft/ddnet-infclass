@@ -386,7 +386,7 @@ void CGameControllerMOD::DoInfectedWon() {
 		if (!each->GetCroyaPlayer())
 			continue;
 		char aBuf[256];
-		str_format(aBuf, sizeof(aBuf), localize("Infected won the round in %d seconds", each->GetCroyaPlayer()->GetLanguage()).c_str(), Seconds);
+		str_format(aBuf, sizeof(aBuf), localize("game.won.infected", each->GetCroyaPlayer()->GetLanguage()).c_str(), Seconds);
 		GameServer()->SendChatTarget(each->GetCID(), aBuf);
 	}
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "game", "Everyone Infected");
@@ -487,11 +487,11 @@ void CGameControllerMOD::DoFinalExplosion() {
 					continue;
 
 				char aBuf[256];
-				str_format(aBuf, sizeof(aBuf), localize("%d humans won the round", each->GetCroyaPlayer()->GetLanguage()).c_str(), NumHumans);
+				str_format(aBuf, sizeof(aBuf), localize("game.won.humans", each->GetCroyaPlayer()->GetLanguage()).c_str(), NumHumans);
 				GameServer()->SendChatTarget(each->GetCID(), aBuf);
 				if (each->GetCroyaPlayer()->IsHuman())
 				{
-					GameServer()->SendChatTarget(each->GetCID(), localize("You have survived!", each->GetCroyaPlayer()->GetLanguage()).c_str());
+					GameServer()->SendChatTarget(each->GetCID(), localize("game.survived", each->GetCroyaPlayer()->GetLanguage()).c_str());
 					each->m_Score += 5;
 				}
 			}
@@ -505,7 +505,8 @@ void CGameControllerMOD::DoFinalExplosion() {
 				if (!each->GetCroyaPlayer())
 					continue;
 				char aBuf[256];
-				str_format(aBuf, sizeof(aBuf), localize("Infected won the round in %d seconds at the last moment", each->GetCroyaPlayer()->GetLanguage()).c_str(), Seconds);
+				//str_format(aBuf, sizeof(aBuf), localize("Infected won the round in %d seconds at the last moment", each->GetCroyaPlayer()->GetLanguage()).c_str(), Seconds);
+				str_format(aBuf, sizeof(aBuf), localize("game.won.infected", each->GetCroyaPlayer()->GetLanguage()).c_str(), Seconds);
 				GameServer()->SendChatTarget(each->GetCID(), aBuf);
 			}
 		}
