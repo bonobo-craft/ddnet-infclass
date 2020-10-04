@@ -835,9 +835,15 @@ void CCharacter::Tick()
 			&& GameServer()->m_apPlayers[m_Core.m_HookedPlayer]->GetCharacter())
 		{
 			CCharacter *TargetChar = GameServer()->m_apPlayers[m_Core.m_HookedPlayer]->GetCharacter();
+			// enter a taxi
 			if (TargetChar->m_FreeTaxi &&
 			    !TargetChar->m_TaxiPassenger &&
-				!TargetChar->GetCore().m_TaxiPassengerCore)
+				!TargetChar->GetCore().m_TaxiPassengerCore &&
+				(
+					(TargetChar->IsHuman() && IsHuman()) ||
+					(TargetChar->IsZombie() && IsZombie())
+				)
+			)
 			{
 				// disable hook protection for a driver
 				if (TargetChar->GetCroyaPlayer())
@@ -847,16 +853,10 @@ void CCharacter::Tick()
 					GetCroyaPlayer()->SetHookProtected(false);
 				TargetChar->ResetTaxi();
 				ResetTaxi();
-/* 				// driver is no longer vacant and he is not a passenger anymore
-				TargetChar->m_FreeTaxi = false;
-				TargetChar-> m_TaxiPassenger = false; */
 				// hooker is now a passenger and is no longer vacant
 				m_pPlayer->GetCharacter()->m_TaxiPassenger = true;
-/* 				m_pPlayer->GetCharacter()->m_FreeTaxi = false; */
 				// driver now has a link to a passenger's core to follow him
 				TargetChar->GetpCore()->m_TaxiPassengerCore = &m_Core;
-				// but passenger now frees a previous passenger
-/* 				m_Core.m_TaxiPassengerCore = nullptr; */
 				// let's remember a core of a driver to exit it later
 				m_Core.m_TaxiDriverCore = TargetChar->GetpCore();
 			}
