@@ -77,9 +77,14 @@ CGrowingExplosion::CGrowingExplosion(CGameWorld *pGameWorld, vec2 Pos, vec2 Dir,
 			}
 			break;
 		case GROWINGEXPLOSIONEFFECT_POISON_INFECTED:
-			if(random_prob(0.1f))
+			for(CCharacter *p = (CCharacter*) GameWorld()->FindFirst(CGameWorld::ENTTYPE_CHARACTER); p; p = (CCharacter *)p->TypeNext())
 			{
-				GameServer()->CreateDeath(m_SeedPos, m_Owner);
+				if(p->IsHuman()) continue;
+				float Len = distance(p->GetPos(), m_Pos);
+				if(Len < p->GetProximityRadius()+g_Config.m_InfPoisonCircleRadius / 3)
+				{
+					p->Poison(g_Config.m_InfPoisonCircleDamageSeconds, m_Owner);
+				}
 			}
 			break;
 		case GROWINGEXPLOSIONEFFECT_ELECTRIC_INFECTED:

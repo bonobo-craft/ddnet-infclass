@@ -83,11 +83,10 @@ void CPoisonCircle::Tick()
 		float Len = distance(p->GetPos(), m_Pos);
 		if(Len < p->GetProximityRadius()+g_Config.m_InfPoisonCircleRadius)
 		{
-			CPlayer *pPoisonedBy = p->GetPlayer();
+/* 			CPlayer *pPoisonedBy = p->GetPlayer(); */
 
-			if (pPoisonedBy)
-				p->Poison(g_Config.m_InfPoisonCircleDamageSeconds, pPoisonedBy->GetCID());
-			break;
+			p->Poison(g_Config.m_InfPoisonCircleDamageSeconds, m_Owner);
+				//p->Poison(g_Config.m_InfPoisonCircleDamageSeconds, pPoisonedBy->GetCID());
 		}
 	}
 

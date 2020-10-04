@@ -791,7 +791,7 @@ void CCharacter::Tick()
 			m_Poison--;
 			TakeDamage(vec2(0.0f, 0.0f), vec2(0, 0), 1, m_PoisonFrom, WEAPON_WORLD);
 			GameServer()->SendEmoticon(GetPlayer()->GetCID(), EMOTICON_DROP);
-			GameServer()->SendBroadcast("You've stepped into a poison cloud! -4 hp", GetPlayer()->GetCID());
+			GameServer()->SendBroadcast("You've stepped into a poison! -4 hp", GetPlayer()->GetCID());
 			if (m_Poison > 0)
 			{
 				m_PoisonTick = Server()->TickSpeed() / 2;
