@@ -4465,7 +4465,7 @@ bool CGameContext::SendClassInfoByCommand(const std::string command, int ClientI
 
 void CGameContext::SendZombieClassSelectorByClassId(int ClassId, int ClientID) {
 	std::vector<std::string> messageList;
-	auto lang = m_apPlayers[ClientID]->GetCroyaPlayer()->GetLanguage();
+	auto lang = Lang(ClientID);
 	auto sel1 = "[   ";
 	auto sel2 = "   ]";
 	auto unsel = "    ";
@@ -4513,9 +4513,18 @@ void CGameContext::SendZombieClassSelectorByClassId(int ClassId, int ClientID) {
 
 	SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);
 }
+const char *CGameContext::Lang(int ClientID) {
+	if (!m_apPlayers[ClientID])
+		return "english";
+	if (!m_apPlayers[ClientID]->GetCroyaPlayer())
+		return "english";
+	if (!m_apPlayers[ClientID]->GetCroyaPlayer()->GetLanguage())
+		return "english";
+	return  m_apPlayers[ClientID]->GetCroyaPlayer()->GetLanguage();
+}
 
 void CGameContext::SendHumanClassSelectorByClassId(int ClassId, int ClientID) {
-	auto lang = m_apPlayers[ClientID]->GetCroyaPlayer()->GetLanguage();
+	auto lang = Lang(ClientID);
 	std::vector<std::string> messageList;
 	messageList.push_back(localize("class.menu.humans.header", lang));
 	auto sel1 = "[   ";

@@ -128,6 +128,7 @@ public:
 	CUuid m_GameUuid;
 	int Get06PlayerNum() const;
 	int Get07PlayerNum() const;
+	const char *Lang(int ClientID);
 	IServer *Server() const { return m_pServer; }
 	IConsole *Console() { return m_pConsole; }
 	IEngine *Engine() { return m_pEngine; }
