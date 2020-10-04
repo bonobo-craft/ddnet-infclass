@@ -537,6 +537,9 @@ void CCharacter::FireWeapon()
 
 		case WEAPON_NINJA:
 		{
+			if (Stunned())
+				return;
+
 			// reset Hit objects
 			m_NumObjectsHit = 0;
 			m_Core.m_HookedPlayer = -1;
