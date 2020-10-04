@@ -99,22 +99,8 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 	{
 		CCharacter *pTarget = apEnts[i];
 
-		if ((pTarget == pChr) || pGameServer->Collision()->IntersectLine(ProjStartPos, pTarget->GetPos(), NULL, NULL))
-			continue;
-
-		// set his velocity to fast upward (for now)
-		if (length(pTarget->GetPos() - ProjStartPos) > 0.0f)
-			pGameServer->CreateHammerHit(pTarget->GetPos() - normalize(pTarget->GetPos() - ProjStartPos) * pChr->GetProximityRadius() * 0.5f);
-		else
-			pGameServer->CreateHammerHit(ProjStartPos);
-
-		vec2 Dir;
-		if (length(pTarget->GetPos() - pChr->GetPos()) > 0.0f)
-			Dir = normalize(pTarget->GetPos() - pChr->GetPos());
-		else
-			Dir = vec2(0.f, -1.f);
-
 		int DAMAGE = 20;
+		int HEAL = 1;
 		bool ShouldHit = false;
 		bool ShouldHeal = false;
 		bool ShouldUnfreeze = false;
@@ -147,6 +133,21 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		if (pChr->IsHookProtected() || pTarget->IsHookProtected())
 			ShouldGiveUpVelocity = false;
 
+		CCharacterCore *CCore = &pChr->GetCharacterCore();
+		CCharacterCore *TargetCCore = &pTarget->GetCharacterCore();
+		if (CCore && TargetCCore) {
+			if (CCore->m_TaxiPassengerCore && CCore->m_TaxiPassengerCore == TargetCCore)
+				continue;
+
+			if (CCore->m_TaxiDriverCore && CCore->m_TaxiDriverCore == TargetCCore)
+				continue;
+		}
+
+		if (pChr->GetCroyaPlayer()->GetClassNum() == Class::MEDIC && (ShouldUnfreeze)) {
+			HEAL = 2;
+			ShouldHeal = true;
+		}
+
 		if (pChr->GetCroyaPlayer()->GetClassNum() == Class::BAT && (ShouldFreeze || ShouldInfect)) {
 			ShouldInfect = false;
 			ShouldFreeze = false;
@@ -160,6 +161,21 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 			ShouldHit = true;
 			DAMAGE = 2;
 		}
+
+		if ((pTarget == pChr) || pGameServer->Collision()->IntersectLine(ProjStartPos, pTarget->GetPos(), NULL, NULL))
+			continue;
+
+		if (length(pTarget->GetPos() - ProjStartPos) > 0.0f)
+			pGameServer->CreateHammerHit(pTarget->GetPos() - normalize(pTarget->GetPos() - ProjStartPos) * pChr->GetProximityRadius() * 0.5f);
+		else
+			pGameServer->CreateHammerHit(ProjStartPos);
+
+		vec2 Dir;
+		if (length(pTarget->GetPos() - pChr->GetPos()) > 0.0f)
+			Dir = normalize(pTarget->GetPos() - pChr->GetPos());
+		else
+			Dir = vec2(0.f, -1.f);
+
 
 		if (ShouldHit)
 		{
@@ -186,10 +202,11 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 
 		if (ShouldHeal) {
 			pTarget->IncreaseOverallHp(4);
-			pChr->IncreaseOverallHp(1);
+			pChr->IncreaseOverallHp(HEAL);
 			pTarget->SetEmote(EMOTE_HAPPY, pChr->Server()->Tick() + pChr->Server()->TickSpeed());
 		}
 
+		// set his velocity to fast upward (for now)
 		if (ShouldGiveUpVelocity) {
 			pTarget->TakeDamage(vec2(0.f, -1.f) + normalize(Dir + vec2(0.f, -1.1f)) * 10.0f, Dir * -1, 0,
 								ClientID, pChr->GetActiveWeapon());

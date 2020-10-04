@@ -43,9 +43,9 @@ void CNinja::OnMouseWheelUp(CCharacter* pChr) {
 
 void CNinja::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCharacter* pChr)
 {
-	int ClientID = pChr->GetPlayer()->GetCID();
+/* 	int ClientID = pChr->GetPlayer()->GetCID();
 	CGameWorld* pGameWorld = pChr->GameWorld();
-	CGameContext* pGameServer = pChr->GameServer();
+	CGameContext* pGameServer = pChr->GameServer(); */
 
 	switch (Weapon) {
 	case WEAPON_HAMMER: {
