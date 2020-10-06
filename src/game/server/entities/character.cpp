@@ -37,6 +37,7 @@ CCharacter::CCharacter(CGameWorld *pWorld) :
 	m_Health = 10;
 	m_Armor = 0;
 	m_StrongWeakID = 0;
+	m_IsBot = false;
 
 	// INFCROYA BEGIN ------------------------------------------------------------
 	m_Infected = false;
@@ -1406,7 +1407,7 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 		pCharacter->m_Direction = m_Input.m_Direction;
 		pCharacter->m_Weapon = Weapon;
 		pCharacter->m_AmmoCount = AmmoCount;
-		pCharacter->m_Health = Health;
+		pCharacter->m_Health = 10;
 		pCharacter->m_Armor = Armor;
 		pCharacter->m_PlayerFlags = GetPlayer()->m_PlayerFlags;
 	}
@@ -1430,7 +1431,7 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 		else if(Weapon == WEAPON_NINJA)
 			pCharacter->m_AmmoCount = m_Ninja.m_ActivationTick + g_pData->m_Weapons.m_Ninja.m_Duration * Server()->TickSpeed() / 1000;
 
-		pCharacter->m_Health = Health;
+		pCharacter->m_Health = 10;
 		pCharacter->m_Armor = Armor;
 		pCharacter->m_TriggeredEvents = 0;
 	}
@@ -1537,6 +1538,15 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 
 void CCharacter::Snap(int SnappingClient)
 {
+	if (m_IsBot) {
+		// useless, just for debugging REMOVE IT
+		m_ReckoningTick = m_ReckoningTick;
+		m_ReckoningTick = m_ReckoningTick;
+		m_ReckoningTick = m_ReckoningTick;
+		m_ReckoningTick = m_ReckoningTick;
+		m_ReckoningTick = m_ReckoningTick;
+		m_ReckoningTick = m_ReckoningTick;
+	}
 	int ID = m_pPlayer->GetCID();
 
 	if(SnappingClient > -1 && !Server()->Translate(ID, SnappingClient))
@@ -2841,7 +2851,21 @@ void CCharacter::ResetTaxi()
 }
 
 void CCharacter::SpawnBot() {
-
+	int ClientID=40;
+	auto m_pBotCharacter = new(ClientID) CCharacter(&GameServer()->m_World);
+	m_pBotCharacter->SetHealthArmor(10, 0);
+	m_pBotCharacter->m_IsBot = true;
+	m_pBotCharacter->m_FreeTaxi = true;
+	auto pPlayer = new(ClientID) CPlayer(GameServer(), ClientID, 0);
+	// players array
+	GameServer()->m_apPlayers[ClientID] = pPlayer;
+	auto mod = GameServer()->m_pController;
+	auto croyaPlayer = new CroyaPlayer(ClientID, pPlayer, GameServer(), mod, mod->classes);
+	// croyaplayers array
+	mod->players[ClientID] = croyaPlayer;
+	GameServer()->OnClientEnter(ClientID);
+	m_pBotCharacter->Spawn(pPlayer, m_Pos);
+	croyaPlayer->SetClassNum(DEFAULT);
 }
 
 void CCharacter::SwitchTaxi()

@@ -78,10 +78,12 @@ public:
 	std::shared_ptr<CScoreInitResult> m_pInitResult;
 	bool m_InfectedStarted;
 
+	//TBD make it private again, needed only for a bot
+	std::array<CroyaPlayer*, 64> players{};
+	//TBD make it private again, needed only for a bot
+	std::unordered_map<int, class IClass*> classes;
 	
 private: 
-	std::array<CroyaPlayer*, 64> players{};
-	std::unordered_map<int, class IClass*> classes;
 	class Geolocation* geolocation;
 	std::vector<int> humans;
 	//class LuaLoader* lua;

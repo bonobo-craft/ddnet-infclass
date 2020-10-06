@@ -163,6 +163,7 @@ public:
 
 	void SaturateVelocity(vec2 Force, float MaxSpeed);
 
+	bool IsBot();
 	int m_HookDmgTick;
 	int m_InAirTick;
 	int GetInfWeaponID(int WID);
@@ -179,6 +180,7 @@ private:
 	// player controlling this character
 	class CPlayer *m_pPlayer;
 
+	bool m_IsBot;
 	bool m_Alive;
 	bool m_Paused;
 	int m_NeededFaketuning;

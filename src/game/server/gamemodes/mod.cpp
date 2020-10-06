@@ -923,7 +923,7 @@ void CGameControllerMOD::OnPlayerConnect(CPlayer* pPlayer)
 	char aAddrStr[NETADDR_MAXSTRSIZE];
 	Server()->GetClientAddr(ClientID, aAddrStr, sizeof(aAddrStr));
 	std::string ip(aAddrStr);
-	Server()->SetClientCountry(ClientID, geolocation->get_country_iso_numeric_code(ip), true);
+	//Server()->SetClientCountry(ClientID, geolocation->get_country_iso_numeric_code(ip), true);
 #endif
 	players[ClientID] = new CroyaPlayer(ClientID, pPlayer, GameServer(), this, classes);
 	SetLanguageByCountry(Server()->ClientCountry(ClientID), ClientID);
