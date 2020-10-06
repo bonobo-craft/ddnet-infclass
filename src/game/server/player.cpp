@@ -40,6 +40,7 @@ CPlayer::CPlayer(CGameContext *pGameServer, int ClientID, int Team)
 	m_ClientID = ClientID;
 	m_Team = GameServer()->m_pController->ClampTeam(Team);
 	m_NumInputs = 0;
+	m_IsBot = false;
 	Reset();
 	GameServer()->Antibot()->OnPlayerInit(m_ClientID);
 	SetHookProtected(false);
@@ -334,6 +335,7 @@ void CPlayer::Snap(int SnappingClient)
 #ifdef CONF_DEBUG
 	if(!g_Config.m_DbgDummies || m_ClientID < MAX_CLIENTS - g_Config.m_DbgDummies)
 #endif
+	if (!m_IsBot)
 		if(!Server()->ClientIngame(m_ClientID))
 			return;
 

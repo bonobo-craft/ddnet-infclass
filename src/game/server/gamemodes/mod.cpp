@@ -325,6 +325,8 @@ int CGameControllerMOD::GetRealPlayerNum() const {
 	for (CPlayer* each : GameServer()->m_apPlayers) {
 		if (!each)
 			continue;
+		if (each->IsBot())
+			continue;
 		if (!each->GetCroyaPlayer())
 			continue;
 		if(!each->GetTeam() == 0)

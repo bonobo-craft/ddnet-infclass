@@ -112,6 +112,7 @@ public:
 	class CPlayer *GetPlayer() { return m_pPlayer; }
 
 	// INFCROYA BEGIN ------------------------------------------------------------
+	void DestroyAllBots();
 	void SpawnBot();
 	void SwitchTaxi();
 	void ResetTaxi();
@@ -139,6 +140,7 @@ public:
 	int GetArmor() const;
 	int GetHealthArmorSum() const;
 	void SetHealthArmor(int Health, int Armor);
+	int VacantBotId();
 
 	CCharacterCore& GetCharacterCore();
 	bool m_FirstShot;

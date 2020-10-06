@@ -4861,6 +4861,8 @@ int CGameContext::GetHumanCount() const
 	for (CPlayer* each : m_apPlayers) {
 		if (each) {
 			CCharacter* pChr = each->GetCharacter();
+			if (each->IsBot())
+				continue;
 			if (pChr && pChr->IsHuman())
 				HumanCount++;
 		}
@@ -4874,6 +4876,8 @@ int CGameContext::GetZombieCount() const
 	for (CPlayer* each : m_apPlayers) {
 		if (each) {
 			CCharacter* pChr = each->GetCharacter();
+			if (each->IsBot())
+				continue;
 			if (pChr && pChr->IsZombie())
 				ZombiesCount++;
 		}

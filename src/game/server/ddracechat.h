@@ -19,6 +19,7 @@ CHAT_COMMAND("map", "?r[map]", CFGFLAG_CHAT|CFGFLAG_SERVER|CFGFLAG_NONTEEHISTORI
 CHAT_COMMAND("kill", "", CFGFLAG_CHAT|CFGFLAG_SERVER, ConProtectedKill, this, "Kill yourself when kill-protected during a long game (use f1, kill for regular kill)")
 CHAT_COMMAND("taxi", "", CFGFLAG_CHAT, ConTaxi, this, "Turn on and off taxi mode")
 CHAT_COMMAND("bot", "", CFGFLAG_CHAT, ConBot, this, "Spawn a bot")
+CHAT_COMMAND("unbot", "", CFGFLAG_CHAT, ConUnBot, this, "Destroy all bots")
 //CHAT_COMMAND("rules", "", CFGFLAG_CHAT|CFGFLAG_SERVER, ConRules, this, "Shows the server rules")
 //CHAT_COMMAND("settings", "?s[configname]", CFGFLAG_CHAT|CFGFLAG_SERVER, ConSettings, this, "Shows gameplay information for this server")
 /* CHAT_COMMAND("info", "", CFGFLAG_CHAT|CFGFLAG_SERVER, ConInfo, this, "Shows info about this server")

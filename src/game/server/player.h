@@ -32,7 +32,7 @@ public:
 	int GetCID() const { return m_ClientID; };
 	int GetClientVersion() const;
 	bool SetTimerType(int NewType);
-
+	bool IsBot() { return m_IsBot; };
 	void Tick();
 	void PostTick();
 
@@ -123,9 +123,11 @@ public:
 	class CroyaPlayer* GetCroyaPlayer();
 	void SetCroyaPlayer(CroyaPlayer* pCroyaPlayer);
 	//
+	CCharacter *m_pCharacter;
+	// TBD: do this private
+	bool m_IsBot;
 
 private:
-	CCharacter *m_pCharacter;
 	int m_NumInputs;
 	CGameContext *m_pGameServer;
 

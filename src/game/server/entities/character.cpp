@@ -2850,22 +2850,44 @@ void CCharacter::ResetTaxi()
 	}
 }
 
+int CCharacter::VacantBotId() {
+	for(int i = 51; i < MAX_CLIENTS; i++)
+	{
+		if (!GameServer()->m_apPlayers[i])
+			return i;
+	}
+	return -1;
+
+}
+
+void CCharacter::DestroyAllBots() {
+	for(int i = 51; i < MAX_CLIENTS; i++)
+	{
+		CPlayer *player = GameServer()->m_apPlayers[i];
+		if (!player)
+		  continue;
+		if (!player->IsBot())
+		  continue;
+		delete player;
+		GameServer()->m_apPlayers[i] = nullptr;
+	}
+}
+
 void CCharacter::SpawnBot() {
-	int ClientID=40;
-	auto m_pBotCharacter = new(ClientID) CCharacter(&GameServer()->m_World);
-	m_pBotCharacter->SetHealthArmor(10, 0);
-	m_pBotCharacter->m_IsBot = true;
-	m_pBotCharacter->m_FreeTaxi = true;
-	auto pPlayer = new(ClientID) CPlayer(GameServer(), ClientID, 0);
-	// players array
-	GameServer()->m_apPlayers[ClientID] = pPlayer;
+	int ClientID = VacantBotId();
+	if (ClientID == -1)
+		return;
 	auto mod = GameServer()->m_pController;
+	auto pPlayer = new(ClientID) CPlayer(GameServer(), ClientID, 0);
+	pPlayer->m_IsBot = true;
+	GameServer()->m_apPlayers[ClientID] = pPlayer;
 	auto croyaPlayer = new CroyaPlayer(ClientID, pPlayer, GameServer(), mod, mod->classes);
-	// croyaplayers array
 	mod->players[ClientID] = croyaPlayer;
-	GameServer()->OnClientEnter(ClientID);
-	m_pBotCharacter->Spawn(pPlayer, m_Pos);
-	croyaPlayer->SetClassNum(DEFAULT);
+	// auto m_pBotCharacter = new(ClientID) CCharacter(&GameServer()->m_World);
+	auto m_pBotCharacter = pPlayer->ForceSpawn(m_Pos);
+	m_pBotCharacter->m_IsBot = true;
+	pPlayer->m_pCharacter = m_pBotCharacter;
+	//GameServer()->OnClientEnter(ClientID);
 }
 
 void CCharacter::SwitchTaxi()

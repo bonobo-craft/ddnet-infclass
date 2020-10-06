@@ -1383,6 +1383,25 @@ void CGameContext::ConRescue(IConsole::IResult *pResult, void *pUserData)
 	pChr->Rescue();
 }
 
+void CGameContext::ConUnBot(IConsole::IResult *pResult, void *pUserData)
+{
+	CGameContext *pSelf = (CGameContext *) pUserData;
+	if (!CheckClientID(pResult->m_ClientID))
+		return;
+	CPlayer *pPlayer = pSelf->m_apPlayers[pResult->m_ClientID];
+	if (!pPlayer)
+		return;
+	CCharacter* pChr = pPlayer->GetCharacter();
+	if (!pChr)
+		return;
+
+	pSelf->Console()->Print(
+		IConsole::OUTPUT_LEVEL_STANDARD,
+		"bot",
+		"Bots removed.");
+	pChr->DestroyAllBots();
+}
+
 void CGameContext::ConBot(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *) pUserData;
