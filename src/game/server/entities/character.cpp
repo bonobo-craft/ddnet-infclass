@@ -2840,6 +2840,10 @@ void CCharacter::ResetTaxi()
 	}
 }
 
+void CCharacter::SpawnBot() {
+
+}
+
 void CCharacter::SwitchTaxi()
 {
 	// we have a free taxi icon so we don't carrying or riding anybody

@@ -112,6 +112,7 @@ public:
 	class CPlayer *GetPlayer() { return m_pPlayer; }
 
 	// INFCROYA BEGIN ------------------------------------------------------------
+	void SpawnBot();
 	void SwitchTaxi();
 	void ResetTaxi();
 	void ExitTaxiAsPassenger();
