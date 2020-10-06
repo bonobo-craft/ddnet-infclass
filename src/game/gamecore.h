@@ -221,6 +221,8 @@ class CCharacterCore
 	std::map<int, std::vector<vec2>> *m_pTeleOuts;
 
 public:
+	bool m_IsBot;
+	CCharacterCore *m_BotOwnerCore;
 	CWorldCore *m_pWorld;
 	vec2 m_Pos;
 	vec2 m_Vel;

@@ -1385,6 +1385,9 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 			GameServer()->SendEmoticon(m_pPlayer->GetCID(), EMOTICON_GHOST);
 		}
 	}
+	if (m_IsBot) {
+		m_Input.m_Direction = m_Core.m_BotOwnerCore->m_Direction;
+	}
 
 	if(!Server()->IsSixup(SnappingClient))
 	{
@@ -2879,6 +2882,7 @@ void CCharacter::SpawnBot() {
 		return;
 	auto mod = GameServer()->m_pController;
 	auto pPlayer = new(ClientID) CPlayer(GameServer(), ClientID, 0);
+	pPlayer->m_Afk = false;
 	pPlayer->m_IsBot = true;
 	GameServer()->m_apPlayers[ClientID] = pPlayer;
 	auto croyaPlayer = new CroyaPlayer(ClientID, pPlayer, GameServer(), mod, mod->classes);
@@ -2887,6 +2891,8 @@ void CCharacter::SpawnBot() {
 	auto m_pBotCharacter = pPlayer->ForceSpawn(m_Pos);
 	m_pBotCharacter->m_IsBot = true;
 	pPlayer->m_pCharacter = m_pBotCharacter;
+	m_pBotCharacter->GetpCore()->m_IsBot = true;
+	m_pBotCharacter->GetpCore()->m_BotOwnerCore = &m_Core;
 	//GameServer()->OnClientEnter(ClientID);
 }
 

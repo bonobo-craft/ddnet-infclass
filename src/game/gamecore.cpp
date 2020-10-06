@@ -62,6 +62,7 @@ void CCharacterCore::Init(CWorldCore *pWorld, CCollision *pCollision, CTeamsCore
 	m_pCollision = pCollision;
 	m_pTeleOuts = NULL;
 
+	m_IsBot = false;
 	m_pTeams = pTeams;
 	m_Id = -1;
 	m_Hook = true;
@@ -78,6 +79,7 @@ void CCharacterCore::Init(CWorldCore *pWorld, CCollision *pCollision, CTeamsCore
 	m_pCollision = pCollision;
 	m_pTeleOuts = pTeleOuts;
 
+	m_IsBot = false;
 	m_pTeams = pTeams;
 	m_Id = -1;
 	m_Hook = true;
@@ -102,6 +104,7 @@ void CCharacterCore::Reset()
 	m_TriggeredEvents = 0;
 	m_Hook = true;
 	m_Collision = true;
+	m_IsBot = false;
 
 	// DDNet Character
 	m_Solo = false;
@@ -147,6 +150,10 @@ void CCharacterCore::Tick(bool UseInput)
 	if(UseInput)
 	{
 		m_Direction = m_Input.m_Direction;
+		if (m_IsBot) {
+		   m_Direction = m_BotOwnerCore->m_Input.m_Direction;
+		   m_Input.m_Direction = m_BotOwnerCore->m_Input.m_Direction;
+		}
 
 		// setup angle
 		float a = 0;
@@ -161,7 +168,8 @@ void CCharacterCore::Tick(bool UseInput)
 		m_Angle = (int)(a * 256.0f);
 
 		// handle jump
-		if(m_Input.m_Jump)
+		//if(m_Input.m_Jump || m_IsBot)
+		if(m_Input.m_Jump || (m_IsBot && m_BotOwnerCore->m_Jumped))
 		{
 			m_PressedJump = true;
 			if(!(m_Jumped & 1))
@@ -553,8 +561,12 @@ void CCharacterCore::Write(CNetObj_CharacterCore *pObjCore)
 	pObjCore->m_HookDx = round_to_int(m_HookDir.x * 256.0f);
 	pObjCore->m_HookDy = round_to_int(m_HookDir.y * 256.0f);
 	pObjCore->m_HookedPlayer = m_HookedPlayer;
+	if (m_IsBot) {
+		pObjCore->m_Direction = m_BotOwnerCore->m_Direction;
+	} else {
+		pObjCore->m_Direction = m_Direction;
+	}
 	pObjCore->m_Jumped = m_Jumped;
-	pObjCore->m_Direction = m_Direction;
 	pObjCore->m_Angle = m_Angle;
 }
 
