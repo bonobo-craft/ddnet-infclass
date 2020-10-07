@@ -280,11 +280,11 @@ void CroyaPlayer::SetClassNum(int Class, bool DrawPurpleThing, bool ShowInfo, bo
 {
 	if (GetCharacter())
 		GetCharacter()->ResetTaxi();
-	char aBuf[512];
-	str_format(aBuf, sizeof(aBuf),
-			"SetClassNum, Client ID = %d, class = %d'",
-			m_ClientID, Class);
-	m_pGameServer->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "server", aBuf);
+	// char aBuf[512];
+	// str_format(aBuf, sizeof(aBuf),
+	// 		"SetClassNum, Client ID = %d, class = %d'",
+	// 		m_ClientID, Class);
+	// m_pGameServer->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "server", aBuf);
 	SetClass(m_Classes[Class], DrawPurpleThing, destroyChildEntities);
 	m_pGameServer->SendClassSelectorByClassId(Class, GetClientID(), ShowInfo);
 }
