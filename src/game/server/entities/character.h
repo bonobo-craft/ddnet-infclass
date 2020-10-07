@@ -176,13 +176,13 @@ public:
 	int GetLastNoAttachSound() const;
 	void SetLastNoAttachSound(int LastNoAttachSound);
 
+	bool m_IsBot;
 	// INFCROYA END ------------------------------------------------------------//
 
 private:
 	// player controlling this character
 	class CPlayer *m_pPlayer;
 
-	bool m_IsBot;
 	bool m_Alive;
 	bool m_Paused;
 	int m_NeededFaketuning;

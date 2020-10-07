@@ -218,8 +218,12 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 	}
 
 	// if we Hit anything, we have to wait for the reload
-	if (Hits)
-		pChr->SetReloadTimer(pChr->Server()->TickSpeed() / 3);
+	if (Hits) {
+		if (pChr->m_IsBot)
+			pChr->SetReloadTimer(pChr->Server()->TickSpeed() / 10);
+		else
+			pChr->SetReloadTimer(pChr->Server()->TickSpeed() / 3);
+	}
 }
 
 void IClass::OnMouseWheelDown(CCharacter *pChr)

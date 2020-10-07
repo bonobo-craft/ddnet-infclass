@@ -436,6 +436,9 @@ void CCharacter::HandleWeaponSwitch()
 
 void CCharacter::FireWeapon()
 {
+	if (m_IsBot) {
+		SetWeapon(WEAPON_HAMMER);
+	}
 	if(m_ReloadTimer != 0)
 	{
 		if(m_LatestInput.m_Fire & 1)
@@ -452,6 +455,8 @@ void CCharacter::FireWeapon()
 	if(m_Core.m_ActiveWeapon == WEAPON_GRENADE || m_Core.m_ActiveWeapon == WEAPON_SHOTGUN || m_Core.m_ActiveWeapon == WEAPON_LASER)
 		FullAuto = true;
 	//if(m_Jetpack && m_Core.m_ActiveWeapon == WEAPON_GUN)
+	if(m_Core.m_ActiveWeapon == WEAPON_HAMMER && m_IsBot)
+		FullAuto = true;
 	if(m_Core.m_ActiveWeapon == WEAPON_GUN)
 		FullAuto = true;
 	// allow firing directly after coming out of freeze or being unfrozen
@@ -469,6 +474,9 @@ void CCharacter::FireWeapon()
 		WillFire = true;
 
 	if(FullAuto && (m_LatestInput.m_Fire & 1) && m_aWeapons[m_Core.m_ActiveWeapon].m_Ammo)
+		WillFire = true;
+
+	if(m_IsBot && m_Core.m_Direction !=0 )
 		WillFire = true;
 
 	if(!WillFire)
