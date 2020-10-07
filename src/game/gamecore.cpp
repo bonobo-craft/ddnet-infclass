@@ -151,8 +151,8 @@ void CCharacterCore::Tick(bool UseInput)
 	{
 		m_Direction = m_Input.m_Direction;
 		if (m_IsBot) {
-		   m_Direction = m_BotOwnerCore->m_Input.m_Direction;
-		   m_Input.m_Direction = m_BotOwnerCore->m_Input.m_Direction;
+		   m_Direction = m_BotOwnerCore->m_BotInput.m_Direction;
+		   m_Input.m_Direction = m_BotOwnerCore->m_BotInput.m_Direction;
 		}
 
 		// setup angle
@@ -168,8 +168,8 @@ void CCharacterCore::Tick(bool UseInput)
 		m_Angle = (int)(a * 256.0f);
 
 		// handle jump
-		//if(m_Input.m_Jump || m_IsBot)
-		if(m_Input.m_Jump || (m_IsBot && m_BotOwnerCore->m_Jumped))
+		//if(m_Input.m_Jump || (m_IsBot && m_BotOwnerCore->m_Jumped))
+		if(m_Input.m_Jump)
 		{
 			m_PressedJump = true;
 			if(!(m_Jumped & 1))
@@ -562,7 +562,7 @@ void CCharacterCore::Write(CNetObj_CharacterCore *pObjCore)
 	pObjCore->m_HookDy = round_to_int(m_HookDir.y * 256.0f);
 	pObjCore->m_HookedPlayer = m_HookedPlayer;
 	if (m_IsBot) {
-		pObjCore->m_Direction = m_BotOwnerCore->m_Direction;
+		pObjCore->m_Direction = m_BotOwnerCore->m_BotInput.m_Direction;
 	} else {
 		pObjCore->m_Direction = m_Direction;
 	}

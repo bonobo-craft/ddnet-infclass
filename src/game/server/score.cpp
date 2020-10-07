@@ -450,6 +450,8 @@ bool CScore::MapInfoThread(IDbConnection *pSqlServer, const ISqlData *pGameData)
 void CScore::SavePlayerMatchScoreInf(CPlayer *pCurPlayer) {
 	if (!pCurPlayer)
 		return;
+	if (pCurPlayer->IsBot())
+		return;
 /* 	CCharacter* pChar = pCurPlayer->GetCharacter();
 	if (!pChar)
 		return; */
@@ -487,6 +489,8 @@ void CScore::SaveScore(int ClientID, float Time, const char *pTimestamp, float C
 		return;
 
 	CPlayer *pCurPlayer = GameServer()->m_apPlayers[ClientID];
+	if (pCurPlayer && pCurPlayer->IsBot())
+		return;
 	if(pCurPlayer->m_ScoreFinishResult != nullptr)
 		dbg_msg("sql", "WARNING: previous save score result didn't complete, overwriting it now");
 	pCurPlayer->m_ScoreFinishResult = std::make_shared<CScorePlayerResult>();

@@ -17,6 +17,7 @@ CDefault::CDefault()
 void CDefault::InitialWeaponsHealth(CCharacter* pChr)
 {
 	pChr->IncreaseHealth(10);
+	pChr->GiveWeapon(WEAPON_HAMMER, -1);
 	pChr->GiveWeapon(WEAPON_GUN, 10);
 	pChr->SetWeapon(WEAPON_GUN);
 	pChr->SetNormalEmote(EMOTE_NORMAL);
@@ -29,6 +30,9 @@ void CDefault::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CChar
 	CGameContext* pGameServer = pChr->GameServer();
 
 	switch (Weapon) {
+	case WEAPON_HAMMER: {
+		HammerShoot(pChr, ProjStartPos);
+	} break;
 	case WEAPON_GUN: {
 		new CProjectile(pGameWorld, WEAPON_GUN,
 			ClientID,

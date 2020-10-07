@@ -1386,7 +1386,7 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 		}
 	}
 	if (m_IsBot) {
-		m_Input.m_Direction = m_Core.m_BotOwnerCore->m_Direction;
+		m_Input.m_Direction = m_Core.m_BotOwnerCore->m_BotInput.m_Direction;
 	}
 
 	if(!Server()->IsSixup(SnappingClient))

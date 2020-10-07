@@ -249,6 +249,7 @@ public:
 	int m_Direction;
 	int m_Angle;
 	CNetObj_PlayerInput m_Input;
+	CNetObj_PlayerInput m_BotInput;
 
 	int m_TriggeredEvents;
 
