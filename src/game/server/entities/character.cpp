@@ -1418,7 +1418,7 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 		pCharacter->m_Direction = m_Input.m_Direction;
 		pCharacter->m_Weapon = Weapon;
 		pCharacter->m_AmmoCount = AmmoCount;
-		pCharacter->m_Health = 10;
+		pCharacter->m_Health = Health;
 		pCharacter->m_Armor = Armor;
 		pCharacter->m_PlayerFlags = GetPlayer()->m_PlayerFlags;
 	}
@@ -1442,7 +1442,7 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 		else if(Weapon == WEAPON_NINJA)
 			pCharacter->m_AmmoCount = m_Ninja.m_ActivationTick + g_pData->m_Weapons.m_Ninja.m_Duration * Server()->TickSpeed() / 1000;
 
-		pCharacter->m_Health = 10;
+		pCharacter->m_Health = Health;
 		pCharacter->m_Armor = Armor;
 		pCharacter->m_TriggeredEvents = 0;
 	}
@@ -1549,15 +1549,6 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 
 void CCharacter::Snap(int SnappingClient)
 {
-	if (m_IsBot) {
-		// useless, just for debugging REMOVE IT
-		m_ReckoningTick = m_ReckoningTick;
-		m_ReckoningTick = m_ReckoningTick;
-		m_ReckoningTick = m_ReckoningTick;
-		m_ReckoningTick = m_ReckoningTick;
-		m_ReckoningTick = m_ReckoningTick;
-		m_ReckoningTick = m_ReckoningTick;
-	}
 	int ID = m_pPlayer->GetCID();
 
 	if(SnappingClient > -1 && !Server()->Translate(ID, SnappingClient))
@@ -2901,6 +2892,7 @@ void CCharacter::SpawnBot() {
 	pPlayer->m_pCharacter = m_pBotCharacter;
 	m_pBotCharacter->GetpCore()->m_IsBot = true;
 	m_pBotCharacter->GetpCore()->m_BotOwnerCore = &m_Core;
+	croyaPlayer->SetClassNum(WORKER);
 	//GameServer()->OnClientEnter(ClientID);
 }
 

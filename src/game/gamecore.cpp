@@ -153,6 +153,8 @@ void CCharacterCore::Tick(bool UseInput)
 		if (m_IsBot) {
 		   m_Direction = m_BotOwnerCore->m_BotInput.m_Direction;
 		   m_Input.m_Direction = m_BotOwnerCore->m_BotInput.m_Direction;
+		   m_Input.m_TargetX = m_BotOwnerCore->m_BotInput.m_TargetX;
+		   m_Input.m_TargetY = m_BotOwnerCore->m_BotInput.m_TargetY;
 		}
 
 		// setup angle
@@ -168,8 +170,8 @@ void CCharacterCore::Tick(bool UseInput)
 		m_Angle = (int)(a * 256.0f);
 
 		// handle jump
-		//if(m_Input.m_Jump || (m_IsBot && m_BotOwnerCore->m_Jumped))
-		if(m_Input.m_Jump)
+		if(m_Input.m_Jump || (m_IsBot && m_BotOwnerCore->m_Jumped))
+		//if(m_Input.m_Jump)
 		{
 			m_PressedJump = true;
 			if(!(m_Jumped & 1))

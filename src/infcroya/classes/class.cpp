@@ -91,7 +91,10 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 	CCharacterCore *CCore = &pChr->GetCharacterCore();
 	// bot control
 	CCore->m_BotInput.m_Direction = CCore->m_Input.m_Direction;
-	pGameServer->CreateSound(pChr->GetPos(), SOUND_HAMMER_FIRE);
+	CCore->m_BotInput.m_TargetX = CCore->m_Input.m_TargetX;
+	CCore->m_BotInput.m_TargetY = CCore->m_Input.m_TargetY;
+	if (!CCore->m_IsBot)
+		pGameServer->CreateSound(pChr->GetPos(), SOUND_HAMMER_FIRE);
 
 	CCharacter *apEnts[MAX_CLIENTS];
 	int Hits = 0;
