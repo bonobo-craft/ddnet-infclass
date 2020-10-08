@@ -209,7 +209,7 @@ void CPlayer::Tick()
 		m_ScoreFinishResult = nullptr;
 	} */
 
-	if(!Server()->ClientIngame(m_ClientID))
+	if(!Server()->ClientIngame(m_ClientID) && !m_IsBot)
 		return;
 
 /* 	if (m_ChatScore > 0)
@@ -323,7 +323,7 @@ void CPlayer::PostPostTick()
 #ifdef CONF_DEBUG
 	if(!g_Config.m_DbgDummies || m_ClientID < MAX_CLIENTS - g_Config.m_DbgDummies)
 #endif
-		if(!Server()->ClientIngame(m_ClientID))
+		if(!Server()->ClientIngame(m_ClientID) && !m_IsBot)
 			return;
 
 	if(!GameServer()->m_World.m_Paused && !m_pCharacter && m_Spawning && m_WeakHookSpawn)

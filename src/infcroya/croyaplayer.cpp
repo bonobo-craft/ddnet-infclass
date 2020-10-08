@@ -797,11 +797,13 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 			}
 		}
 	} */
-	if (!destroyChildEntities)
-	  return;
+	if (destroyChildEntities) {
+		if (m_pCharacter) {
+			m_pCharacter->DestroyChildEntities();
+		}
+	}
 
 	if (m_pCharacter) {
-		m_pCharacter->DestroyChildEntities();
 		m_pCharacter->SetInfected(m_pClass->IsInfectedClass()); // double call?
 		m_pCharacter->ResetWeaponsHealth();
 		m_pClass->InitialWeaponsHealth(m_pCharacter);

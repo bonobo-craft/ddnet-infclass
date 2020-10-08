@@ -68,6 +68,7 @@ CCharacter::CCharacter(CGameWorld *pWorld) :
 
 void CCharacter::Reset()
 {
+	DestroyChildEntities();
 	Destroy();
 }
 
@@ -127,6 +128,7 @@ bool CCharacter::Spawn(CPlayer *pPlayer, vec2 Pos)
 
 void CCharacter::Destroy()
 {
+	//DestroyChildEntities();
 	GameServer()->m_World.m_Core.m_apCharacters[m_pPlayer->GetCID()] = 0;
 	m_Alive = false;
 	m_Solo = false;
@@ -160,12 +162,13 @@ void CCharacter::Destroy()
 		m_FreeTaxi = false;
 		m_TaxiPassenger = false;
 	}
-	DestroyChildEntities();
 	// INFCROYA END ------------------------------------------------------------//
 }
 
 void CCharacter::SetWeapon(int W)
 {
+	if (!GameWorld())
+		return;
 	if(W == m_Core.m_ActiveWeapon)
 		return;
 
@@ -2890,6 +2893,8 @@ void CCharacter::DestroyAllBots() {
 }
 
 void CCharacter::DestroyBotByID(int BotID) {
+	if (BotID < 1)
+		return;
 	CPlayer *player = GameServer()->m_apPlayers[BotID];
 	if (!player)
 	  return;
@@ -3138,6 +3143,9 @@ void CCharacter::Poison(int Count, int From)
 void CCharacter::DestroyChildEntities()
 {
 	DestroyMyBot();
+	CGameWorld *gw = GameWorld();
+	if (!gw)
+		return;
 	for (CEngineerWall* pWall = (CEngineerWall*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_ENGINEER_WALL); pWall; pWall = (CEngineerWall*)pWall->TypeNext())
 	{
 		if (pWall)
@@ -3195,6 +3203,7 @@ void CCharacter::DestroyChildEntities()
 		}
 	}
 
+	// engineer wall first dot
 	m_FirstShot = true;
 }
 
