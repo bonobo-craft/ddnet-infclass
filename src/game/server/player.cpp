@@ -13,6 +13,7 @@
 // INFCROYA BEGIN ------------------------------------------------------------
 #include "gamemodes/mod.h"
 #include <infcroya/croyaplayer.h>
+#include <game/server/entities/character.h>
 // INFCROYA END ------------------------------------------------------------//
 #include <game/version.h>
 #include <time.h>
@@ -777,6 +778,12 @@ void CPlayer::TryRespawn()
 	m_WeakHookSpawn = false;
 	m_Spawning = false;
 	m_pCharacter = new(m_ClientID) CCharacter(&GameServer()->m_World);
+	if (m_IsBot) {
+		m_pCharacter->m_IsBot = true;
+		// m_pCharacter->Core()->m_IsBot = true;
+		// m_pCharacter->Core()->m_BotOwnerCore = m_BotOwnerCore;
+	}
+
 	if (GetCroyaPlayer()->IsHuman()) {
 		m_pCharacter->Spawn(this, SpawnPos);
 		m_pCharacter->SetHookProtected(m_HookProtected);

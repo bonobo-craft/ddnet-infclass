@@ -63,6 +63,7 @@ void CCharacterCore::Init(CWorldCore *pWorld, CCollision *pCollision, CTeamsCore
 	m_pTeleOuts = NULL;
 
 	m_IsBot = false;
+	m_BotOwnerCore = nullptr;
 	m_pTeams = pTeams;
 	m_Id = -1;
 	m_Hook = true;
@@ -80,6 +81,7 @@ void CCharacterCore::Init(CWorldCore *pWorld, CCollision *pCollision, CTeamsCore
 	m_pTeleOuts = pTeleOuts;
 
 	m_IsBot = false;
+	m_BotOwnerCore = nullptr;
 	m_pTeams = pTeams;
 	m_Id = -1;
 	m_Hook = true;
@@ -104,7 +106,8 @@ void CCharacterCore::Reset()
 	m_TriggeredEvents = 0;
 	m_Hook = true;
 	m_Collision = true;
-	m_IsBot = false;
+	//m_IsBot = false;
+	//m_BotOwnerCore = nullptr;
 
 	// DDNet Character
 	m_Solo = false;

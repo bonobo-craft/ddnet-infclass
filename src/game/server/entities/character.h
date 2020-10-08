@@ -116,6 +116,7 @@ public:
 	void DestroyAllBots();
 	void DestroyBotByID(int BotID);
 	void SpawnBot();
+	void RegainBotControl();
 	void SwitchTaxi();
 	void ResetTaxi();
 	void ExitTaxiAsPassenger();

@@ -88,6 +88,7 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 
 	// reset objects Hit
 	pChr->SetNumObjectsHit(0);
+	pChr->RegainBotControl();
 	CCharacterCore *CCore = &pChr->GetCharacterCore();
 	// bot control
 	if (!CCore->m_IsBot) {

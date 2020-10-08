@@ -94,6 +94,8 @@ void CSniper::LockPosition(CCharacter* pChr) {
 }
 
 void CSniper::UnlockPosition(CCharacter* pChr) {
+	if (!pChr->GetCroyaPlayer())
+		return;
 	pChr->GetCroyaPlayer()->UnlockPosition();	
 }
 

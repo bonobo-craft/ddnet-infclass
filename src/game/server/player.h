@@ -6,6 +6,7 @@
 // this include should perhaps be removed
 #include "entities/character.h"
 #include "gamecontext.h"
+#include <game/gamecore.h>
 #include "score.h"
 #include "teeinfo.h"
 #include <memory>
@@ -126,6 +127,8 @@ public:
 	CCharacter *m_pCharacter;
 	// TBD: do this private
 	bool m_IsBot;
+	class CCharacterCore *m_BotOwnerCore;
+
 
 private:
 	int m_NumInputs;

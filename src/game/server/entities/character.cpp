@@ -1401,9 +1401,9 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 			GameServer()->SendEmoticon(m_pPlayer->GetCID(), EMOTICON_GHOST);
 		}
 	}
-	if (m_IsBot) {
+
+	if (m_IsBot && m_Core.m_BotOwnerCore)
 		m_Input.m_Direction = m_Core.m_BotOwnerCore->m_BotInput.m_Direction;
-	}
 
 	if(!Server()->IsSixup(SnappingClient))
 	{
@@ -2904,6 +2904,22 @@ void CCharacter::DestroyBotByID(int BotID) {
 	delete player;
 }
 
+void CCharacter::RegainBotControl() {
+	if (m_BotClientID < 0)
+		return;
+	CPlayer *player = GameServer()->m_apPlayers[m_BotClientID];
+	if (!player)
+		return;
+	if (!player->IsBot())
+		return;
+	if (!player->m_pCharacter)
+		return;
+	CCharacter *m_pBotCharacter = player->m_pCharacter;
+	m_pBotCharacter->GetpCore()->m_IsBot = true;
+	m_pBotCharacter->GetpCore()->m_BotOwnerCore = &m_Core;
+
+}
+
 void CCharacter::SpawnBot() {
 	if (m_BotClientID > -1)
 		return;
@@ -2922,6 +2938,8 @@ void CCharacter::SpawnBot() {
 	auto m_pBotCharacter = pPlayer->ForceSpawn(m_Pos);
 	m_pBotCharacter->m_IsBot = true;
 	pPlayer->m_pCharacter = m_pBotCharacter;
+	// maybe we don't need character core
+	pPlayer->m_BotOwnerCore = &m_Core;
 	m_pBotCharacter->GetpCore()->m_IsBot = true;
 	m_pBotCharacter->GetpCore()->m_BotOwnerCore = &m_Core;
 	croyaPlayer->SetClassNum(WORKER);

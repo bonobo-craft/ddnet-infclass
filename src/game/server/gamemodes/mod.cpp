@@ -300,6 +300,8 @@ void CGameControllerMOD::UnlockPositions()
 			continue;
 		if (!each->GetCharacter())
 			continue;
+		if (!each->GetPlayer())
+			continue;
 		if (!each->GetClass())
 			continue;
 		each->GetClass()->UnlockPosition(each->GetCharacter());
