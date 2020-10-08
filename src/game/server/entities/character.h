@@ -112,7 +112,9 @@ public:
 	class CPlayer *GetPlayer() { return m_pPlayer; }
 
 	// INFCROYA BEGIN ------------------------------------------------------------
+	void DestroyMyBot();
 	void DestroyAllBots();
+	void DestroyBotByID(int BotID);
 	void SpawnBot();
 	void SwitchTaxi();
 	void ResetTaxi();
@@ -148,6 +150,7 @@ public:
 	int m_BarrierHintID;
 	array<int> m_BarrierHintIDs;
 	int m_RespawnPointID;
+	int m_BotClientID;
 
 	void Stun(float Time);
 	void Unstun();

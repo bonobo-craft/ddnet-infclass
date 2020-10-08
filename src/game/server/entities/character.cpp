@@ -38,6 +38,7 @@ CCharacter::CCharacter(CGameWorld *pWorld) :
 	m_Armor = 0;
 	m_StrongWeakID = 0;
 	m_IsBot = false;
+	m_BotClientID = -1;
 
 	// INFCROYA BEGIN ------------------------------------------------------------
 	m_Infected = false;
@@ -130,6 +131,7 @@ void CCharacter::Destroy()
 	m_Alive = false;
 	m_Solo = false;
 	// INFCROYA BEGIN ------------------------------------------------------------
+	DestroyMyBot();
 	if (m_HeartID >= 0) {
 		Server()->SnapFreeID(m_HeartID);
 		m_HeartID = -1;
@@ -449,6 +451,10 @@ void CCharacter::FireWeapon()
 	}
 
 	DoWeaponSwitch();
+	if (m_IsBot) {
+		m_LatestInput.m_TargetX = m_Core.m_Input.m_TargetX;
+		m_LatestInput.m_TargetY = m_Core.m_Input.m_TargetY;
+	}
 	vec2 Direction = normalize(vec2(m_LatestInput.m_TargetX, m_LatestInput.m_TargetY));
 
 	bool FullAuto = false;
@@ -2862,6 +2868,13 @@ int CCharacter::VacantBotId() {
 
 }
 
+void CCharacter::DestroyMyBot() {
+	if (m_BotClientID < 0)
+		return;
+	DestroyBotByID(m_BotClientID);
+	m_BotClientID = -1;
+}
+
 void CCharacter::DestroyAllBots() {
 	for(int i = 51; i < MAX_CLIENTS; i++)
 	{
@@ -2875,9 +2888,22 @@ void CCharacter::DestroyAllBots() {
 	}
 }
 
+void CCharacter::DestroyBotByID(int BotID) {
+	CPlayer *player = GameServer()->m_apPlayers[BotID];
+	if (!player)
+	  return;
+	if (!player->IsBot())
+	  return;
+	delete player;
+	GameServer()->m_apPlayers[BotID] = nullptr;
+}
+
 void CCharacter::SpawnBot() {
+	if (m_BotClientID > -1)
+		return;
 	int ClientID = VacantBotId();
-	if (ClientID == -1)
+	m_BotClientID = ClientID;
+	if (ClientID < 0)
 		return;
 	auto mod = GameServer()->m_pController;
 	auto pPlayer = new(ClientID) CPlayer(GameServer(), ClientID, 0);

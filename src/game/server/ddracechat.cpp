@@ -1399,7 +1399,7 @@ void CGameContext::ConUnBot(IConsole::IResult *pResult, void *pUserData)
 		IConsole::OUTPUT_LEVEL_STANDARD,
 		"bot",
 		"Bots removed.");
-	pChr->DestroyAllBots();
+	pChr->DestroyMyBot();
 }
 
 void CGameContext::ConBot(IConsole::IResult *pResult, void *pUserData)

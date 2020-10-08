@@ -272,6 +272,7 @@ void CGameWorld::Tick()
 			for(CEntity *pEnt = m_apFirstEntityTypes[i]; pEnt;)
 			{
 				m_pNextTraverseEntity = pEnt->m_pNextTypeEntity;
+				// bot kills made problems
 				pEnt->Tick();
 				pEnt = m_pNextTraverseEntity;
 			}

@@ -90,9 +90,11 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 	pChr->SetNumObjectsHit(0);
 	CCharacterCore *CCore = &pChr->GetCharacterCore();
 	// bot control
-	CCore->m_BotInput.m_Direction = CCore->m_Input.m_Direction;
-	CCore->m_BotInput.m_TargetX = CCore->m_Input.m_TargetX;
-	CCore->m_BotInput.m_TargetY = CCore->m_Input.m_TargetY;
+	if (!CCore->m_IsBot) {
+		CCore->m_BotInput.m_Direction = CCore->m_Input.m_Direction;
+		CCore->m_BotInput.m_TargetX = CCore->m_Input.m_TargetX;
+		CCore->m_BotInput.m_TargetY = CCore->m_Input.m_TargetY;
+	}
 	if (!CCore->m_IsBot)
 		pGameServer->CreateSound(pChr->GetPos(), SOUND_HAMMER_FIRE);
 
@@ -104,6 +106,17 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 	for (int i = 0; i < Num; ++i)
 	{
 		CCharacter *pTarget = apEnts[i];
+
+		if ((pTarget == pChr) || pGameServer->Collision()->IntersectLine(ProjStartPos, pTarget->GetPos(), NULL, NULL))
+			continue;
+
+		// don't hit owner
+		if (pTarget->GetpCore() == pChr->GetpCore()->m_BotOwnerCore)
+			continue;
+
+		// don't hit bot
+		if (pTarget->GetpCore()->m_BotOwnerCore == pChr->GetpCore())
+			continue;
 
 		int DAMAGE = 20;
 		int HEAL = 1;
@@ -167,9 +180,6 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 			ShouldHit = true;
 			DAMAGE = 2;
 		}
-
-		if ((pTarget == pChr) || pGameServer->Collision()->IntersectLine(ProjStartPos, pTarget->GetPos(), NULL, NULL))
-			continue;
 
 		if (length(pTarget->GetPos() - ProjStartPos) > 0.0f)
 			pGameServer->CreateHammerHit(pTarget->GetPos() - normalize(pTarget->GetPos() - ProjStartPos) * pChr->GetProximityRadius() * 0.5f);
