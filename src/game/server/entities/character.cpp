@@ -131,7 +131,6 @@ void CCharacter::Destroy()
 	m_Alive = false;
 	m_Solo = false;
 	// INFCROYA BEGIN ------------------------------------------------------------
-	DestroyMyBot();
 	if (m_HeartID >= 0) {
 		Server()->SnapFreeID(m_HeartID);
 		m_HeartID = -1;
@@ -2869,6 +2868,8 @@ int CCharacter::VacantBotId() {
 }
 
 void CCharacter::DestroyMyBot() {
+	if (m_IsBot)
+		return;
 	if (m_BotClientID < 0)
 		return;
 	DestroyBotByID(m_BotClientID);
@@ -2883,8 +2884,8 @@ void CCharacter::DestroyAllBots() {
 		  continue;
 		if (!player->IsBot())
 		  continue;
-		delete player;
 		GameServer()->m_apPlayers[i] = nullptr;
+		delete player;
 	}
 }
 
@@ -2894,8 +2895,8 @@ void CCharacter::DestroyBotByID(int BotID) {
 	  return;
 	if (!player->IsBot())
 	  return;
-	delete player;
 	GameServer()->m_apPlayers[BotID] = nullptr;
+	delete player;
 }
 
 void CCharacter::SpawnBot() {
@@ -3136,6 +3137,7 @@ void CCharacter::Poison(int Count, int From)
 
 void CCharacter::DestroyChildEntities()
 {
+	DestroyMyBot();
 	for (CEngineerWall* pWall = (CEngineerWall*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_ENGINEER_WALL); pWall; pWall = (CEngineerWall*)pWall->TypeNext())
 	{
 		if (pWall)
