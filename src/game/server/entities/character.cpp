@@ -2905,6 +2905,8 @@ void CCharacter::DestroyBotByID(int BotID) {
 }
 
 void CCharacter::RegainBotControl() {
+	if (IsHuman())
+		return;
 	if (m_BotClientID < 0)
 		return;
 	CPlayer *player = GameServer()->m_apPlayers[m_BotClientID];
@@ -2915,12 +2917,17 @@ void CCharacter::RegainBotControl() {
 	if (!player->m_pCharacter)
 		return;
 	CCharacter *m_pBotCharacter = player->m_pCharacter;
+	if (!m_pBotCharacter)
+		return;
+	if (!m_pBotCharacter->GetpCore())
+		return;
 	m_pBotCharacter->GetpCore()->m_IsBot = true;
 	m_pBotCharacter->GetpCore()->m_BotOwnerCore = &m_Core;
-
 }
 
 void CCharacter::SpawnBot() {
+	if (IsHuman())
+		return;
 	if (m_BotClientID > -1)
 		return;
 	int ClientID = VacantBotId();
