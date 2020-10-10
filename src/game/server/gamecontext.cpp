@@ -1376,6 +1376,8 @@ int CGameContext::Get06PlayerNum() const {
 			continue;
 		if(!each->GetTeam() == 0)
 			continue;
+		if (each->IsBot())
+			continue;
 		if(Server()->IsSixup(each->GetCID()))
 		  continue;
 		PlayersNum++;
@@ -1389,6 +1391,8 @@ int CGameContext::Get07PlayerNum() const {
 		if (!each)
 			continue;
 		if(!each->GetTeam() == 0)
+			continue;
+		if (each->IsBot())
 			continue;
 		if(!Server()->IsSixup(each->GetCID()))
 		  continue;
@@ -3820,7 +3824,13 @@ bool CGameContext::IsClientReady(int ClientID)
 
 bool CGameContext::IsClientPlayer(int ClientID)
 {
-	return m_apPlayers[ClientID] && m_apPlayers[ClientID]->GetTeam() == TEAM_SPECTATORS ? false : true;
+	if (!m_apPlayers[ClientID])
+		return false;
+	if (m_apPlayers[ClientID]->IsBot())
+		return false;
+	if (m_apPlayers[ClientID]->GetTeam() == TEAM_SPECTATORS)
+		return false;
+	return true;
 }
 
 CUuid CGameContext::GameUuid() { return m_GameUuid; }
