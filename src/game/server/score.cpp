@@ -733,7 +733,7 @@ bool CScore::ShowRankThread(IDbConnection *pSqlServer, const ISqlData *pGameData
 	char aBuf[600];
 
 	str_format(aBuf, sizeof(aBuf),
-		"SELECT rank, player_name, score FROM player_stats WHERE player_name = ?;");
+		"SELECT rank, score FROM player_stats WHERE player_name = ?");
 	pSqlServer->PrepareStatement(aBuf);
 	pSqlServer->BindString(1, pData->m_Name);
 	strcpy(pData->m_pResult->m_Data.m_aaMessages[0], "----------- Rank -----------");
@@ -742,7 +742,7 @@ bool CScore::ShowRankThread(IDbConnection *pSqlServer, const ISqlData *pGameData
 	{
 		dbg_msg("game", "sql ranked");
 		int Rank = pSqlServer->GetInt(1);
-		int Score = pSqlServer->GetInt(3);
+		int Score = pSqlServer->GetInt(2);
 		// if(g_Config.m_SvHideScore)
 		// {
 		// 	str_format(pData->m_pResult->m_Data.m_aaMessages[0], sizeof(pData->m_pResult->m_Data.m_aaMessages[0]),
