@@ -719,6 +719,21 @@ void CGameContext::ConTeamRank(IConsole::IResult *pResult, void *pUserData)
 			pSelf->Server()->ClientName(pResult->m_ClientID));
 }
 
+void CGameContext::ConStats(IConsole::IResult *pResult, void *pUserData)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+	if(!CheckClientID(pResult->m_ClientID))
+		return;
+
+	if(pResult->NumArguments() > 0)
+	{
+		pSelf->Score()->ShowRank(pResult->m_ClientID, pResult->GetString(0));
+	}
+	else
+		pSelf->Score()->ShowRank(pResult->m_ClientID,
+			pSelf->Server()->ClientName(pResult->m_ClientID));
+}
+
 void CGameContext::ConRank(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;

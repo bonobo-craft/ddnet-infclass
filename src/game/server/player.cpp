@@ -199,7 +199,7 @@ void CPlayer::Tick()
 #ifdef CONF_DEBUG
 	if(!g_Config.m_DbgDummies || m_ClientID < MAX_CLIENTS - g_Config.m_DbgDummies)
 #endif
-/* 	if(m_ScoreQueryResult != nullptr && m_ScoreQueryResult.use_count() == 1)
+ 	if(m_ScoreQueryResult != nullptr && m_ScoreQueryResult.use_count() == 1)
 	{
 		ProcessScoreResult(*m_ScoreQueryResult);
 		m_ScoreQueryResult = nullptr;
@@ -208,7 +208,7 @@ void CPlayer::Tick()
 	{
 		ProcessScoreResult(*m_ScoreFinishResult);
 		m_ScoreFinishResult = nullptr;
-	} */
+	}
 
 	if(!Server()->ClientIngame(m_ClientID) && !m_IsBot)
 		return;

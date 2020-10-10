@@ -92,8 +92,9 @@ bool CTeamrank::SamePlayers(const std::vector<std::string> *aSortedNames)
 std::shared_ptr<CScorePlayerResult> CScore::NewSqlPlayerResult(int ClientID)
 {
 	CPlayer *pCurPlayer = GameServer()->m_apPlayers[ClientID];
-	if(pCurPlayer->m_ScoreQueryResult != nullptr) // TODO: send player a message: "too many requests"
-		return nullptr;
+	// TBD: query results rate limit turned off
+	// if(pCurPlayer->m_ScoreQueryResult != nullptr) // TODO: send player a message: "too many requests"
+	// 	return nullptr;
 	pCurPlayer->m_ScoreQueryResult = std::make_shared<CScorePlayerResult>();
 	return pCurPlayer->m_ScoreQueryResult;
 }
@@ -719,8 +720,8 @@ bool CScore::SaveTeamScoreThread(IDbConnection *pSqlServer, const ISqlData *pGam
 
 void CScore::ShowRank(int ClientID, const char *pName)
 {
-	if(RateLimitPlayer(ClientID))
-		return;
+	// if(RateLimitPlayer(ClientID))
+	// 	return;
 	ExecPlayerThread(ShowRankThread, "show rank", ClientID, pName, 0);
 }
 
@@ -732,42 +733,36 @@ bool CScore::ShowRankThread(IDbConnection *pSqlServer, const ISqlData *pGameData
 	char aBuf[600];
 
 	str_format(aBuf, sizeof(aBuf),
-		"SELECT Rank, Name, Time "
-		"FROM ("
-		"  SELECT RANK() OVER w AS Rank, Name, MIN(Time) AS Time "
-		"  FROM %s_race "
-		"  WHERE Map = ? "
-		"  GROUP BY Name "
-		"  WINDOW w AS (ORDER BY Time)"
-		") as a "
-		"WHERE Name = ?;",
-		pSqlServer->GetPrefix());
+		"SELECT rank, player_name, score FROM player_stats WHERE player_name = ?;");
 	pSqlServer->PrepareStatement(aBuf);
-	pSqlServer->BindString(1, pData->m_Map);
-	pSqlServer->BindString(2, pData->m_Name);
+	pSqlServer->BindString(1, pData->m_Name);
+	strcpy(pData->m_pResult->m_Data.m_aaMessages[0], "----------- Rank -----------");
 
 	if(pSqlServer->Step())
 	{
+		dbg_msg("game", "sql ranked");
 		int Rank = pSqlServer->GetInt(1);
-		float Time = pSqlServer->GetFloat(3);
-		if(g_Config.m_SvHideScore)
-		{
-			str_format(pData->m_pResult->m_Data.m_aaMessages[0], sizeof(pData->m_pResult->m_Data.m_aaMessages[0]),
-				"Your time: %02d:%05.2f", (int)(Time / 60), Time - ((int)Time / 60 * 60));
-		}
-		else
-		{
-			char aName[MAX_NAME_LENGTH];
-			pSqlServer->GetString(2, aName, sizeof(aName));
-			pData->m_pResult->m_MessageKind = CScorePlayerResult::ALL;
-			str_format(pData->m_pResult->m_Data.m_aaMessages[0], sizeof(pData->m_pResult->m_Data.m_aaMessages[0]),
-				"%d. %s Time: %02d:%05.2f, requested by %s",
-				Rank, aName, (int)(Time / 60), Time - ((int)Time / 60 * 60), pData->m_RequestingPlayer);
-		}
+		int Score = pSqlServer->GetInt(3);
+		// if(g_Config.m_SvHideScore)
+		// {
+		// 	str_format(pData->m_pResult->m_Data.m_aaMessages[0], sizeof(pData->m_pResult->m_Data.m_aaMessages[0]),
+		// 		"Your score: %02d:%05.2f", (int)(Time / 60), Time - ((int)Time / 60 * 60));
+		// }
+		// else
+		// {
+		char aName[MAX_NAME_LENGTH];
+		pSqlServer->GetString(2, aName, sizeof(aName));
+		pData->m_pResult->m_MessageKind = CScorePlayerResult::ALL;
+		str_format(pData->m_pResult->m_Data.m_aaMessages[1], sizeof(pData->m_pResult->m_Data.m_aaMessages[0]),
+			"%d. %s Score: %d, requested by %s",
+			Rank, aName, Score, pData->m_RequestingPlayer);
+		dbg_msg("game", "sql ranked %s", pData->m_pResult->m_Data.m_aaMessages[1]);
+		// }
 	}
 	else
 	{
-		str_format(pData->m_pResult->m_Data.m_aaMessages[0], sizeof(pData->m_pResult->m_Data.m_aaMessages[0]),
+		dbg_msg("game", "sql not ranked");
+		str_format(pData->m_pResult->m_Data.m_aaMessages[1], sizeof(pData->m_pResult->m_Data.m_aaMessages[0]),
 			"%s is not ranked", pData->m_Name);
 	}
 
