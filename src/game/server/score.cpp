@@ -732,9 +732,11 @@ bool CScore::ShowRankThread(IDbConnection *pSqlServer, const ISqlData *pGameData
 	// check sort method
 	char aBuf[600];
 
-	str_format(aBuf, sizeof(aBuf),
-		"SELECT rank, score FROM player_stats WHERE player_name = ?");
-	pSqlServer->PrepareStatement(aBuf);
+	//str_format(aBuf, sizeof(aBuf),
+	//"SELECT rank"
+	//	"SELECT rank,score FROM player_stats WHERE player_name=?;");
+	//pSqlServer->PrepareStatement(aBuf);
+	pSqlServer->PrepareStatement("SELECT rank,score FROM `player_stats` WHERE `player_name`=?;");
 	pSqlServer->BindString(1, pData->m_Name);
 	strcpy(pData->m_pResult->m_Data.m_aaMessages[0], "----------- Rank -----------");
 
