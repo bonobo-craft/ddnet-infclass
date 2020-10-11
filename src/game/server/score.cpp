@@ -736,9 +736,9 @@ bool CScore::ShowRankThread(IDbConnection *pSqlServer, const ISqlData *pGameData
 	//"SELECT rank"
 	//	"SELECT rank,score FROM player_stats WHERE player_name=?;");
 	//pSqlServer->PrepareStatement(aBuf);
-	pSqlServer->PrepareStatement("SELECT 1, 2;");
-	//pSqlServer->PrepareStatement("SELECT rank,score FROM `player_stats` WHERE `player_name`=?;");
-	//pSqlServer->BindString(1, pData->m_Name);
+	//pSqlServer->PrepareStatement("SELECT 1, 2;");
+	pSqlServer->PrepareStatement("SELECT rank,score FROM `player_stats` WHERE `player_name`=?;");
+	pSqlServer->BindString(1, pData->m_Name);
 	strcpy(pData->m_pResult->m_Data.m_aaMessages[0], "----------- Rank -----------");
 
 	if(pSqlServer->Step())
