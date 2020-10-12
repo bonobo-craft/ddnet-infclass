@@ -709,6 +709,8 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 		m_pGameServer->CreatePlayerSpawn(PrevPos); // draw purple thing
 	}
 
+	if (!pClass)
+		return;
 	m_pClass = pClass;
 	const CSkin& skin = m_pClass->GetSkin();
     //m_pPlayer->m_TeeInfos.m_UseCustomColor = 1;
