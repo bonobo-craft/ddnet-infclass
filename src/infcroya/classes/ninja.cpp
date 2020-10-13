@@ -26,6 +26,7 @@ void CNinja::InitialWeaponsHealth(CCharacter* pChr)
 {
 	pChr->IncreaseHealth(10);
 	pChr->GiveWeapon(WEAPON_HAMMER, -1);
+	pChr->GiveWeapon(WEAPON_GUN, -1);
 	//pChr->GiveWeapon(WEAPON_NINJA, -1);
 	pChr->SetNormalEmote(EMOTE_NORMAL);
 	pChr->SetWeapon(WEAPON_HAMMER);
