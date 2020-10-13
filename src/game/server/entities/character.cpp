@@ -1215,14 +1215,6 @@ bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 		if (ClassNum == Class::HERO && m_Core.m_ActiveWeapon == WEAPON_GRENADE) {
 			return false;
 		}
-		if (ClassNum == Class::HERO) {
-			if (Dmg > 9)
-			  Dmg = 9;
-		}
-		if (ClassNum == Class::PSYCHO) {
-			if (Dmg > 5)
-			  Dmg = 5;
-		}
 		if (ClassNum == Class::BOOMER) {
 			return false;
 		}

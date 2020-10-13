@@ -107,7 +107,7 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 		}
 	}
 
-	if (IsZombie() && m_pCharacter && m_pCharacter->GameWorld()) {
+	if ((IsZombie() || GetClassNum() == Class::PSYCHO) && m_pCharacter && m_pCharacter->GameWorld()) {
 		if (m_pCharacter->GetCharacterCore().m_HookedPlayer >= 0) {
 			CCharacter* VictimChar = m_pGameServer->GetPlayerChar(m_pCharacter->GetCharacterCore().m_HookedPlayer);
 			if (VictimChar)
