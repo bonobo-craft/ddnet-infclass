@@ -295,6 +295,8 @@ void CCharacter::HandleNinja()
 	SetWeapon(WEAPON_NINJA);
 
 	m_Ninja.m_CurrentMoveTime--;
+	if (IsGrounded())
+		m_Ninja.m_ActivationTick = Server()->Tick();
 
 	if(m_Ninja.m_CurrentMoveTime == 0)
 	{
@@ -578,7 +580,7 @@ void CCharacter::FireWeapon()
 			m_Ninja.m_ActivationDir = Direction;
 			m_Ninja.m_CurrentMoveTime = g_pData->m_Weapons.m_Ninja.m_Movetime * Server()->TickSpeed() / 1000;
 			m_Ninja.m_OldVelAmount = length(m_Core.m_Vel);
-			m_Ninja.m_ActivationTick -= (Server()->TickSpeed() * 2);
+			m_Ninja.m_ActivationTick -= (Server()->TickSpeed() * 5);
 
 		m_Ninja.m_ActivationDir = Direction;
 		m_Ninja.m_CurrentMoveTime = g_pData->m_Weapons.m_Ninja.m_Movetime * Server()->TickSpeed() / 1000;

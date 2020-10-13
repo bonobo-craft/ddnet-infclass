@@ -49,8 +49,12 @@ void CNinja::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCharac
 	CGameContext* pGameServer = pChr->GameServer(); */
 
 	switch (Weapon) {
-	case WEAPON_HAMMER: {
-		HammerShoot(pChr, ProjStartPos);
-	} break;
+		case WEAPON_HAMMER: {
+			HammerShoot(pChr, ProjStartPos);
+		} break;
+
+		case WEAPON_GUN: {
+			GunShoot(pChr, ProjStartPos, Direction);
+		} break ;
 	}
 }

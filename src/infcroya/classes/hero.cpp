@@ -33,46 +33,48 @@ void CHero::InitialWeaponsHealth(CCharacter* pChr)
 	pChr->SetNormalEmote(EMOTE_NORMAL);
 }
 
+void CHero::GunShoot(CCharacter* pChr, vec2 ProjStartPos, vec2 Direction_) {
+	int ClientID = pChr->GetPlayer()->GetCID();
+	CGameContext* pGameServer = pChr->GameServer();
+	CGameWorld* pGameWorld = pChr->GameWorld();
+
+   	CFlag *pFlag = (CFlag*)pGameServer->m_World.FindFirst(CGameWorld::ENTTYPE_FLAG);
+
+	if (pFlag == 0)
+	  return;
+
+   	vec2 Direction = normalize(vec2(pFlag->GetPos().x-pChr->GetPos().x, pFlag->GetPos().y-pChr->GetPos().y));
+	  
+	new CProjectile(pGameWorld, WEAPON_GUN,
+		ClientID,
+		ProjStartPos,
+		Direction,
+		(int)(pChr->Server()->TickSpeed() * pGameServer->Tuning()->m_GunLifetime),
+		0, false, 0, -1, WEAPON_GUN);
+
+	pGameServer->CreateSound(pChr->GetPos(), SOUND_GUN_FIRE);
+}
+
 void CHero::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCharacter* pChr)
 {
 	switch (Weapon) {
-	case WEAPON_HAMMER: {
-		HammerShoot(pChr, ProjStartPos);
-	} break;
+		case WEAPON_HAMMER: {
+			HammerShoot(pChr, ProjStartPos);
+		} break;
 
 
-	case WEAPON_GRENADE: {
-		GrenadeShoot(pChr, ProjStartPos, Direction); {
-	} break;
-	}
+		case WEAPON_GRENADE: {
+			GrenadeShoot(pChr, ProjStartPos, Direction);
+		} break;
 
-	case WEAPON_SHOTGUN: {
-		ShotgunShoot(pChr, ProjStartPos, Direction); {
-	} break;
-	}
+		case WEAPON_SHOTGUN: {
+			ShotgunShoot(pChr, ProjStartPos, Direction);
+		} break;
 
 
-	case WEAPON_GUN: {
-		int ClientID = pChr->GetPlayer()->GetCID();
-		CGameContext* pGameServer = pChr->GameServer();
-		CGameWorld* pGameWorld = pChr->GameWorld();
-
-    	CFlag *pFlag = (CFlag*)pGameServer->m_World.FindFirst(CGameWorld::ENTTYPE_FLAG);
-
-		if (pFlag == 0)
-		  break;
-
-    	vec2 Direction = normalize(vec2(pFlag->GetPos().x-pChr->GetPos().x, pFlag->GetPos().y-pChr->GetPos().y));
-		  
-		new CProjectile(pGameWorld, WEAPON_GUN,
-			ClientID,
-			ProjStartPos,
-			Direction,
-			(int)(pChr->Server()->TickSpeed() * pGameServer->Tuning()->m_GunLifetime),
-			0, false, 0, -1, WEAPON_GUN);
-
-		pGameServer->CreateSound(pChr->GetPos(), SOUND_GUN_FIRE);
-	} break;
+		case WEAPON_GUN: {
+			GunShoot(pChr, ProjStartPos, Direction);
+		} break ;
 	}
 
 }

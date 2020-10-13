@@ -39,6 +39,7 @@ public:
 	virtual std::string GetName() const;
 	virtual void SetName(std::string Name);
 
+	virtual void GunShoot(CCharacter* pChr, vec2 ProjStartPos, vec2 Direction);
 	void ShotgunShoot(CCharacter* pChr, vec2 ProjStartPos, vec2 Direction);
 	void GrenadeShoot(CCharacter* pChr, vec2 ProjStartPos, vec2 Direction);
 	void HammerShoot(CCharacter* pChr, vec2 ProjStartPos);

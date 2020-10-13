@@ -14,6 +14,21 @@ IClass::~IClass()
 void IClass::Tick(CCharacter* pChr)
 {
 }
+void IClass::GunShoot(CCharacter* pChr, vec2 ProjStartPos, vec2 Direction) {
+	int ClientID = pChr->GetPlayer()->GetCID();
+	CGameContext* pGameServer = pChr->GameServer();
+	CGameWorld* pGameWorld = pChr->GameWorld();
+
+	new CProjectile(pGameWorld, WEAPON_GUN,
+		ClientID,
+		ProjStartPos,
+		Direction,
+		(int)(pChr->Server()->TickSpeed() * pGameServer->Tuning()->m_GunLifetime),
+		g_pData->m_Weapons.m_Gun.m_pBase->m_Damage, false, 0, -1, WEAPON_GUN);
+
+	pGameServer->CreateSound(pChr->GetPos(), SOUND_GUN_FIRE);
+}
+
 void IClass::ShotgunShoot(CCharacter* pChr, vec2 ProjStartPos, vec2 Direction) {
 	int ClientID = pChr->GetPlayer()->GetCID();
 	CGameContext* pGameServer = pChr->GameServer();
