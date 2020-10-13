@@ -182,6 +182,14 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 			DAMAGE = 2;
 		}
 
+		if (pTarget->GetCroyaPlayer()->GetClassNum() == Class::HERO) {
+			if (ShouldInfect) {
+				ShouldInfect = false;
+				ShouldHit = true;
+				DAMAGE = 9;
+			}
+		}
+
 		if (length(pTarget->GetPos() - ProjStartPos) > 0.0f)
 			pGameServer->CreateHammerHit(pTarget->GetPos() - normalize(pTarget->GetPos() - ProjStartPos) * pChr->GetProximityRadius() * 0.5f);
 		else
@@ -197,7 +205,7 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		if (ShouldHit)
 		{
 			pTarget->TakeDamage(vec2(0.f, -1.f) + normalize(Dir + vec2(0.f, -1.1f)) * 10.0f, Dir * -1, DAMAGE,
-								ClientID, pChr->GetActiveWeapon());
+								ClientID, WEAPON_HAMMER);
 		}
 
 		if (ShouldUnfreeze) {
@@ -226,7 +234,7 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		// set his velocity to fast upward (for now)
 		if (ShouldGiveUpVelocity) {
 			pTarget->TakeDamage(vec2(0.f, -1.f) + normalize(Dir + vec2(0.f, -1.1f)) * 10.0f, Dir * -1, 0,
-								ClientID, pChr->GetActiveWeapon());
+								ClientID, WEAPON_HAMMER);
 		}
 
 	}
