@@ -1219,6 +1219,10 @@ bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 			if (Dmg > 9)
 			  Dmg = 9;
 		}
+		if (ClassNum == Class::PSYCHO) {
+			if (Dmg > 5)
+			  Dmg = 5;
+		}
 		if (ClassNum == Class::BOOMER) {
 			return false;
 		}
@@ -3100,7 +3104,8 @@ void CCharacter::Stun(float Time)
 		return;
 
 	if(GetCroyaPlayer()->GetClassNum() == Class::SCIENTIST ||
-	   GetCroyaPlayer()->GetClassNum() == Class::NINJA) {
+	   GetCroyaPlayer()->GetClassNum() == Class::NINJA ||
+	   GetCroyaPlayer()->GetClassNum() == Class::PSYCHO) {
 		return;
 	}
 

@@ -80,6 +80,10 @@ void CPoisonCircle::Tick()
 			continue;
 		}
 
+		if(p->GetCroyaPlayer()->GetClassNum() == Class::PSYCHO) {
+			continue;
+		}
+
 		float Len = distance(p->GetPos(), m_Pos);
 		if(Len < p->GetProximityRadius()+g_Config.m_InfPoisonCircleRadius)
 		{
