@@ -205,6 +205,14 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 			}
 		}
 
+		if (pTarget->GetCroyaPlayer()->GetClassNum() == Class::PSYCHO) {
+			if (ShouldInfect) {
+				ShouldInfect = false;
+				ShouldHit = true;
+				DAMAGE = 5;
+			}
+		}
+
 		if (length(pTarget->GetPos() - ProjStartPos) > 0.0f)
 			pGameServer->CreateHammerHit(pTarget->GetPos() - normalize(pTarget->GetPos() - ProjStartPos) * pChr->GetProximityRadius() * 0.5f);
 		else
