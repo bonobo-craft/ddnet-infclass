@@ -21,6 +21,7 @@
 #include <infcroya/classes/medic.h>
 #include <infcroya/classes/mercenary.h>
 #include <infcroya/classes/ninja.h>
+#include <infcroya/classes/psycho.h>
 #include <infcroya/classes/mother.h>
 #include <infcroya/classes/poisoner.h>
 #include <infcroya/classes/freezer.h>
@@ -86,6 +87,7 @@ CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
 	classes[Class::NINJA] = new CNinja();
 	classes[Class::HERO] = new CHero();
 	classes[Class::SNIPER] = new CSniper();
+	classes[Class::PSYCHO] = new CPsycho();
 	classes[Class::SMOKER] = new CSmoker();
 	classes[Class::BOOMER] = new CBoomer();
 	classes[Class::HUNTER] = new CHunter();
