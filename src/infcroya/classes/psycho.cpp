@@ -20,6 +20,7 @@ CPsycho::CPsycho()
 	SetInfectedClass(false);
 	SetName("Psycho");
 	Set06SkinName("saddo");
+	Set06SkinColors(1363875, 655151);
 }
 
 void CPsycho::InitialWeaponsHealth(CCharacter* pChr)
