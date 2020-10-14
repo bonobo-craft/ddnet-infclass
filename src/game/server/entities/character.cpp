@@ -1237,7 +1237,7 @@ bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 
 	int ClassNum = GetCroyaPlayer()->GetClassNum();
 	if (ClassNum == Class::PSYCHO) {
-		Dmg = minimum(Dmg, 5);
+		Dmg = minimum(Dmg, g_Config.m_InfPsychoMaxDamage);
 	}
 
 	if(Dmg)

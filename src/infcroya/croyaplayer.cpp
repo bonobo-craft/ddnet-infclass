@@ -197,7 +197,7 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 						m_pCharacter->IncreaseOverallHp(Damage); // blood licking
 					}
 					if (GetClassNum() == Class::PSYCHO && VictimChar->IsZombie()) {
-						m_pCharacter->IncreaseHealth(2); // blood licking
+						m_pCharacter->IncreaseHealth(1); // blood licking
 					}
 				}
 			}
