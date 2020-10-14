@@ -36,7 +36,8 @@ void CBoomer::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CChara
 	switch (Weapon) {
 		case WEAPON_HAMMER:
 		{
-			BoomerExplosion(pChr);
+			// he will explode in OnCharacterDeath
+			//BoomerExplosion(pChr);
 			pChr->Die(ClientID, WEAPON_SELF);
 		}
 	}

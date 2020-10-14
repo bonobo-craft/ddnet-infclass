@@ -1235,6 +1235,11 @@ bool CCharacter::TakeDamageDDNet(vec2 Force, int Dmg, int From, int Weapon)
 		GameServer()->CreateDamageInd(m_Pos, 0, Dmg);
 	}
 
+	int ClassNum = GetCroyaPlayer()->GetClassNum();
+	if (ClassNum == Class::PSYCHO) {
+		Dmg = minimum(Dmg, 5);
+	}
+
 	if(Dmg)
 	{
 		if(m_Armor)
