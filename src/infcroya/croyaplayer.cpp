@@ -127,14 +127,8 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 					Damage = 0;
 				}
 
-				if (GetClassNum() == Class::BAT)
-				{
-					Rate = 1.0f;
-					Damage = 1;
-				}
-
 				if (VictimChar->GetCroyaPlayer()->GetClassNum() == Class::PSYCHO) {
-					Rate = Rate * 2;
+					Rate = 1.0;
 				}
 
 
