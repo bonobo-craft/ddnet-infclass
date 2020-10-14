@@ -211,9 +211,9 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 				ShouldHit = true;
 				DAMAGE = 5;
 			}
-			if (ShouldHeal) {
-				ShouldHeal = false;
-			}
+			// if (ShouldHeal) {
+			// 	ShouldHeal = false;
+			// }
 		}
 
 		if (length(pTarget->GetPos() - ProjStartPos) > 0.0f)
