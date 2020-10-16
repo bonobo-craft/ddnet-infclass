@@ -82,6 +82,7 @@ public:
 
 	void DoWarmup(int Seconds);
 
+	bool m_Map;
 	int m_TimeLimit;
 	int m_RoundNum;
 

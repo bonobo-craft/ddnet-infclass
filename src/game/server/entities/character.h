@@ -150,6 +150,8 @@ public:
 	vec2 m_FirstShotCoord;
 	int m_BarrierHintID;
 	array<int> m_BarrierHintIDs;
+	array<int> m_MapIDs;
+	bool m_DrawMap;
 	int m_RespawnPointID;
 	int m_BotClientID;
 

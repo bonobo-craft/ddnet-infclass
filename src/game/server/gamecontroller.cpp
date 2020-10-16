@@ -24,6 +24,7 @@ IGameController::IGameController(class CGameContext *pGameServer)
 	m_pGameType = "unknown";
 
 	//
+	m_Map = false;
 	m_GameOverTick = -1;
 	m_SuddenDeath = 0;
 	m_GameStartTick = Server()->Tick();

@@ -39,6 +39,7 @@ CCharacter::CCharacter(CGameWorld *pWorld) :
 	m_StrongWeakID = 0;
 	m_IsBot = false;
 	m_BotClientID = -1;
+	m_DrawMap = false;
 
 	// INFCROYA BEGIN ------------------------------------------------------------
 	m_Infected = false;
@@ -53,6 +54,11 @@ CCharacter::CCharacter(CGameWorld *pWorld) :
 	for (int i = 0; i < 2; i++)
 	{
 		m_BarrierHintIDs[i] = Server()->SnapNewID();
+	}
+	m_MapIDs.set_size(MAX_CLIENTS);
+	for (int i = 0; i < MAX_CLIENTS; i++)
+	{
+		m_MapIDs[i] = Server()->SnapNewID();
 	}
 	m_RespawnPointID = Server()->SnapNewID();
 	
@@ -74,6 +80,7 @@ void CCharacter::Reset()
 
 bool CCharacter::Spawn(CPlayer *pPlayer, vec2 Pos)
 {
+    m_DrawMap = GameServer()->m_pController->m_Map;
 	m_EmoteStop = -1;
 	m_LastAction = -1;
 	m_LastNoAmmoSound = -1;
@@ -154,6 +161,12 @@ void CCharacter::Destroy()
 		for (int i = 0; i < 2; i++) {
 			Server()->SnapFreeID(m_BarrierHintIDs[i]);
 			m_BarrierHintIDs[i] = -1;
+		}
+	}
+	if (m_MapIDs[0] >= 0) {
+		for (int i = 0; i < MAX_CLIENTS; i++) {
+			Server()->SnapFreeID(m_MapIDs[i]);
+			m_MapIDs[i] = -1;
 		}
 	}
 	if (m_TaxiID >= 0) {
@@ -1462,7 +1475,7 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 		pCharacter->m_TriggeredEvents = 0;
 	}
 
-		// INFCROYA BEGIN ------------------------------------------------------------
+	// INFCROYA BEGIN ------------------------------------------------------------
 	// protected icon
 	CPlayer* pClient = GameServer()->m_apPlayers[SnappingClient];
 	if (m_HookProtected) {
@@ -1501,6 +1514,31 @@ void CCharacter::SnapCharacter(int SnappingClient, int ID)
 			pP->m_Y = (int)m_Pos.y - 60.0;
 			pP->m_Type = POWERUP_NINJA;
 			pP->m_Subtype = WEAPON_NINJA;
+		}
+	}
+	// Map
+	// do it only once
+	if (m_DrawMap) {
+		if (m_pPlayer->GetCID() == SnappingClient) {
+			CCharacterCore *SnappingChar = GameServer()->m_World.m_Core.m_apCharacters[SnappingClient];
+			if (SnappingChar) {
+				for (int SnappedID = 0; SnappedID < MAX_CLIENTS; SnappedID++)
+				{
+					CCharacterCore *SnappedChar = GameServer()->m_World.m_Core.m_apCharacters[SnappedID];
+					if (SnappedChar) {
+						CNetObj_Laser* pObj = static_cast<CNetObj_Laser*>(Server()->SnapNewItem(NETOBJTYPE_LASER, m_MapIDs[SnappedID], sizeof(CNetObj_Laser)));
+						if (!pObj)
+							return;
+						int X = (int)SnappingChar->m_Pos.x + 300 + int(SnappedChar->m_Pos.x/16) / 2;
+						int Y = (int)SnappingChar->m_Pos.y - 425.0 + int(SnappedChar->m_Pos.y/16) / 2;
+						pObj->m_X = X;
+						pObj->m_Y = Y;
+						pObj->m_FromX = X;
+						pObj->m_FromY = Y;
+						pObj->m_StartTick = Server()->Tick();
+					}
+				}
+			}
 		}
 	}
 	// Heart displayed on top of injured tees
