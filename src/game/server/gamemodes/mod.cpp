@@ -160,7 +160,6 @@ void CGameControllerMOD::OnRoundStart()
 		YAML::Node mapconfig = YAML::LoadFile(path_to_yaml);
 		m_TimeLimit = mapconfig["timelimit"].as<int>();
 		g_Config.m_SvTimelimit = m_TimeLimit;
-		m_Map = mapconfig["map"].as<bool>();
 		for (CroyaPlayer* each : players) {
 			if (!each)
 				continue;
