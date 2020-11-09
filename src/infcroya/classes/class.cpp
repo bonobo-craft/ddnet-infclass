@@ -206,10 +206,10 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		}
 
 		if (pTarget->GetCroyaPlayer()->GetClassNum() == Class::PSYCHO) {
+			ShouldHeal = false;
 			if (ShouldInfect) {
 				ShouldInfect = false;
 				ShouldHit = true;
-				ShouldHeal = false;
 				DAMAGE = 5;
 			}
 			// if (ShouldHeal) {
