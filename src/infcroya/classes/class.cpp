@@ -209,6 +209,7 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 			if (ShouldInfect) {
 				ShouldInfect = false;
 				ShouldHit = true;
+				ShouldHeal = false;
 				DAMAGE = 5;
 			}
 			// if (ShouldHeal) {
