@@ -1918,6 +1918,7 @@ set_src(INFCROYA_SRC GLOB_RECURSE src/infcroya
   classes/hunter.cpp
   classes/sniper.cpp
   classes/engineer.h
+  classes/looper.h
   classes/poisoner.cpp
   classes/mother.cpp
   classes/parasite.h
@@ -1925,6 +1926,7 @@ set_src(INFCROYA_SRC GLOB_RECURSE src/infcroya
   classes/psycho.h
   classes/sniper.h
   classes/engineer.cpp
+  classes/looper.cpp
   classes/poisoner.h
   classes/default.h
   classes/mercenary.h
@@ -1959,6 +1961,7 @@ set_src(INFCROYA_SRC GLOB_RECURSE src/infcroya
   entities/medic-laser.h
   entities/biologist-mine.cpp
   entities/engineer-wall.h
+  entities/looper-wall.h
   entities/medic-grenade.cpp
   entities/soldier-bomb.h
   entities/biologist-mine.h
@@ -1969,6 +1972,7 @@ set_src(INFCROYA_SRC GLOB_RECURSE src/infcroya
   entities/scientist-mine.cpp
   entities/medic-laser.cpp
   entities/engineer-wall.cpp
+  entities/looper-wall.cpp
   entities/growingexplosion.cpp
   entities/scatter-grenade.cpp
   entities/circle.cpp

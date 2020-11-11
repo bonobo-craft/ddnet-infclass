@@ -14,6 +14,7 @@
 #include <infcroya/classes/class.h>
 #include <game/server/eventhandler.h>
 #include <infcroya/entities/engineer-wall.h>
+#include <infcroya/entities/looper-wall.h>
 #include <infcroya/entities/biologist-mine.h>
 #include <infcroya/entities/soldier-bomb.h>
 #include <infcroya/entities/scientist-mine.h>
@@ -3187,6 +3188,14 @@ void CCharacter::DestroyChildEntities()
 			GameServer()->m_World.DestroyEntity(pWall);
 		}
 	}
+	for (CLooperWall* pWall = (CLooperWall*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_LOOPER_WALL); pWall; pWall = (CLooperWall*)pWall->TypeNext())
+	{
+		if (pWall)
+		{
+			if (pWall->m_Owner != m_pPlayer->GetCID()) continue;
+			GameServer()->m_World.DestroyEntity(pWall);
+		}
+	}
 	for (CSoldierBomb* pBomb = (CSoldierBomb*)GameWorld()->FindFirst(CGameWorld::ENTTYPE_SOLDIER_BOMB); pBomb; pBomb = (CSoldierBomb*)pBomb->TypeNext())
 	{
 		if (pBomb)
@@ -3367,6 +3376,8 @@ int CCharacter::GetInfWeaponID(int WID)
 	{
 		switch (GetCroyaPlayer()->GetClassNum())
 		{
+		case Class::LOOPER:
+			return INFWEAPON_LOOPER_RIFLE;
 		case Class::ENGINEER:
 			return INFWEAPON_ENGINEER_RIFLE;
 		case Class::SCIENTIST:

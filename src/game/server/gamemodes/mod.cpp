@@ -16,6 +16,7 @@
 #include <infcroya/classes/boomer.h>
 #include <infcroya/classes/hunter.h>
 #include <infcroya/classes/engineer.h>
+#include <infcroya/classes/looper.h>
 #include <infcroya/classes/soldier.h>
 #include <infcroya/classes/scientist.h>
 #include <infcroya/classes/medic.h>
@@ -88,6 +89,7 @@ CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
 	classes[Class::HERO] = new CHero();
 	classes[Class::SNIPER] = new CSniper();
 	classes[Class::PSYCHO] = new CPsycho();
+	classes[Class::LOOPER] = new CLooper();
 	classes[Class::SMOKER] = new CSmoker();
 	classes[Class::BOOMER] = new CBoomer();
 	classes[Class::HUNTER] = new CHunter();
