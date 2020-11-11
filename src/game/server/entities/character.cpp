@@ -40,6 +40,7 @@ CCharacter::CCharacter(CGameWorld *pWorld) :
 	m_StrongWeakID = 0;
 	m_IsBot = false;
 	m_BotClientID = -1;
+	m_IsInSlowMotion = false;
 
 	// INFCROYA BEGIN ------------------------------------------------------------
 	m_Infected = false;
@@ -75,6 +76,8 @@ void CCharacter::Reset()
 
 bool CCharacter::Spawn(CPlayer *pPlayer, vec2 Pos)
 {
+	m_SlowMotionTick = -1;
+	m_IsInSlowMotion = false;
 	m_EmoteStop = -1;
 	m_LastAction = -1;
 	m_LastNoAmmoSound = -1;
@@ -825,6 +828,40 @@ void CCharacter::Tick()
 		}
 	}
 	// INFCROYA END ------------------------------------------------------------//
+
+	if(m_SlowMotionTick > 0)
+	{
+		float Factor = 1.0f - ((float)g_Config.m_InfSlowMotionPercent / 100);
+		float FactorSpeed = 1.0f - ((float)g_Config.m_InfSlowMotionHookSpeed / 100);
+		float FactorAccel = 1.0f - ((float)g_Config.m_InfSlowMotionHookAccel / 100);
+		// pTuningParams->m_GroundControlSpeed = pTuningParams->m_GroundControlSpeed * Factor;
+		// pTuningParams->m_HookFireSpeed = pTuningParams->m_HookFireSpeed * FactorSpeed;
+		// pTuningParams->m_AirControlSpeed = pTuningParams->m_AirControlSpeed * Factor;
+		// pTuningParams->m_HookDragAccel = pTuningParams->m_HookDragAccel * FactorAccel;
+		// pTuningParams->m_HookDragSpeed = pTuningParams->m_HookDragSpeed * FactorSpeed;
+		// pTuningParams->m_Gravity = g_Config.m_InfSlowMotionGravity * 0.01f;
+
+		if (g_Config.m_InfSlowMotionMaxSpeed > 0) 
+		{
+			float MaxSpeed = g_Config.m_InfSlowMotionMaxSpeed * 0.1f;
+			float diff = MaxSpeed / length(m_Core.m_Vel);
+			if (diff < 1.0f) m_Core.m_Vel *= diff;
+		}
+	}
+
+	if(m_SlowMotionTick > 0)
+	{
+		--m_SlowMotionTick;
+		
+		if(m_SlowMotionTick <= 0)
+		{
+			m_IsInSlowMotion = false;
+		}
+		else
+		{
+			int SloMoSec = 1+(m_SlowMotionTick/Server()->TickSpeed());
+		}
+	}
 
 	DDRacePostCoreTick();
 
@@ -3417,3 +3454,19 @@ void CCharacter::SetLastNoAttachSound(int LastNoAttachSound)
 }
 // INFCROYA END ------------------------------------------------------------//
 
+void CCharacter::SlowMotionEffect(float duration)
+{
+	if (duration == 0) return;
+	duration *= 0.1f;
+	if(m_SlowMotionTick <= 0)
+	{
+		m_SlowMotionTick = Server()->TickSpeed()*duration;
+		m_IsInSlowMotion = true;
+		m_Core.m_Vel *= 0.4;
+	}
+}
+
+bool CCharacter::IsInSlowMotion() const
+{
+	return m_SlowMotionTick > 0;
+}

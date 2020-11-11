@@ -157,6 +157,8 @@ public:
 	void Unstun();
 	bool Stunned();
 	void Poison(int Count, int From);
+	void SlowMotionEffect(float duration);
+	bool IsInSlowMotion() const;
 
 	void DestroyChildEntities();
 
@@ -168,6 +170,8 @@ public:
 	bool FindPortalPosition(vec2 Pos, vec2& Res);
 
 	void SaturateVelocity(vec2 Force, float MaxSpeed);
+	bool m_IsInSlowMotion;
+	int m_SlowMotionTick;
 
 	bool IsBot();
 	int m_HookDmgTick;

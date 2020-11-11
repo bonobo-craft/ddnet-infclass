@@ -85,22 +85,16 @@ void CLooperWall::Tick()
 						}
 					}
 					
-					//if(p->GetClass() != PLAYERCLASS_UNDEAD && p->GetClass() != PLAYERCLASS_VOODOO)
-					//{
-						int LifeSpanReducer = ((Server()->TickSpeed()*g_Config.m_InfBarrierTimeReduce)/100);
-						m_WallFlashTicks = 10;
-						
-						/*if(p->GetClass() == PLAYERCLASS_GHOUL)
-						{
-							float Factor = p->GetPlayer()->GetGhoulPercent();
-							LifeSpanReducer += Server()->TickSpeed() * 5.0f * Factor;
-						}*/
-						
-						m_LifeSpan -= LifeSpanReducer;
-					//}
+					// int LifeSpanReducer = ((Server()->TickSpeed()*g_Config.m_InfBarrierTimeReduce)/100);
+					// m_WallFlashTicks = 10;
+					
+					// m_LifeSpan -= LifeSpanReducer;
 				}
 				
-				p->Die(m_Owner, WEAPON_HAMMER);
+				if (!p->IsInSlowMotion())
+				{
+					p->SlowMotionEffect(g_Config.m_InfSlowMotionWallDuration);
+				}
 /* 				CPlayer* pKiller = GameServer()->m_apPlayers[m_Owner];
 				if (p->GetPlayer()->GetCID() != pKiller->GetCID())
 					pKiller->GetCroyaPlayer()->OnKill(p->GetPlayer()->GetCID()); */
