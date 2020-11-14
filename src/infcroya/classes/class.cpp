@@ -112,7 +112,6 @@ void IClass::ItSelfAntigravitates(CCharacter* pChr) {
 		}
 		if (cp->IsAntigravityOn()) { 
 			cp->AntigravityOff();
-			cp->SetAirJumpCounter(10);
 		}
 		cp->SetAirJumpCounter(cp->GetAirJumpCounter() + 1);
 	}

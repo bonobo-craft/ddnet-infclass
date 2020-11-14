@@ -645,6 +645,7 @@ void CroyaPlayer::AntigravityOn() {
 
 void CroyaPlayer::AntigravityOff() {
 	dbg_msg("game", "Antigravity off");
+	SetAirJumpCounter(10);
 	m_IsAntigravityOn = false;
 }
 
