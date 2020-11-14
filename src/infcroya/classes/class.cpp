@@ -389,7 +389,7 @@ void IClass::ItAntigravitates(CCharacter* pChr) {
 
 	//if (AntigravityTimeLeft > 0) {
 	if (cp && cp->IsAntigravityOn()) {
-		pChr->GetCharacterCore().m_Vel = vec2(pChr->GetCharacterCore().m_Vel.x, -2.5f); // antigravity
+		pChr->GetCharacterCore().m_Vel = vec2(pChr->GetCharacterCore().m_Vel.x, -4.0f); // antigravity
 		AntigravityTimeLeft--;
 	
 		if(AntigravityTimeLeft < 0)
