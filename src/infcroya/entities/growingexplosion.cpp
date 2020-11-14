@@ -81,7 +81,7 @@ CGrowingExplosion::CGrowingExplosion(CGameWorld *pGameWorld, vec2 Pos, vec2 Dir,
 			{
 				if(p->IsHuman()) continue;
 				float Len = distance(p->GetPos(), m_Pos);
-				if(Len < p->GetProximityRadius()+g_Config.m_InfPoisonCircleRadius / 3)
+				if(Len < p->GetProximityRadius()+g_Config.m_InfPoisonCircleRadius)
 				{
 					p->Poison(g_Config.m_InfPoisonCircleDamageSeconds, m_Owner);
 				}
@@ -92,7 +92,7 @@ CGrowingExplosion::CGrowingExplosion(CGameWorld *pGameWorld, vec2 Pos, vec2 Dir,
 			{
 				if(p->IsHuman()) continue;
 				float Len = distance(p->GetPos(), m_Pos);
-				if(Len < p->GetProximityRadius()+g_Config.m_InfPoisonCircleRadius / 3)
+				if(Len < p->GetProximityRadius()+g_Config.m_InfPoisonCircleRadius)
 				{
 					p->GetCroyaPlayer()->AntigravityOn();
 					// Poison(g_Config.m_InfPoisonCircleDamageSeconds, m_Owner);
@@ -172,6 +172,12 @@ void CGrowingExplosion::Tick()
 							if(random_prob(0.1f))
 							{
 								GameServer()->CreateHammerHit(TileCenter);
+							}
+							break;
+						case GROWINGEXPLOSIONEFFECT_ANTIGRAVITY_INFECTED:
+							if(random_prob(0.1f))
+							{
+								GameServer()->CreateDeath(TileCenter, m_Owner);
 							}
 							break;
 						case GROWINGEXPLOSIONEFFECT_POISON_INFECTED:

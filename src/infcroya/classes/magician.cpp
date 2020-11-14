@@ -26,6 +26,7 @@ CMagician::CMagician()
 	SetName("Magician");
 	LockPositionTimeLeft = 0;
 	Set06SkinName("redbopp");
+	LastCastTick = 0;
 }
 
 void CMagician::InitialWeaponsHealth(CCharacter* pChr)
@@ -46,8 +47,18 @@ void CMagician::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCha
 
 	switch (Weapon) {
 	case WEAPON_HAMMER: {
-		//LockOrUnlockPosition(pChr);
-		HammerShoot(pChr, ProjStartPos);
+		//HammerShoot(pChr, ProjStartPos);
+		for(CCharacter *p = (CCharacter*) pGameWorld->FindFirst(CGameWorld::ENTTYPE_CHARACTER); p; p = (CCharacter *)p->TypeNext())
+		{
+			if(p->IsHuman()) continue;
+			float Len = distance(p->GetPos(), ProjStartPos);
+			if(Len < p->GetProximityRadius()+g_Config.m_InfPoisonCircleRadius * 1.5)
+			{
+				p->Stun(2, 4);
+				// Poison(g_Config.m_InfPoisonCircleDamageSeconds, m_Owner);
+			}
+		}
+		pChr->SetReloadTimer(pChr->Server()->TickSpeed() / 4);
 		pGameServer->CreateDeath(pChr->m_Pos, pChr->GetPlayer()->GetCID());
 	} break;
 

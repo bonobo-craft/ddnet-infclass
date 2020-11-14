@@ -152,8 +152,9 @@ public:
 	array<int> m_BarrierHintIDs;
 	int m_RespawnPointID;
 	int m_BotClientID;
+	float m_Immunity;
 
-	void Stun(float Time);
+	void Stun(float Time, float Immunity);
 	void Unstun();
 	bool Stunned();
 	void Poison(int Count, int From);

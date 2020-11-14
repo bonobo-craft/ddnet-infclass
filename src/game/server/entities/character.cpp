@@ -36,6 +36,7 @@ CCharacter::CCharacter(CGameWorld *pWorld) :
 {
 	m_ProximityRadius = ms_PhysSize;
 	m_Health = 10;
+	m_Immunity = 4;
 	m_Armor = 0;
 	m_StrongWeakID = 0;
 	m_IsBot = false;
@@ -277,7 +278,7 @@ void CCharacter::HandleNinja()
 	}
 
     if (m_IsStunned) {
-		if ((Server()->Tick() - m_StunTime) * 10 / Server()->TickSpeed() > 4) {
+		if ((Server()->Tick() > m_StunTime)) {
 			Unstun();
 			return;
 		}
@@ -3135,8 +3136,9 @@ CCharacterCore& CCharacter::GetCharacterCore()
 	return m_Core;
 }
 
-void CCharacter::Stun(float Time)
+void CCharacter::Stun(float Time, float Immunity)
 {
+	m_Immunity = Immunity;
 	if (Stunned() || Frozen())
 		return;
 
@@ -3147,11 +3149,11 @@ void CCharacter::Stun(float Time)
 	}
 
 	// immunity for 4 seconds after last stun
-	if ((Server()->Tick() - m_StunTime) / Server()->TickSpeed() < 4)
+	if (m_StunTime > -1 && ((Server()->Tick() - m_StunTime) / Server()->TickSpeed() < m_Immunity))
 		return;
 
 	m_IsStunned = true;
-	m_StunTime = Server()->Tick();
+	m_StunTime = Server()->Tick() + (Server()->TickSpeed() * Time); // untun time in fact
 	//m_FrozenTime = Server()->TickSpeed() * Time;
 
 	GiveNinja();
@@ -3403,6 +3405,8 @@ int CCharacter::GetInfWeaponID(int WID)
 			return INFWEAPON_MEDIC_GRENADE;
 		case Class::SOLDIER:
 			return INFWEAPON_SOLDIER_GRENADE;
+		case Class::MAGICIAN:
+			return INFWEAPON_MAGICIAN_GRENADE;
 		case Class::HERO:
 			return INFWEAPON_HERO_GRENADE;
 		case Class::SCIENTIST:
@@ -3423,6 +3427,8 @@ int CCharacter::GetInfWeaponID(int WID)
 			return INFWEAPON_SCIENTIST_RIFLE;
 		case Class::BIOLOGIST:
 			return INFWEAPON_BIOLOGIST_RIFLE;
+		case Class::MAGICIAN:
+			return INFWEAPON_MAGICIAN_RIFLE;
 		case Class::MEDIC:
 			return INFWEAPON_MEDIC_RIFLE;
 		case Class::SNIPER:
