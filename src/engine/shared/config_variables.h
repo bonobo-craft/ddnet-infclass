@@ -404,7 +404,7 @@ MACRO_CONFIG_INT(InfBarrierTimeReduce, inf_barrier_timereduce, 500, 0, 10000, CF
 MACRO_CONFIG_INT(InfSoldierBombs, inf_soldier_bombs, 2, 1, 16, CFGFLAG_SERVER, "Number of bombs for the soldier")
 MACRO_CONFIG_INT(InfBoomerForce, inf_boomer_force, 48, 0, 1000, CFGFLAG_SERVER, "/10 Boomer pushing force on explosion")
 //MACRO_CONFIG_INT(InfBoomerDamage, inf_boomer_damage, 140, 1, 10000, CFGFLAG_SERVER, "/10 Boomer damage")
-MACRO_CONFIG_INT(InfBoomerDamage, inf_boomer_damage, 200, 1, 10000, CFGFLAG_SERVER, "/10 Boomer damage")
+MACRO_CONFIG_INT(InfBoomerDamage, inf_boomer_damage, 160, 1, 10000, CFGFLAG_SERVER, "/10 Boomer damage")
 //MACRO_CONFIG_INT(InfBoomerInnerRadius, inf_boomer_inner_radius, 800, 1, 10000, CFGFLAG_SERVER, "/10 Boomer pushing force on explosion")
 MACRO_CONFIG_INT(InfBoomerInnerRadius, inf_boomer_inner_radius, 1000, 1, 10000, CFGFLAG_SERVER, "/10 Boomer pushing force on explosion")
 //MACRO_CONFIG_INT(InfBoomerDamageRadius, inf_boomer_damage_radius, 1000, 1, 10000, CFGFLAG_SERVER, "/10 Boomer pushing force on explosion")
