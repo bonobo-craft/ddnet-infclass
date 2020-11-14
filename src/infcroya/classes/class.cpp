@@ -374,7 +374,7 @@ void IClass::SetName(std::string Name)
 void IClass::AntigravityOn(CCharacter* pChr) {
 	dbg_msg("game", "Antigravity on by class");
 	AntigravityTimeLeft = pChr->Server()->TickSpeed() * 10; 
-	pChr->GetCharacterCore().m_Vel = vec2(0, -5.0f);
+	pChr->GetCharacterCore().m_Vel = vec2(0, -4.0f);
 }
 
 void IClass::AntigravityOff(CCharacter* pChr) {
@@ -389,7 +389,9 @@ void IClass::ItAntigravitates(CCharacter* pChr) {
 
 	//if (AntigravityTimeLeft > 0) {
 	if (cp && cp->IsAntigravityOn()) {
-		pChr->GetCharacterCore().m_Vel = vec2(pChr->GetCharacterCore().m_Vel.x, -4.0f); // antigravity
+		float y = pChr->GetCharacterCore().m_Vel.y;
+		y = clamp<float>(y - 1.0f, -4.0f, 20.0f);
+		pChr->GetCharacterCore().m_Vel = vec2(pChr->GetCharacterCore().m_Vel.x, y); // antigravity
 		AntigravityTimeLeft--;
 	
 		if(AntigravityTimeLeft < 0)
