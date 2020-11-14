@@ -87,6 +87,18 @@ CGrowingExplosion::CGrowingExplosion(CGameWorld *pGameWorld, vec2 Pos, vec2 Dir,
 				}
 			}
 			break;
+		case GROWINGEXPLOSIONEFFECT_ANTIGRAVITY_INFECTED:
+			for(CCharacter *p = (CCharacter*) GameWorld()->FindFirst(CGameWorld::ENTTYPE_CHARACTER); p; p = (CCharacter *)p->TypeNext())
+			{
+				if(p->IsHuman()) continue;
+				float Len = distance(p->GetPos(), m_Pos);
+				if(Len < p->GetProximityRadius()+g_Config.m_InfPoisonCircleRadius / 3)
+				{
+					p->GetCroyaPlayer()->AntigravityOn();
+					// Poison(g_Config.m_InfPoisonCircleDamageSeconds, m_Owner);
+				}
+			}
+			break;
 		case GROWINGEXPLOSIONEFFECT_ELECTRIC_INFECTED:
 			{
 				//~ GameServer()->CreateHammerHit(m_SeedPos);

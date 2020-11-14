@@ -13,7 +13,9 @@ IClass::~IClass()
 
 void IClass::Tick(CCharacter* pChr)
 {
+	ItAntigravitates(pChr);
 }
+
 void IClass::GunShoot(CCharacter* pChr, vec2 ProjStartPos, vec2 Direction) {
 	int ClientID = pChr->GetPlayer()->GetCID();
 	CGameContext* pGameServer = pChr->GameServer();
@@ -97,6 +99,26 @@ void IClass::ItDoubleJumps(CCharacter* pChr) {
 	}
 }
 
+void IClass::ItSelfAntigravitates(CCharacter* pChr) {
+	//Double jumps
+	CroyaPlayer* cp = pChr->GetCroyaPlayer();
+	if (pChr->IsGrounded()) cp->SetAirJumpCounter(0);
+	if (pChr->GetCharacterCore().m_TriggeredEvents & protocol7::COREEVENTFLAG_AIR_JUMP && cp->GetAirJumpCounter() < 2)
+	{
+		pChr->GetCharacterCore().m_Jumped &= ~2;
+		if (!cp->IsAntigravityOn() && cp->GetAirJumpCounter() == 1) {
+			cp->AntigravityOn();
+			return;
+		}
+		if (cp->IsAntigravityOn()) { 
+			cp->AntigravityOff();
+			cp->SetAirJumpCounter(10);
+		}
+		cp->SetAirJumpCounter(cp->GetAirJumpCounter() + 1);
+	}
+}
+
+
 void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 	int ClientID = pChr->GetPlayer()->GetCID();
 	CGameContext* pGameServer = pChr->GameServer();
@@ -142,6 +164,7 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		bool ShouldInfect = false;
 		bool ShouldFreeze = false;
 		bool ShouldGiveUpVelocity = false;
+		bool ShouldAntigravitate = false;
 
 		if (pChr->IsHuman()) {
 			if (pTarget->IsZombie()) { // Human hits Zombie
@@ -182,6 +205,12 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 			HEAL = 2;
 			ShouldHeal = true;
 		}
+
+		if (ShouldHit && pChr->GetCroyaPlayer()->GetClassNum() == Class::MAGICIAN) {
+			ShouldAntigravitate = true;
+			ShouldHit = false;
+		}
+
 
 		if (pChr->GetCroyaPlayer()->GetClassNum() == Class::BAT && (ShouldFreeze || ShouldInfect)) {
 			ShouldInfect = false;
@@ -237,6 +266,10 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 
 		if (ShouldUnfreeze) {
 			pTarget->UnFreeze();
+		}
+
+		if (ShouldAntigravitate) {
+			pTarget->GetCroyaPlayer()->AntigravityOn();
 		}
 
 		if (ShouldInfect) {
@@ -336,4 +369,33 @@ std::string IClass::GetName() const
 void IClass::SetName(std::string Name)
 {
 	m_Name = Name;
+}
+
+void IClass::AntigravityOn(CCharacter* pChr) {
+	dbg_msg("game", "Antigravity on by class");
+	AntigravityTimeLeft = pChr->Server()->TickSpeed() * 10; 
+	pChr->GetCharacterCore().m_Vel = vec2(0, -5.0f);
+}
+
+void IClass::AntigravityOff(CCharacter* pChr) {
+	dbg_msg("game", "Antigravity off by class");
+	if (!pChr->GetCroyaPlayer())
+		return;
+	pChr->GetCroyaPlayer()->AntigravityOff();	
+}
+
+void IClass::ItAntigravitates(CCharacter* pChr) {
+	CroyaPlayer* cp = pChr->GetCroyaPlayer();
+
+	//if (AntigravityTimeLeft > 0) {
+	if (cp && cp->IsAntigravityOn()) {
+		pChr->GetCharacterCore().m_Vel = vec2(pChr->GetCharacterCore().m_Vel.x, -2.5f); // antigravity
+		AntigravityTimeLeft--;
+	
+		if(AntigravityTimeLeft < 0)
+		{
+			dbg_msg("game", "Antigravity timeout by class");
+			AntigravityOff(pChr);
+		}
+	}	
 }

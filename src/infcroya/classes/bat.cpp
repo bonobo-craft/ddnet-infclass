@@ -39,6 +39,7 @@ void CBat::Tick(CCharacter* pChr)
 		pChr->GetCharacterCore().m_Jumped &= ~2;
 		cp->SetAirJumpCounter(0);
 	}
+	ItAntigravitates(pChr);
 }
 
 void CBat::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCharacter* pChr)

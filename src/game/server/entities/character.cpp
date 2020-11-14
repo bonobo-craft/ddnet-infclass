@@ -126,6 +126,8 @@ bool CCharacter::Spawn(CPlayer *pPlayer, vec2 Pos)
 	GameServer()->SendTuningParams(m_pPlayer->GetCID(), m_TuneZone);
 
 	Server()->StartRecord(m_pPlayer->GetCID());
+	if (GetCroyaPlayer())
+		GetCroyaPlayer()->AntigravityOff();
 
 	return true;
 }

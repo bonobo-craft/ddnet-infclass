@@ -4,12 +4,17 @@
 #include <base/vmath.h>
 #include <unordered_map>
 #include <string>
+#include <game/server/entities/character.h>
 
 class IClass {
 private:
 	CSkin m_Skin;
 	bool m_Infected;
 public:
+	void AntigravityOn(CCharacter* pChr);
+	void AntigravityOff(CCharacter* pChr);
+	void ItAntigravitates(CCharacter* pChr);
+	int AntigravityTimeLeft;
     char m_06SkinName[64] = {'\0'};
 	int m_06SkinBodyColor = 0;
 	int m_06SkinFeetColor = 0;
@@ -44,6 +49,7 @@ public:
 	void GrenadeShoot(CCharacter* pChr, vec2 ProjStartPos, vec2 Direction);
 	void HammerShoot(CCharacter* pChr, vec2 ProjStartPos);
 	void ItDoubleJumps(CCharacter* pChr);
+	void ItSelfAntigravitates(CCharacter* pChr);
 	virtual void UnlockPosition(CCharacter* pChr);
 
 	virtual bool WillItFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCharacter* pChr);
@@ -63,6 +69,7 @@ enum Class {
 	SNIPER,
 	PSYCHO,
 	LOOPER,
+	MAGICIAN,
 	HUMAN_CLASS_END,
 
 	ZOMBIE_CLASS_START,

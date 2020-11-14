@@ -5,6 +5,7 @@
 #include <game/server/entities/character.h>
 
 #include "scatter-grenade.h"
+#include <infcroya/classes/class.h>
 
 CScatterGrenade::CScatterGrenade(CGameWorld *pGameWorld, int Owner, vec2 Pos, vec2 Dir)
 : CEntity(pGameWorld, CGameWorld::ENTTYPE_SCATTER_GRENADE, Pos)
@@ -137,6 +138,13 @@ void CScatterGrenade::Snap(int SnappingClient)
 	
 void CScatterGrenade::Explode()
 {
+	CCharacter *OwnerChar = GameServer()->GetPlayerChar(m_Owner);
+	if (OwnerChar->GetCroyaPlayer()->GetClassNum() == Class::MAGICIAN) {
+		new CGrowingExplosion(GameWorld(), m_ActualPos, m_ActualDir, m_Owner, 4, GROWINGEXPLOSIONEFFECT_ANTIGRAVITY_INFECTED);
+		GameServer()->m_World.DestroyEntity(this);
+		return;
+	}
+
 	if(m_IsFlashGrenade)
 	{
 		new CGrowingExplosion(GameWorld(), m_ActualPos, m_ActualDir, m_Owner, 4, GROWINGEXPLOSIONEFFECT_FREEZE_INFECTED);

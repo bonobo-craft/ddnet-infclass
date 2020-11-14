@@ -32,6 +32,7 @@ CroyaPlayer::CroyaPlayer(int ClientID, CPlayer* pPlayer, CGameContext* pGameServ
 	m_AirJumpCounter = 0;
 	m_CanLockPosition = true;
 	m_IsPositionLocked = false;
+	m_IsAntigravityOn = false;
 	m_InsideInfectionZone = false;
 	m_InsideSafeZone = true;
 	m_BeenOnRoundStart = false;
@@ -628,8 +629,23 @@ bool CroyaPlayer::IsPositionLocked() {
 	return m_IsPositionLocked;
 }
 
+bool CroyaPlayer::IsAntigravityOn() {
+	return m_IsAntigravityOn;
+}
+
 void CroyaPlayer::ResetCanLockPositionAbility() {
 	m_CanLockPosition = true;
+}
+
+void CroyaPlayer::AntigravityOn() {
+	dbg_msg("game", "Antigravity on");
+	m_IsAntigravityOn = true;
+	GetClass()->AntigravityOn(GetCharacter());
+}
+
+void CroyaPlayer::AntigravityOff() {
+	dbg_msg("game", "Antigravity off");
+	m_IsAntigravityOn = false;
 }
 
 void CroyaPlayer::LockPosition(vec2 Pos)
@@ -816,4 +832,5 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 	str_format(aBuf, sizeof(aBuf), "%s", m_pClass->GetName().c_str());
 	//m_pGameServer->SendBroadcast(localize(aBuf, GetLanguage()).c_str(), m_pPlayer->GetCID());
 	m_pGameServer->SendBroadcast(aBuf, m_pPlayer->GetCID());
+	m_IsAntigravityOn = false;
 }

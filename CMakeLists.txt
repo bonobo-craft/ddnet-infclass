@@ -1923,6 +1923,7 @@ set_src(INFCROYA_SRC GLOB_RECURSE src/infcroya
   classes/mother.cpp
   classes/parasite.h
   classes/hero.h
+  classes/magician.h
   classes/psycho.h
   classes/sniper.h
   classes/engineer.cpp
@@ -1938,6 +1939,7 @@ set_src(INFCROYA_SRC GLOB_RECURSE src/infcroya
   classes/class.cpp
   classes/parasite.cpp
   classes/hero.cpp
+  classes/magician.cpp
   classes/psycho.cpp
   classes/soldier.cpp
   classes/biologist.cpp

@@ -31,6 +31,7 @@ private:
 	int m_RespawnPointDefaultCooldown; // in seconds
 	int m_RespawnPointCooldown; // in seconds
 	int m_AirJumpCounter;
+	bool m_IsAntigravityOn;
 	bool m_IsPositionLocked;
 	bool m_CanLockPosition;
 	vec2 m_PositionLockVec;
@@ -47,7 +48,10 @@ public:
     void SetBeenOnRoundStart();
 	vec2 GetLockPosition();	
 	bool IsPositionLocked();
+	bool IsAntigravityOn();
 	void ResetCanLockPositionAbility();
+	void AntigravityOn();
+	void AntigravityOff();
 	void LockPosition(vec2 Pos);
 	void UnlockPosition();
 	void ResetRespawnPoint();

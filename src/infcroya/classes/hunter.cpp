@@ -32,6 +32,7 @@ void CHunter::InitialWeaponsHealth(CCharacter* pChr)
 void CHunter::Tick(CCharacter* pChr)
 {
 	ItDoubleJumps(pChr);
+	ItAntigravitates(pChr);
 }
 
 void CHunter::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCharacter* pChr)
