@@ -53,6 +53,7 @@ CCharacter::CCharacter(CGameWorld *pWorld) :
 	m_FirstShot = true;
 	m_BarrierHintID = Server()->SnapNewID();
 	m_BarrierHintIDs.set_size(2);
+	m_Core.m_CannotHookNow = false;
 	for (int i = 0; i < 2; i++)
 	{
 		m_BarrierHintIDs[i] = Server()->SnapNewID();
@@ -77,6 +78,7 @@ void CCharacter::Reset()
 
 bool CCharacter::Spawn(CPlayer *pPlayer, vec2 Pos)
 {
+	m_Core.m_CannotHookNow = false;
 	m_SlowMotionTick = -1;
 	m_IsInSlowMotion = false;
 	m_EmoteStop = -1;
@@ -279,12 +281,14 @@ void CCharacter::HandleNinja()
 
     if (m_IsStunned) {
 		if ((Server()->Tick() > m_StunTime)) {
+			m_Core.m_CannotHookNow = false;
 			Unstun();
 			return;
 		}
 	} 
 
 	if (Stunned()) {
+		m_Core.m_CannotHookNow = true;
 		m_Core.m_Vel = vec2(0.f, 0.f);
 		return;
 	}

@@ -291,6 +291,8 @@ void CCharacterCore::Tick(bool UseInput)
 			float Distance = 0.0f;
 			for(int i = 0; i < MAX_CLIENTS; i++)
 			{
+				if (m_CannotHookNow)
+					continue;
 				CCharacterCore *pCharCore = m_pWorld->m_apCharacters[i];
 				if(!pCharCore || pCharCore == this || (!(m_Super || pCharCore->m_Super) && (!m_pTeams->CanCollide(i, m_Id) || pCharCore->m_Solo || m_Solo)))
 					continue;

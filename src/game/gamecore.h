@@ -295,6 +295,7 @@ public:
 	// INFCROYA BEGIN ------------------------------------------------------------
 	bool m_HookProtected = false; // NO MORE -> // initial value is set on CCharacter::Spawn by SetHookProtected() setter function
 	bool m_Infected = false;
+	bool m_CannotHookNow = false;
 	// INFCROYA END ------------------------------------------------------------//
 
 private:
