@@ -712,9 +712,11 @@ void CCharacter::GiveNinjaIfGrounded() {
 
 void CCharacter::RemoveNinja()
 {
-	m_Ninja.m_CurrentMoveTime = 0;
-	m_aWeapons[WEAPON_NINJA].m_Got = false;
-	m_Core.m_ActiveWeapon = m_LastWeapon;
+	if (m_Core.m_ActiveWeapon == WEAPON_NINJA) {
+		m_Ninja.m_CurrentMoveTime = 0;
+		m_aWeapons[WEAPON_NINJA].m_Got = false;
+		m_Core.m_ActiveWeapon = m_LastWeapon;
+	}
 
 	//SetWeapon(m_LastWeapon);
 }
