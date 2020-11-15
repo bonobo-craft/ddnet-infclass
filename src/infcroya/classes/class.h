@@ -11,7 +11,7 @@ private:
 	CSkin m_Skin;
 	bool m_Infected;
 public:
-	void AntigravityOn(CCharacter* pChr);
+	void AntigravityOn(CCharacter* pChr, bool LooseSpeed = true);
 	void AntigravityOff(CCharacter* pChr);
 	void ItAntigravitates(CCharacter* pChr);
 	int AntigravityTimeLeft;

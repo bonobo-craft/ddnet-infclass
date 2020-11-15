@@ -50,7 +50,7 @@ public:
 	bool IsPositionLocked();
 	bool IsAntigravityOn();
 	void ResetCanLockPositionAbility();
-	void AntigravityOn();
+	void AntigravityOn(bool LooseSpeed = true);
 	void AntigravityOff();
 	void LockPosition(vec2 Pos);
 	void UnlockPosition();

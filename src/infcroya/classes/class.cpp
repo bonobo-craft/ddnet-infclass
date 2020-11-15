@@ -107,7 +107,7 @@ void IClass::ItSelfAntigravitates(CCharacter* pChr) {
 	{
 		pChr->GetCharacterCore().m_Jumped &= ~2;
 		if (!cp->IsAntigravityOn() && cp->GetAirJumpCounter() == 1) {
-			cp->AntigravityOn();
+			cp->AntigravityOn(false);
 			return;
 		}
 		if (cp->IsAntigravityOn()) { 
@@ -378,10 +378,11 @@ void IClass::SetName(std::string Name)
 	m_Name = Name;
 }
 
-void IClass::AntigravityOn(CCharacter* pChr) {
+void IClass::AntigravityOn(CCharacter* pChr, bool LooseSpeed) {
 	dbg_msg("game", "Antigravity on by class");
 	AntigravityTimeLeft = pChr->Server()->TickSpeed() * 10; 
-	pChr->GetCharacterCore().m_Vel = vec2(0, -4.0f);
+	if (LooseSpeed)
+		pChr->GetCharacterCore().m_Vel = vec2(0, -4.0f);
 }
 
 void IClass::AntigravityOff(CCharacter* pChr) {
