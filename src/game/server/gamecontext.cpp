@@ -4513,6 +4513,10 @@ void CGameContext::SendZombieClassSelectorByClassId(int ClassId, int ClientID) {
 		messageList.push_back(sel1 + localize("game.class.queen", lang) + sel2);
 	else
 		messageList.push_back(unsel + localize("game.class.queen", lang));
+	if (ClassId == Class::SPIDER)
+		messageList.push_back(sel1 + localize("SPIDER", lang) + sel2);
+	else
+		messageList.push_back(unsel + localize("SPIDER", lang));
 	if (IsDevServer()) {
 		if (ClassId == Class::PARASITE)
 			messageList.push_back("> PARASITE *");

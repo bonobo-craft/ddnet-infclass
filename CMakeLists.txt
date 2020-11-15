@@ -1916,6 +1916,7 @@ set_src(INFCROYA_SRC GLOB_RECURSE src/infcroya
   classes/worker.cpp
   classes/boomer.h
   classes/hunter.cpp
+  classes/spider.cpp
   classes/sniper.cpp
   classes/engineer.h
   classes/looper.h
@@ -1953,6 +1954,7 @@ set_src(INFCROYA_SRC GLOB_RECURSE src/infcroya
   classes/bat.cpp
   classes/smoker.h
   classes/hunter.h
+  classes/spider.h
   classes/medic.cpp
   classes/boomer.cpp
   classes/mercenary.cpp

@@ -15,6 +15,7 @@
 #include <infcroya/classes/smoker.h>
 #include <infcroya/classes/boomer.h>
 #include <infcroya/classes/hunter.h>
+#include <infcroya/classes/spider.h>
 #include <infcroya/classes/engineer.h>
 #include <infcroya/classes/looper.h>
 #include <infcroya/classes/magician.h>
@@ -96,6 +97,7 @@ CGameControllerMOD::CGameControllerMOD(class CGameContext *pGameServer) :
 	classes[Class::BOOMER] = new CBoomer();
 	classes[Class::HUNTER] = new CHunter();
 	classes[Class::MOTHER] = new CMother();
+	classes[Class::SPIDER] = new CSpider();
 	classes[Class::POISONER] = new CPoisoner();
 	classes[Class::FREEZER] = new CFreezer();
 	classes[Class::BAT] = new CBat();

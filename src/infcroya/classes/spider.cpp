@@ -1,0 +1,73 @@
+#include "spider.h"
+#include <game/server/entities/character.h>
+#include <game/server/player.h>
+#include <game/server/gamecontext.h>
+#include <infcroya/croyaplayer.h>
+#include <game/server/entities/projectile.h>
+
+CSpider::CSpider() : IClass()
+{
+	CSkin skin;
+	skin.SetBodyColor(65, 255, 0);
+	skin.SetMarkingName("setisu");
+	skin.SetMarkingColor(59, 255, 22, 255);
+	skin.SetHandsColor(65, 255, 20);
+	skin.SetFeetColor(100, 255, 0);
+	SetSkin(skin);
+	SetInfectedClass(true);
+	SetName("Spider");
+	Set06SkinName("warpaint");
+	Set06SkinColors(4325120, 6618880);
+}
+
+void CSpider::InitialWeaponsHealth(CCharacter* pChr)
+{
+	pChr->IncreaseHealth(10);
+	pChr->GiveWeapon(WEAPON_HAMMER, -1);
+	//pChr->GiveWeapon(WEAPON_GUN, 10);
+	pChr->SetWeapon(WEAPON_HAMMER);
+	pChr->SetNormalEmote(EMOTE_ANGRY);
+}
+
+void CSpider::Tick(CCharacter* pChr)
+{
+	ItDoubleJumps(pChr);
+	ItAntigravitates(pChr);
+}
+
+void CSpider::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCharacter* pChr)
+{
+	switch (Weapon) {
+	case WEAPON_HAMMER: {
+		HammerShoot(pChr, ProjStartPos);
+		int ClientID = pChr->GetPlayer()->GetCID();
+		CGameContext *pGameServer = pChr->GameServer();
+		CGameWorld *pGameWorld = pChr->GameWorld();
+
+		CCharacter *apCloseCCharacters[MAX_CLIENTS];
+		int Num = pGameServer->m_World.FindEntities(pChr->GetPos(), 9999, (CEntity**)apCloseCCharacters, MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
+		for(int i = 0; i < Num; i++)
+		{
+			CCharacter *human = apCloseCCharacters[i];
+			if (!human->IsAlive() || human->GetPlayer()->GetTeam() == TEAM_SPECTATORS)
+				continue;					
+
+			if (human->IsZombie())
+			  continue;
+
+			vec2 Direction = normalize(vec2(human->GetPos().x - pChr->GetPos().x, human->GetPos().y - pChr->GetPos().y));
+
+			new CProjectile(pGameWorld, WEAPON_SHOTGUN,
+					ClientID,
+					ProjStartPos,
+					Direction,
+					(int)(pChr->Server()->TickSpeed() * pGameServer->Tuning()->m_GunLifetime / 17),
+					0, false, 0, -1, WEAPON_SHOTGUN);
+
+			return;
+		}
+	}
+	break;
+	}
+}
+
