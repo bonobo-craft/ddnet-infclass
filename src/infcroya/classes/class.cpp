@@ -211,6 +211,13 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		}
 
 
+		if (pChr->GetCroyaPlayer()->GetClassNum() == Class::SPIDER && (ShouldFreeze || ShouldInfect)) {
+			ShouldInfect = false;
+			ShouldFreeze = false;
+			ShouldHit = true;
+			DAMAGE = 0;
+		}
+
 		if (pChr->GetCroyaPlayer()->GetClassNum() == Class::BAT && (ShouldFreeze || ShouldInfect)) {
 			ShouldInfect = false;
 			ShouldFreeze = false;
@@ -319,6 +326,7 @@ void IClass::OnCharacterSpawn(CCharacter* pChr)
 {
 	pChr->SetInfected(IsInfectedClass());
 	pChr->ResetWeaponsHealth();
+	pChr->m_EndlessHook = false;
 	InitialWeaponsHealth(pChr);
 }
 

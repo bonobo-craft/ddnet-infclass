@@ -132,6 +132,20 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 					Rate = 1.0;
 				}
 
+				if (GetClassNum() == Class::SPIDER)
+				{
+					Rate = 3.0f;
+					Damage = 1;
+					if (VictimChar->IsHuman()) {
+						VictimChar->RemoveNinja();
+						//VictimChar->Core()->m_Vel = vec2(0, 0);
+						if (!VictimChar->IsInSlowMotion())
+						{
+							VictimChar->SlowMotionEffect(1.0f);
+						}
+						//VictimChar->SlowMotionEffect(5.0f);
+					}
+				}			
 
 				if (GetClassNum() == Class::FREEZER)
 				{
@@ -825,6 +839,7 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 
 	if (m_pCharacter) {
 		m_pCharacter->SetInfected(m_pClass->IsInfectedClass()); // double call?
+		m_pCharacter->m_EndlessHook = false;
 		m_pCharacter->ResetWeaponsHealth();
 		m_pClass->InitialWeaponsHealth(m_pCharacter);
 	}

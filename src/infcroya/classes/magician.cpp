@@ -25,7 +25,9 @@ CMagician::CMagician()
 	SetInfectedClass(false);
 	SetName("Magician");
 	LockPositionTimeLeft = 0;
-	Set06SkinName("redbopp");
+	//Set06SkinName("redbopp");
+	Set06SkinName("chinese_by_whis");
+	Set06SkinColors(12582747, 49494);
 	LastCastTick = 0;
 }
 

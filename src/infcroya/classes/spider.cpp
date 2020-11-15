@@ -8,16 +8,19 @@
 CSpider::CSpider() : IClass()
 {
 	CSkin skin;
-	skin.SetBodyColor(65, 255, 0);
-	skin.SetMarkingName("setisu");
-	skin.SetMarkingColor(59, 255, 22, 255);
-	skin.SetHandsColor(65, 255, 20);
-	skin.SetFeetColor(100, 255, 0);
+	skin.SetBodyColor(87, 227, 51);
+	skin.SetMarkingName("wildpatch");
+	skin.SetDecorationName("twinpen");
+	skin.SetMarkingColor(206, 0, 50, 251);
+	//skin.SetMarkingColor(43, 205, 98, 255); // yellow
+	skin.SetDecorationColor(0, 0, 39);
+	skin.SetHandsColor(208, 0, 57);
+	skin.SetFeetColor(220, 0, 55);
 	SetSkin(skin);
 	SetInfectedClass(true);
 	SetName("Spider");
-	Set06SkinName("warpaint");
-	Set06SkinColors(4325120, 6618880);
+	Set06SkinName("teerasta");
+	Set06SkinColors(5152256, 3608832);
 }
 
 void CSpider::InitialWeaponsHealth(CCharacter* pChr)
@@ -27,45 +30,46 @@ void CSpider::InitialWeaponsHealth(CCharacter* pChr)
 	//pChr->GiveWeapon(WEAPON_GUN, 10);
 	pChr->SetWeapon(WEAPON_HAMMER);
 	pChr->SetNormalEmote(EMOTE_ANGRY);
+	pChr->m_EndlessHook = true;
 }
 
 void CSpider::Tick(CCharacter* pChr)
 {
-	ItDoubleJumps(pChr);
+	ItFastJumps(pChr);
 	ItAntigravitates(pChr);
+	pChr->m_EndlessHook = true;
 }
+
+void CSpider::ItFastJumps(CCharacter* pChr) {
+	//Double jumps
+	CroyaPlayer* cp = pChr->GetCroyaPlayer();
+	if (pChr->IsGrounded()) {
+		cp->SetAirJumpCounter(0);
+		return;
+	}
+	if (pChr->GetCharacterCore().m_TriggeredEvents & protocol7::COREEVENTFLAG_AIR_JUMP && cp->GetAirJumpCounter() == 0)
+	{
+		pChr->GetCharacterCore().m_Jumped &= ~2;
+		pChr->GetCharacterCore().m_Vel = vec2(pChr->GetCharacterCore().m_Vel.x * 2,
+		pChr->GetCharacterCore().m_Vel.y);
+		cp->SetAirJumpCounter(cp->GetAirJumpCounter() + 1);
+		return;
+	}
+	// if (pChr->GetCharacterCore().m_TriggeredEvents & protocol7::COREEVENTFLAG_AIR_JUMP && cp->GetAirJumpCounter() == 1)
+	// {
+	// 	pChr->GetCharacterCore().m_Vel = vec2(pChr->GetCharacterCore().m_Vel.x * -1.0f,
+	// 	pChr->GetCharacterCore().m_Vel.y);
+	// 	cp->SetAirJumpCounter(cp->GetAirJumpCounter() + 1);
+	// 	return;
+	// }
+}
+
 
 void CSpider::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCharacter* pChr)
 {
 	switch (Weapon) {
 	case WEAPON_HAMMER: {
 		HammerShoot(pChr, ProjStartPos);
-		int ClientID = pChr->GetPlayer()->GetCID();
-		CGameContext *pGameServer = pChr->GameServer();
-		CGameWorld *pGameWorld = pChr->GameWorld();
-
-		CCharacter *apCloseCCharacters[MAX_CLIENTS];
-		int Num = pGameServer->m_World.FindEntities(pChr->GetPos(), 9999, (CEntity**)apCloseCCharacters, MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
-		for(int i = 0; i < Num; i++)
-		{
-			CCharacter *human = apCloseCCharacters[i];
-			if (!human->IsAlive() || human->GetPlayer()->GetTeam() == TEAM_SPECTATORS)
-				continue;					
-
-			if (human->IsZombie())
-			  continue;
-
-			vec2 Direction = normalize(vec2(human->GetPos().x - pChr->GetPos().x, human->GetPos().y - pChr->GetPos().y));
-
-			new CProjectile(pGameWorld, WEAPON_SHOTGUN,
-					ClientID,
-					ProjStartPos,
-					Direction,
-					(int)(pChr->Server()->TickSpeed() * pGameServer->Tuning()->m_GunLifetime / 17),
-					0, false, 0, -1, WEAPON_SHOTGUN);
-
-			return;
-		}
 	}
 	break;
 	}
