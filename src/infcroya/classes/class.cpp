@@ -380,7 +380,7 @@ void IClass::SetName(std::string Name)
 
 void IClass::AntigravityOn(CCharacter* pChr, bool LooseSpeed) {
 	dbg_msg("game", "Antigravity on by class");
-	AntigravityTimeLeft = pChr->Server()->TickSpeed() * 10; 
+	AntigravityTimeLeft = pChr->Server()->TickSpeed() * 6; 
 	if (LooseSpeed)
 		pChr->GetCharacterCore().m_Vel = vec2(0, -4.0f);
 }
