@@ -13,7 +13,7 @@ CSpider::CSpider() : IClass()
 	skin.SetDecorationName("twinpen");
 	skin.SetMarkingColor(206, 0, 50, 251);
 	//skin.SetMarkingColor(43, 205, 98, 255); // yellow
-	skin.SetDecorationColor(0, 0, 39);
+	skin.SetDecorationColor(15, 176, 60);
 	skin.SetHandsColor(208, 0, 57);
 	skin.SetFeetColor(220, 0, 55);
 	SetSkin(skin);
