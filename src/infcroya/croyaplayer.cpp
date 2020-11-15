@@ -651,10 +651,10 @@ void CroyaPlayer::ResetCanLockPositionAbility() {
 	m_CanLockPosition = true;
 }
 
-void CroyaPlayer::AntigravityOn(bool LooseSpeed) {
+void CroyaPlayer::AntigravityOn(bool LooseSpeed, int Duration) {
 	dbg_msg("game", "Antigravity on");
 	m_IsAntigravityOn = true;
-	GetClass()->AntigravityOn(GetCharacter(), LooseSpeed);
+	GetClass()->AntigravityOn(GetCharacter(), LooseSpeed, Duration);
 }
 
 void CroyaPlayer::AntigravityOff() {

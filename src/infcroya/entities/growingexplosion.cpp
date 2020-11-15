@@ -94,7 +94,7 @@ CGrowingExplosion::CGrowingExplosion(CGameWorld *pGameWorld, vec2 Pos, vec2 Dir,
 				float Len = distance(p->GetPos(), m_Pos);
 				if(Len < p->GetProximityRadius()+g_Config.m_InfPoisonCircleRadius)
 				{
-					p->GetCroyaPlayer()->AntigravityOn();
+					p->GetCroyaPlayer()->AntigravityOn(true, 5);
 					// Poison(g_Config.m_InfPoisonCircleDamageSeconds, m_Owner);
 				}
 			}
