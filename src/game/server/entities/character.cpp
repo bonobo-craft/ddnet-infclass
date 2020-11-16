@@ -840,6 +840,7 @@ void CCharacter::Tick()
 
 	if(m_SlowMotionTick > 0)
 	{
+		m_Core.m_IsInSlowMotion = true;
 		float Factor = 1.0f - ((float)g_Config.m_InfSlowMotionPercent / 100);
 		float FactorSpeed = 1.0f - ((float)g_Config.m_InfSlowMotionHookSpeed / 100);
 		float FactorAccel = 1.0f - ((float)g_Config.m_InfSlowMotionHookAccel / 100);
@@ -855,6 +856,11 @@ void CCharacter::Tick()
 			float MaxSpeed = g_Config.m_InfSlowMotionMaxSpeed * 0.1f;
 			float diff = MaxSpeed / length(m_Core.m_Vel);
 			if (diff < 1.0f) m_Core.m_Vel *= diff;
+			// float MaxSpeed = g_Config.m_InfSlowMotionMaxSpeed * 0.1f;
+			// float diffX = MaxSpeed / m_Core.m_Vel.x;
+			// float diffY = MaxSpeed / m_Core.m_Vel.y;
+			// if (diffX < 1.0f) m_Core.m_Vel.x *= diffX;
+			// if (diffY < 1.0f) m_Core.m_Vel.x *= diffY;
 		}
 	}
 
@@ -865,6 +871,7 @@ void CCharacter::Tick()
 		if(m_SlowMotionTick <= 0)
 		{
 			m_IsInSlowMotion = false;
+			m_Core.m_IsInSlowMotion = false;
 		}
 		else
 		{

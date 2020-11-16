@@ -72,6 +72,7 @@ void CCharacterCore::Init(CWorldCore *pWorld, CCollision *pCollision, CTeamsCore
 	m_Jumps = 2;
 	m_TaxiPassengerCore = nullptr;
 	m_TaxiDriverCore = nullptr;
+	m_IsInSlowMotion = false;
 }
 
 void CCharacterCore::Init(CWorldCore *pWorld, CCollision *pCollision, CTeamsCore *pTeams, std::map<int, std::vector<vec2>> *pTeleOuts)
@@ -88,6 +89,7 @@ void CCharacterCore::Init(CWorldCore *pWorld, CCollision *pCollision, CTeamsCore
 	m_Collision = true;
 	m_JumpedTotal = 0;
 	m_Jumps = 2;
+	m_IsInSlowMotion = false;
 }
 
 void CCharacterCore::Reset()
@@ -108,6 +110,7 @@ void CCharacterCore::Reset()
 	m_Collision = true;
 	//m_IsBot = false;
 	//m_BotOwnerCore = nullptr;
+	m_IsInSlowMotion = false;
 
 	// DDNet Character
 	m_Solo = false;
@@ -143,7 +146,20 @@ void CCharacterCore::Tick(bool UseInput)
 
 	vec2 TargetDirection = normalize(vec2(m_Input.m_TargetX, m_Input.m_TargetY));
 
-	m_Vel.y += m_pWorld->m_Tuning[g_Config.m_ClDummy].m_Gravity;
+		// float Factor = 1.0f - ((float)g_Config.m_InfSlowMotionPercent / 100);
+		// float FactorSpeed = 1.0f - ((float)g_Config.m_InfSlowMotionHookSpeed / 100);
+		// float FactorAccel = 1.0f - ((float)g_Config.m_InfSlowMotionHookAccel / 100);
+		// pTuningParams->m_GroundControlSpeed = pTuningParams->m_GroundControlSpeed * Factor;
+		// pTuningParams->m_HookFireSpeed = pTuningParams->m_HookFireSpeed * FactorSpeed;
+		// pTuningParams->m_AirControlSpeed = pTuningParams->m_AirControlSpeed * Factor;
+		// pTuningParams->m_HookDragAccel = pTuningParams->m_HookDragAccel * FactorAccel;
+		// pTuningParams->m_HookDragSpeed = pTuningParams->m_HookDragSpeed * FactorSpeed;
+		// pTuningParams->m_Gravity = g_Config.m_InfSlowMotionGravity * 0.01f;
+	if (m_IsInSlowMotion)
+		m_Vel.y += m_pWorld->m_Tuning[g_Config.m_ClDummy].m_Gravity / 10;
+	else
+		m_Vel.y += m_pWorld->m_Tuning[g_Config.m_ClDummy].m_Gravity;
+		
 
 	float MaxSpeed = Grounded ? m_pWorld->m_Tuning[g_Config.m_ClDummy].m_GroundControlSpeed : m_pWorld->m_Tuning[g_Config.m_ClDummy].m_AirControlSpeed;
 	float Accel = Grounded ? m_pWorld->m_Tuning[g_Config.m_ClDummy].m_GroundControlAccel : m_pWorld->m_Tuning[g_Config.m_ClDummy].m_AirControlAccel;
@@ -183,6 +199,9 @@ void CCharacterCore::Tick(bool UseInput)
 				{
 					m_TriggeredEvents |= COREEVENT_GROUND_JUMP;
 					m_Vel.y = -m_pWorld->m_Tuning[g_Config.m_ClDummy].m_GroundJumpImpulse;
+					if (m_IsInSlowMotion) {
+						m_Vel.y *= 5;
+					}
 					m_Jumped |= 1;
 					m_JumpedTotal = 1;
 				}
@@ -190,6 +209,9 @@ void CCharacterCore::Tick(bool UseInput)
 				{
 					m_TriggeredEvents |= COREEVENT_AIR_JUMP;
 					m_Vel.y = -m_pWorld->m_Tuning[g_Config.m_ClDummy].m_AirJumpImpulse;
+					if (m_IsInSlowMotion) {
+						m_Vel.y *= 5;
+					}
 					m_Jumped |= 3;
 					m_JumpedTotal++;
 				}
@@ -383,6 +405,10 @@ void CCharacterCore::Tick(bool UseInput)
 		if(m_HookedPlayer == -1 && distance(m_HookPos, m_Pos) > 46.0f)
 		{
 			vec2 HookVel = normalize(m_HookPos - m_Pos) * m_pWorld->m_Tuning[g_Config.m_ClDummy].m_HookDragAccel;
+			if (m_IsInSlowMotion) {
+				HookVel = HookVel * 3;
+			}
+
 			// the hook as more power to drag you up then down.
 			// this makes it easier to get on top of an platform
 			if(HookVel.y > 0)

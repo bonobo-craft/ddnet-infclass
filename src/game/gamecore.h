@@ -240,6 +240,7 @@ public:
 	int m_ActiveWeapon;
 
 	bool m_NewHook;
+	bool m_IsInSlowMotion = false;
 
 	bool m_PressedJump = false;
 	int m_Jumped;
