@@ -133,7 +133,7 @@ void CBiologist::RemovePoisonNearby(CCharacter* pChr)
    		
 		float Len = distance(pChr->GetPos(), pPoisonCircle->GetPos());
 		
-		if(Len < pChr->GetProximityRadius()+g_Config.m_InfPoisonCircleRadius){
+		if(Len < (pChr->GetProximityRadius()+g_Config.m_InfPoisonCircleRadius) * 3){
 			pGameServer->m_World.DestroyEntity(pPoisonCircle);
 		}
 
