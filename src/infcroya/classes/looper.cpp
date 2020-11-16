@@ -87,7 +87,7 @@ void CLooper::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CChara
 	} break;
 	
 	case WEAPON_LASER: {
-		new CLaser(pGameWorld, pChr->GetPos(), Direction, pGameServer->Tuning()->m_LaserReach * 0.4f, pChr->GetPlayer()->GetCID());
+		new CLaser(pGameWorld, pChr->GetPos(), Direction, pGameServer->Tuning()->m_LaserReach * 0.6f, pChr->GetPlayer()->GetCID());
 		pGameServer->CreateSound(pChr->GetPos(), SOUND_LASER_FIRE);
 	} break;
 	}
