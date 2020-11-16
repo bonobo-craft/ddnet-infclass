@@ -54,6 +54,8 @@ void CBoomer::BoomerExplosion(CCharacter* pChr)
 {
 	int ClientID = pChr->GetPlayer()->GetCID();
 	CGameContext* pGameServer = pChr->GameServer();
+	if (pChr->Stunned())
+		return;
 	//if( !IsFrozen() && !IsInLove() ) not implemented yet
 	//{
 

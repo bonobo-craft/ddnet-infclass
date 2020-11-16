@@ -49,6 +49,8 @@ int CPoisoner::OnCharacterDeath(CCharacter* pVictim, CPlayer* pKiller, int Weapo
 
 void CPoisoner::PlacePoison(CCharacter* pChr)
 {
+	if (pChr->Stunned())
+		return;
 	int ClientID = pChr->GetPlayer()->GetCID();
 	CGameWorld* pGameWorld = pChr->GameWorld();
 	CGameContext* pGameServer = pChr->GameServer();
