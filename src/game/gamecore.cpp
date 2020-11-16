@@ -166,7 +166,7 @@ void CCharacterCore::Tick(bool UseInput)
 	float Friction = Grounded ? m_pWorld->m_Tuning[g_Config.m_ClDummy].m_GroundFriction : m_pWorld->m_Tuning[g_Config.m_ClDummy].m_AirFriction;
 
 	if (m_IsInSlowMotion)
-		Accel *= 8;
+		Accel *= 3;
 
 	// handle input
 	if(UseInput)
