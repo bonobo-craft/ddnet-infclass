@@ -3158,6 +3158,11 @@ void CCharacter::Stun(float Time, float Immunity)
 	if (m_StunTime > -1 && ((Server()->Tick() - m_StunTime) / Server()->TickSpeed() < m_Immunity))
 		return;
 
+	CCharacterCore& Core = GetCharacterCore();
+	Core.m_HookedPlayer = -1;
+	Core.m_HookState = HOOK_RETRACTED;
+	Core.m_HookPos = Core.m_Pos;
+
 	m_IsStunned = true;
 	m_StunTime = Server()->Tick() + (Server()->TickSpeed() * Time); // untun time in fact
 	//m_FrozenTime = Server()->TickSpeed() * Time;
