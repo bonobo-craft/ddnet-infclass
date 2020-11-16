@@ -7,7 +7,7 @@
 #include <infcroya/croyaplayer.h>
 #include "engine/shared/config.h"
 
-const float g_BarrierMaxLength = 300.0;
+const float g_BarrierMaxLength = 400.0;
 const float g_BarrierRadius = 0.0;
 
 CLooperWall::CLooperWall(CGameWorld *pGameWorld, vec2 Pos1, vec2 Pos2, int Owner)
