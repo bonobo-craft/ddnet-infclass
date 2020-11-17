@@ -272,6 +272,8 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 
 		if (ShouldUnfreeze) {
 			pTarget->UnFreeze();
+			if (pTarget->Stunned())
+				pTarget->Unstun();
 		}
 
 		if (ShouldAntigravitate) {
