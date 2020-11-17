@@ -861,7 +861,7 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 		m_pCharacter->m_IsInSlowMotion = false;
 
 	if (m_pCharacter) {
-		int ClientID = m_pCharacter->GetPlayer()->GetCID();
+		int ClientID = GetClientID();
 		for(int i = 0; i < MAX_CLIENTS; i++) // linear search, better would be a stored attribute of hooker
 		{
 			CCharacterCore *pCharCore = m_pCharacter->GetCharacterCore().m_pWorld->m_apCharacters[i];
