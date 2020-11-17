@@ -108,6 +108,27 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 		}
 	}
 
+	if (IsHuman() && m_pCharacter && m_pCharacter->GameWorld() && m_pCharacter->GetCharacterCore().m_HookedPlayer >=0) {
+		CCharacter* VictimChar = m_pGameServer->GetPlayerChar(m_pCharacter->GetCharacterCore().m_HookedPlayer);
+		if (VictimChar && VictimChar->IsHuman()) {
+			if (VictimChar->IsInSlowMotion()) {
+				VictimChar->m_IsInSlowMotion = false;
+				if (VictimChar->GetCroyaPlayer()) {
+					for(int i = 0; i < MAX_CLIENTS; i++) // linear search, better would be a stored attribute of hooker
+					{
+						CCharacterCore *pCharCore = GetCharacter()->GetCharacterCore().m_pWorld->m_apCharacters[i];
+						if (!pCharCore || pCharCore == GetCharacter()->GetpCore())
+							continue;
+						if (pCharCore->m_HookedPlayer == -1 || pCharCore->m_HookedPlayer != VictimChar->GetCroyaPlayer()->GetClientID())
+							continue;
+						pCharCore->m_HookedPlayer = -1;
+						pCharCore->m_HookState = HOOK_RETRACTED;
+						pCharCore->m_HookPos = pCharCore->m_Pos;
+					}
+				}
+			}
+		}
+	}
 	if ((IsZombie() || GetClassNum() == Class::PSYCHO) && m_pCharacter && m_pCharacter->GameWorld()) {
 		if (m_pCharacter->GetCharacterCore().m_HookedPlayer >= 0) {
 			CCharacter* VictimChar = m_pGameServer->GetPlayerChar(m_pCharacter->GetCharacterCore().m_HookedPlayer);
