@@ -860,7 +860,7 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 	if (m_pCharacter && m_pCharacter->IsInSlowMotion())
 		m_pCharacter->m_IsInSlowMotion = false;
 
-	if (m_pCharacter) {
+	if (m_pCharacter && m_pCharacter->GetCroyaPlayer()) { // some broken characters have null pointers for everything
 		int ClientID = GetClientID();
 		for(int i = 0; i < MAX_CLIENTS; i++) // linear search, better would be a stored attribute of hooker
 		{
