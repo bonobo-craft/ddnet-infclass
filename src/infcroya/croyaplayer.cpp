@@ -139,8 +139,8 @@ void CroyaPlayer::Tick() // todo cleanup INF circles and safezones are mixed
 
 				if (GetClassNum() == Class::SMOKER)
 				{
-					Rate = 0.5f;
-					Damage = g_Config.m_InfSmokerHookDamage / 2;
+					Rate = 1.0f;
+					Damage = g_Config.m_InfSmokerHookDamage;
 				}
 
 				if (GetClassNum() == Class::MOTHER)
