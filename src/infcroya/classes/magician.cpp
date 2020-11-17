@@ -28,7 +28,6 @@ CMagician::CMagician()
 	//Set06SkinName("redbopp");
 	Set06SkinName("chinese_by_whis");
 	Set06SkinColors(12582747, 49494);
-	LastCastTick = 0;
 }
 
 void CMagician::InitialWeaponsHealth(CCharacter* pChr)
@@ -39,6 +38,8 @@ void CMagician::InitialWeaponsHealth(CCharacter* pChr)
 	pChr->GiveWeapon(WEAPON_GUN, 10);
 	pChr->GiveWeapon(WEAPON_GRENADE, 10);
 	pChr->SetNormalEmote(EMOTE_NORMAL);
+	LastCastTick = -1;
+	NoAmmoTickFired = false;
 }
 
 void CMagician::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCharacter* pChr)
@@ -49,7 +50,17 @@ void CMagician::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCha
 
 	switch (Weapon) {
 	case WEAPON_HAMMER: {
+		if ((LastCastTick != -1) && (pChr->Server()->Tick() < LastCastTick + (pChr->Server()->TickSpeed() * 3))) {
+			if (!NoAmmoTickFired) {
+				NoAmmoTickFired = true;
+				pGameServer->CreateSound(pChr->GetPos(), SOUND_WEAPON_NOAMMO);
+			}
+			return;
+		}
 		//HammerShoot(pChr, ProjStartPos);
+		pGameServer->CreateSound(pChr->GetPos(), SOUND_CTF_RETURN);
+		LastCastTick = pChr->Server()->Tick();
+		NoAmmoTickFired = false;
 		for(CCharacter *p = (CCharacter*) pGameWorld->FindFirst(CGameWorld::ENTTYPE_CHARACTER); p; p = (CCharacter *)p->TypeNext())
 		{
 			if(p->IsHuman()) continue;

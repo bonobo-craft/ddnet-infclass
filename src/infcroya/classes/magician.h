@@ -8,6 +8,7 @@ public:
 
 	int LockPositionTimeLeft;
 	int LastCastTick;
+	bool NoAmmoTickFired;
 	void InitialWeaponsHealth(class CCharacter* pChr) override;
 	void Tick(CCharacter* pChr) override;
 	void ItLocksInSpace(CCharacter* pChr);
