@@ -15,7 +15,7 @@ CFreezer::CFreezer() : IClass()
 	skin.SetFeetColor(120, 160, 70);
 	SetSkin(skin);
 	SetInfectedClass(true);
-	SetName("Freezer");
+	SetName("Cryo");
 	Set06SkinName("jeet");
 	Set06SkinColors(6473777, 7905280);
 }
