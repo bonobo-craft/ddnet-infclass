@@ -857,6 +857,23 @@ void CroyaPlayer::SetClass(IClass* pClass, bool DrawPurpleThing, bool destroyChi
 			m_pCharacter->DestroyChildEntities();
 		}
 	}
+	if (m_pCharacter && m_pCharacter->IsInSlowMotion())
+		m_pCharacter->m_IsInSlowMotion = false;
+
+	if (m_pCharacter) {
+		int ClientID = m_pCharacter->GetPlayer()->GetCID();
+		for(int i = 0; i < MAX_CLIENTS; i++) // linear search, better would be a stored attribute of hooker
+		{
+			CCharacterCore *pCharCore = m_pCharacter->GetCharacterCore().m_pWorld->m_apCharacters[i];
+			if (!pCharCore || pCharCore == m_pCharacter->GetpCore())
+				continue;
+			if (pCharCore->m_HookedPlayer == -1 || pCharCore->m_HookedPlayer != ClientID)
+				continue;
+			pCharCore->m_HookedPlayer = -1;
+			pCharCore->m_HookState = HOOK_RETRACTED;
+			pCharCore->m_HookPos = pCharCore->m_Pos;
+		}
+	}
 
 	if (m_pCharacter) {
 		m_pCharacter->SetInfected(m_pClass->IsInfectedClass()); // double call?
