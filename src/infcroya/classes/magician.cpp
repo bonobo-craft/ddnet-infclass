@@ -67,7 +67,7 @@ void CMagician::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCha
 			float Len = distance(p->GetPos(), ProjStartPos);
 			if(Len < p->GetProximityRadius()+g_Config.m_InfPoisonCircleRadius * 1.5)
 			{
-				p->Stun(2, 4);
+				p->Stun(2, 2.9);
 				// Poison(g_Config.m_InfPoisonCircleDamageSeconds, m_Owner);
 			}
 		}
