@@ -50,7 +50,7 @@ void CMagician::OnWeaponFire(vec2 Direction, vec2 ProjStartPos, int Weapon, CCha
 
 	switch (Weapon) {
 	case WEAPON_HAMMER: {
-		if ((LastCastTick != -1) && (pChr->Server()->Tick() < LastCastTick + (pChr->Server()->TickSpeed() * 3))) {
+		if ((LastCastTick != -1) && (pChr->Server()->Tick() < LastCastTick + (pChr->Server()->TickSpeed() * 2))) {
 			if (!NoAmmoTickFired) {
 				NoAmmoTickFired = true;
 				pGameServer->CreateSound(pChr->GetPos(), SOUND_WEAPON_NOAMMO);
