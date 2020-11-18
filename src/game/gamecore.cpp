@@ -324,7 +324,7 @@ void CCharacterCore::Tick(bool UseInput)
 
 				// INFCROYA BEGIN ------------------------------------------------------------
 				// human cannot hook protected human
-				if (!m_Infected && !pCharCore->m_Infected && pCharCore->m_HookProtected)
+				if (!m_Infected && !pCharCore->m_Infected && pCharCore->m_HookProtected && (!pCharCore->m_IsInSlowMotion))
 					continue;
 				// zombie cannot hook protected zombie
 				if (m_Infected && pCharCore->m_Infected && pCharCore->m_HookProtected)
