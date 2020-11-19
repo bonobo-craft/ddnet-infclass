@@ -156,14 +156,12 @@ void CMagician::GunShoot(CCharacter* pChr, vec2 ProjStartPos, vec2 Direction_) {
 
 void CMagician::Tick(CCharacter* pChr)
 {
- 	//if (pChr->GetCharacterCore().m_PressedJump)
-	//  UnlockPosition(pChr);
-
-	ItAntigravitates(pChr);
-	ItSelfAntigravitates(pChr);
-	ItInfiniteJumpsWhenSlowmo(pChr);
-	//ItDoubleJumps(pChr);
-	//ItLocksInSpace(pChr);
+	if (!pChr->IsInSlowMotion()) {
+		ItAntigravitates(pChr);
+		ItSelfAntigravitates(pChr);
+		return;
+	}
+	ItInfiniteJumps(pChr);
 }
 
 void CMagician::LockPosition(CCharacter* pChr) {

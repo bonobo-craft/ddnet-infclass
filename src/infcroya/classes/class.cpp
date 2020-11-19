@@ -403,8 +403,7 @@ void IClass::ItInfiniteJumpsWhenSlowmo(CCharacter* pChr) {
 void IClass::ItInfiniteJumps(CCharacter* pChr) {
 	//Double jumps
 	CroyaPlayer* cp = pChr->GetCroyaPlayer();
-	if (pChr->IsGrounded()) cp->SetAirJumpCounter(0);
-	if (pChr->GetCharacterCore().m_TriggeredEvents & protocol7::COREEVENTFLAG_AIR_JUMP && cp->GetAirJumpCounter() < 1)
+	if (pChr->GetCharacterCore().m_TriggeredEvents & protocol7::COREEVENTFLAG_AIR_JUMP)
 	{
 		pChr->GetCharacterCore().m_Jumped &= ~2;
 		cp->SetAirJumpCounter(0);
