@@ -1484,12 +1484,21 @@ void CGameContext::OnClientEnter(int ClientID)
 		Server()->ClientDDNetVersion(ClientID, DDNetVersion);
 		if (Server()->IsSixup(ClientID))
 			str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s (0.7)", Server()->ClientName(ClientID), m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()));
-		else
-			str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s (0.6) %s",
-			           Server()->ClientName(ClientID),
-					   m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()),
-					   DDNetVersion
-					   );
+		else {
+			if(Info.m_DDNetVersion > 15013 && Info.m_DDNetVersion < 15023) {
+				str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s (0.6) %s (INCOMPATIBLE VERSION)",
+						Server()->ClientName(ClientID),
+						m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()),
+						DDNetVersion
+						);
+			} else {
+				str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s (0.6) %s",
+						Server()->ClientName(ClientID),
+						m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()),
+						DDNetVersion
+						);
+			}
+		}
 		Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "stats", aBuf);
 		SendChat(-1, CGameContext::CHAT_ALL, aBuf, -1);
 
