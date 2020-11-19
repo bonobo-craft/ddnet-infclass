@@ -396,8 +396,7 @@ void IClass::AntigravityOff(CCharacter* pChr) {
 }
 
 void IClass::ItInfiniteJumpsWhenSlowmo(CCharacter* pChr) {
-	//if (pChr->IsInSlowMotion() && pChr->IsHuman())
-	if (pChr->IsHuman())
+	if (pChr->IsInSlowMotion() && pChr->IsHuman())
 		ItInfiniteJumps(pChr);
 }
 
