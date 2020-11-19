@@ -83,6 +83,7 @@ void CSniper::Tick(CCharacter* pChr)
 
 	ItDoubleJumps(pChr);
 	ItLocksInSpace(pChr);
+	ItInfiniteJumpsWhenSlowmo(pChr);
 }
 
 void CSniper::LockPosition(CCharacter* pChr) {

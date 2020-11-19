@@ -161,6 +161,7 @@ void CMagician::Tick(CCharacter* pChr)
 
 	ItAntigravitates(pChr);
 	ItSelfAntigravitates(pChr);
+	ItInfiniteJumpsWhenSlowmo(pChr);
 	//ItDoubleJumps(pChr);
 	//ItLocksInSpace(pChr);
 }

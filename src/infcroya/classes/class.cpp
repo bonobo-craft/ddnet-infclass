@@ -14,6 +14,7 @@ IClass::~IClass()
 void IClass::Tick(CCharacter* pChr)
 {
 	ItAntigravitates(pChr);
+	ItInfiniteJumpsWhenSlowmo(pChr);
 }
 
 void IClass::GunShoot(CCharacter* pChr, vec2 ProjStartPos, vec2 Direction) {
@@ -392,6 +393,23 @@ void IClass::AntigravityOff(CCharacter* pChr) {
 	if (!pChr->GetCroyaPlayer())
 		return;
 	pChr->GetCroyaPlayer()->AntigravityOff();	
+}
+
+void IClass::ItInfiniteJumpsWhenSlowmo(CCharacter* pChr) {
+	//if (pChr->IsInSlowMotion() && pChr->IsHuman())
+	if (pChr->IsHuman())
+		ItInfiniteJumps(pChr);
+}
+
+void IClass::ItInfiniteJumps(CCharacter* pChr) {
+	//Double jumps
+	CroyaPlayer* cp = pChr->GetCroyaPlayer();
+	if (pChr->IsGrounded()) cp->SetAirJumpCounter(0);
+	if (pChr->GetCharacterCore().m_TriggeredEvents & protocol7::COREEVENTFLAG_AIR_JUMP && cp->GetAirJumpCounter() < 1)
+	{
+		pChr->GetCharacterCore().m_Jumped &= ~2;
+		cp->SetAirJumpCounter(0);
+	}
 }
 
 void IClass::ItAntigravitates(CCharacter* pChr) {

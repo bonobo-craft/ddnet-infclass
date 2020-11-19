@@ -14,6 +14,8 @@ public:
 	void AntigravityOn(CCharacter* pChr, bool LooseSpeed = true, int Duration = 10);
 	void AntigravityOff(CCharacter* pChr);
 	void ItAntigravitates(CCharacter* pChr);
+	void ItInfiniteJumpsWhenSlowmo(CCharacter* pChr);
+	void ItInfiniteJumps(CCharacter* pChr);
 	int AntigravityTimeLeft;
     char m_06SkinName[64] = {'\0'};
 	int m_06SkinBodyColor = 0;

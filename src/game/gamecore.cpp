@@ -155,8 +155,10 @@ void CCharacterCore::Tick(bool UseInput)
 		// pTuningParams->m_HookDragAccel = pTuningParams->m_HookDragAccel * FactorAccel;
 		// pTuningParams->m_HookDragSpeed = pTuningParams->m_HookDragSpeed * FactorSpeed;
 		// pTuningParams->m_Gravity = g_Config.m_InfSlowMotionGravity * 0.01f;
-	if (m_IsInSlowMotion)
-		m_Vel.y += m_pWorld->m_Tuning[g_Config.m_ClDummy].m_Gravity / 10;
+	if (m_IsInSlowMotion) {
+		if (m_Infected)
+			m_Vel.y += m_pWorld->m_Tuning[g_Config.m_ClDummy].m_Gravity / 10;
+	}
 	else
 		m_Vel.y += m_pWorld->m_Tuning[g_Config.m_ClDummy].m_Gravity;
 		
@@ -497,9 +499,14 @@ void CCharacterCore::Tick(bool UseInput)
 
 					vec2 Temp;
 					// add force to the hooked player
-					Temp.x = SaturatedAdd(-DragSpeed, DragSpeed, pCharCore->m_Vel.x, Accel * Dir.x * 1.5f);
-					Temp.y = SaturatedAdd(-DragSpeed, DragSpeed, pCharCore->m_Vel.y, Accel * Dir.y * 1.5f);
-					pCharCore->m_Vel = ClampVel(pCharCore->m_MoveRestrictions, Temp);
+					if (pCharCore->m_IsInSlowMotion && !pCharCore->m_Infected) {
+						Temp.x = SaturatedAdd(-DragSpeed * 0.01f, DragSpeed * 0.01f, pCharCore->m_Vel.x, Accel * Dir.x * 0.5f);
+						//Temp.y = SaturatedAdd(-DragSpeed * 0.01f, DragSpeed * 0.01f, pCharCore->m_Vel.y, Accel * Dir.y * 0.5f);
+					} else {
+						Temp.x = SaturatedAdd(-DragSpeed, DragSpeed, pCharCore->m_Vel.x, Accel * Dir.x * 1.5f);
+						Temp.y = SaturatedAdd(-DragSpeed, DragSpeed, pCharCore->m_Vel.y, Accel * Dir.y * 1.5f);
+						pCharCore->m_Vel = ClampVel(pCharCore->m_MoveRestrictions, Temp);
+					}
 					// add a little bit force to the guy who has the grip
 					Temp.x = SaturatedAdd(-DragSpeed, DragSpeed, m_Vel.x, -Accel * Dir.x * 0.25f);
 					Temp.y = SaturatedAdd(-DragSpeed, DragSpeed, m_Vel.y, -Accel * Dir.y * 0.25f);

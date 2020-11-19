@@ -31,14 +31,15 @@ void CBat::InitialWeaponsHealth(CCharacter* pChr)
 
 void CBat::Tick(CCharacter* pChr)
 {
-	//Double jumps
-	CroyaPlayer* cp = pChr->GetCroyaPlayer();
-	if (pChr->IsGrounded()) cp->SetAirJumpCounter(0);
-	if (pChr->GetCharacterCore().m_TriggeredEvents & protocol7::COREEVENTFLAG_AIR_JUMP && cp->GetAirJumpCounter() < 1)
-	{
-		pChr->GetCharacterCore().m_Jumped &= ~2;
-		cp->SetAirJumpCounter(0);
-	}
+	// //Double jumps
+	// CroyaPlayer* cp = pChr->GetCroyaPlayer();
+	// if (pChr->IsGrounded()) cp->SetAirJumpCounter(0);
+	// if (pChr->GetCharacterCore().m_TriggeredEvents & protocol7::COREEVENTFLAG_AIR_JUMP && cp->GetAirJumpCounter() < 1)
+	// {
+	// 	pChr->GetCharacterCore().m_Jumped &= ~2;
+	// 	cp->SetAirJumpCounter(0);
+	// }
+	ItInfiniteJumps(pChr);
 	ItAntigravitates(pChr);
 }
 
