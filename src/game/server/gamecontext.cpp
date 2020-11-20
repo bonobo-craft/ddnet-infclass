@@ -4524,9 +4524,9 @@ void CGameContext::SendZombieClassSelectorByClassId(int ClassId, int ClientID) {
 	else
 		messageList.push_back(unsel + localize("game.class.poisoner", lang));
 	if (ClassId == Class::SPIDER)
-		messageList.push_back(sel1 + localize("SPIDER", lang) + sel2);
+		messageList.push_back(sel1 + localize("game.class.spider", lang) + sel2);
 	else
-		messageList.push_back(unsel + localize("SPIDER", lang));
+		messageList.push_back(unsel + localize("game.class.spider", lang));
 	if (ClassId == Class::MOTHER)
 		messageList.push_back(sel1 + localize("game.class.queen", lang) + sel2);
 	else
