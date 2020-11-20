@@ -1746,9 +1746,9 @@ void CGameContext::OnClientDDNetVersionKnown(int ClientID)
 		SendTuningParams(ClientID, pPlayer->m_TuneZone);
 
 	if(ClientVersion > 15013 && ClientVersion < 15023) {
-		SendBroadcast("Your DDNet client version is incompatible with this mod, use 15.1.3 or teeworlds 0.7.5", ClientID);
-		SendBroadcastBig("!!! PROBLEM !!!\nYour DDNet client version is too new and is incompatible with this mod\nUse DDNet client 15.1.3\n\nYou can play but you will not see:\n\n* poison circles\n* infection circles\n\nSo please just download 15.1.3 from ddnet.tw website.\n\nor (even better) use teeworlds 0.7.5 client.", ClientID);
-		SendChatTarget(ClientID, "PROBLEM: Your DDNet client version is too new and incompatible with this mod\nUse DDNet client 15.1.3\n\nYou can play but you will not see:\n\n* poison circles\n* infection circles\n\nSo please just download 15.1.3 from ddnet.tw website.\n\nor (better) use teeworlds 0.7.5 client.");
+		SendBroadcast("Your DDNet client version is incompatible with this mod, update to DDNet 15.2.3 or newer", ClientID);
+		SendBroadcastBig("!!! PROBLEM !!!\nYour DDNet client version is buggy. Update to DDNet 15.2.3 or newer (or 15.1.3 or older if you like old clients)", ClientID);
+		SendChatTarget(ClientID, "!!! PROBLEM !!!\nYour DDNet client version is buggy. Update to DDNet 15.2.3 or newer (or 15.1.3 or older if you like old clients)");
 	}
 	// Tell old clients to update.
 	if(ClientVersion < VERSION_DDNET_UPDATER_FIXED && g_Config.m_SvClientSuggestionOld[0] != '\0')
