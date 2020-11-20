@@ -4604,13 +4604,13 @@ void CGameContext::SendHumanClassSelectorByClassId(int ClassId, int ClientID) {
 	else
 		messageList.push_back(unsel + localize("game.class.psycho", lang));
 	if (ClassId == Class::LOOPER)
-		messageList.push_back(sel1 + localize("LOOPER", lang) + sel2);
+		messageList.push_back(sel1 + localize("game.class.looper", lang) + sel2);
 	else
-		messageList.push_back(unsel + localize("LOOPER", lang));
+		messageList.push_back(unsel + localize("game.class.looper", lang));
 	if (ClassId == Class::MAGICIAN)
-		messageList.push_back(sel1 + localize("MAGICIAN", lang) + sel2);
+		messageList.push_back(sel1 + localize("game.class.magician", lang) + sel2);
 	else
-		messageList.push_back(unsel + localize("MAGICIAN", lang));
+		messageList.push_back(unsel + localize("game.class.magician", lang));
 	messageList.push_back(localize("class.menu.humans.footer", lang));
 
 	SendBroadcastBig(Join(messageList, "\n").c_str(), ClientID);

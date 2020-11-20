@@ -1,7 +1,7 @@
 require 'json'
 
 langfiles = {
-        "en-gb" => "english",
+        "en" => "english",
         "ru" => "russian",
         "hu" => "hungarian",
         "fr" => "french",

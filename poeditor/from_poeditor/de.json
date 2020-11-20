@@ -313,7 +313,7 @@
     },
     {
         "term": "game.flag.spawned",
-        "definition": "Flagge erschien. Helden k\u00f6nnen es nehmen, um Menschen zu helfen.",
+        "definition": "Eine Flagge ist erschienen. Helden k\u00f6nnen es nehmen, um Menschen zu helfen.",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -321,7 +321,7 @@
     },
     {
         "term": "game.flag.taken",
-        "definition": "Die Flagge wird von einem Helden genommen. Menschen erhalten +4 HP \/ R\u00fcstung",
+        "definition": "Die Flagge wurde von einem Helden genommen. Menschen erhalten +4 HP\/R\u00fcstung",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -353,7 +353,7 @@
     },
     {
         "term": "class.menu.humans.footer",
-        "definition": "\\nDr\u00fccken Sie kurz die Tabulatortaste, um dieses Men\u00fc zu schlie\u00dfen",
+        "definition": "\\nDr\u00fccken Sie kurz die Tabulatortaste um dieses Men\u00fc zu schlie\u00dfen",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -370,6 +370,70 @@
     {
         "term": "class.menu.zombies.footer",
         "definition": "\\nKlassen mit * k\u00f6nnen nur von einem anf\u00e4nglichen Zombie ausgew\u00e4hlt werden \\nDr\u00fccken Sie kurz die Tabulatortaste, um dieses Men\u00fc zu schlie\u00dfen",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.psycho",
+        "definition": "Psycho",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.looper",
+        "definition": "Looper",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": "There is no word for Looper in german and germans seem to call them Looper too"
+    },
+    {
+        "term": "game.class.magician",
+        "definition": "Magier",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.spider",
+        "definition": "Spinne",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.psycho",
+        "definition": "-- PSYCHO (Mensch) --\n\nImmun gegen Gefrieren und Gift\nErleidet maximal 5 HP von jedem Angriff\nKann nicht von Sanit\u00e4tern geheilt werden, heilt stattdessen wenn er ein Zombie greift",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.looper",
+        "definition": "-- LOOPER (Mensch) --\n\nBaut Laserw\u00e4nde welche Zombies verlangsamen\nHat einen Schnellschusslaser mit wenig Reichweite",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.magician",
+        "definition": "-- MAGIER (Mensch) --\n\nDer zweite Sprung aktiviert eigenes Schweben\nGranaten bringen Zombies zum Schweben\nPistole st\u00f6\u00dft Zombies zur\u00fcck\nHammer l\u00e4hmt Zombies in der N\u00e4he\nHat normalen Laser",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.spider",
+        "definition": "-- SPINNE (Zombie) --\n\nUndendlicher Greifhaken welche Menschen in Slowmo versetzt\nZweiter Sprung ist ein Sprint vorw\u00e4rts\nKann kein Hammerschaden und sehr wenig Hakenschaden zuf\u00fcgen",
         "context": "",
         "term_plural": "",
         "reference": "",

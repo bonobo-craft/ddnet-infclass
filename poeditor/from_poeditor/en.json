@@ -1,7 +1,7 @@
 [
     {
         "term": "cmd.commands",
-        "definition": "-- Parancsok --\n\/humans az ember oszt\u00e1ly list\u00e1j\u00e1hoz\n\/zombies a zombi oszt\u00e1ly list\u00e1j\u00e1hoz\n\/help - seg\u00edts\u00e9get ny\u00fajt",
+        "definition": "-- Commands --\n\/humans for list of human classes\n\/zombies for list of zombie classes\n\/help' - show help",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -9,7 +9,7 @@
     },
     {
         "term": "cmd.help.humans",
-        "definition": "-- EMBER OSZT\u00c1LY --\npr\u00f3b\u00e1lj ki: \/medic? \/soldier? \/scientist? \/engineer?\n\/hero? \/mercenary? \/biologist?\nAz emberek megfert\u0151z\u00f6dnek kalap\u00e1cs \u00fct\u00e9s\u00e9re, vagy ha t\u00fal alacsony a HP-j\u00fck",
+        "definition": "-- HUMAN CLASSES --\ntry: \/medic? \/soldier? \/scientist? \/engineer?\n\/hero? \/mercenary? \/biologist?\nhumans get infected when low hp or when hit by hammer",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -17,7 +17,7 @@
     },
     {
         "term": "cmd.help.zombies",
-        "definition": "-- ZOMBI OSZT\u00c1LY --\npr\u00f3b\u00e1ld ki: \/bat? \/hunter? \/smoker? \/boomer?\n\/queen? \/worker? \/freezer? \/poisoner?",
+        "definition": "-- ZOMBIE CLASSES --\ntry: \/bat? \/hunter? \/smoker? \/boomer?\n\/queen? \/worker? \/freezer? \/poisoner?",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -25,7 +25,7 @@
     },
     {
         "term": "cmd.help.scientist",
-        "definition": "-- TUD\u00d3S (ember) --\nGr\u00e1n\u00e1tvet\u0151vel tud teleport\u00e1lni\n2 akn\u00e1t tud lerakni\nImm\u00fanis a dermeszt\u00e9sekre\n",
+        "definition": "-- SCIENTIST (human) --\nCan teleport with grenade launcher\nCan spawn 2 mines\nImmune to freezing",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -33,7 +33,7 @@
     },
     {
         "term": "cmd.help.engineer",
-        "definition": "-- M\u00c9RN\u00d6K (ember) --\nKalap\u00e1ccsal l\u00e9zerfalakat \u00e9p\u00edt\nA fal f\u00e9l percig tart, 5 m\u00e1sodpercet levonva minden zombi \u00f6l\u00e9s\u00e9rt",
+        "definition": "-- ENGINEER (human) --\nCan build walls with a hammer\nWall lasts 30 secs, less by 5 sec with every zombie killed",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -41,7 +41,7 @@
     },
     {
         "term": "cmd.help.mercenary",
-        "definition": "-- ZSOLDOS (ember) --\nA pisztoly\u00e1t jetpack-k\u00e9nt tudja haszn\u00e1lni\nEgy hatalmas akn\u00e1t tud \u00e9p\u00edteni, ami kalap\u00e1ccsal felrobbanthat\u00f3\nVannak m\u00e9rgez\u0151 gr\u00e1n\u00e1t akn\u00e1i, ami zombikon hat\u00e1sos",
+        "definition": "-- MERCENARY (human) --\nCan use his gun as a jetpack to fly\nCan build a large floating mine and trigger it with a hammer\nHave poisoning mines, which work on zombies",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -49,7 +49,7 @@
     },
     {
         "term": "cmd.help.soldier",
-        "definition": "-- KATONA (ember) --\nSz\u00e1mos lebeg\u0151 gr\u00e1n\u00e1t akn\u00e1t k\u00e9pes lerakni kalap\u00e1ccsal\nMinden kalap\u00e1cs\u00fct\u00e9ssel egyes\u00e9vel felrobbannak",
+        "definition": "-- SOLDIER (human) --\nCan spawn a number of floating mines with his hammer\nFire hammer again to explode them one by one",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -57,7 +57,7 @@
     },
     {
         "term": "cmd.help.biologist",
-        "definition": "-- BIOL\u00d3GUS (ember) --\nTeljes t\u00f6ltettel egy l\u00e9zerfalat tud lerakni l\u00e9zerrel\nShotgun sokszor visszapattan\nImm\u00fanis a m\u00e9rgez\u00e9sre \u00e9s a m\u00e9rgez\u0151 k\u00f6d\u00f6ket kalap\u00e1ccsal leszedheti",
+        "definition": "-- BIOLOGIST (human) --\nCan build a trap with a laser when fully charged\nShotgun ricochets a lot\nImmune to poisoning and can remove cloud with a hammer",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -65,7 +65,7 @@
     },
     {
         "term": "cmd.help.medic",
-        "definition": "-- DOKTOR (ember) --\nTud embereket gy\u00f3gy\u00edtani kalap\u00e1ccsal, vagy gy\u00f3gy\u00edt\u00f3 gr\u00e1n\u00e1tjaival\nL\u00e9zerrel visszatud t\u00e1masztani egy zombit emberr\u00e9",
+        "definition": "-- MEDIC (human) --\nCan heal humans with hammer or heal grenades\nCan revive zombies with a laser",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -73,7 +73,7 @@
     },
     {
         "term": "cmd.help.hero",
-        "definition": "-- H\u0150S (ember) --\nA h\u0151s ad 4HP\/Pajzs-ot minden embernek, mikor felszed egy z\u00e1szl\u00f3t\nPisztolya navig\u00e1lja a z\u00e1szl\u00f3khoz\nImm\u00fanis a m\u00e9rgez\u00e9sre\nKevesebb sebz\u00e9st kap a k\u00e9k z\u00f3n\u00e1n k\u00edv\u0171l\n",
+        "definition": "-- HERO (human) --\nCollects flags to give + 4HP\/shields to humans\nUse gun as a navigator\nImmune to poisoning\nLess damage when outside of blue zone",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -81,7 +81,7 @@
     },
     {
         "term": "cmd.help.smoker",
-        "definition": "-- F\u00dcST\u00d6S (zombi) --\nEmberek megragad\u00e1s\u00e1val -2HP\/mp-el sebz\u0151dnek",
+        "definition": "-- SMOKER (zombie) --\nHook damages humans -2 HP\/sec",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -89,7 +89,7 @@
     },
     {
         "term": "cmd.help.boomer",
-        "definition": "-- ROBBANT\u00d3S (zombi) --\nEmberek megragad\u00e1s\u00e1val -1HP\/mp-t sebz\u0151dnek\nFelrobban hal\u00e1lakor\nKalap\u00e1ccsal felrobbanhatsz",
+        "definition": "-- BOOMER (zombie) --\nHook damages humans -1 HP\/sec\nExplodes on dying\nFire a hammer to explode",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -97,7 +97,7 @@
     },
     {
         "term": "cmd.help.hunter",
-        "definition": "-- VAD\u00c1SZ (zombi) --\nK\u00e9tszer tud ugrani a leveg\u0151ben\nEmberek megragad\u00e1s\u00e1val -1HP\/mp-t sebz\u0151dnek\nPisztollyal embereket nyomozhatsz le",
+        "definition": "-- HUNTER (zombie) --\nJumps two times in the air\nHook damages humans -1 HP\/sec\nUse gun to track humans",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -105,7 +105,7 @@
     },
     {
         "term": "cmd.help.poisoner",
-        "definition": "-- M\u00c9RGEZ\u0150 (zombi) --\nM\u00e9reg felh\u0151t k\u00e9pez hal\u00e1lakor\nAz emberek -4HP-t vesztenek a k\u00f6dben\nBIOL\u00d3GUS \u00e9s H\u0150S imm\u00fanis a m\u00e9rgez\u00e9sre\nKalap\u00e1ccsal meghalhatsz, mint a ROBBANT\u00d3S",
+        "definition": "-- POISONER (zombie) --\nProduces poison cloud when dying\nHumans got poisoned for -4 HP damage with it\nBIOLOGIST and HERO are immune to poisoning\nDie on firing a hammer like a BOOMER",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -113,7 +113,7 @@
     },
     {
         "term": "cmd.help.freezer",
-        "definition": "-- DERMESZT\u0150 (zombi) --\nMeg tud \u00e1ll\u00edtani egy embert horogj\u00e1val 1mp-ig\nAz emberek k\u00f6zbe imm\u00fanit\u00e1st kapnak, ha nem haltak meg\nTUD\u00d3S imm\u00fanis a dermeszt\u00e9sedre",
+        "definition": "-- CRYO (zombie) --\nCan stun a human with a hook for 1 sec\nHumans get 2 sec immunity if not killed\nSCIENTIST is immune to it",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -121,7 +121,7 @@
     },
     {
         "term": "cmd.help.bat",
-        "definition": "-- DENEV\u00c9R (zombi) --\nV\u00e9gtelen ugr\u00e1ssal rendelkezik\nEmbereket fel tud emelni a leveg\u0151be\nKalap\u00e1ccsal nem fert\u0151ztet, de -1HP-t sebez",
+        "definition": "-- BAT (zombie) --\nCan fly with a repeatedly presses of a jump button\nCan grab humans and lift them in air\nDoes not infects with hammer, but deals -1 HP damage",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -129,7 +129,7 @@
     },
     {
         "term": "cmd.help.queen",
-        "definition": "-- KIR\u00c1LYN\u0150 (zombi) --\nHa vannak MUNK\u00c1SOK a j\u00e1t\u00e9kban, a MUNK\u00c1SOK vissza\u00e9lednek a KIR\u00c1LYN\u0150H\u00d6Z\nKalap\u00e1ccsal fert\u0151zhetsz",
+        "definition": "-- QUEEN (zombie) --\nIf any WORKERS are in game\nthey will respawn instantly near the QUEEN\nInfects with hammer",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -137,7 +137,7 @@
     },
     {
         "term": "cmd.help.worker",
-        "definition": "-- MUNK\u00c1S (zombi) --\nHa van KIR\u00c1LYN\u0150 a j\u00e1t\u00e9kban, a MUNK\u00c1SOK vissza\u00e9lednek a KIR\u00c1LYN\u0150H\u00d6Z\nKalap\u00e1ccsal nem fert\u0151ztet, de -2HP-t sebez",
+        "definition": "-- WORKER (zombie) --\nIf QUEEN is in game\nWORKER will respawn instantly near the QUEEN\nDoes not infects, but deals -2 HP damage with hammer",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -145,7 +145,7 @@
     },
     {
         "term": "cmd.help.help",
-        "definition": "-- Seg\u00edts\u00e9g --\n\"Infection\" m\u00f3d\nFuss el a zombikt\u00f3l (z\u00f6ldek) emberk\u00e9nt\nFert\u0151zz embereket zombik\u00e9nt\npr\u00f3b\u00e1ld meg: \/commands",
+        "definition": "-- Help --\nInfection mod\nRun away from zombies (green) as a human\nInfect humans as a zombie\nTry: \/commands",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -153,7 +153,7 @@
     },
     {
         "term": "cmd.wrong",
-        "definition": "Nincs ilyen parancs, pr\u00f3b\u00e1ld meg: \/commands",
+        "definition": "no such command, try: \/commands",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -161,7 +161,7 @@
     },
     {
         "term": "game.class.random",
-        "definition": "V\u00e9letlenszer\u0171 v\u00e1laszt\u00e1s",
+        "definition": "Random choice",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -169,7 +169,7 @@
     },
     {
         "term": "game.class.biologist",
-        "definition": "Biol\u00f3gus",
+        "definition": "Biologist",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -177,7 +177,7 @@
     },
     {
         "term": "game.class.medic",
-        "definition": "Orvos",
+        "definition": "Medic",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -185,7 +185,7 @@
     },
     {
         "term": "game.class.engineer",
-        "definition": "M\u00e9rn\u00f6k",
+        "definition": "Engineer",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -193,7 +193,7 @@
     },
     {
         "term": "game.class.soldier",
-        "definition": "Katona",
+        "definition": "Soldier",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -201,7 +201,7 @@
     },
     {
         "term": "game.class.scientist",
-        "definition": "Tud\u00f3s",
+        "definition": "Scientist",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -209,7 +209,7 @@
     },
     {
         "term": "game.class.mercenary",
-        "definition": "Zsoldos",
+        "definition": "Mercenary",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -217,7 +217,7 @@
     },
     {
         "term": "game.class.hero",
-        "definition": "H\u0151s",
+        "definition": "Hero",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -225,7 +225,7 @@
     },
     {
         "term": "game.class.boomer",
-        "definition": "Robbant\u00f3s",
+        "definition": "Boomer",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -233,7 +233,7 @@
     },
     {
         "term": "game.class.smoker",
-        "definition": "F\u00fcst\u00f6s",
+        "definition": "Smoker",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -241,7 +241,7 @@
     },
     {
         "term": "game.class.hunter",
-        "definition": "Vad\u00e1sz",
+        "definition": "Hunter",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -249,7 +249,7 @@
     },
     {
         "term": "game.class.bat",
-        "definition": "Denev\u00e9r",
+        "definition": "Bat",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -257,7 +257,7 @@
     },
     {
         "term": "game.class.queen",
-        "definition": "Kir\u00e1lyn\u0151",
+        "definition": "Queen",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -265,7 +265,7 @@
     },
     {
         "term": "game.class.worker",
-        "definition": "Munk\u00e1s",
+        "definition": "Worker",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -273,7 +273,7 @@
     },
     {
         "term": "game.class.freezer",
-        "definition": "Dermeszt\u0151",
+        "definition": "Cryo",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -281,7 +281,7 @@
     },
     {
         "term": "game.class.poisoner",
-        "definition": "M\u00e9rgez\u0151",
+        "definition": "Poisoner",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -289,7 +289,7 @@
     },
     {
         "term": "game.won.infected",
-        "definition": "A zombik megnyert\u00e9k a j\u00e1t\u00e9kot %d m\u00e1sodpercn\u00e9l",
+        "definition": "Infected won the round in %d seconds",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -297,7 +297,7 @@
     },
     {
         "term": "game.won.humans",
-        "definition": "%d ember nyerte meg a j\u00e1t\u00e9kot",
+        "definition": "%d humans won the round",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -305,7 +305,7 @@
     },
     {
         "term": "game.survived",
-        "definition": "T\u00fal\u00e9lted, kapsz +5 pontot",
+        "definition": "You have survived, +5 points",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -313,7 +313,7 @@
     },
     {
         "term": "game.flag.spawned",
-        "definition": "Z\u00e1szl\u00f3 \u00edvott. A h\u0151s\u00f6k ig\u00e9nybe vehetik az embereket.",
+        "definition": "Flag spawned. Heroes can take it to help humans.",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -321,7 +321,7 @@
     },
     {
         "term": "game.flag.taken",
-        "definition": "A z\u00e1szl\u00f3t egy h\u0151s veszi. Az emberek +4 LE \/ p\u00e1nc\u00e9lt kapnak",
+        "definition": "Flag is taken by a Hero. Humans get +4 HP\/Armor",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -329,7 +329,7 @@
     },
     {
         "term": "game.class.ninja",
-        "definition": "Nindzsa",
+        "definition": "Ninja",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -337,7 +337,7 @@
     },
     {
         "term": "game.class.sniper",
-        "definition": "Orvl\u00f6v\u00e9sz",
+        "definition": "Sniper",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -345,7 +345,7 @@
     },
     {
         "term": "class.menu.humans.header",
-        "definition": "V\u00e1lassza ki oszt\u00e1ly\u00e1t eg\u00e9rgombbal: \\ n",
+        "definition": "Choose your class with mouse wheel:\\n",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -353,7 +353,7 @@
     },
     {
         "term": "class.menu.humans.footer",
-        "definition": "\\ nA men\u00fc bez\u00e1r\u00e1s\u00e1hoz nyomja meg r\u00f6viden a Tab billenty\u0171t",
+        "definition": "\\nPress Tab briefly to close this menu",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -361,7 +361,7 @@
     },
     {
         "term": "class.menu.zombies.header",
-        "definition": "oszt\u00e1lyod eg\u00e9rker\u00e9kkel: \\ n \\ n\u00e1llj feh\u00e9r k\u00f6rben) \\ n \\ n",
+        "definition": "your class with mouse wheel:\\n\\nstand in a white circle)\\n\\n",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -369,7 +369,7 @@
     },
     {
         "term": "class.menu.zombies.footer",
-        "definition": "\\ nA * jellel rendelkez\u0151 oszt\u00e1lyokat csak egy kezdeti zombi v\u00e1laszthatja ki. \\ nA men\u00fc bez\u00e1r\u00e1s\u00e1hoz nyomja le r\u00f6viden a Tab billenty\u0171t",
+        "definition": "\\nClasses with * are selectable by an initial zombie only\\nPress Tab briefly to close this menu",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -377,7 +377,7 @@
     },
     {
         "term": "game.class.psycho",
-        "definition": "Pszichopata",
+        "definition": "Psycho",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -385,7 +385,7 @@
     },
     {
         "term": "game.class.looper",
-        "definition": "hurkos",
+        "definition": "Looper",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -393,7 +393,7 @@
     },
     {
         "term": "game.class.magician",
-        "definition": "Var\u00e1zsl\u00f3",
+        "definition": "Magician",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -401,7 +401,7 @@
     },
     {
         "term": "game.class.spider",
-        "definition": "P\u00f3k",
+        "definition": "Spider",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -409,7 +409,7 @@
     },
     {
         "term": "cmd.help.psycho",
-        "definition": "-- PSZICHOPATA (ember) --\n\nm\u00e9rgez\u00e9sre \u00e9s fagy\u00e1sra immunis.\nmaximum 5HP sebz\u00e9st szenved minden \u00fct\u00e9sn\u00e9l\norvos nem tudja gy\u00f3gy\u00edtani, viszont regener\u00e1l, mikor zombikat horgol.",
+        "definition": "-- PSYCHO (human) --\n\npoison and freeze effect immune\nmaximum 5 HP damage received from any hit\nmedic cannot heal him, but he heals when grabbing zombies",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -417,7 +417,7 @@
     },
     {
         "term": "cmd.help.looper",
-        "definition": "-- HURKOS (ember) --\n\nfalat \u00e9p\u00edt, ami lass\u00edtja a zombikat\nnagyon gyors, kis t\u00e1vols\u00e1g\u00fa l\u00e9zere van",
+        "definition": "-- LOOPER (human) --\n\nbuilds walls that slow zombies\nhas a very fast low-range laser",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -425,7 +425,7 @@
     },
     {
         "term": "cmd.help.magician",
-        "definition": "-- VAR\u00c1ZSL\u00d3 (ember) --\n\nm\u00e1sodik ugr\u00e1s\u00e1val levit\u00e1l\ngr\u00e1n\u00e1t levit\u00e1lva teszik a zombikat\npisztoly visszal\u00f6ki a zombikat\nkalap\u00e1cs elk\u00e1b\u00edtja a k\u00f6zeli zombikat\nrendes l\u00e9zere van",
+        "definition": "-- MAGICIAN (human) --\n\nsecond jump is levitation\ngrenades make zombie levitate\npistol knock zombies back\nhammer stuns zombies nearby\nhas regular laser",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -433,7 +433,7 @@
     },
     {
         "term": "cmd.help.spider",
-        "definition": "-- P\u00d3K (zombi) --\n\nv\u00e9gtelen horogja van, ami lass\u00edt\u00e1sba teszi az embereket\nm\u00e1sodik ugr\u00e1s egy el\u0151re l\u00f6ket\nnincs kalap\u00e1csnak sebz\u00e9se \u00e9s alig van horognak sebs\u00e9ze",
+        "definition": "-- SPIDER (zombie) --\n\nendless hook which slow-motions humans\nsecond jump is a dash forward\nno hammer damage, almost no hook damage",
         "context": "",
         "term_plural": "",
         "reference": "",

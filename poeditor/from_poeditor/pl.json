@@ -374,5 +374,69 @@
         "term_plural": "",
         "reference": "",
         "comment": ""
+    },
+    {
+        "term": "game.class.psycho",
+        "definition": "Psychol",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.looper",
+        "definition": "Chwytacz",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.magician",
+        "definition": "Magik",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.spider",
+        "definition": "Paj\u0105k",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.psycho",
+        "definition": "- PSYCHO (cz\u0142owiek) -\n\nodporno\u015b\u0107 na trucizn\u0119 i zamra\u017canie\nmaksymalnie 5 PW obra\u017ce\u0144 otrzymanych z dowolnego trafienia\nMedyk nie mo\u017ce go leczy\u0107, ale leczy, gdy \u0142apie zombie",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.looper",
+        "definition": "buduje \u015bciany, kt\u00f3re spowalniaj\u0105 zombie\nposiada bardzo szybki laser na kr\u00f3tk\u0105 odleg\u0142o\u015b\u0107",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.magician",
+        "definition": "drugi skok jest lewitacj\u0105\nwyrzutnia rakiet sprawia, \u017ce zombie lewituj\u0105\npistolet odrzuca zombie do ty\u0142u\nm\u0142ot og\u0142usza zombie w pobli\u017cu\nposiada sta\u0142y laser",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.spider",
+        "definition": "niesko\u0144czony hak, kt\u00f3ry spowalnia ludzi\ndrugi skok jest zrywem do przodu\nbrak obra\u017ce\u0144 od m\u0142ota, prawie brak obra\u017ce\u0144 od haka",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
     }
 ]

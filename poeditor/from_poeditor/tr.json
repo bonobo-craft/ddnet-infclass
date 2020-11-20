@@ -321,7 +321,7 @@
     },
     {
         "term": "game.flag.taken",
-        "definition": "Bayrak bir Kahraman taraf\u0131ndan al\u0131n\u0131r. \u0130nsanlar +4 HP \/ Z\u0131rh al\u0131r",
+        "definition": "Bayrak bir Kahraman taraf\u0131ndan al\u0131nd\u0131. \u0130nsanlar +4 HP\/kalkan al\u0131r",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -337,7 +337,7 @@
     },
     {
         "term": "game.class.sniper",
-        "definition": "Keskin nisanci",
+        "definition": "Pusucu",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -370,6 +370,70 @@
     {
         "term": "class.menu.zombies.footer",
         "definition": "\\ n * bulunan s\u0131n\u0131flar yaln\u0131zca ba\u015flang\u0131\u00e7taki bir zombi taraf\u0131ndan se\u00e7ilebilir \\ nBu men\u00fcy\u00fc kapatmak i\u00e7in Sekme'ye k\u0131sa bir s\u00fcre bas\u0131n",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.psycho",
+        "definition": "Psikopat",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.looper",
+        "definition": "Looper",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.magician",
+        "definition": "Sihirbaz",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": "Alternate word you can use for magician: B\u00fcy\u00fccu\nSihirbaz refers to magic in general\nB\u00fcy\u00fccu refers to wizards who use curses and dark magic"
+    },
+    {
+        "term": "game.class.spider",
+        "definition": "\u00d6r\u00fcmcek",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.psycho",
+        "definition": "-- PSIKOPAT (insan) --\n\ndonmaya ve zehirlenmeye kar\u015f\u0131 ba\u011f\u0131\u015f\u0131kl\u0131k\nen fazla maksimum 5 HP hasar al\u0131r\nDoktor onu iyile\u015ftiremez, ancak o zombileri kaparken kendini iyile\u015ftirir",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.looper",
+        "definition": "-- LOOPER (insan) --\n\nzombileri yava\u015flatan duvarlar in\u015fa eder\n\u00e7ok h\u0131zl\u0131 at\u0131\u015f yapan d\u00fc\u015f\u00fck menzilli lazere sahiptir",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.magician",
+        "definition": "-- SIHIRBAZ (insan) --\n\nikinci atlama seni havaya u\u00e7urur\nbombalar zombi havaya u\u00e7urur\ntabanca zombileri geri savur\n\u00e7eki\u00e7 yak\u0131ndaki zombileri sersemletir\nnormal bir lazer silah\u0131 var",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.spider",
+        "definition": "-- \u00d6R\u00dcMCEK (zombi) --\n\ninsanlar\u0131 yava\u015f hareket ettiren sonsuz kanca\nikinci atlama ileriye do\u011fru at\u0131l\u0131md\u0131r\n\u00e7eki\u00e7 hasar\u0131 yok, ama biraz kanca hasar\u0131 ediyor",
         "context": "",
         "term_plural": "",
         "reference": "",

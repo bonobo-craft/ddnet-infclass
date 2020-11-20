@@ -73,7 +73,7 @@
     },
     {
         "term": "cmd.help.hero",
-        "definition": "- HERO (humain) -\nCollecte des drapeaux pour donner + 4PV \/ boucliers aux humains\nUtiliser le pistolet comme boussole\nImmunis\u00e9 contre l'empoisonnement\nMoins de d\u00e9g\u00e2ts en dehors de la zone bleue",
+        "definition": "- H\u00c9RO (humain) -\nCollecte des drapeaux pour donner + 4PV \/ boucliers aux humains\nUtiliser le pistolet comme boussole\nImmunis\u00e9 contre l'empoisonnement\nMoins de d\u00e9g\u00e2ts en dehors de la zone bleue",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -89,7 +89,7 @@
     },
     {
         "term": "cmd.help.boomer",
-        "definition": " - EXPLOSIF (zombie) -\nLe grapin endommage les humains -1 PV \/ s\nExplose en mourant\nUtiliser le marteau pour exploser",
+        "definition": "-- EXPLOSIF (zombie) --\nLe grapin endommage les humains -1 PV \/ s\nExplose en mourant\nUtiliser le marteau pour exploser",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -97,7 +97,7 @@
     },
     {
         "term": "cmd.help.hunter",
-        "definition": " - CHASSEUR (zombie) -\n Saute deux fois en l'air\nLe grapin endommage les humains -1 PV \/ s\nUtiliser le pistolet pour indiquer l'emplacement des humains",
+        "definition": "-- CHASSEUR (zombie) --\nSaute deux fois en l'air\nLe grapin endommage les humains -1 PV \/ s\nUtiliser le pistolet pour indiquer l'emplacement des humains",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -137,7 +137,7 @@
     },
     {
         "term": "cmd.help.worker",
-        "definition": " -  SERVITEUR (zombie) -\n Si la REINE est en jeu\n Le SERVITEUR r\u00e9appara\u00eetra instantan\u00e9ment au pr\u00e8s de la REINE apr\u00e8s sa mort\n N'infecte pas, mais inflige 2 points de d\u00e9g\u00e2ts avec le marteau",
+        "definition": "--  SERVITEUR (zombie) --\nSi la REINE est en jeu\nLe SERVITEUR r\u00e9appara\u00eetra instantan\u00e9ment au pr\u00e8s de la REINE apr\u00e8s sa mort\nN'infecte pas, mais inflige 2 points de d\u00e9g\u00e2ts avec le marteau",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -145,7 +145,7 @@
     },
     {
         "term": "cmd.help.help",
-        "definition": " -- Aide--\n Mod Infection\n Fuyez les zombies (verts) en tant qu'humain\n Infecter les humains en tant que zombie\n essayez: \/commands",
+        "definition": " -- Aide--\n Mode Infection\n Fuyez les zombies (verts) en tant qu'humain\n Infecter les humains en tant que zombie\n essayez: \/commands",
         "context": "",
         "term_plural": "",
         "reference": "",
@@ -370,6 +370,70 @@
     {
         "term": "class.menu.zombies.footer",
         "definition": "\\nLes classes avec * ne peuvent \u00eatre s\u00e9lectionn\u00e9es que par un zombie initial \\nAppuyez bri\u00e8vement sur Tab pour fermer ce menu",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.psycho",
+        "definition": "Fou",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.looper",
+        "definition": "Looper",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.magician",
+        "definition": "Magicien",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.spider",
+        "definition": "Araign\u00e9e",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.psycho",
+        "definition": "-- FOU --\n\nImmunis\u00e9 au poison et au gel\nPrends des d\u00e9g\u00e2ts jusqu'\u00e0 5 PV par coup\nLe m\u00e9decin ne peut pas le soigner, mais il s'auto-soigne en s'aggrippant \u00e0\n un zombie",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.looper",
+        "definition": "-- LOOPER (humain) --\nPeut construire des murs avec son marteau qui ralentit les zombies\nPoss\u00e8de un laser tr\u00e8s rapide \u00e0 courte port\u00e9e",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.magician",
+        "definition": "-- MAGICIEN (humain) --\n\nLe second saut lui permet de flotter\nLes grenades font l\u00e9viter les zombies\nLe pistolet repousse les zombies\nLe marteau \u00e9tourdit les zombies aux alentours\nAs un fusil laser normal",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.spider",
+        "definition": "-- ARAIGN\u00c9E (zombie) --\n\nGrappin infini qui ralentit les humains\nLe second saut va vers l'avant\nLe marteau n'inflige pas de d\u00e9g\u00e2ts, et le grappin en inflige tr\u00e8s peu.",
         "context": "",
         "term_plural": "",
         "reference": "",

@@ -6,6 +6,6 @@ lang=$1
   curl -X POST https://api.poeditor.com/v2/projects/export \
        -d api_token="f5b28e07427a279fa6bbf8b86d96c438" \
        -d id="363119" \
-       -d language="fr" \
+       -d language="$lang" \
        -d type="json" \
   | jq . | grep url | cut -d\" -f4 | xargs -I\# wget \# -O "from_poeditor/"$lang".json"

@@ -374,5 +374,69 @@
         "term_plural": "",
         "reference": "",
         "comment": ""
+    },
+    {
+        "term": "game.class.psycho",
+        "definition": "Psic\u00f3pata",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.looper",
+        "definition": "Looper",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.magician",
+        "definition": "Mago",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "game.class.spider",
+        "definition": "Ara\u00f1a",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.psycho",
+        "definition": "- PSYCHO (humano) -\n\nveneno y efecto de congelaci\u00f3n inmune\nda\u00f1o m\u00e1ximo de 5 HP recibido de cualquier golpe\nEl m\u00e9dico no puede curarlo, pero se cura cuando agarra zombis.",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.looper",
+        "definition": "- LOOPER (humano) -\n\nconstruye muros que ralentizan a los zombis\ntiene un l\u00e1ser de rango bajo muy r\u00e1pido",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.magician",
+        "definition": "- MAGO (humano) -\n\nel segundo salto es la levitaci\u00f3n\ngranadas hacen levitar zombies\npistola golpear a los zombis\nmartillo aturde a los zombis cercanos\ntiene l\u00e1ser regular",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
+    },
+    {
+        "term": "cmd.help.spider",
+        "definition": "- ARA\u00d1A (zombi) -\n\ngancho interminable que mueve a los humanos lentamente\nEl segundo salto es una carrera hacia adelante\nsin da\u00f1o de martillo, casi sin da\u00f1o de gancho",
+        "context": "",
+        "term_plural": "",
+        "reference": "",
+        "comment": ""
     }
 ]
