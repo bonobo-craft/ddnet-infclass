@@ -7,6 +7,7 @@
 #include <game/server/gamemodes/mod.h>
 #include <game/server/teams.h>
 #include <game/version.h>
+#include <infcroya/localization/localization.h>
 
 bool CheckClientID(int ClientID);
 
@@ -80,54 +81,90 @@ void CGameContext::ConList(IConsole::IResult *pResult, void *pUserData)
 void CGameContext::ConHelp(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *) pUserData;
-	if (!CheckClientID(pResult->m_ClientID))
+	if (!pUserData || !pSelf || !CheckClientID(pResult->m_ClientID))
 	  return;
+	auto lang = pSelf->Lang(pResult->m_ClientID);
 
 	if(pResult->NumArguments() == 0)
 	{
 		std::vector<std::string> messageList;
-		messageList.push_back("==== Infection 'Next' Mod ====\n");
-		messageList.push_back("Infection mod is a game where one player starts as a zombie and \nthen tries to infect everyone by a chain reaction.");
-		messageList.push_back("");
-		messageList.push_back("When you're zombie your goal is to infect everyone\n");
-		messageList.push_back("When you're human you goal is to survive. If at the end of a round any humans remains uninfected then an army will come to the rescue and will wipe zombies from the game.\n");
-		messageList.push_back("Syntax for help on classes is:\n");
-		messageList.push_back(" /help scientist or /help sci\n");
-		messageList.push_back("Read wiki: tiny.cc/infnext\n");
-		messageList.push_back("Join chat: tiny.cc/infnext-chat");
-
+		messageList.push_back(localize("cmd.help.help", lang));
 		pSelf->SendBroadcastBig(pSelf->Join(messageList, "\n").c_str(), pResult->m_ClientID);
-/* 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help",
-				"/cmdlist will show a list of all chat commands");
-		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help",
-			"/help + any command will show you the help for this command");
-		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help",
-			"Example /help settings will display the help about /settings");*/
+		return;
 	}
 	else
 	{
+		std::vector<std::string> messageList;
+		// const char *pRequestedName = (str_comp(pResult->GetString(0), "me") == 0) ?
+		// 				     pSelf->Server()->ClientName(pResult->m_ClientID) :
+		// 				     pResult->GetString(0);
 		const char *pArg = pResult->GetString(0);
-		const IConsole::CCommandInfo *pCmdInfo =
-			pSelf->Console()->GetCommandInfo(pArg, CFGFLAG_SERVER, false);
-		if(pCmdInfo)
-		{
-			if(pCmdInfo->m_pParams)
-			{
-				char aBuf[256];
-				str_format(aBuf, sizeof(aBuf), "Usage: %s %s", pCmdInfo->m_pName, pCmdInfo->m_pParams);
-				pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help", aBuf);
-			}
+		if (!pResult || !pArg)
+			return;
+		// const IConsole::CCommandInfo *pCmdInfo =
+		// 	pSelf->Console()->GetCommandInfo(pArg, CFGFLAG_SERVER, false);
+		// if(!pCmdInfo)
+		// 	return;
+		if (!str_comp(pArg, "bat")) {
+			messageList.push_back(localize("cmd.help.bat", lang));
+			// pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help", localize("cmd.help.bat", lang).c_str());
+		} else if (!str_comp(pArg, "boomer")) {
+			messageList.push_back(localize("cmd.help.boomer", lang));
+		} else if (!str_comp(pArg, "scientist")) {
+			messageList.push_back(localize("cmd.help.scientist", lang));
+		} else if (!str_comp(pArg, "engineer")) {
+			messageList.push_back(localize("cmd.help.engineer", lang));
+		} else if (!str_comp(pArg, "mercenary")) {
+			messageList.push_back(localize("cmd.help.mercenary", lang));
+		} else if (!str_comp(pArg, "soldier")) {
+			messageList.push_back(localize("cmd.help.soldier", lang));
+		} else if (!str_comp(pArg, "biologist")) {
+			messageList.push_back(localize("cmd.help.biologist", lang));
+		} else if (!str_comp(pArg, "medic")) {
+			messageList.push_back(localize("cmd.help.medic", lang));
+		} else if (!str_comp(pArg, "hero")) {
+			messageList.push_back(localize("cmd.help.hero", lang));
+		} else if (!str_comp(pArg, "smoker")) {
+			messageList.push_back(localize("cmd.help.smoker", lang));
+		} else if (!str_comp(pArg, "hunter")) {
+			messageList.push_back(localize("cmd.help.hunter", lang));
+		} else if (!str_comp(pArg, "cryo")) {
+			messageList.push_back(localize("cmd.help.freezer", lang));
+		} else if (!str_comp(pArg, "poisoner")) {
+			messageList.push_back(localize("cmd.help.poisoner", lang));
+		} else if (!str_comp(pArg, "queen")) {
+			messageList.push_back(localize("cmd.help.queen", lang));
+		} else if (!str_comp(pArg, "worker")) {
+			messageList.push_back(localize("cmd.help.worker", lang));
+		} else if (!str_comp(pArg, "psycho")) {
+			messageList.push_back(localize("cmd.help.psycho", lang));
+		} else if (!str_comp(pArg, "looper")) {
+			messageList.push_back(localize("cmd.help.looper", lang));
+		} else if (!str_comp(pArg, "magician")) {
+			messageList.push_back(localize("cmd.help.magician", lang));
+		} else if (!str_comp(pArg, "spider")) {
+			messageList.push_back(localize("cmd.help.spider", lang));
+		} else {
+			messageList.push_back(localize("cmd.wrong", lang));
+			// pSelf->Console()->Print(
+			// 	IConsole::OUTPUT_LEVEL_STANDARD,
+			// 	"help",
+			// 	"Command is either unknown or you have given a blank command without any parameters.");
+		}
+		pSelf->SendBroadcastBig(pSelf->Join(messageList, "\n").c_str(), pResult->m_ClientID);
 
-			if(pCmdInfo->m_pHelp)
-				pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help", pCmdInfo->m_pHelp);
-		}
-		else {
-			if (!pSelf->SendClassInfoByCommand(pArg, pResult->m_ClientID))
-				pSelf->Console()->Print(
-					IConsole::OUTPUT_LEVEL_STANDARD,
-					"help",
-					"Command is either unknown or you have given a blank command without any parameters.");
-		}
+		// if(pCmdInfo->m_pParams)
+		// {
+		// 	char aBuf[256];
+		// 	str_format(aBuf, sizeof(aBuf), "Usage: %s %s", pCmdInfo->m_pName, pCmdInfo->m_pParams);
+		// 	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help", aBuf);
+		// 	return;
+		// }
+		// // standard command?
+		// if(pCmdInfo->m_pHelp) {
+		// 	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "help", pCmdInfo->m_pHelp);
+		// 	return;
+		// }
 	}
 }
 

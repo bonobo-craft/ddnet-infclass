@@ -4413,11 +4413,16 @@ void CGameContext::SendCommand(int ChatterClientID, const std::string& command)
 		messageList.push_back("");
 		messageList.push_back("try: /commands");
 	}
+	else if (command == "help help")
+	{
+		messageList.push_back("-- Help --");
+		messageList.push_back("");
+	}
 	else if (command == "info")
 	{
 		messageList.push_back("-- Info --");
 		messageList.push_back("InfCroya");
-		messageList.push_back("InfClass with battle royale circles");
+		messageList.push_back("InfClass with battle royale elements");
 		messageList.push_back("Thanks to: All InfClass & InfClassR contributors and Assa for chat commands");
 		messageList.push_back("Sources: https://github.com/yavl/teeworlds-infcroya");
 		std::stringstream ss;
