@@ -1747,8 +1747,8 @@ void CGameContext::OnClientDDNetVersionKnown(int ClientID)
 
 	if(ClientVersion > 15013 && ClientVersion < 15023) {
 		SendBroadcast("Your DDNet client version is incompatible with this mod, update to DDNet 15.2.3 or newer", ClientID);
-		SendBroadcastBig("!!! PROBLEM !!!\nYour DDNet client version is buggy. Update to DDNet 15.2.3 or newer (or 15.1.3 or older if you like old clients)", ClientID);
-		SendChatTarget(ClientID, "!!! PROBLEM !!!\nYour DDNet client version is buggy. Update to DDNet 15.2.3 or newer (or 15.1.3 or older if you like old clients)");
+		SendBroadcastBig("!!! PROBLEM !!!\nYour DDNet client version is buggy. Update to DDNet 15.2.3 or newer", ClientID);
+		SendChatTarget(ClientID, "!!! PROBLEM !!!\nYour DDNet client version is buggy. Update to DDNet 15.2.3 or newer");
 	}
 	// Tell old clients to update.
 	if(ClientVersion < VERSION_DDNET_UPDATER_FIXED && g_Config.m_SvClientSuggestionOld[0] != '\0')
