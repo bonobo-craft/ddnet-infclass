@@ -157,9 +157,11 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 			continue;
 
 		int DAMAGE = 20;
-		int HEAL = 1;
+		int HEAL = 4;
+		int SELFHEAL = 1;
 		bool ShouldHit = false;
 		bool ShouldHeal = false;
+		bool ShouldSelfHeal = false;
 		bool ShouldUnfreeze = false;
 		bool ShouldInfect = false;
 		bool ShouldFreeze = false;
@@ -183,6 +185,8 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 					ShouldInfect = true;	
 			} else {                  // Zombie hits Zombie
 				ShouldHeal = true;
+				HEAL = 4;
+				ShouldSelfHeal = true;
 				ShouldGiveUpVelocity = true;
 				ShouldUnfreeze = true;
 			}
@@ -204,6 +208,7 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		if (pChr->GetCroyaPlayer()->GetClassNum() == Class::MEDIC && (ShouldUnfreeze)) {
 			HEAL = 2;
 			ShouldHeal = true;
+			ShouldSelfHeal = false;
 		}
 
 		if (ShouldHit && pChr->GetCroyaPlayer()->GetClassNum() == Class::MAGICIAN) {
@@ -295,10 +300,12 @@ void IClass::HammerShoot(CCharacter* pChr, vec2 ProjStartPos) {
 		}
 
 		if (ShouldHeal) {
-			pTarget->IncreaseOverallHp(4);
-			pChr->IncreaseOverallHp(HEAL);
+			pTarget->IncreaseOverallHp(HEAL);
 			pTarget->SetEmote(EMOTE_HAPPY, pChr->Server()->Tick() + pChr->Server()->TickSpeed());
 		}
+
+		if (ShouldSelfHeal)
+			pChr->IncreaseOverallHp(SELFHEAL);
 
 		// set his velocity to fast upward (for now)
 		if (ShouldGiveUpVelocity) {
