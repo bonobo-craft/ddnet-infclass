@@ -7,6 +7,7 @@
 #include <game/server/entities/character.h>
 #include <game/server/player.h>
 #include "engine/shared/config.h"
+#include <infcroya/classes/class.h>
 
 CGrowingExplosion::CGrowingExplosion(CGameWorld *pGameWorld, vec2 Pos, vec2 Dir, int Owner, int Radius, int ExplosionEffect)
 		: CEntity(pGameWorld, CGameWorld::ENTTYPE_GROWINGEXPLOSION, Pos),
@@ -280,6 +281,8 @@ void CGrowingExplosion::Tick()
 				switch(m_ExplosionEffect)
 				{
 					case GROWINGEXPLOSIONEFFECT_HEAL_HUMANS:
+						if (!p->GetCroyaPlayer() || p->GetCroyaPlayer()->GetClassNum() == Class::PSYCHO)
+							continue;
 						p->IncreaseArmor(2);
 						p->IncreaseHealth(2);
 						GameServer()->SendEmoticon(p->GetPlayer()->GetCID(), EMOTICON_EYES);
