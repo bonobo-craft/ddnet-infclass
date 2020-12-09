@@ -1815,37 +1815,38 @@ void *CGameContext::PreProcessMsg(int *MsgID, CUnpacker *pUnpacker, int ClientID
 		}
 		else if(*MsgID == protocol7::NETMSGTYPE_CL_SKINCHANGE)
 		{
-			protocol7::CNetMsg_Cl_SkinChange *pMsg = (protocol7::CNetMsg_Cl_SkinChange *)pRawMsg;
-			if(g_Config.m_SvSpamprotection && pPlayer->m_LastChangeInfo &&
-				pPlayer->m_LastChangeInfo + Server()->TickSpeed() * g_Config.m_SvInfoChangeDelay > Server()->Tick())
-				return 0;
-
-			pPlayer->m_LastChangeInfo = Server()->Tick();
-
-			CTeeInfo Info(pMsg->m_apSkinPartNames, pMsg->m_aUseCustomColors, pMsg->m_aSkinPartColors);
-			Info.FromSixup();
-			pPlayer->m_TeeInfos = Info;
-
-			protocol7::CNetMsg_Sv_SkinChange Msg;
-			Msg.m_ClientID = ClientID;
-			for(int p = 0; p < 6; p++)
-			{
-				if (p == 5) {
-					if (Server()->IsSixup(ClientID))
-						Msg.m_apSkinPartNames[p] = FCLIENT_STRING;
-					else
-						Msg.m_apSkinPartNames[p] = pMsg->m_apSkinPartNames[p];
-				} else {
-					Msg.m_apSkinPartNames[p] = pMsg->m_apSkinPartNames[p];
-				}
-				Msg.m_apSkinPartNames[p] = pMsg->m_apSkinPartNames[p];
-				Msg.m_aSkinPartColors[p] = pMsg->m_aSkinPartColors[p];
-				Msg.m_aUseCustomColors[p] = pMsg->m_aUseCustomColors[p];
-			}
-
-			Server()->SendPackMsg(&Msg, MSGFLAG_VITAL | MSGFLAG_NORECORD, -1);
-
 			return 0;
+			// protocol7::CNetMsg_Cl_SkinChange *pMsg = (protocol7::CNetMsg_Cl_SkinChange *)pRawMsg;
+			// if(g_Config.m_SvSpamprotection && pPlayer->m_LastChangeInfo &&
+			// 	pPlayer->m_LastChangeInfo + Server()->TickSpeed() * g_Config.m_SvInfoChangeDelay > Server()->Tick())
+			// 	return 0;
+
+			// pPlayer->m_LastChangeInfo = Server()->Tick();
+
+			// CTeeInfo Info(pMsg->m_apSkinPartNames, pMsg->m_aUseCustomColors, pMsg->m_aSkinPartColors);
+			// Info.FromSixup();
+			// pPlayer->m_TeeInfos = Info;
+
+			// protocol7::CNetMsg_Sv_SkinChange Msg;
+			// Msg.m_ClientID = ClientID;
+			// for(int p = 0; p < 6; p++)
+			// {
+			// 	if (p == 5) {
+			// 		if (Server()->IsSixup(ClientID))
+			// 			Msg.m_apSkinPartNames[p] = FCLIENT_STRING;
+			// 		else
+			// 			Msg.m_apSkinPartNames[p] = pMsg->m_apSkinPartNames[p];
+			// 	} else {
+			// 		Msg.m_apSkinPartNames[p] = pMsg->m_apSkinPartNames[p];
+			// 	}
+			// 	Msg.m_apSkinPartNames[p] = pMsg->m_apSkinPartNames[p];
+			// 	Msg.m_aSkinPartColors[p] = pMsg->m_aSkinPartColors[p];
+			// 	Msg.m_aUseCustomColors[p] = pMsg->m_aUseCustomColors[p];
+			// }
+
+			// Server()->SendPackMsg(&Msg, MSGFLAG_VITAL | MSGFLAG_NORECORD, -1);
+
+			// return 0;
 		}
 		else if(*MsgID == protocol7::NETMSGTYPE_CL_SETSPECTATORMODE)
 		{
@@ -2456,6 +2457,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 		}
 		else if(MsgID == NETMSGTYPE_CL_CHANGEINFO)
 		{
+			return;
 			if(g_Config.m_SvSpamprotection && pPlayer->m_LastChangeInfo && pPlayer->m_LastChangeInfo + Server()->TickSpeed() * g_Config.m_SvInfoChangeDelay > Server()->Tick())
 				return;
 
